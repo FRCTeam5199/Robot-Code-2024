@@ -4,6 +4,9 @@
 
 package frc.robot.Constants;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+
 /**
  * Constants that are applicable to every bot.
  */
@@ -39,6 +42,19 @@ public abstract class AbstractConstants {
     public static double BACK_LEFT_SWERVE_OFFSET = 0;
     public static double BACK_RIGHT_SWERVE_OFFSET = 0;
 
+    public static double DRIVETRAIN_TRACKWIDTH_METERS = 0;
+    public static double DRIVETRAIN_WHEELBASE_METERS = 0;
+
+    public static SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
+        // Front left
+        new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+        // Front right
+        new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0),
+        // Back left
+        new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+        // Back right
+        new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
+
 
     public static boolean INVERT_FL_DRIVE = false;
     public static boolean INVERT_FL_STEER = false;
@@ -51,6 +67,8 @@ public abstract class AbstractConstants {
 
     public static boolean INVERT_BR_DRIVE = false;
     public static boolean INVERT_BR_STEER = false;
+
+    public static double MAX_VELOCITY_METERS_PER_SECOND = 0;
     
 
   

@@ -6,10 +6,10 @@ package frc.robot;
 
 import frc.robot.Constants.AbstractConstants;
 import frc.robot.Constants.MainConstants;
-import frc.robot.Constants.AbstractConstants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Drive;
 import frc.robot.subsystems.UserInterface;
+import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -25,17 +25,32 @@ public class RobotContainer {
   UserInterface userInterface;
   public AbstractConstants constants;
   public String config = userInterface.getConfig();
+  public Drive drive;
+  public SwerveDrive swerveDrive;
+  public double x;
+  public double y;
+  public double rotate;
+  public Autos auton;
 
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
-      new CommandXboxController(AbstractConstants.OperatorConstants.CONTROLLER_PORT);
+      new CommandXboxController(AbstractConstants.CONTROLLER_PORT);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     userInterface = new UserInterface();
+    swerveDrive = new SwerveDrive();
+    x = m_driverController.getLeftX();
+    y = m_driverController.getLeftY();
+    rotate = m_driverController.getRightX();
+
+    drive = new Drive(x, y, rotate);
+    swerveDrive.setDefaultCommand(drive);
+    auton = new Autos(swerveDrive);
+
 
     switch(config){
       case "Main": constants = new MainConstants();
@@ -65,6 +80,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return auton.auton1();
   }
 }
