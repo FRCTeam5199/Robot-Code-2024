@@ -8,6 +8,8 @@ import frc.robot.Constants.AbstractConstants;
 import frc.robot.Constants.MainConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Drive;
+import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.commands.AprilTagReading;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,7 +33,8 @@ public class RobotContainer {
   public double y;
   public double rotate;
   public Autos auton;
-
+  public AprilTagSubsystem aprilTag;
+  public AprilTagReading aprilTagReading;
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -41,6 +44,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+    AprilTagSubsystem aprilTag = new AprilTagSubsystem();
+
     userInterface = new UserInterface();
     swerveDrive = new SwerveDrive();
     x = m_driverController.getLeftX();
@@ -55,6 +60,8 @@ public class RobotContainer {
     switch(config){
       case "Main": constants = new MainConstants();
     }
+
+    AprilTagReading = new AprilTagReading(AprilTagSubsystem);
 
     configureBindings();
   }
