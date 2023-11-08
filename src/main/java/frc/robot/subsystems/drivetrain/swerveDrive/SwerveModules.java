@@ -5,7 +5,7 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 
 
 public class SwerveModules {
-    SwerveModuleConstants swerveConstants;
+    SwerveModuleConstants swerveConstants = new SwerveModuleConstants();
     FeedbackConfigs feedback;
     SwerveModule swerveModule;
 

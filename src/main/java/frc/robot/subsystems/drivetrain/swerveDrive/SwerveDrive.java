@@ -41,21 +41,22 @@ public class SwerveDrive implements Subsystem {
     SwerveModules backLeft;
     SwerveModules backRight;
     SwerveDriveOdometry odometry;
+    SwerveModuleConstants[] moduleConstants;
 
 
 
     public SwerveDrive() {
-        SwerveModules frontLeft = new SwerveModules(AbstractConstants.FRONT_LEFT_DRIVE_MOTOR_ID, AbstractConstants.FRONT_LEFT_STEER_MOTOR_ID, AbstractConstants.FRONT_LEFT_ENCODER, AbstractConstants.CAN_BUS, AbstractConstants.FRONT_LEFT_SWERVE_OFFSET, false, false);
-        SwerveModules frontRight = new SwerveModules(AbstractConstants.FRONT_RIGHT_DRIVE_MOTOR_ID, AbstractConstants.FRONT_RIGHT_STEER_MOTOR_ID, AbstractConstants.FRONT_RIGHT_ENCODER,AbstractConstants.CAN_BUS, AbstractConstants.FRONT_RIGHT_SWERVE_OFFSET, false, false);
-        SwerveModules backLeft = new SwerveModules(AbstractConstants.BACK_LEFT_DRIVE_MOTOR_ID, AbstractConstants.BACK_LEFT_STEER_MOTOR_ID, AbstractConstants.BACK_LEFT_ENCODER, AbstractConstants.CAN_BUS, AbstractConstants.BACK_LEFT_SWERVE_OFFSET, false, false);
-        SwerveModules backRight = new SwerveModules(AbstractConstants.BACK_RIGHT_DRIVE_MOTOR_ID, AbstractConstants.BACK_RIGHT_STEER_MOTOR_ID, AbstractConstants.BACK_RIGHT_ENCODER, AbstractConstants.CAN_BUS, AbstractConstants.BACK_RIGHT_SWERVE_OFFSET, false, false);
+        frontLeft = new SwerveModules(AbstractConstants.FRONT_LEFT_DRIVE_MOTOR_ID, AbstractConstants.FRONT_LEFT_STEER_MOTOR_ID, AbstractConstants.FRONT_LEFT_ENCODER, AbstractConstants.CAN_BUS, AbstractConstants.FRONT_LEFT_SWERVE_OFFSET, false, false);
+        frontRight = new SwerveModules(AbstractConstants.FRONT_RIGHT_DRIVE_MOTOR_ID, AbstractConstants.FRONT_RIGHT_STEER_MOTOR_ID, AbstractConstants.FRONT_RIGHT_ENCODER,AbstractConstants.CAN_BUS, AbstractConstants.FRONT_RIGHT_SWERVE_OFFSET, false, false);
+        backLeft = new SwerveModules(AbstractConstants.BACK_LEFT_DRIVE_MOTOR_ID, AbstractConstants.BACK_LEFT_STEER_MOTOR_ID, AbstractConstants.BACK_LEFT_ENCODER, AbstractConstants.CAN_BUS, AbstractConstants.BACK_LEFT_SWERVE_OFFSET, false, false);
+        backRight = new SwerveModules(AbstractConstants.BACK_RIGHT_DRIVE_MOTOR_ID, AbstractConstants.BACK_RIGHT_STEER_MOTOR_ID, AbstractConstants.BACK_RIGHT_ENCODER, AbstractConstants.CAN_BUS, AbstractConstants.BACK_RIGHT_SWERVE_OFFSET, false, false);
         SwerveModule modules[] = new SwerveModule[4];
         modules[0] = frontLeft.swerveModule;
         modules[1] = frontRight.swerveModule;
         modules[2] = backLeft.swerveModule;
         modules[3] = backRight.swerveModule;
 
-        SwerveModuleConstants[] moduleConstants = new SwerveModuleConstants[4];
+        moduleConstants = new SwerveModuleConstants[4];
         moduleConstants[0] = frontLeft.swerveConstants;
         moduleConstants[1] = frontRight.swerveConstants;
         moduleConstants[2] = backLeft.swerveConstants;

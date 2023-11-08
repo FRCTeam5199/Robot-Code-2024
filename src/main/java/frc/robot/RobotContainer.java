@@ -23,8 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   UserInterface userInterface;
-  public AbstractConstants constants;
-  public String config = userInterface.getConfig();
+  public AbstractConstants constants = new MainConstants();
   public Drive drive;
   public SwerveDrive swerveDrive;
   public double x;
@@ -52,7 +51,8 @@ public class RobotContainer {
     auton = new Autos(swerveDrive);
 
 
-    switch(config){
+
+    switch(userInterface.getConfig()){
       case "Main": constants = new MainConstants();
     }
 

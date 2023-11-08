@@ -12,38 +12,37 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
  */
 public abstract class AbstractConstants {
 
-    public static int FRONT_LEFT_DRIVE_MOTOR_ID = 0;
-    public static int FRONT_LEFT_STEER_MOTOR_ID = 0;
-    public static int FRONT_LEFT_ENCODER = 0;
+    public static int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
+    public static int FRONT_LEFT_STEER_MOTOR_ID = 2;
+    public static int FRONT_LEFT_ENCODER = 11;
 
-    public static int FRONT_RIGHT_DRIVE_MOTOR_ID = 0;
-    public static int FRONT_RIGHT_STEER_MOTOR_ID = 0;
-    public static int FRONT_RIGHT_ENCODER = 0;
+    public static int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
+    public static int FRONT_RIGHT_STEER_MOTOR_ID = 4;
+    public static int FRONT_RIGHT_ENCODER = 12;
 
-    public static int BACK_LEFT_DRIVE_MOTOR_ID = 0;
-    public static int BACK_LEFT_STEER_MOTOR_ID = 0;
-    public static int BACK_LEFT_ENCODER = 0;
+    public static int BACK_LEFT_DRIVE_MOTOR_ID = 5;
+    public static int BACK_LEFT_STEER_MOTOR_ID = 6;
+    public static int BACK_LEFT_ENCODER = 13;
 
-    public static int BACK_RIGHT_DRIVE_MOTOR_ID = 0;
-    public static int BACK_RIGHT_STEER_MOTOR_ID = 0;
-    public static int BACK_RIGHT_ENCODER = 0;
+    public static int BACK_RIGHT_DRIVE_MOTOR_ID = 7;
+    public static int BACK_RIGHT_STEER_MOTOR_ID = 8;
+    public static int BACK_RIGHT_ENCODER = 14;
 
-    public static int CANCODER_ID = 0;
-    public static int PIGEON2_ID = 0;
+    public static int PIGEON2_ID = 22;
 
-    public static String CAN_BUS = "rio";
-    public static double WHEEL_DIAMETER = 0;
-    public static double DRIVE_GEAR_RATIO = 0;
-    public static double STEER_GEAR_RATIO = 0;
-    
+    public static String CAN_BUS = "Canivore1";
+    public static double WHEEL_DIAMETER = 4;
+    public static double DRIVE_GEAR_RATIO = 6.12;
+    public static double STEER_GEAR_RATIO = 12.8;
+
     //All swerve offsets are in degrees.
-    public static double FRONT_LEFT_SWERVE_OFFSET = 0;
-    public static double FRONT_RIGHT_SWERVE_OFFSET = 0;
-    public static double BACK_LEFT_SWERVE_OFFSET = 0;
-    public static double BACK_RIGHT_SWERVE_OFFSET = 0;
+    public static double FRONT_LEFT_SWERVE_OFFSET = 301;
+    public static double FRONT_RIGHT_SWERVE_OFFSET = 304;
+    public static double BACK_LEFT_SWERVE_OFFSET = 269.5;
+    public static double BACK_RIGHT_SWERVE_OFFSET = 157.5;
 
-    public static double DRIVETRAIN_TRACKWIDTH_METERS = 0;
-    public static double DRIVETRAIN_WHEELBASE_METERS = 0;
+    public static double DRIVETRAIN_TRACKWIDTH_METERS = .4953;
+    public static double DRIVETRAIN_WHEELBASE_METERS = .6477;
 
     public static SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
         // Front left
@@ -69,9 +68,9 @@ public abstract class AbstractConstants {
     public static boolean INVERT_BR_STEER = false;
 
     public static double MAX_VELOCITY_METERS_PER_SECOND = 0;
-    
 
-  
+
+
 
     public static int CONTROLLER_PORT = 0;
     public static int BUTTON_PANEL_PORT = 0;

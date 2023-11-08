@@ -24,15 +24,15 @@ public class MainConstants extends AbstractConstants {
     PIGEON2_ID = 22;
 
 //Mechanical Constants
-    CAN_BUS = "rio";
+    CAN_BUS = "Canivore1";
     WHEEL_DIAMETER = 4;
     DRIVE_GEAR_RATIO = 6.75;
     STEER_GEAR_RATIO = 12.8;
     //All swerve offsets are in degrees.
-    FRONT_LEFT_SWERVE_OFFSET = 21.21;
-    FRONT_RIGHT_SWERVE_OFFSET = 206.2;
-    BACK_LEFT_SWERVE_OFFSET = 170.2;
-    BACK_RIGHT_SWERVE_OFFSET = 248.007;
+    FRONT_LEFT_SWERVE_OFFSET = 301;
+    FRONT_RIGHT_SWERVE_OFFSET = 304;
+    BACK_LEFT_SWERVE_OFFSET = 269.5;
+    BACK_RIGHT_SWERVE_OFFSET = 157.5;
   
 //Drive Constants
     INVERT_FL_DRIVE = false;

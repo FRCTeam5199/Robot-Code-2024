@@ -8,30 +8,33 @@ import edu.wpi.first.wpilibj.shuffleboard.*;;
 public class UserInterface extends SubsystemBase {
     NetworkTableInstance dashboard = NetworkTableInstance.getDefault();
 
-    private final ShuffleboardTab Configs = Shuffleboard.getTab("Configs");
-    private final ShuffleboardTab Drive = Shuffleboard.getTab("Drive");
-    private final ShuffleboardTab Auton = Shuffleboard.getTab("Auton");
-    private final ShuffleboardTab Subsystems = Shuffleboard.getTab("Subsystems");
-    private final ShuffleboardTab Visuals = Shuffleboard.getTab("Visuals");
+
     SendableChooser<String> config = new SendableChooser<>();
 
     
     public UserInterface(){
+        Shuffleboard.getTab("Drive");
+        Shuffleboard.getTab("Auton");
+        Shuffleboard.getTab("Visual");
         config.addOption("Main Config", "Main");
-
-        Configs.add(config);
+        
+    Shuffleboard.getTab("Configs").add("Config Options", config)
+    .withWidget(BuiltInWidgets.kComboBoxChooser)
+    .withPosition(0, 0)
+    .withSize(2, 1);
     }
+    
 
     public String getConfig(){
         return config.getSelected();
     }
 
-
-    
-
-
-
-
-
-    
 }
+    
+
+
+
+
+
+    
+
