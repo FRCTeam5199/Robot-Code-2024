@@ -1,6 +1,4 @@
 package frc.robot.Constants;
-import frc.robot.Main;
-import frc.robot.Constants.AbstractConstants;
 
 public class MainConstants extends AbstractConstants {
     public MainConstants(){

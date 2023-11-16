@@ -10,7 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 /**
  * Constants that are applicable to every bot.
  */
-public abstract class AbstractConstants {
+public class AbstractConstants {
 
     public static int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
     public static int FRONT_LEFT_STEER_MOTOR_ID = 2;

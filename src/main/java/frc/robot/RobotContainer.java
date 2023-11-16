@@ -6,13 +6,19 @@ package frc.robot;
 
 import frc.robot.Constants.AbstractConstants;
 import frc.robot.Constants.MainConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.Drive;
-import frc.robot.subsystems.AprilTagSubsystem;
-import frc.robot.commands.AprilTagReading;
+import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.UserInterface;
-import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
+import frc.robot.subsystems.drivetrain.swerveDrive.CommandSwerveDrivetrain;
+
+import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -23,70 +29,41 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  UserInterface userInterface;
-  public AbstractConstants constants = new MainConstants();
-  public Drive drive;
-  public SwerveDrive swerveDrive;
-  public double x;
-  public double y;
-  public double rotate;
-  public Autos auton;
-  public AprilTagSubsystem aprilTag;
-  public AprilTagReading aprilTagReading;
+  final double MaxSpeed = 6; // 6 meters per second desired top speed
+  final double MaxAngularRate = Math.PI; // Half a rotation per second max angular velocity
 
+  /* Setting up bindings for necessary control of the swerve drive platform */
+  CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withIsOpenLoop(true); // I want field-centric
+                                                                                            // driving in open loop
+  SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+  SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+  Telemetry logger = new Telemetry(MaxSpeed);
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(AbstractConstants.CONTROLLER_PORT);
+  private void configureBindings() {
+    drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+        drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+                                                                                           // negative Y (forward)
+            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        ));
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    AprilTagSubsystem aprilTag = new AprilTagSubsystem();
+    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    joystick.b().whileTrue(drivetrain
+        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    userInterface = new UserInterface();
-    swerveDrive = new SwerveDrive();
-    x = m_driverController.getLeftX();
-    y = m_driverController.getLeftY();
-    rotate = m_driverController.getRightX();
-
-    drive = new Drive(x, y, rotate);
-    swerveDrive.setDefaultCommand(drive);
-    auton = new Autos(swerveDrive);
-
-
-
-    switch(userInterface.getConfig()){
-      case "Main": constants = new MainConstants();
+    if (Utils.isSimulation()) {
+      drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
+    drivetrain.registerTelemetry(logger::telemeterize);
+  }
 
-    AprilTagReading = new AprilTagReading(AprilTagSubsystem);
-
+  public RobotContainer() {
     configureBindings();
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    
-
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return auton.auton1();
+    return Commands.print("No autonomous command configured");
   }
 }
