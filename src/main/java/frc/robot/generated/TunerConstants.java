@@ -7,7 +7,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.subsystems.drivetrain.swerveDrive.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
 
 public class TunerConstants {
     static class CustomSlotGains extends Slot0Configs {
@@ -118,6 +118,6 @@ public class TunerConstants {
     private static final SwerveModuleConstants BackRight = ConstantCreator.createModuleConstants(
             kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset, Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches), kInvertRightSide);
 
-    public static final CommandSwerveDrivetrain DriveTrain = new CommandSwerveDrivetrain(DrivetrainConstants, FrontLeft,
+    public static final SwerveDrive DriveTrain = new SwerveDrive(DrivetrainConstants, FrontLeft,
             FrontRight, BackLeft, BackRight);
 }

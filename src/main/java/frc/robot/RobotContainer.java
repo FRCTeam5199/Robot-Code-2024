@@ -6,10 +6,9 @@ package frc.robot;
 
 import frc.robot.Constants.AbstractConstants;
 import frc.robot.Constants.MainConstants;
-import frc.robot.commands.Drive;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.UserInterface;
-import frc.robot.subsystems.drivetrain.swerveDrive.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -34,7 +33,7 @@ public class RobotContainer {
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   CommandXboxController joystick = new CommandXboxController(0); // My joystick
-  CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
   SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withIsOpenLoop(true); // I want field-centric
                                                                                             // driving in open loop
   SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
