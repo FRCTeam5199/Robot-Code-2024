@@ -28,6 +28,18 @@ public class UserInterface extends SubsystemBase {
     public String getConfig(){
         return config.getSelected();
     }
+    public static void smartDashboardPutNumber(String key, double value) {
+        SmartDashboard.putNumber(key, value);
+    }
+
+    public static void smartDashboardPutBoolean(String key, boolean value) {
+        SmartDashboard.putBoolean(key, value);
+    }
+
+    public static void smartDashboardPutString(String key, String value) {
+        SmartDashboard.putString(key, value);
+    }
+
 
 }
     

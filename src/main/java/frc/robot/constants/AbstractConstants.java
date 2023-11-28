@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Constants;
+package frc.robot.constants;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -68,12 +68,28 @@ public class AbstractConstants {
     public static boolean INVERT_BR_STEER = false;
 
     public static double MAX_VELOCITY_METERS_PER_SECOND = 0;
+    
+    /**
+     * First camera front  ///
+     * Second camera left  ///
+     * Third camera right  ///
+     * Back camera back  ///
+     */
+    public String cameraNames[] = {};
+    public static double FRONT_CAMERA_HEIGHT_METERS = 0;
+    public static double FRONT_CAMERA_PITCH_RADIANS = 0;
+    public static double TARGET_HEIGHT_METERs = 0;
 
 
 
+    
+    public static double GOAL_RANGE_METERS = 0 ;
 
     public static int CONTROLLER_PORT = 0;
     public static int BUTTON_PANEL_PORT = 0;
 
 
+    public static boolean ENABLE_OVERHEAT_DETECTION;
+    public static int OVERHEAT_THRESHOLD;
+    public static double CTRE_SENSOR_UNITS_PER_ROTATION;
 }
