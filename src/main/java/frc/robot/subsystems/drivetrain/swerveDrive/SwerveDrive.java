@@ -28,17 +28,18 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
-    public ChassisSpeeds getChassisSpeed(){
-        return m_kinematics.toChassisSpeeds(getState().ModuleStates);
-    }
-
-    public Pose2d getPose(){
-        return m_odometry.getEstimatedPosition();
-    }
-
     @Override
     public void simulationPeriodic() {
         /* Assume  */
         updateSimState(0.02, 12);
     }
+
+        public ChassisSpeeds getChassisSpeed(){
+        return m_kinematics.toChassisSpeeds(getState().ModuleStates);
+    }
+    public Pose2d getPose(){
+        return m_odometry.getEstimatedPosition();
+    }
 }
+
+
