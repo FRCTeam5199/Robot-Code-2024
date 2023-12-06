@@ -4,10 +4,8 @@
 
 package frc.robot;
 
-import frc.robot.constants.AbstractConstants;
-import frc.robot.constants.MainConstants;
+import frc.robot.commands.Autos;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.AprilTag.AprilTagSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
 
@@ -22,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AprilTag.moveToAprilTags;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -30,12 +27,7 @@ import frc.robot.commands.AprilTag.moveToAprilTags;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  public UserInterface userInterface;
-  public moveToAprilTags moveToAprilTags;
-  public AprilTagSubsystem aprilTag;
-  public frc.robot.constants.AbstractConstants constants;
-
-
+  public UserInterface userInterface; 
 
   final double MaxSpeed = 6; // 6 meters per second desired top speed
   final double MaxAngularRate = Math.PI; // Half a rotation per second max angular velocity
@@ -44,29 +36,23 @@ public class RobotContainer {
   CommandXboxController joystick = new CommandXboxController(0); // My joystick
   SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
   SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withIsOpenLoop(true); // I want field-centric
-                                                                                            // driving in open loop
+  Autos auton = new Autos(drivetrain);
+
   SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   Telemetry logger = new Telemetry(MaxSpeed);
   public RobotContainer() {
     // Configure the trigger bindings
 
-    constants = new MainConstants();
     userInterface = new UserInterface();
-    aprilTag = new AprilTagSubsystem(constants);
-
-    moveToAprilTags = new moveToAprilTags(drivetrain, aprilTag, constants);
 
 
 
-    switch(userInterface.getConfig()){
-      case "Main": constants = new MainConstants();
-    }
-
-    AprilTagSubsystem aprilTag = new AprilTagSubsystem(constants);
 
     
-    aprilTag.init();
+
+
+    
     
     
 
@@ -84,6 +70,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+          drivetrain.runOnce(()-> drivetrain.seedFieldRelative(new Pose2d()));
+
       drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
           drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
                                                                                              // negative Y (forward)
@@ -95,6 +83,7 @@ public class RobotContainer {
       joystick.b().whileTrue(drivetrain
           .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
   
+
       if (Utils.isSimulation()) {
         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
       }
@@ -107,6 +96,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return auton.forward();
   }
 }

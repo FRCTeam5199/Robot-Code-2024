@@ -17,18 +17,13 @@ import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
 public class Autos extends Command{
   SwerveDrive swerveDrive;
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(1, 0,0), new PIDConstants(1, 0,0), 1, 1, new ReplanningConfig(),0);
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(1, .1,0), new PIDConstants(1, .1,0), 2, .4064, new ReplanningConfig());
   public SendableChooser<Command> autonChooser = new SendableChooser<>();
 
   public Autos(SwerveDrive swerve){
     this.swerveDrive = swerve;
-    //AutoBuilder.configureHolonomic(()->swerve.getState().Pose, swerve::seedFieldRelative, swerve::getChassisSpeed, (speeds)-> swerve.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, swerve);
-    Shuffleboard.getTab("Auton").add("Auton Style",autonChooser)
-            .withWidget(BuiltInWidgets.kComboBoxChooser)
-            .withPosition(0, 0)
-            .withSize(2, 1);
+    AutoBuilder.configureHolonomic(()->swerve.getState().Pose, swerve::seedFieldRelative, swerve::getCurrentRobotChassisSpeeds, (speeds)-> swerve.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, swerve);
 
-    autonChooser.addOption("Move forward", forward());
   }
 
 

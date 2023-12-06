@@ -19,9 +19,12 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
+        
+
     }
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
+
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
@@ -39,6 +42,10 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     }
     public Pose2d getPose(){
         return m_odometry.getEstimatedPosition();
+    }
+    
+    public ChassisSpeeds getCurrentRobotChassisSpeeds() {
+        return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }
 }
 
