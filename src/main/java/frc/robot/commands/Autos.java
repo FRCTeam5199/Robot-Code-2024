@@ -17,7 +17,7 @@ import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
 public class Autos extends Command{
   SwerveDrive swerveDrive;
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(1, .1,0), new PIDConstants(1, .1,0), 2, .4064, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(.2, .0001,0), new PIDConstants(.1, .1,0), 5, .4064, new ReplanningConfig());
   public SendableChooser<Command> autonChooser = new SendableChooser<>();
 
   public Autos(SwerveDrive swerve){
@@ -29,6 +29,10 @@ public class Autos extends Command{
 
   public Command forward(){
     return AutoBuilder.buildAuto("1");
+  }
+  
+  public Command sideways(){
+    return AutoBuilder.buildAuto("sood");
   }
 
   
