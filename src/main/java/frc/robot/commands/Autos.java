@@ -37,13 +37,6 @@ public class Autos extends Command{
     return new WaitCommand(15);
   }
 
-  public Command forward(){
-    return AutoBuilder.buildAuto("1");
-  }
-  
-  public Command sideways(){
-    return AutoBuilder.buildAuto("sood");
-  }
 
   
 }
