@@ -1,6 +1,6 @@
-package frc.robot.abstractMotorInterfaces.followers;
+package frc.robot.AbstractMotorInterfaces.followers;
 
-import frc.robot.abstractMotorInterfaces.AbstractMotorController;
+import frc.robot.AbstractMotorInterfaces.AbstractMotorController;
 
 /**
  * This class should be used to hold all the follower motors that will follow the same motor

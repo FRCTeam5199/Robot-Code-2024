@@ -1,15 +1,20 @@
-package frc.robot.abstractMotorInterfaces;
+package frc.robot.AbstractMotorInterfaces;
 
 import com.ctre.phoenix6.*;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 // import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.Follower;
+
 // import com.ctre.phoenix.motorcontrol.Faults;
 // import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 // import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import frc.robot.Robot;
-import frc.robot.Constants.MainConstants;
+import frc.robot.constants.MainConstants;
 import frc.robot.utility.PID;
 
 import java.util.ArrayList;
@@ -108,11 +113,17 @@ public class TalonMotorController extends AbstractMotorController {
 
     @Override
     public AbstractMotorController setPid(PID pid) {
-        if (motor.config_kP(0, pid.getP()) != StatusCode.OK || motor.config_kI(0, pid.getI()) != StatusCode.OK || motor.config_kD(0, pid.getD()) != ErrorCode.OK || motor.config_kF(0, pid.getF()) != ErrorCode.OK)
+        Slot0Configs slot0Configs = new Slot0Configs();
+        slot0Configs.kP = pid.getP();
+        slot0Configs.kP = pid.getI();
+        slot0Configs.kP = pid.getD();
+        slot0Configs.kP = pid.getF();
+
+        if (motor.getConfigurator().apply(slot0Configs) != StatusCode.OK)
             if (!Robot.SECOND_TRY)
                 throw new IllegalStateException("Talon motor controller with ID " + motor.getDeviceID() + " PIDF couldnt be set");
             else
-                failureFlag = true;
+                failureFlag = true; 
 
         if (!this.isFollower) {
             for (AbstractMotorController followerMotor : motorFollowerList) {
@@ -125,7 +136,7 @@ public class TalonMotorController extends AbstractMotorController {
     @Override
     public void moveAtVelocity(double realAmount) {
         if (isTemperatureAcceptable()) {
-            motor.(realAmount / sensorToRealDistanceFactor / sensorToRealTimeFactor);
+            motor.set(realAmount / sensorToRealDistanceFactor / sensorToRealTimeFactor);
             if (!this.isFollower) {
                 for (AbstractMotorController followerMotor : motorFollowerList) {
                     followerMotor.moveAtVelocity(realAmount);
@@ -142,7 +153,7 @@ public class TalonMotorController extends AbstractMotorController {
 
     @Override
     public void moveAtPosition(double pos) {
-        motor.set(Position, pos / sensorToRealDistanceFactor);
+        motor.setPosition(pos / sensorToRealDistanceFactor);
         if (!this.isFollower) {
             for (AbstractMotorController followerMotor : motorFollowerList) {
                 followerMotor.moveAtPosition(pos);
@@ -162,7 +173,7 @@ public class TalonMotorController extends AbstractMotorController {
 
     @Override
     public AbstractMotorController setBrake(boolean brake) {
-        motor.setNeutralMode(brake ? Brake : Coast);
+        motor.setNeutralMode(brake ? NeutralModeValue.Brake : NeutralModeValue.Coast);
         if (!this.isFollower) {
             for (AbstractMotorController followerMotor : motorFollowerList) {
                 followerMotor.setBrake(brake);
@@ -173,30 +184,30 @@ public class TalonMotorController extends AbstractMotorController {
 
     @Override
     public double getRotations() {
-        return motor.getSelectedSensorPosition() * sensorToRealDistanceFactor;
+        return motor.getPosition().getValueAsDouble();
     }
 
     @Override
     public double getSpeed() {
-        return motor.getSelectedSensorVelocity() * sensorToRealDistanceFactor * sensorToRealTimeFactor;
+        return motor.getVelocity().getValueAsDouble();
     }
 
     @Override
     public double getVoltage() {
-        return motor.getMotorOutputVoltage();
+        return motor.getMotorVoltage().getValueAsDouble();
     }
 
     @Override
     public double getCurrent() {
-        return motor.getSupplyCurrent();
+        return motor.getTorqueCurrent().getValueAsDouble();
     }
 
     @Override
     public AbstractMotorController setCurrentLimit(int limit) {
-        SupplyCurrentLimitConfiguration config = new SupplyCurrentLimitConfiguration();
-        config.currentLimit = limit;
-        config.enable = true;
-        if (motor.configSupplyCurrentLimit(config) != ErrorCode.OK)
+        CurrentLimitsConfigs config = new CurrentLimitsConfigs();
+        config.SupplyCurrentLimit = limit;
+        config.SupplyCurrentLimitEnable = true;
+        if (motor.getConfigurator().apply(config) != StatusCode.OK)
             if (!Robot.SECOND_TRY)
                 throw new IllegalStateException("Talon motor controller with ID " + motor.getDeviceID() + " current limit could not be set");
             else
@@ -218,9 +229,9 @@ public class TalonMotorController extends AbstractMotorController {
     @Override
     public void moveAtPercent(double percent) {
         if (isTemperatureAcceptable()) {
-            motor.set(PercentOutput, percent);
+            motor.set(percent);
         } else {
-            motor.set(PercentOutput, 0);
+            motor.set(0);
         }
         if (!this.isFollower) {
             for (AbstractMotorController followerMotor : motorFollowerList) {
@@ -231,14 +242,17 @@ public class TalonMotorController extends AbstractMotorController {
 
     @Override
     public AbstractMotorController unfollow() {
-        motor.follow(motor);
+        Follower follow = new Follower(getID(), false);
+        motor.setControl(follow);
         motorFollowerList.remove(this);
         return this;
     }
 
     @Override
     public AbstractMotorController setOpenLoopRampRate(double timeToMax) {
-        if (motor.configOpenloopRamp(timeToMax) != ErrorCode.OK)
+        OpenLoopRampsConfigs openLoopRampsConfigs = new OpenLoopRampsConfigs();
+        openLoopRampsConfigs.DutyCycleOpenLoopRampPeriod = timeToMax;
+        if (motor.getConfigurator().apply(openLoopRampsConfigs) != StatusCode.OK)
             if (!Robot.SECOND_TRY)
                 throw new IllegalStateException("Talon motor controller with ID " + motor.getDeviceID() + " could not set open ramp rate");
             else
@@ -253,31 +267,17 @@ public class TalonMotorController extends AbstractMotorController {
 
     @Override
     public double getMotorTemperature() {
-        return motor.getTemperature();
+        return motor.getDeviceTemp().getValueAsDouble();
     }
 
     @Override
     public boolean isFailed() {
-        Faults falts = new Faults();
-        motor.getFaults(falts);
-        return falts.hasAnyFault() || failureFlag;
+        return motor.getFaultField().getValue() != 0 || failureFlag;
     }
 
     @Override
     public String getSuggestedFix() {
-        Faults foundFaults = new Faults();
-        motor.getFaults(foundFaults);
-        failureFlag = foundFaults.hasAnyFault();
-        if (foundFaults.UnderVoltage)
-            potentialFix = "More power";
-        else if (foundFaults.RemoteLossOfSignal)
-            potentialFix = "Ensure that motor %d is plugged into can AND power";
-        else if (foundFaults.APIError)
-            potentialFix = "Update the software for motor %d";
-        else if (foundFaults.hasAnyFault())
-            potentialFix = "Idk youre probably screwed";
-        else
-            potentialFix = "";
-        return potentialFix;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSuggestedFix'");
     }
 }
