@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
 import frc.robot.Main;
@@ -13,7 +14,7 @@ import frc.robot.Main;
 
 
 public class MainConstants {
-    public MainConstants(){
+    
 //ID's
     final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
     public static int FRONT_LEFT_STEER_MOTOR_ID = 2;
@@ -122,8 +123,7 @@ public class MainConstants {
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
     }
 
-    
-}
+
 
 // package frc.robot.constants;
 

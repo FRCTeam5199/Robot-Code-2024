@@ -10,7 +10,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.AbstractConstants;
+import frc.robot.constants.MainConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class AprilTagSubsystem extends SubsystemBase {
 
-    public AbstractConstants Constants;
+    public MainConstants Constants;
 
     public static PhotonCamera frontCamera;
     public static PhotonCamera leftCamera;
@@ -34,7 +34,7 @@ public class AprilTagSubsystem extends SubsystemBase {
 
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 
-  public AprilTagSubsystem(AbstractConstants Constants) {
+  public AprilTagSubsystem(MainConstants Constants) {
     this.Constants = Constants;
     frontCamera = new PhotonCamera(Constants.cameraNames[0]);
     leftCamera = new PhotonCamera(Constants.cameraNames[1]);    
