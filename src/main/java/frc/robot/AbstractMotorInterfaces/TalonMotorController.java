@@ -1,4 +1,4 @@
-package frc.robot.AbstractMotorInterfaces;
+package frc.robot.abstractMotorInterfaces;
 
 import com.ctre.phoenix6.*;
 import com.ctre.phoenix6.hardware.TalonFX;
