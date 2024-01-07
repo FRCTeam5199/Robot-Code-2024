@@ -75,7 +75,7 @@ public class moveToAprilTags extends Command {
                 forwardSpeed = -controller.calculate(range, constants.GOAL_RANGE_METERS);
 
 
-        forwardSpeed = -controller.calculate(range, constants.TARGET_HEIGHT_METERs);
+        forwardSpeed = -controller.calculate(range, constants.TARGET_HEIGHT_METERS);
 
     } else {
         rotationSpeed = 0;

@@ -64,9 +64,35 @@ public class MainConstants extends AbstractConstants {
 
 
     String[] cameraNames = {"1","2","3"};
+    //right hp red 9, left hp 10 // right hp blue 1, left hp blue 2
+    //middle red speaker 4, right red speaker 3 // middle blue speaker 7, left blue speaker 8
+    //red amp 5 // blue amp 6
+    //red stage facing enemy 13, other 11,12 // blue stage facing enemy 14, other 15 ,16 
+    rightHPRedID = 9;
+    leftHPRedID = 10;
+    rightHPBlueID = 1;
+    leftHPBlueID = 2;
+
+    middleRedSpeakerID = 4;
+    rightRedSpeakerID = 3;
+    middleBlueSpeakerID = 7;
+    leftBlueSpeakerID = 8;
+
+    redAmpID = 5;
+    blueAmpID = 6;
+
+    redstageFront = 13;
+    redstageLeft = 11;
+    redStageRight = 12;
+    bluestageFront = 14;
+    bluestageLeft = 15;
+    blueStageRight = 16;
+
+
     FRONT_CAMERA_HEIGHT_METERS = Units.inchesToMeters(24);
     FRONT_CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
-    TARGET_HEIGHT_METERs = 0;
+    // add how invisible setpoint to the target height
+    TARGET_HEIGHT_METERS = Units.inchesToMeters(10.5);
 
 
     // final double TARGET_HEIGHT_METERS = Units.feetToMeters(5);

@@ -76,10 +76,32 @@ public class AbstractConstants {
      * Back camera back  ///
      */
     public String cameraNames[] = {};
+
+
+    public static int rightHPRedID;
+    public static int leftHPRedID;
+    public static int rightHPBlueID;
+    public static int leftHPBlueID;
+
+    public static int middleRedSpeakerID;
+    public static int rightRedSpeakerID;
+    public static int middleBlueSpeakerID;
+    public static int leftBlueSpeakerID;
+
+    public static int redAmpID;
+    public static int blueAmpID;
+
+    public static int redstageFront;
+    public static int redstageLeft;
+    public static int redStageRight;
+
+    public static int bluestageFront;
+    public static int bluestageLeft;
+    public static int blueStageRight;
+
     public static double FRONT_CAMERA_HEIGHT_METERS = 0;
     public static double FRONT_CAMERA_PITCH_RADIANS = 0;
-    public static double TARGET_HEIGHT_METERs = 0;
-
+    public static double TARGET_HEIGHT_METERS = 0;
 
 
     

@@ -12,11 +12,15 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class Autos extends Command{
   SwerveDrive swerveDrive;
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
+  ShooterSubsystem shooter = new ShooterSubsystem();
   HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(.2, .0001,0), new PIDConstants(.1, .1,0), 5, .4064, new ReplanningConfig());
   public SendableChooser<Command> autonChooser = new SendableChooser<>();
 
@@ -26,6 +30,12 @@ public class Autos extends Command{
 
   }
 
+  public Command doNothing(){
+    return new WaitCommand(15);
+  }
+  public Command shootDontMove(){
+    return new WaitCommand(15);
+  }
 
   public Command forward(){
     return AutoBuilder.buildAuto("1");
