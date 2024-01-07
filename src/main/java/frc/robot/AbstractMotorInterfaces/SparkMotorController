@@ -1,4 +1,4 @@
-package frc.robot.AbstractMotorInterfaces;
+package frc.robot.abstractMotorInterfaces;
 
 import com.revrobotics.*;
 import com.frc.robot.Robot;
