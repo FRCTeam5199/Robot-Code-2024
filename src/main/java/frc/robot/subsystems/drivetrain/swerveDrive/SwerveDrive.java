@@ -62,9 +62,12 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     }
     public Pose2d getPose(){
         return m_odometry.getEstimatedPosition();
+        
     }
-
-    
+    public SwerveModulePosition[] getModulePositions() {
+                return m_modulePositions;
+                
+        }
     
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);

@@ -5,8 +5,10 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
+import frc.robot.commands.AprilTag.PoseEstimation;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.UserInterface;
+import frc.robot.subsystems.AprilTag.AprilTagSubsystem;
 import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
 
 import com.ctre.phoenix6.Utils;
@@ -35,8 +37,9 @@ public class RobotContainer {
   /* Setting up bindings for necessary control of the swerve drive platform */
   CommandXboxController joystick = new CommandXboxController(0); // My joystick
   SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withIsOpenLoop(true); // I want field-centric
+  SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric(); // I want field-centric
   Autos auton = new Autos(drivetrain);
+  PoseEstimation poseEstimation = new PoseEstimation(drivetrain);
 
   SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();

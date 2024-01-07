@@ -14,7 +14,6 @@ import frc.robot.Main;
 
 
 public class MainConstants {
-    
 //ID's
     final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
     public static int FRONT_LEFT_STEER_MOTOR_ID = 2;
@@ -122,7 +121,6 @@ public class MainConstants {
     public static int OVERHEAT_THRESHOLD = 80;
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
     }
-
 
 
 // package frc.robot.constants;
