@@ -1,8 +1,21 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.AbstractMotorInterfaces.followers;
 
-/** Add your docs here. */
-public class TalonFollowerMotorController {}
+import frc.robot.AbstractMotorInterfaces.AbstractMotorController;
+import frc.robot.AbstractMotorInterfaces.TalonMotorController;
+
+/**
+ * This works to wrap Falcon500's and maybe some other motors
+ */
+public class TalonFollowerMotorController extends AbstractFollowerMotorController {
+    public TalonFollowerMotorController(String bus, int... ids) {
+        motors = new TalonMotorController[ids.length];
+        for (int i = 0; i < ids.length; i++)
+            motors[i] = new TalonMotorController(ids[i], bus);
+    }
+
+    @Override
+    public void invert(boolean invert) {
+        for (AbstractMotorController motor : motors)
+            motor.setInverted(invert);
+    }
+}

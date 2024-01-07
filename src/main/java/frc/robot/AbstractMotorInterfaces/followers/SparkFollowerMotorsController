@@ -1,6 +1,7 @@
 package frc.robot.AbstractMotorInterfaces.followers;
 
 import frc.robot.AbstractMotorInterfaces.AbstractMotorController;
+import frc.robot.AbstractMotorInterfaces.followers.SparkFollowerMotorsController;
 import frc.robot.AbstractMotorInterfaces.SparkMotorController;
 
 /**
