@@ -34,7 +34,7 @@ public class PoseEstimation extends Command {
 
   public AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
-  public SwerveDrive drivetrain = new SwerveDrive(null, null);
+  public SwerveDrive drivetrain;
 
   public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 

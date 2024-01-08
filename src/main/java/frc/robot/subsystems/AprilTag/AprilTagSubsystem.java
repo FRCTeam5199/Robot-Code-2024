@@ -34,7 +34,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class AprilTagSubsystem extends SubsystemBase {
 
-    public MainConstants Constants;
+    public MainConstants Constants = new MainConstants();
 
     public static PhotonCamera frontCamera;
     public static PhotonCamera leftCamera;

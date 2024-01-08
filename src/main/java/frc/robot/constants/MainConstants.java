@@ -80,7 +80,7 @@ public class MainConstants {
     public static int BUTTON_PANEL_PORT = 0;
 
 
-    public String[] cameraNames = {"1","2","3"};
+    public String[] cameraNames = {"1","2","3","4"};
     //right hp red 9, left hp 10 // right hp blue 1, left hp blue 2
     //middle red speaker 4, right red speaker 3 // middle blue speaker 7, left blue speaker 8
     //red amp 5 // blue amp 6
