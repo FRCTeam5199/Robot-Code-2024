@@ -39,6 +39,8 @@ public class RobotContainer {
   SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
   SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric(); // I want field-centric
   Autos auton = new Autos(drivetrain);
+
+  AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
   PoseEstimation poseEstimation = new PoseEstimation(drivetrain);
 
   SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -91,6 +93,8 @@ public class RobotContainer {
         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
       }
       drivetrain.registerTelemetry(logger::telemeterize);
+
+      joystick.x().whileTrue(aprilTagSubsystem.printAngle());
   }
 
   /**
