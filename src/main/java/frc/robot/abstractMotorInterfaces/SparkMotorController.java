@@ -1,12 +1,11 @@
 package frc.robot.abstractMotorInterfaces;
 
 import com.revrobotics.*;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import frc.robot.Robot;
 import frc.robot.utility.PID;
-
-
-import static com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless;
-
 /**
  * This works to wrap Neo's and maybe some other motors
  */
@@ -72,12 +71,12 @@ public class SparkMotorController extends AbstractMotorController {
     public void moveAtVelocity(double velocityRPM) {
         //System.out.println("VelocityRPM " + velocityRPM);
         //System.out.println(this.sensorToRealDistanceFactor);
-        myPid.setReference(velocityRPM / sensorToRealDistanceFactor / sensorToRealTimeFactor, kVelocity, 0);
+        myPid.setReference(velocityRPM / sensorToRealDistanceFactor / sensorToRealTimeFactor, ControlType.kVelocity, 0);
     }
 
     @Override
     public void moveAtPosition(double pos) {
-        myPid.setReference(pos * sensorToRealDistanceFactor, kPosition, 0);
+        myPid.setReference(pos * sensorToRealDistanceFactor, ControlType.kPosition, 0);
     }
 
     @Override
@@ -87,7 +86,7 @@ public class SparkMotorController extends AbstractMotorController {
 
     @Override
     public AbstractMotorController setBrake(boolean brake) {
-        motor.setIdleMode(brake ? kBrake : kCoast);
+        motor.setIdleMode(brake ? IdleMode.kBrake : IdleMode.kCoast);
         return this;
     }
 
