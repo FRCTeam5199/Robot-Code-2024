@@ -1,13 +1,10 @@
 package frc.robot.abstractMotorInterfaces;
 
 import com.revrobotics.*;
-import com.frc.robot.Robot;
-import com.frc.robot.utility.PID;
+import frc.robot.Robot;
+import frc.robot.utility.PID;
 
-import static com.revrobotics.CANSparkMax.ControlType.kPosition;
-import static com.revrobotics.CANSparkMax.ControlType.kVelocity;
-import static com.revrobotics.CANSparkMax.IdleMode.kBrake;
-import static com.revrobotics.CANSparkMax.IdleMode.kCoast;
+
 import static com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless;
 
 /**
@@ -15,18 +12,18 @@ import static com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless;
  */
 public class SparkMotorController extends AbstractMotorController {
     public final CANSparkMax motor;
-    private final SparkMaxPIDController myPid;
+    private final SparkPIDController myPid;
     private final RelativeEncoder encoder;
 
     public SparkMotorController(int channelID) {
-        this(channelID, kBrushless);
+        this(channelID, CANSparkLowLevel.MotorType.kBrushless);
     }
 
-    public SparkMotorController(int channelID, CANSparkMaxLowLevel.MotorType type) {
+    public SparkMotorController(int channelID, CANSparkLowLevel.MotorType type) {
         super();
         motor = new CANSparkMax(channelID, type);
-        if (type == CANSparkMaxLowLevel.MotorType.kBrushed) {
-            encoder = motor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 560);
+        if (type == CANSparkLowLevel.MotorType.kBrushed) {
+            encoder = motor.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 560);
         } else {
             encoder = motor.getEncoder();
         }
