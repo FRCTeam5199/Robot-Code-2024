@@ -2,8 +2,8 @@ package frc.robot.abstractMotorInterfaces;
 
 import frc.robot.utility.PID;
 import frc.robot.utility.*;
-// import frc.robot.abstractMotorInterfaces.followers.SparkFollowerMotorsController;
-// import frc.robot.AbstractMotorInterfaces.followers.TalonFollowerMotorController;
+import frc.robot.abstractMotorInterfaces.followers.SparkFollowerMotorsController;
+import frc.robot.abstractMotorInterfaces.followers.TalonFollowerMotorController;
 import frc.robot.constants.MainConstants;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.Robot;
@@ -288,7 +288,7 @@ public abstract class AbstractMotorController {
             MAX_SPEED_RPM = 0;
         }
 
-        public abstractFollowerMotorController createFollowerMotorsOfType(String canbus, int... followerIDs) {
+        public AbstractFollowerMotorController createFollowerMotorsOfType(String canbus, int... followerIDs) {
             switch (this) {
                 case CAN_SPARK_MAX:
                     // return new SparkFollowerMotorsController(followerIDs);
