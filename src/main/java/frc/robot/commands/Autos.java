@@ -36,7 +36,9 @@ public class Autos extends Command{
   public Command shootDontMove(){
     return new WaitCommand(15);
   }
-
+  public Command ShootTaxiRed(){
+    AutoBuilder.buildAuto(autoName: "Shoot and Taxi Middle");
+  }
 
   
 }
