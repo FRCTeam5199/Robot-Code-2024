@@ -7,9 +7,9 @@ package frc.robot;
 import frc.robot.commands.Autos;
 import frc.robot.commands.AprilTag.PoseEstimation;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.UserInterface;
-import frc.robot.subsystems.AprilTag.AprilTagSubsystem;
-import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
+import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -39,7 +39,7 @@ public class RobotContainer {
   private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
-  private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+  private final SwerveRequest.RobotCentric drive = new SwerveRequest.RobotCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop

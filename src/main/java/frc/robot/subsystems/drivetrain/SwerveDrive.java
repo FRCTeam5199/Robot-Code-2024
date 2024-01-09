@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain.swerveDrive;
+package frc.robot.subsystems.drivetrain;
 
 import java.util.function.Supplier;
 
@@ -57,7 +57,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
-        public ChassisSpeeds getChassisSpeed(){
+    public ChassisSpeeds getChassisSpeed(){
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }
     public Pose2d getPose(){
