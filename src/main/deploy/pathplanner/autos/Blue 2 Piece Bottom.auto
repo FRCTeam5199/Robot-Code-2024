@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.2,
+      "y": 4.46
+    },
+    "rotation": 126.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue 2 Piece Bottom Path 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue 2 Piece Bottom Path 2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
