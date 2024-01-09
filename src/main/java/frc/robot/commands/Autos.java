@@ -31,11 +31,26 @@ public class Autos extends Command{
   }
 
   public Command doNothing(){
-    return new WaitCommand(15);
-  }
+        return new WaitCommand(15);
+
+    }
   public Command shootDontMove(){
     return new WaitCommand(15);
   }
+
+  public Command 2PieceExtendedRed(){
+    return AutoBuilder.buildAuto("2 Piece Extended Top Red");
+  }
+
+  public Command 3PieceTtMBlue(){
+    return AutoBuilder.buildAuto("3 Piece Top Blue");
+  }
+
+  public Command 3PieceTtMRed(){
+    return AutoBuilder.buildAuto("3 Piece Top Red");
+  }
+
+
 
 
   
