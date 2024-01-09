@@ -7,8 +7,8 @@ package frc.robot;
 import frc.robot.commands.Autos;
 import frc.robot.commands.AprilTag.PoseEstimation;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.UserInterface;
-import frc.robot.subsystems.AprilTag.AprilTagSubsystem;
 import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
 
 import com.ctre.phoenix6.Utils;
@@ -103,6 +103,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return auton.doNothing();
+    return auton.getAuton();
   }
 }

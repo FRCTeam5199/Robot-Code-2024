@@ -34,7 +34,7 @@ public class MainConstants {
     public static int PIGEON2_ID = 22;
 
 //Mechanical Constants
-    public static String CAN_BUS = "Canivore1";
+    public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 4;
     public static double DRIVE_GEAR_RATIO = 6.75;
     public static double STEER_GEAR_RATIO = 12.8;
@@ -59,6 +59,7 @@ public class MainConstants {
 
         
   
+    public int krakenShooter = 0;
 //Drive Constants
     public static boolean INVERT_FL_DRIVE = false;
     public static boolean INVERT_FL_STEER = false;
