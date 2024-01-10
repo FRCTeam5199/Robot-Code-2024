@@ -54,7 +54,7 @@ public class Autos extends Command{
     return new WaitCommand(15);
   }
   public Command ShootTaxiRed(){
-    AutoBuilder.buildAuto(autoName: "Shoot and Taxi Middle");
+    return AutoBuilder.buildAuto("Shoot and Taxi Middle");
   }
   public Command twoPieceExtendedRed(){
     return new PathPlannerAuto("2 Piece Extended Top Red");
