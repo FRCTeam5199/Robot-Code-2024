@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.AprilTag;
+package frc.robot.subsystems;
 
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -13,15 +13,12 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.AprilTag.PoseEstimation;
 import frc.robot.constants.MainConstants;
 
 import java.util.ArrayList;
@@ -38,13 +35,11 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 public class AprilTagSubsystem extends SubsystemBase {
 
     public MainConstants Constants = new MainConstants();
-    public PoseEstimation poseEstimation;
 
     public static PhotonCamera frontCamera;
     public static PhotonCamera leftCamera;
     public static PhotonCamera rigthCamera;
     public static PhotonCamera backCamera;
-
 
     public static PhotonCamera[] allCameras;
 
@@ -57,7 +52,6 @@ public class AprilTagSubsystem extends SubsystemBase {
     backCamera = new PhotonCamera(Constants.cameraNames[3]);
 
     PhotonCamera[] allCameras = {frontCamera, leftCamera, rigthCamera, backCamera};
-
     // for(int i = 0; i <= Constants.cameraNames.length; i++){
     //   cameraDirections[i] = new PhotonCamera(Constants.cameraNames[i]);
     // }
@@ -77,15 +71,15 @@ public class AprilTagSubsystem extends SubsystemBase {
   
   }
 
+  public void init(){
+    AprilTagFieldLayout AprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+   
   }
-  public void init(){
-    
-    AprilTagFieldLayout AprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
-  }
 
   public boolean checkCameraForSpecificID(int ID){
         List<PhotonTrackedTarget> detectedTags = frontCamera.getLatestResult().targets;
@@ -98,26 +92,25 @@ public class AprilTagSubsystem extends SubsystemBase {
         return false;
   }
 
-  public Command printAngle(){
-    return run(()-> System.out.println(speakersAligning()));
-    
-  }
-  
+
   //calculate angle of shooter for speaker on both alliances
-  public double speakersAligning(){
-    double angleForShooter = 0;
-    double speakerHeight = 84;
-    // slightly in front of april tag so it doesnt aim out of field
-    double distanceFromRobot = 0.5;
-        if (getAllianceColor().equals("Blue")){
-          distanceFromRobot = poseEstimation.getPoseEstimator().getEstimatedPosition().getTranslation().getDistance(new Translation2d(2, 218.42));
+  public double speakers(){
+    double angle = 0;
+    double distance = 4;
+        if (getAllianceColor().equals("Red")){
+          if(checkCameraForSpecificID(4)){
+           distance = 4 ; 
+          }
+          double c = Constants.TARGET_HEIGHT_METERS;
         
+        // Calculate the angle A using arccosine (inverse cosine)
+        angle = Math.toDegrees(Math.acos(distance / c));
+        
+        // Displaying the calculated angle A
         }
-        else if (getAllianceColor().equals("Red")){
-          distanceFromRobot = poseEstimation.getPoseEstimator().getEstimatedPosition().getTranslation().getDistance(new Translation2d(650, 218.42));
+        else if (getAllianceColor().equals("Blue")){
+
         }
-        angleForShooter = Math.toDegrees(Math.tan(speakerHeight/distanceFromRobot));
-        System.out.println("//////////////////////" + angleForShooter);
-        return angleForShooter;
+        return angle;
       }
   }
