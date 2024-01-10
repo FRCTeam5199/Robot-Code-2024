@@ -9,11 +9,13 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import frc.robot.constants.MainConstants;
 import frc.robot.constants.MainConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
-import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.subsystems.drivetrain.swerveDrive.*;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
@@ -62,6 +64,8 @@ public class PoseEstimation extends Command {
   private final SwerveDrivePoseEstimator poseEstimator;
 
 
+  PhotonPipelineResult[] photonPipelineResults;
+   
   public OriginPosition originPosition = AprilTagFieldLayout.OriginPosition.kBlueAllianceWallRightSide;
 
   public final PhotonPoseEstimator photonPoseEstimatorFront;

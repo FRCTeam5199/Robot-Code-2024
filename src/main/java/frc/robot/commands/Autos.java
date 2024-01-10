@@ -29,9 +29,22 @@ public class Autos extends Command{
 
   public Autos(SwerveDrive swerve){
     this.swerveDrive = swerve;
-    
-    AutoBuilder.configureHolonomic(()-> swerveDrive.getState().Pose, swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
+    // AutoBuilder.configureHolonomic(()->swerve.getState().Pose, swerve::seedFieldRelative, swerve::getCurrentRobotChassisSpeeds, (speeds)-> swerve.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, swerve);
+
+
+    Shuffleboard.getTab("Auton").add("Auton Style",autonChooser)
+            .withWidget(BuiltInWidgets.kComboBoxChooser)
+            .withPosition(0, 0)
+            .withSize(2, 1);;
+
+
+    autonChooser.addOption("Do nothing", doNothing());
+
   }
+  public Command getAuton(){
+    return autonChooser.getSelected();
+  }
+  
 
   public Command doNothing(){
         return new WaitCommand(15);
