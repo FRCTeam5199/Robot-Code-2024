@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Wrist extends SubsystemBase {
   /** Creates a new Wrist. */
-  public Wrist() {}
+  public Wrist() {
+    
+  }
 
   @Override
   public void periodic() {

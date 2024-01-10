@@ -9,6 +9,8 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import frc.robot.constants.MainConstants;
 import frc.robot.constants.MainConstants;
@@ -34,7 +36,7 @@ public class PoseEstimation extends Command {
 
   public AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
-  public SwerveDrive drivetrain = new SwerveDrive(null, null);
+  public SwerveDrive drivetrain;
 
   public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
@@ -62,6 +64,8 @@ public class PoseEstimation extends Command {
   private final SwerveDrivePoseEstimator poseEstimator;
 
 
+  PhotonPipelineResult[] photonPipelineResults;
+   
   public OriginPosition originPosition = AprilTagFieldLayout.OriginPosition.kBlueAllianceWallRightSide;
 
   public final PhotonPoseEstimator photonPoseEstimatorFront;

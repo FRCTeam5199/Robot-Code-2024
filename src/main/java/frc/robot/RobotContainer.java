@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.commands.Autos;
 import frc.robot.commands.AprilTag.PoseEstimation;
 import frc.robot.generated.TunerConstants;
+import frc.robot.commands.AprilTag.DriveToAMP;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.swerveDrive.SwerveDrive;
@@ -42,6 +43,7 @@ public class RobotContainer {
 
   AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
   PoseEstimation poseEstimation = new PoseEstimation(drivetrain);
+  DriveToAMP driveToAMP = new DriveToAMP(aprilTagSubsystem);
 
   SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();

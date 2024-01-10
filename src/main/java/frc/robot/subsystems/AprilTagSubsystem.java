@@ -40,27 +40,23 @@ public class AprilTagSubsystem extends SubsystemBase {
     public MainConstants Constants = new MainConstants();
     public PoseEstimation poseEstimation;
 
+
     public static PhotonCamera frontCamera;
     public static PhotonCamera leftCamera;
     public static PhotonCamera rigthCamera;
     public static PhotonCamera backCamera;
-
-
-    public static PhotonCamera[] allCameras;
+   // 0 Front, 1 Back, 2 Left, 3 Rigggggggggggggggght
+    public PhotonCamera[] allCameras = {frontCamera, backCamera, leftCamera, backCamera};
+    public PhotonTrackedTarget[] bestTargetFromCameras;
 
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 
   public AprilTagSubsystem() {
-    frontCamera = new PhotonCamera(Constants.cameraNames[0]);
-    leftCamera = new PhotonCamera(Constants.cameraNames[1]);    
-    rigthCamera = new PhotonCamera(Constants.cameraNames[2]);
-    backCamera = new PhotonCamera(Constants.cameraNames[3]);
-
-    PhotonCamera[] allCameras = {frontCamera, leftCamera, rigthCamera, backCamera};
-
-    // for(int i = 0; i <= Constants.cameraNames.length; i++){
-    //   cameraDirections[i] = new PhotonCamera(Constants.cameraNames[i]);
-    // }
+    for(int i = 0; i <= Constants.cameraNames.length; i++){
+      allCameras[i] = new PhotonCamera(Constants.cameraNames[i]);
+    }
+    
+    PhotonCamera allCameras[] = {frontCamera, backCamera, rigthCamera, leftCamera};
   }
 
   public String getAllianceColor(){
@@ -79,6 +75,13 @@ public class AprilTagSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    bestTargetFromCameras[0] = frontCamera.getLatestResult().getBestTarget();
+    bestTargetFromCameras[1] = backCamera.getLatestResult().getBestTarget();
+    bestTargetFromCameras[2] = leftCamera.getLatestResult().getBestTarget();
+    bestTargetFromCameras[3] = rigthCamera.getLatestResult().getBestTarget();
+
+    
+
     // This method will be called once per scheduler run
   }
   public void init(){
@@ -86,21 +89,38 @@ public class AprilTagSubsystem extends SubsystemBase {
     AprilTagFieldLayout AprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
   }
+  public List<PhotonTrackedTarget> getAllTargets(){
+    List<PhotonTrackedTarget> detectedTags = new ArrayList<>();
+    for(int i = 0; i<=3; i++){
+      detectedTags.addAll(allCameras[i].getLatestResult().getTargets());
+    }
+    return detectedTags;
+  }
 
   public boolean checkCameraForSpecificID(int ID){
-        List<PhotonTrackedTarget> detectedTags = frontCamera.getLatestResult().targets;
         int desiredTagID = ID;
-        for (PhotonTrackedTarget tag : detectedTags) {
+        for (PhotonTrackedTarget tag : getAllTargets()) {
             if (tag.getFiducialId() == desiredTagID) {
                 return true;
             }
         }
         return false;
   }
+  public PhotonTrackedTarget getOneTag(int ID){
+      int desiredTagID = ID;
+      if(checkCameraForSpecificID(ID)){
+        for (PhotonTrackedTarget tag : getAllTargets()) {
+            if (tag.getFiducialId() == desiredTagID) {
+                return tag;
+            }
+        }
+      }
+        return null;
+  }
 
   public Command printAngle(){
     return run(()-> System.out.println(speakersAligning()));
-    
+    //balls, big ones
   }
   
   //calculate angle of shooter for speaker on both alliances
