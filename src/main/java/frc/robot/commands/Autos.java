@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.*;
@@ -21,13 +23,14 @@ public class Autos extends Command{
   SwerveDrive swerveDrive;
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
   ShooterSubsystem shooter = new ShooterSubsystem();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(.2, .0001,0), new PIDConstants(.1, .1,0), 5, .4064, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(.2, .0001,0), new PIDConstants(.1, .1,0), 5, .33, new ReplanningConfig());
   public SendableChooser<Command> autonChooser = new SendableChooser<>();
+
 
   public Autos(SwerveDrive swerve){
     this.swerveDrive = swerve;
-    AutoBuilder.configureHolonomic(()->swerve.getState().Pose, swerve::seedFieldRelative, swerve::getCurrentRobotChassisSpeeds, (speeds)-> swerve.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, swerve);
-
+    
+    AutoBuilder.configureHolonomic(()-> swerveDrive.getState().Pose, swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
   }
 
   public Command doNothing(){
@@ -38,16 +41,24 @@ public class Autos extends Command{
     return new WaitCommand(15);
   }
 
-  public Command 2PieceExtendedRed(){
-    return AutoBuilder.buildAuto("2 Piece Extended Top Red");
-  }
+  public Command twoPieceExtendedRed(){
+    return new PathPlannerAuto("2 Piece Extended Top Red");
+    }
 
-  public Command 3PieceTtMBlue(){
+  public Command threePieceTtMBlue(){
     return AutoBuilder.buildAuto("3 Piece Top Blue");
   }
 
-  public Command 3PieceTtMRed(){
+  public Command threePieceTtMRed(){
     return AutoBuilder.buildAuto("3 Piece Top Red");
+  }
+
+  public Command fourPieceBlue(){
+    return AutoBuilder.buildAuto("4 Piece Blue");
+  }
+
+  public Command test(){
+    return new PathPlannerAuto("New Auto");
   }
 
 

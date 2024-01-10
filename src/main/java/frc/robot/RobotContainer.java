@@ -31,21 +31,20 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
    Autos auton;
+   private double MaxSpeed = 6; // 6 meters per second desired top speed
+   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
  
-  private static final double MaxSpeed = 6; // 6 meters per second desired top speed
-  private static final double MaxAngularRate = Math.PI; // Half a rotation per second max angular velocity
-
-  /* Setting up bindings for necessary control of the swerve drive platform */
-  private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
-  private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
-
-  private final SwerveRequest.RobotCentric drive = new SwerveRequest.RobotCentric()
-      .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
-                                                               // driving in open loop
-  private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-  private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-  private final Telemetry logger = new Telemetry(MaxSpeed);
+   /* Setting up bindings for necessary control of the swerve drive platform */
+   private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+   private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
+ 
+   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
+                                                                // driving in open loop
+   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+   private final Telemetry logger = new Telemetry(MaxSpeed);
 
   private void configureBindings() {
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
@@ -54,13 +53,13 @@ public class RobotContainer {
             .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
+    // reset the field-centric heading by pressing start button/hamburger menu button
+    joystick.start().onTrue(drivetrain.runOnce(()->drivetrain.seedFieldRelative()));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    // reset the field-centric heading on left bumper press
-    joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
@@ -68,7 +67,7 @@ public class RobotContainer {
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
-  public RobotContainer() {
+  public RobotContainer() {   
     configureBindings();
     auton = new Autos(drivetrain);
 
@@ -79,6 +78,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return auton.doNothing();
+    return auton.test();
   }
 }
