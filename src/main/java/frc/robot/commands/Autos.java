@@ -44,7 +44,6 @@ public class Autos extends Command{
   public Command getAuton(){
     return autonChooser.getSelected();
   }
-  
 
   public Command doNothing(){
         return new WaitCommand(15);
@@ -53,12 +52,14 @@ public class Autos extends Command{
   public Command shootDontMove(){
     return new WaitCommand(15);
   }
+
   public Command ShootTaxiRed(){
     return AutoBuilder.buildAuto("Shoot and Taxi Middle");
   }
+
   public Command twoPieceExtendedRed(){
     return new PathPlannerAuto("2 Piece Extended Top Red");
-    }
+  }
 
   public Command threePieceTtMBlue(){
     return AutoBuilder.buildAuto("3 Piece Top Blue");
@@ -79,6 +80,7 @@ public class Autos extends Command{
   public Command shootMiddleRed(){
     return new SequentialCommandGroup(shooter.aim(), shooter.shoot());
   }
+
   public Command redTaxiTop() {
     return new PathPlannerAuto("Red Taxi Top");
   }
