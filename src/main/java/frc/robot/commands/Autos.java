@@ -78,6 +78,22 @@ public class Autos extends Command{
     return new PathPlannerAuto("New Auto");
   }
 
+  public Command shootMiddleRed(){
+    return null;
+  }
+  public Command redTaxiTop() {
+    return new PathPlannerAuto("Red Taxi Top");
+  }
+
+  public Command redTaxiMid() {
+    return new PathPlannerAuto("Red Taxi Mid");
+  }
+
+  public Command redTaxiBot() {
+    return new PathPlannerAuto("Red Taxi Bot");
+  }
+
+
 
 
 
