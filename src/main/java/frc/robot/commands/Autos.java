@@ -55,44 +55,28 @@ public class Autos extends Command{
   public Command shootDontMove(){
     return new WaitCommand(15);
   }
-  public Command ShootTaxiRed(){
-    return AutoBuilder.buildAuto("Shoot and Taxi Middle");
+  public Command shootTaxiRed(){
+    return new PathPlannerAuto("Shoot and Taxi Middle");
   }
   public Command twoPieceExtendedRed(){
-    return new PathPlannerAuto("2 Piece Extended Top Red");
+    return new PathPlannerAuto("2 Piece Center Top Red");
     }
 
   public Command threePieceTtMBlue(){
-    return AutoBuilder.buildAuto("3 Piece Top Blue");
+    return new PathPlannerAuto("3 Piece Top Blue");
   }
 
   public Command threePieceTtMRed(){
-    return AutoBuilder.buildAuto("3 Piece Top Red");
+    return new PathPlannerAuto("3 Piece Top Red");
   }
 
   public Command fourPieceBlue(){
-    return AutoBuilder.buildAuto("4 Piece Blue");
+    return new PathPlannerAuto("4 Piece Blue");
   }
 
   public Command test(){
     return new PathPlannerAuto("New Auto");
   }
-
-  public Command shootMiddleRed(){
-    return null;
-  }
-  public Command redTaxiTop() {
-    return new PathPlannerAuto("Red Taxi Top");
-  }
-
-  public Command redTaxiMid() {
-    return new PathPlannerAuto("Red Taxi Mid");
-  }
-
-  public Command redTaxiBot() {
-    return new PathPlannerAuto("Red Taxi Bot");
-  }
-
 
 
 
