@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.3445732483476367,
-      "y": 1.3233245296733098
+      "x": 15.651322796456826,
+      "y": 4.0731724470089
     },
-    "rotation": 0
+    "rotation": 56.75257749903388
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Shoot and Taxi Bottom Red"
           }
         }
       ]
