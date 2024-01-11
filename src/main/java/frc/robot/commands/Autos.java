@@ -48,14 +48,28 @@ public class Autos extends Command{
 
   public Command doNothing(){
         return new WaitCommand(15);
+  }
 
-    }
   public Command shootDontMove(){
     return new WaitCommand(15);
   }
-  public Command ShootTaxiRed(){
+
+  public Command taxiBlue() {
+    return new PathPlannerAuto("Blue Taxi");
+  }
+
+  public Command shootAndTaxiBlue() {
+    return new PathPlannerAuto("Blue Shoot and Taxi Bottom");
+  }
+
+  public Command shootTaxiRed(){
     return AutoBuilder.buildAuto("Shoot and Taxi Middle");
   }
+
+  public Command twoPieceBottomBlue() {
+    return AutoBuilder.buildAuto("Blue 2 Piece Bottom");
+  }
+
   public Command twoPieceExtendedRed(){
     return new PathPlannerAuto("2 Piece Extended Top Red");
     }
@@ -75,9 +89,4 @@ public class Autos extends Command{
   public Command test(){
     return new PathPlannerAuto("New Auto");
   }
-
-
-
-
-  
 }
