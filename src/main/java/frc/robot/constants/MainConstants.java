@@ -1,43 +1,63 @@
 package frc.robot.constants;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
-import frc.robot.Main;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 
 
 public class MainConstants {
-//ID's
-    final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
-    public static int FRONT_LEFT_STEER_MOTOR_ID = 2;
-    public static int FRONT_LEFT_ENCODER = 11;
 
-    public static int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
-    public static int FRONT_RIGHT_STEER_MOTOR_ID = 4;
-    public static int FRONT_RIGHT_ENCODER = 12;
+    public static class OperatorConstants {
+        //Operator Constants
+        public static int CONTROLLER_PORT = 0;
+        public static int BUTTON_PANEL_PORT = 0;
+    }
+    public static class IDs {
+        // Pigeon
+        public static int PIGEON2_ID = 22;
 
-    public static int BACK_LEFT_DRIVE_MOTOR_ID = 5;
-    public static int BACK_LEFT_STEER_MOTOR_ID = 6;
-    public static int BACK_LEFT_ENCODER = 13;
+        // Pneumatics
+        public static final int PCM_ID = 0;
+        public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = null;
 
-    public static int BACK_RIGHT_DRIVE_MOTOR_ID = 7;
-    public static int BACK_RIGHT_STEER_MOTOR_ID = 8;
-    public static int BACK_RIGHT_ENCODER = 14;
+        public static class Motors {
+            // Drive
+            final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
+            public static int FRONT_LEFT_STEER_MOTOR_ID = 2;
+            public static int FRONT_LEFT_ENCODER = 11;
 
-    public static int PIGEON2_ID = 22;
+            public static int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
+            public static int FRONT_RIGHT_STEER_MOTOR_ID = 4;
+            public static int FRONT_RIGHT_ENCODER = 12;
 
-//Mechanical Constants
+            public static int BACK_LEFT_DRIVE_MOTOR_ID = 5;
+            public static int BACK_LEFT_STEER_MOTOR_ID = 6;
+            public static int BACK_LEFT_ENCODER = 13;
+
+            public static int BACK_RIGHT_DRIVE_MOTOR_ID = 7;
+            public static int BACK_RIGHT_STEER_MOTOR_ID = 8;
+            public static int BACK_RIGHT_ENCODER = 14;
+        }
+
+        public static class Pneumatics {
+            // Intake
+            public static final int INTAKE_IN_ID = 0;
+            public static final int INTAKE_OUT_ID = 0;
+
+            // Climber
+            public static final int CLIMBER_IN_ID = 0;
+            public static final int CLIMBER_OUT_ID = 0;
+        }
+    }
+
+    //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 4;
     public static double DRIVE_GEAR_RATIO = 6.75;
     public static double STEER_GEAR_RATIO = 12.8;
+
     //All swerve offsets are in degrees.
     public static double FRONT_LEFT_SWERVE_OFFSET = 301;
     public static double FRONT_RIGHT_SWERVE_OFFSET = 304;
@@ -60,7 +80,7 @@ public class MainConstants {
         
   
     public int krakenShooter = 0;
-//Drive Constants
+    //Drive Constants
     public static boolean INVERT_FL_DRIVE = false;
     public static boolean INVERT_FL_STEER = false;
 
@@ -74,11 +94,6 @@ public class MainConstants {
     public static boolean INVERT_BR_STEER = false;
 
     public static double MAX_VELOCITY_METERS_PER_SECOND = 0;
-    
-
-//Operator Constants
-    public static int CONTROLLER_PORT = 0;
-    public static int BUTTON_PANEL_PORT = 0;
 
 
     public String[] cameraNames = {"1","2","3","4"};
@@ -122,62 +137,3 @@ public class MainConstants {
     public static int OVERHEAT_THRESHOLD = 80;
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
     }
-
-
-// package frc.robot.constants;
-
-// public class MainConstants extends AbstractConstants {
-//     public MainConstants(){
-// //ID's
-//     FRONT_LEFT_DRIVE_MOTOR_ID = 1;
-//     FRONT_LEFT_STEER_MOTOR_ID = 2;
-//     FRONT_LEFT_ENCODER = 11;
-
-//     FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
-//     FRONT_RIGHT_STEER_MOTOR_ID = 4;
-//     FRONT_RIGHT_ENCODER = 12;
-
-//     BACK_LEFT_DRIVE_MOTOR_ID = 5;
-//     BACK_LEFT_STEER_MOTOR_ID = 6;
-//     BACK_LEFT_ENCODER = 13;
-
-//     BACK_RIGHT_DRIVE_MOTOR_ID = 7;
-//     BACK_RIGHT_STEER_MOTOR_ID = 8;
-//     BACK_RIGHT_ENCODER = 14;
-
-//     PIGEON2_ID = 22;
-
-// //Mechanical Constants
-//     CAN_BUS = "rio";
-//     WHEEL_DIAMETER = 4;
-//     DRIVE_GEAR_RATIO = 6.75;
-//     STEER_GEAR_RATIO = 12.8;
-//     //All swerve offsets are in degrees.
-//     FRONT_LEFT_SWERVE_OFFSET = 21.21;
-//     FRONT_RIGHT_SWERVE_OFFSET = 206.2;
-//     BACK_LEFT_SWERVE_OFFSET = 170.2;
-//     BACK_RIGHT_SWERVE_OFFSET = 248.007;
-  
-// //Drive Constants
-//     INVERT_FL_DRIVE = false;
-//     INVERT_FL_STEER = false;
-
-//     INVERT_FR_DRIVE = false;
-//     INVERT_FR_STEER = false;
-
-//     INVERT_BL_DRIVE = false;
-//     INVERT_BL_STEER = false;
-
-//     INVERT_BR_DRIVE = false;
-//     INVERT_BR_STEER = false;
-    
-
-//     /**
-//      * d
-//      */
-    
-
-//     }
-
-// }
-
