@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.039120063974792,
-      "y": 5.564955745300002
+      "x": 2,
+      "y": 2
     },
     "rotation": 0
   },
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot and Taxi Middle Red"
+            "pathName": "Blue Shoot Taxi Mid"
           }
         }
       ]
