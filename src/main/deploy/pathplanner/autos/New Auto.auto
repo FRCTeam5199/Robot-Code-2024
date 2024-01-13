@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.26162595834694,
-      "y": 6.640044321458116
+      "x": 2.3445732483476367,
+      "y": 1.3233245296733098
     },
-    "rotation": -38.50065372046994
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2 Piece Extended Top Red"
+            "pathName": null
           }
         }
       ]
