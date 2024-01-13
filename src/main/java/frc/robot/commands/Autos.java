@@ -126,7 +126,11 @@ public class Autos extends Command{
 
   public Command twoPieceExtendedRed(){
     return new PathPlannerAuto("2 Piece Center Top Red");
-    }
+  }
+
+  public Command twoPieceBottomRed() {
+    return new PathPlannerAuto("2 Piece Bottom Red");
+  }
 
   //Three Piece Autons
   public Command threePieceTtMBlue(){
