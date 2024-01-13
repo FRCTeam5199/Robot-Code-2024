@@ -32,6 +32,7 @@ public class Autos extends Command{
   public Autos(SwerveDrive swerve){
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerve.getPose(), swerve::seedFieldRelative, swerve::getCurrentRobotChassisSpeeds, (speeds)-> swerve.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerve);
+    //AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
     eventMap = new HashMap<>();
 
     Shuffleboard.getTab("Auton").add("Auton Style",autonChooser)
@@ -78,11 +79,6 @@ public class Autos extends Command{
     return new PathPlannerAuto("New Auto");
   }
 
-<<<<<<< Updated upstream
-
-
-
-=======
   public Command redTaxiTop() {
     return new PathPlannerAuto("Red Taxi Top");
   }
@@ -94,6 +90,5 @@ public class Autos extends Command{
   public Command redTaxiBot() {
     return new PathPlannerAuto("Red Taxi Bot");
   }
->>>>>>> Stashed changes
   
 }
