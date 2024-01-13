@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import java.util.HashMap;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -25,12 +26,13 @@ public class Autos extends Command{
   ShooterSubsystem shooter = new ShooterSubsystem();
   HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(.2, .0001,0), new PIDConstants(.1, .1,0), 5, .33, new ReplanningConfig());
   public SendableChooser<Command> autonChooser = new SendableChooser<>();
+  private HashMap<String, Command> eventMap;
 
 
   public Autos(SwerveDrive swerve){
     this.swerveDrive = swerve;
-    // AutoBuilder.configureHolonomic(()->swerve.getState().Pose, swerve::seedFieldRelative, swerve::getCurrentRobotChassisSpeeds, (speeds)-> swerve.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, swerve);
-
+        AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
+    eventMap = new HashMap<>();
 
     Shuffleboard.getTab("Auton").add("Auton Style",autonChooser)
             .withWidget(BuiltInWidgets.kComboBoxChooser)
@@ -53,17 +55,8 @@ public class Autos extends Command{
   public Command shootDontMove(){
     return new WaitCommand(15);
   }
-
-  public Command taxiBlue() {
-    return new PathPlannerAuto("Blue Taxi");
-  }
-
-  public Command shootAndTaxiBlue() {
-    return new PathPlannerAuto("Blue Shoot and Taxi Bottom");
-  }
-
   public Command shootTaxiRed(){
-    return AutoBuilder.buildAuto("Shoot and Taxi Middle");
+    return new PathPlannerAuto("Shoot and Taxi Middle");
   }
 
   public Command twoPieceBottomBlue() {
@@ -71,19 +64,19 @@ public class Autos extends Command{
   }
 
   public Command twoPieceExtendedRed(){
-    return new PathPlannerAuto("2 Piece Extended Top Red");
+    return new PathPlannerAuto("2 Piece Center Top Red");
     }
 
   public Command threePieceTtMBlue(){
-    return AutoBuilder.buildAuto("3 Piece Top Blue");
+    return new PathPlannerAuto("3 Piece Top Blue");
   }
 
   public Command threePieceTtMRed(){
-    return AutoBuilder.buildAuto("3 Piece Top Red");
+    return new PathPlannerAuto("3 Piece Top Red");
   }
 
   public Command fourPieceBlue(){
-    return AutoBuilder.buildAuto("4 Piece Blue");
+    return new PathPlannerAuto("4 Piece Blue");
   }
 
   public Command test(){
