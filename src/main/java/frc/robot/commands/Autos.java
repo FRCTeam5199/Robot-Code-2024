@@ -65,6 +65,7 @@ public class Autos extends Command{
     return new WaitCommand(15);
   }
 
+
   //Taxi Autons
   public Command taxiTopRed(){
     return new PathPlannerAuto("Taxi Top Red");
@@ -111,6 +112,7 @@ public class Autos extends Command{
   public Command twoPieceTopRed(){
     return new PathPlannerAuto("2 Piece Top Red");
   }
+
   public Command twoPieceExtendedRed(){
     return new PathPlannerAuto("2 Piece Center Top Red");
     }
