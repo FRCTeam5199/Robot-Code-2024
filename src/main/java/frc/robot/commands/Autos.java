@@ -41,7 +41,7 @@ public class Autos extends Command{
 
 
     autonChooser.addOption("Do nothing", doNothing());
-
+    autonChooser.addOption("Blue Shoot and Taxi Bottom", shootAndTaxiBottomBlue());
   }
   public Command getAuton(){
     return autonChooser.getSelected();
@@ -55,6 +55,11 @@ public class Autos extends Command{
   public Command shootDontMove(){
     return new WaitCommand(15);
   }
+
+  public Command shootAndTaxiBottomBlue() {
+    return new PathPlannerAuto("Blue Shoot and Taxi Bottom");
+  }
+
   public Command shootTaxiRed(){
     return new PathPlannerAuto("Shoot and Taxi Middle");
   }
