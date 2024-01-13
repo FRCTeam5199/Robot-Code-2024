@@ -46,11 +46,7 @@ public class Autos extends Command{
     autonChooserRed.addOption("Do nothing", doNothing());
     autonChooserRed.addOption("Shoot and Taxi Middle", shootTaxiMiddleRed());
 
-
     Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
-
-
-
 
   }
   public Command getAuton(){
