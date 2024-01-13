@@ -24,9 +24,10 @@ public class Autos extends Command{
   SwerveDrive swerveDrive;
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
   ShooterSubsystem shooter = new ShooterSubsystem();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(.4, .001,0), new PIDConstants(.2, .01,0), 5, .33, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 2, .01,0), 5, .33, new ReplanningConfig());
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
+
   public SendableChooser<Boolean> side = new SendableChooser<>();
 
   private HashMap<String, Command> eventMap;
@@ -53,7 +54,11 @@ public class Autos extends Command{
 
   }
   public Command getAuton(){
-    return autonChooserRed.getSelected();
+    if(side.getSelected()){
+      return autonChooserRed.getSelected();
+    }else{
+      return autonChooserBlue.getSelected();
+    }
   }
   
   //Autons that don't move
@@ -87,14 +92,14 @@ public class Autos extends Command{
   }
 
   //One piece Autons
-
+  public Command shootTaxiTopRed(){
+    return new PathPlannerAuto("Shoot and Taxi Top Red");
+  }
   public Command shootAndTaxiBottomBlue() {
     return new PathPlannerAuto("Blue Shoot and Taxi Bottom");
   }
 
-  public Command shootTaxiTopRed(){
-    return new PathPlannerAuto("Shoot and Taxi Top Red");
-  }
+
   public Command shootTaxiMiddleRed(){
     return new PathPlannerAuto("Shoot and Taxi Middle Red");
   }
@@ -120,7 +125,7 @@ public class Autos extends Command{
 
 
   public Command twoPieceBottomBlue() {
-    return AutoBuilder.buildAuto("Blue 2 Piece Bottom");
+    return AutoBuilder.buildAuto("2 Piece Bottom Blue");
   }
 
   public Command twoPieceExtendedRed(){
@@ -140,7 +145,4 @@ public class Autos extends Command{
     return new PathPlannerAuto("4 Piece Blue");
   }
 
-  public Command shootTaxiTopRed(){
-    return new PathPlannerAuto("Red Shoot and Taxi Top");
-  }
 }
