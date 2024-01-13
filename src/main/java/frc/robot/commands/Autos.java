@@ -77,9 +77,9 @@ public class Autos extends Command{
     return new PathPlannerAuto("New Auto");
   }
 
-  public Command shootMiddleRed(){
-    return new SequentialCommandGroup(shooter.aim(), shooter.shoot());
-  }
+  //public Command shootMiddleRed(){
+  //  return new SequentialCommandGroup(shooter.aim(), shooter.shoot());
+  //}
 
   public Command redTaxiTop() {
     return new PathPlannerAuto("Red Taxi Top");
@@ -92,10 +92,14 @@ public class Autos extends Command{
   public Command redTaxiBot() {
     return new PathPlannerAuto("Red Taxi Bot");
   }
-  
-}
 
+  public Command red2PieceTop() {
+    return new PathPlannerAuto("2 Piece Top Red");
+  }
 
+  public Command blueShootTaxiMid() {
+    return new PathPlannerAuto("")
+  }
 
 
   
