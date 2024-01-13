@@ -69,9 +69,9 @@ public class RobotContainer {
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
-  public RobotContainer() {   
-    configureBindings();
-    auton = new Autos(drivetrain);
+  public RobotContainer() {
+      auton = new Autos(drivetrain);
+      configureBindings();
 
   }
   /**
