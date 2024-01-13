@@ -59,8 +59,8 @@ public class Autos extends Command{
   //Autons that don't move
   public Command doNothing(){
         return new WaitCommand(15);
+  }
 
-    }
   public Command shootDontMove(){
     return new WaitCommand(15);
   }
@@ -87,6 +87,11 @@ public class Autos extends Command{
   }
 
   //One piece Autons
+
+  public Command shootAndTaxiBottomBlue() {
+    return new PathPlannerAuto("Blue Shoot and Taxi Bottom");
+  }
+
   public Command shootTaxiTopRed(){
     return new PathPlannerAuto("Shoot and Taxi Top Red");
   }
@@ -111,6 +116,11 @@ public class Autos extends Command{
   //Two Piece autons
   public Command twoPieceTopRed(){
     return new PathPlannerAuto("2 Piece Top Red");
+  }
+
+
+  public Command twoPieceBottomBlue() {
+    return AutoBuilder.buildAuto("Blue 2 Piece Bottom");
   }
 
   public Command twoPieceExtendedRed(){
