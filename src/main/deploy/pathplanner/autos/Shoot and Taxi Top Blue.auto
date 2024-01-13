@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.039120063974792,
-      "y": 5.564955745300002
+      "x": 0.8690078435791664,
+      "y": 6.67517683109546
     },
-    "rotation": 0
+    "rotation": -126.50144112050634
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot and Taxi Middle Red"
+            "pathName": "blue Taxi Top"
           }
         }
       ]
