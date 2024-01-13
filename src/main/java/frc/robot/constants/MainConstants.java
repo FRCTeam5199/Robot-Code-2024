@@ -39,16 +39,12 @@ public class MainConstants {
             public static int BACK_RIGHT_DRIVE_MOTOR_ID = 7;
             public static int BACK_RIGHT_STEER_MOTOR_ID = 8;
             public static int BACK_RIGHT_ENCODER = 14;
-        }
 
-        public static class Pneumatics {
-            // Intake
-            public static final int INTAKE_IN_ID = 0;
-            public static final int INTAKE_OUT_ID = 0;
-
-            // Climber
-            public static final int CLIMBER_IN_ID = 0;
-            public static final int CLIMBER_OUT_ID = 0;
+            //Intake
+            public static int INTAKE_MOTOR_ID = 0;
+            
+            //Climber
+            public static int CLIMBER_MOTOR_ID = 0;
         }
     }
 

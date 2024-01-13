@@ -1,19 +1,19 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.MainConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private DoubleSolenoid intakePiston;
-//   private Compressor compressor;
+  public CANSparkMax intakeMotor;
 
-  public IntakeSubsystem() {}
+  public IntakeSubsystem() {} 
 
   public void init() {
-    pneumaticsInit();
+    motorInit();
   }
 
   @Override
@@ -26,15 +26,14 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void pneumaticsInit() {
-    intakePiston = new DoubleSolenoid(MainConstants.IDs.PCM_ID, MainConstants.IDs.PNEUMATICS_MODULE_TYPE, MainConstants.IDs.Pneumatics.INTAKE_IN_ID, MainConstants.IDs.Pneumatics.INTAKE_OUT_ID);
+  public void motorInit() {
+    intakeMotor = new CANSparkMax(MainConstants.IDs.Motors.INTAKE_MOTOR_ID, MotorType.kBrushed);
+
+    intakeMotor.getEncoder().setPosition(0);
   }
 
-  public Command lowerIntake() {
-    return this.runOnce(() -> intakePiston.set(DoubleSolenoid.Value.kForward));
+  public Command setIntakeSpeed(double percent) {
+    return this.runOnce(() -> intakeMotor.set(percent));
   }
 
-  public Command raiseIntake() {
-    return this.runOnce(() -> intakePiston.set(DoubleSolenoid.Value.kReverse));
-  }
 }
