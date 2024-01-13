@@ -140,9 +140,7 @@ public class Autos extends Command{
     return new PathPlannerAuto("4 Piece Blue");
   }
 
-
-
-
-
-  
+  public Command shootTaxiTopRed(){
+    return new PathPlannerAuto("Red Shoot and Taxi Top");
+  }
 }
