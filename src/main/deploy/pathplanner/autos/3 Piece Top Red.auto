@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.039120063974792,
-      "y": 5.564955745300002
+      "x": 15.402155996894018,
+      "y": 6.862550215827963
     },
-    "rotation": 0
+    "rotation": -43.78112476486849
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot and Taxi Middle Red"
+            "pathName": "3 Piece Top Red"
           }
         }
       ]
