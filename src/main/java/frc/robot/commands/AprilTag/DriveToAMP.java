@@ -33,18 +33,9 @@ public class DriveToAMP extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-     if(aprilTagSubsystem.getAllianceColor().equals("Red")){
-        AMP = aprilTagSubsystem.getOneTag(5);
-     }
-     if(aprilTagSubsystem.getAllianceColor().equals("Blue")){
-        AMP = aprilTagSubsystem.getOneTag(6);
-
-      rotationSpeed = -turnController.calculate(AMP.getYaw(), 0);
-
-      System.out.println(rotationSpeed);
 
   }
-}
+
 
   // Called once the command ends or is interrupted.
   @Override

@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -84,58 +85,5 @@ public class AprilTagSubsystem extends SubsystemBase {
 
     // This method will be called once per scheduler run
   }
-  public void init(){
-    
-    AprilTagFieldLayout AprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
-  }
-
-  public boolean checkCameraForSpecificID(int ID){
-        int desiredTagID = ID;
-        for (PhotonTrackedTarget tag : getAllTargets()) {
-            if (tag.getFiducialId() == desiredTagID) {
-                return true;
-            }
-        }
-        return false;
-  }
-  public PhotonTrackedTarget getOneTag(int ID){
-      int desiredTagID = ID;
-      if(checkCameraForSpecificID(ID)){
-        for (PhotonTrackedTarget tag : getAllTargets()) {
-            if (tag.getFiducialId() == desiredTagID) {
-                return tag;
-            }
-        }
-      }
-        return null;
-  }
-
-  public Command printAngle(){
-    return run(()-> System.out.println(speakersAligning()));
-    //balls, big ones
-  }
-  
-  //calculate angle of shooter for speaker on both alliances
-  public double speakers(){
-    double angle = 0;
-    double distance = 4;
-        if (getAllianceColor().equals("Red")){
-          if(checkCameraForSpecificID(4)){
-           distance = 4 ; 
-          }
-          double c = Constants.TARGET_HEIGHT_METERS;
-        
-        // Calculate the angle A using arccosine (inverse cosine)
-        angle = Math.toDegrees(Math.acos(distance / c));
-        
-        // Displaying the calculated angle A
-        }
-        else if (getAllianceColor().equals("Blue")){
-
-        }
-        angleForShooter = Math.toDegrees(Math.tan(speakerHeight/distanceFromRobot));
-        System.out.println("//////////////////////" + angleForShooter);
-        return angleForShooter;
-      }  
 }

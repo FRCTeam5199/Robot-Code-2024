@@ -80,6 +80,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return auton.test();
+    return auton.shootTaxiTopRed();
   }
 }

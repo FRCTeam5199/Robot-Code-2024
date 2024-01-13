@@ -29,7 +29,8 @@ public class Autos extends Command{
 
   public Autos(SwerveDrive swerve){
     this.swerveDrive = swerve;
-    // AutoBuilder.configureHolonomic(()->swerve.getState().Pose, swerve::seedFieldRelative, swerve::getCurrentRobotChassisSpeeds, (speeds)-> swerve.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, swerve);
+    AutoBuilder.configureHolonomic(()->swerve.getPose(), swerve::seedFieldRelative, swerve::getCurrentRobotChassisSpeeds, (speeds)-> swerve.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerve);
+
 
 
     Shuffleboard.getTab("Auton").add("Auton Style",autonChooser)
@@ -76,8 +77,7 @@ public class Autos extends Command{
     return new PathPlannerAuto("New Auto");
   }
 
-
-
-
-  
+  public Command shootTaxiTopRed(){
+    return new PathPlannerAuto("Red Shoot and Taxi Top");
+  }
 }
