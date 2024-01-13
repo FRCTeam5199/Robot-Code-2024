@@ -93,9 +93,6 @@ public class Autos extends Command{
   }
 
   //One piece Autons
-  public Command shootTaxiTopRed(){
-    return new PathPlannerAuto("Shoot and Taxi Top Red");
-  }
   public Command shootAndTaxiBottomBlue() {
     return new PathPlannerAuto("Blue Shoot and Taxi Bottom");
   }
@@ -124,6 +121,9 @@ public class Autos extends Command{
     return new PathPlannerAuto("2 Piece Top Red");
   }
 
+  public Command twoPieceBottomRed() {
+    return AutoBuilder.buildAuto("2 Piece Bottom Red");
+  }
 
   public Command twoPieceBottomBlue() {
     return AutoBuilder.buildAuto("2 Piece Bottom Blue");
@@ -146,7 +146,6 @@ public class Autos extends Command{
     return new PathPlannerAuto("4 Piece Blue");
   }
 
-<<<<<<< HEAD
   public Command shootTaxiTopRed(){
     return new PathPlannerAuto("Red Shoot and Taxi Top");
   }
@@ -155,6 +154,4 @@ public class Autos extends Command{
 
 
   
-=======
->>>>>>> main
 }
