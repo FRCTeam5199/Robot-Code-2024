@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.601240218172308,
-      "y": 6.710309340732804
+      "x": 15.15,
+      "y": 5.55
     },
-    "rotation": 124.74318015830373
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot and Taxi Top Red"
+            "pathName": "3 Piece Mid2Bot Red"
           }
         }
       ]

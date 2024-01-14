@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.26,
-      "y": 4.1
+      "x": 15.680330591430415,
+      "y": 4.430257322053106
     },
-    "rotation": 40.0
+    "rotation": -116.26663835708334
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Red 2 Piece Bottom Path"
+            "pathName": "2 Piece Bottom Red"
           }
         }
       ]

@@ -24,7 +24,7 @@ public class Autos extends Command{
   SwerveDrive swerveDrive;
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
   ShooterSubsystem shooter = new ShooterSubsystem();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(.4, .001,0), new PIDConstants(.2, .01,0), 5, .33, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 2, .004,0), 5, .33, new ReplanningConfig());
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
@@ -47,11 +47,7 @@ public class Autos extends Command{
     autonChooserRed.addOption("Do nothing", doNothing());
     autonChooserRed.addOption("Shoot and Taxi Middle", shootTaxiMiddleRed());
 
-
     Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
-
-
-
 
   }
   public Command getAuton(){
@@ -129,9 +125,17 @@ public class Autos extends Command{
     return AutoBuilder.buildAuto("2 Piece Bottom Blue");
   }
 
+  public Command twoPieceMiddleRed() {
+    return AutoBuilder.buildAuto("2 Piece Middle Red");
+  }
+
   public Command twoPieceExtendedRed(){
     return new PathPlannerAuto("2 Piece Center Top Red");
-    }
+  }
+
+  public Command twoPieceBottomRed() {
+    return new PathPlannerAuto("2 Piece Bottom Red");
+  }
 
   //Three Piece Autons
   public Command threePieceTtMBlue(){
@@ -139,7 +143,17 @@ public class Autos extends Command{
   }
 
   public Command threePieceTtMRed(){
-    return new PathPlannerAuto("3 Piece Top Red");
+    return new PathPlannerAuto("3 Piece Top to Middle Red");
+  }
+  public Command threePieceBtMRed(){
+    return new PathPlannerAuto("3 Piece Bottom to Middle Red");
+  }
+  public Command threePieceMtTRed(){
+    return new PathPlannerAuto("3 Piece Middle to Top Red");
+  }
+
+  public Command threePieceMtBRed() {
+    return new PathPlannerAuto("3 Piece Middle to Bottom Red");
   }
 
   public Command fourPieceBlue(){
