@@ -10,7 +10,9 @@ import frc.robot.constants.MainConstants;
 public class IntakeSubsystem extends SubsystemBase {
   public CANSparkMax intakeMotor;
 
-  public IntakeSubsystem() {} 
+  public IntakeSubsystem() {
+    init();
+  } 
 
   public void init() {
     motorInit();
@@ -35,5 +37,4 @@ public class IntakeSubsystem extends SubsystemBase {
   public Command setIntakeSpeed(double percent) {
     return this.runOnce(() -> intakeMotor.set(percent));
   }
-
 }

@@ -68,10 +68,10 @@ public class RobotContainer {
     drivetrain.registerTelemetry(logger::telemeterize);
 
     // Intake
-    commandXboxController.leftTrigger().onTrue(intakeSubsystem.setIntakeSpeed(0.5)).onFalse(intakeSubsystem.setIntakeSpeed(0));
+    commandXboxController.leftTrigger().onTrue(intakeSubsystem.setIntakeSpeed(1))/*.onFalse(intakeSubsystem.setIntakeSpeed(0))*/;
 
     // Climber
-    commandXboxController.x().onTrue(climberSubsystem.runClimber());
+    commandXboxController.x().onTrue(climberSubsystem.startClimber());
   }
 
   public RobotContainer() {   

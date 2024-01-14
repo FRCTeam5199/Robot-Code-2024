@@ -3,7 +3,7 @@ package frc.robot.constants;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import frc.robot.utility.PID;
 
 
 
@@ -14,13 +14,14 @@ public class MainConstants {
         public static int CONTROLLER_PORT = 0;
         public static int BUTTON_PANEL_PORT = 0;
     }
+
     public static class IDs {
         // Pigeon
         public static int PIGEON2_ID = 22;
 
         // Pneumatics
-        public static final int PCM_ID = 0;
-        public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = null;
+        // public static final int PCM_ID = 0;
+        // public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = null;
 
         public static class Motors {
             // Drive
@@ -41,13 +42,17 @@ public class MainConstants {
             public static int BACK_RIGHT_ENCODER = 14;
 
             //Intake
-            public static int INTAKE_MOTOR_ID = 0;
-            
+            public static int INTAKE_MOTOR_ID = 54;
+
             //Climber
             public static int CLIMBER_MOTOR_ID = 0;
         }
     }
-
+    
+    public static class PIDConstants {
+        // Climber
+        public static PID CLIMBERPID = new PID(0.1, 0, 0);
+    }
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 4;
