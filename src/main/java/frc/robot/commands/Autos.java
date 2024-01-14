@@ -167,4 +167,12 @@ public class Autos extends Command{
     return new PathPlannerAuto("4 Piece Bottom to Top Red");
   }
 
+  public Command fivePieceTtBRed(){
+    return new PathPlannerAuto("5 Piece Top to Bottom Red");
+  }
+
+  public Command fivePieceBtTRed(){
+    return new PathPlannerAuto("5 Piece Bottom to Top Red");
+  }
+
 }
