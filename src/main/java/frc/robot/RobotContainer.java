@@ -79,7 +79,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return auton.threePieceTtMRed();
+    return auton.fourPieceTtBRed();
   }
 }
   
