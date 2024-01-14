@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.1149354110405783,
-      "y": 6.956236908194216
+      "x": 1.0798029014032335,
+      "y": 4.532093743217444
     },
-    "rotation": -134.09061955080088
+    "rotation": 129.61068824002663
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Top Extended Blue"
+            "pathName": "blue Taxi Bot"
           }
         }
       ]

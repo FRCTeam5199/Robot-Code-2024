@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.3445732483476367,
-      "y": 1.3233245296733098
+      "x": 0.8690078435791664,
+      "y": 6.67517683109546
     },
-    "rotation": 0
+    "rotation": -126.50144112050634
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "blue Taxi Top"
           }
         }
       ]

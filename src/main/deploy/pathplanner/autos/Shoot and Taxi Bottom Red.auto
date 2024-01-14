@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.1149354110405783,
-      "y": 6.956236908194216
+      "x": 15.651322796456826,
+      "y": 4.0731724470089
     },
-    "rotation": -134.09061955080088
+    "rotation": 61.161692039521256
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Top Extended Blue"
+            "pathName": "Shoot and Taxi Bottom Red"
           }
         }
       ]

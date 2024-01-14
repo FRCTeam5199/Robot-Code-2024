@@ -69,10 +69,9 @@ public class RobotContainer {
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
-  public RobotContainer() {   
-    configureBindings();
-    auton = new Autos(drivetrain);
-
+  public RobotContainer() {
+      auton = new Autos(drivetrain);
+      configureBindings();
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -80,6 +79,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return auton.shootTaxiRed();
+    return auton.twoPieceExtendedRed();
   }
 }
+  
