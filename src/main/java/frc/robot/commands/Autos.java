@@ -35,8 +35,7 @@ public class Autos extends Command{
 
   public Autos(SwerveDrive swerve){
     this.swerveDrive = swerve;
-        AutoBuilder.configureHolonomic(()-> swerve.getPose(), swerve::seedFieldRelative, swerve::getCurrentRobotChassisSpeeds, (speeds)-> swerve.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerve);
-    //AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
+        AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
     eventMap = new HashMap<>();
 
     Shuffleboard.getTab("Autons").add("Side", side);
@@ -89,6 +88,9 @@ public class Autos extends Command{
   }
 
   //One piece Autons
+  public Command shootTaxiTopRed(){
+    return new PathPlannerAuto("Shoot and Taxi Top Red");
+  }
   public Command shootAndTaxiBottomBlue() {
     return new PathPlannerAuto("Blue Shoot and Taxi Bottom");
   }
@@ -117,9 +119,6 @@ public class Autos extends Command{
     return new PathPlannerAuto("2 Piece Top Red");
   }
 
-  public Command twoPieceBottomRed() {
-    return AutoBuilder.buildAuto("2 Piece Bottom Red");
-  }
 
   public Command twoPieceBottomBlue() {
     return AutoBuilder.buildAuto("2 Piece Bottom Blue");
@@ -156,16 +155,16 @@ public class Autos extends Command{
     return new PathPlannerAuto("3 Piece Middle to Bottom Red");
   }
 
+  //Four Piece Autons
   public Command fourPieceBlue(){
     return new PathPlannerAuto("4 Piece Blue");
   }
 
-  public Command shootTaxiTopRed(){
-    return new PathPlannerAuto("Red Shoot and Taxi Top");
+  public Command fourPieceTtBRed(){
+    return new PathPlannerAuto("4 Piece Top to Bottom Red");
+  }
+  public Command fourPieceBtTRed(){
+    return new PathPlannerAuto("4 Piece Bottom to Top Red");
   }
 
-
-
-
-  
 }
