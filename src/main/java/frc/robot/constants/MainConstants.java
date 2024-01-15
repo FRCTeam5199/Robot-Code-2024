@@ -1,16 +1,12 @@
 package frc.robot.constants;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
-import frc.robot.Main;
 
+import javax.management.modelmbean.ModelMBeanNotificationBroadcaster;
 
 
 public class MainConstants {
@@ -81,7 +77,12 @@ public class MainConstants {
     public static int BUTTON_PANEL_PORT = 0;
 
 
-    public String[] cameraNames = {"1","2","3","4"};
+    public String[] cameraNames = {"Back","2","3","4"};
+    public Transform3d[] cameraPositions = {
+            new Transform3d(-.2667, .025, .3, new Rotation3d(0, Math.toRadians(15), 0)),  //back camera
+            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)),
+            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)),
+            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0))};
     //right hp red 9, left hp 10 // right hp blue 1, left hp blue 2
     //middle red speaker 4, right red speaker 3 // middle blue speaker 7, left blue speaker 8
     //red amp 5 // blue amp 6

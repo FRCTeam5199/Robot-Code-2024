@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.commands.Autos;
 import frc.robot.commands.AprilTag.PoseEstimation;
 import frc.robot.generated.TunerConstants;
@@ -39,6 +40,7 @@ public class RobotContainer {
    /* Setting up bindings for necessary control of the swerve drive platform */
    private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
    private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
+   private final AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
  
    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -61,6 +63,8 @@ public class RobotContainer {
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+
+    aprilTagSubsystem.setDefaultCommand(drivetrain.run(()-> drivetrain.addVisionMeasurement(aprilTagSubsystem.robotPose(), Timer.getFPGATimestamp())));
 
 
     if (Utils.isSimulation()) {

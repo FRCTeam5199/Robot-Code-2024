@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.generated.TunerConstants;
@@ -37,6 +38,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
     }
+
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         if (Utils.isSimulation()) {
@@ -47,7 +49,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
     }
-
 
 
     private void startSimThread() {
@@ -65,26 +66,25 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
 
-    public ChassisSpeeds getChassisSpeed(){
+    public ChassisSpeeds getChassisSpeed() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }
-    public Pose2d getPose(){
+
+    public Pose2d getPose() {
         return m_odometry.getEstimatedPosition();
-        
+
     }
+
     public SwerveModulePosition[] getModulePositions() {
-                return m_modulePositions;
-                
-        }
-    
+        return m_modulePositions;
+
+    }
+
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }
 
 
-
-
-    
 }
 
 
