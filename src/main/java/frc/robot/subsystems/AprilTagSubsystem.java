@@ -9,6 +9,9 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -31,6 +34,16 @@ public class AprilTagSubsystem implements Subsystem {
     PhotonPoseEstimator[] poseEstimator;
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
     SwerveDrive drive;
+
+    NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = limelight.getEntry("tx");
+    NetworkTableEntry ty = limelight.getEntry("ty");
+    NetworkTableEntry tz = limelight.getEntry("tz");
+    double x = tx.getDouble(0);
+    double y = ty.getDouble(0);
+    double z =tz.getDouble(0);
+
+
 
     AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
