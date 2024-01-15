@@ -43,6 +43,7 @@ public class MainConstants {
 
             //Intake
             public static int INTAKE_MOTOR_ID = 54;
+            public static final int INTAKE_ANGLE_MOTOR_ID = 0;
 
             //Climber
             public static int CLIMBER_MOTOR_ID = 0;
@@ -52,6 +53,7 @@ public class MainConstants {
     public static class PIDConstants {
         // Climber
         public static PID CLIMBERPID = new PID(0.1, 0, 0);
+        public static final PID INTAKE_PID = new PID(0, 0, 0);
     }
     //Mechanical Constants
     public static String CAN_BUS = "";
