@@ -46,15 +46,21 @@ public class MainConstants {
             public static final int INTAKE_ANGLE_MOTOR_ID = 0;
 
             //Climber
-            public static int CLIMBER_MOTOR_ID = 0;
+            public static int CLIMBER_JOINT_MOTOR_ID = 0;
+            public static int CLIMBER_WRIST_MOTOR_ID = 0;
+            public static int CLIMBER_CLAW_MOTOR_ID = 0;
         }
     }
     
     public static class PIDConstants {
         // Climber
-        public static PID CLIMBERPID = new PID(0.1, 0, 0);
+        public static PID CLIMBER_JOINT_PID = new PID(0.1, 0, 0);
+        public static PID CLIMBER_WRIST_PID = new PID(0.1, 0, 0);
+        public static PID CLIMBER_CLAW_PID = new PID(0.1, 0, 0);
+
         public static final PID INTAKE_PID = new PID(0, 0, 0);
     }
+
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 4;
@@ -80,7 +86,6 @@ public class MainConstants {
         // Back right
         new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
 
-        
   
     public int krakenShooter = 0;
     //Drive Constants

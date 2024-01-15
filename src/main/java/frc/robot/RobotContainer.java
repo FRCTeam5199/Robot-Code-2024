@@ -12,6 +12,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
@@ -47,6 +52,26 @@ public class RobotContainer {
    private final Telemetry logger = new Telemetry(MaxSpeed);
 
   private void configureBindings() {
+    ConditionalCommand climbCommandGroup = 
+      new ConditionalCommand(
+        new ParallelCommandGroup(
+          new SequentialCommandGroup(
+            new InstantCommand(() -> intakeSubsystem.setIntakeAngle(0))
+            // new WaitCommand(0.8),
+            // new InstantCommand(() -> arm.extend()),
+            // new InstantCommand(() -> elevator.high())
+          ),
+          new SequentialCommandGroup(
+              // new InstantCommand(() -> wrist.moveRight()),
+              // new WaitCommand(0.5),
+              // new InstantCommand(() -> wrist.stopRotation())
+          )
+        ),
+        new ParallelCommandGroup(
+          new InstantCommand(() -> climberSubsystem.storeClimb())
+        ),
+      climberSubsystem::isClimbing);
+      
     // Drive
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) // Drive forward with
@@ -71,12 +96,14 @@ public class RobotContainer {
     commandXboxController.leftTrigger().onTrue(intakeSubsystem.setIntakeSpeed(1))/*.onFalse(intakeSubsystem.setIntakeSpeed(0))*/;
 
     // Climber
-    commandXboxController.x().onTrue(climberSubsystem.startClimber());
+    commandXboxController.rightBumper().onTrue(climbCommandGroup);
   }
 
   public RobotContainer() {   
     configureBindings();
     auton = new Autos(drivetrain);
+
+    
 
   }
   /**
