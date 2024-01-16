@@ -39,6 +39,7 @@ public class AprilTagSubsystem implements Subsystem {
     public MainConstants Constants = new MainConstants();
     PhotonPoseEstimator poseEstimator;
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
+    SwerveDrive drive = TunerConstants.DriveTrain;
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = limelight.getEntry("tx");
@@ -68,6 +69,7 @@ public class AprilTagSubsystem implements Subsystem {
             allCameras[i] = new PhotonCamera(Constants.cameraNames[i]);
 
         }
+    }
 
     @Override
     public void periodic(){
