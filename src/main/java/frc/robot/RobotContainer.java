@@ -58,15 +58,15 @@ public class RobotContainer {
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
     // reset the field-centric heading by pressing start button/hamburger menu button
-    joystick.start().onTrue(drivetrain.runOnce(()->drivetrain.seedFieldRelative()));
+    joystick.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    aprilTagSubsystem.setDefaultCommand(drivetrain.run(()-> drivetrain.addVisionMeasurement(aprilTagSubsystem.robotPose(), Timer.getFPGATimestamp())));
 
 
+      aprilTagSubsystem.setDefaultCommand(aprilTagSubsystem.updateRobotPose());
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }

@@ -77,12 +77,13 @@ public class MainConstants {
     public static int BUTTON_PANEL_PORT = 0;
 
 
-    public String[] cameraNames = {"Back","2","3","4"};
+    public String[] cameraNames = {"Front","Left","Right","Back"};
     public Transform3d[] cameraPositions = {
-            new Transform3d(-.2667, .025, .3, new Rotation3d(0, Math.toRadians(15), 0)),  //back camera
-            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)),
-            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)),
-            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0))};
+            new Transform3d(0,0,0, new Rotation3d(0,0,0)), //front
+            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //left
+            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //right
+            new Transform3d(-.2667, .025, .3, new Rotation3d(0, Math.toRadians(15), Math.toRadians(180) ))// Back Camera
+    };
     //right hp red 9, left hp 10 // right hp blue 1, left hp blue 2
     //middle red speaker 4, right red speaker 3 // middle blue speaker 7, left blue speaker 8
     //red amp 5 // blue amp 6
