@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Autos;
 import frc.robot.commands.AprilTag.PoseEstimation;
 import frc.robot.generated.TunerConstants;
@@ -26,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -58,15 +61,13 @@ public class RobotContainer {
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
     // reset the field-centric heading by pressing start button/hamburger menu button
-    joystick.start().onTrue(drivetrain.runOnce(()->drivetrain.seedFieldRelative()));
+    joystick.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    aprilTagSubsystem.setDefaultCommand(drivetrain.run(()-> drivetrain.addVisionMeasurement(aprilTagSubsystem.robotPose(), Timer.getFPGATimestamp())));
-
-
+      aprilTagSubsystem.setDefaultCommand(aprilTagSubsystem.updatePose());
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
