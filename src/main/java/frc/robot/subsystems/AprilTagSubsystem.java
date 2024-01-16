@@ -14,14 +14,19 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.constants.MainConstants;
 
 import java.util.Arrays;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.OptionalDouble;
+import java.util.OptionalDouble;
 
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.drivetrain.SwerveDrive;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -33,7 +38,7 @@ public class AprilTagSubsystem implements Subsystem {
 
     public MainConstants Constants = new MainConstants();
     PhotonPoseEstimator poseEstimator;
-    EstimatedRobotPose robotPose;
+    EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = limelight.getEntry("tx");
@@ -59,10 +64,10 @@ public class AprilTagSubsystem implements Subsystem {
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 
     public AprilTagSubsystem() {
-        allCameras[3] = new PhotonCamera("Back");
+        for (int i = 0; i <= Constants.cameraNames.length; i++) {
+            allCameras[i] = new PhotonCamera(Constants.cameraNames[i]);
 
-
-    }
+        }
 
     @Override
     public void periodic(){
@@ -83,50 +88,44 @@ public class AprilTagSubsystem implements Subsystem {
 
     }
 
+    public PhotonPoseEstimator ambiguityCheck(PhotonCamera front, PhotonCamera left, PhotonCamera right, PhotonCamera back) {
+        double[] ambiguity = new double[4];
+        PhotonCamera[] cameras = new PhotonCamera[]{front, left, right, back};
+        ambiguity[0] = front.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        ambiguity[1] = left.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        ambiguity[2] = right.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        ambiguity[3] = back.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
 
-    public PhotonPoseEstimator ambiguityCheck(PhotonCamera four) {
-        double[] result = new double[4];
-        MultiTargetPNPResult[] pnpResult = new MultiTargetPNPResult[4];
-        //result[0] = one.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        //result[1] = two.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        //result[2] = three.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        result[3] = four.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-
-        OptionalDouble lowestambiguity = Arrays.stream(result).sorted().findFirst();
-      /*
-      if (lowestambiguity.isPresent()) {
-          if (one.getLatestResult().getMultiTagResult().estimatedPose.ambiguity == lowestambiguity.getAsDouble()) {
-              return new PhotonPoseEstimator(fieldLayout, poseStrategy, one, Constants.cameraPositions[0]);
-          } else {
-              if (two.getLatestResult().getMultiTagResult().estimatedPose.ambiguity == lowestambiguity.getAsDouble()) {
-                  return new PhotonPoseEstimator(fieldLayout, poseStrategy, two, Constants.cameraPositions[1]);
-              } else {
-                  if (three.getLatestResult().getMultiTagResult().estimatedPose.ambiguity == lowestambiguity.getAsDouble()) {
-                      return new PhotonPoseEstimator(fieldLayout, poseStrategy, three, Constants.cameraPositions[2]);
-                  } else {
-                      if (four.getLatestResult().getMultiTagResult().estimatedPose.ambiguity == lowestambiguity.getAsDouble()) {
-                          return new PhotonPoseEstimator(fieldLayout, poseStrategy, four, Constants.cameraPositions[3]);
-                      }
-                  }
-              }
-          }
-      }
-
-       */
-        if (four.getLatestResult().getMultiTagResult().estimatedPose.isPresent) {
-            System.out.println(four.getLatestResult().getMultiTagResult().estimatedPose.ambiguity);
-            return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR , new PhotonCamera("Back"), Constants.cameraPositions[0]);
+        OptionalDouble lowestambiguity = Arrays.stream(ambiguity).sorted().findFirst();
+        if (lowestambiguity.isPresent()) {
+            for (int i = 0; i <= ambiguity.length; i++) {
+                if (cameras[i].getLatestResult().getMultiTagResult().estimatedPose.isPresent && cameras[i].getLatestResult().getMultiTagResult().estimatedPose.ambiguity == ambiguity[i]) {
+                    return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameras[i], Constants.cameraPositions[i]);
+                }
+            }
+        }
+        if (back.getLatestResult().getMultiTagResult().estimatedPose.isPresent) {
+            System.out.println(back.getLatestResult().getMultiTagResult().estimatedPose.ambiguity);
+            return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[0]);
         }
         System.out.println("1 Tag");
         return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Back"), Constants.cameraPositions[0]);
     }
 
     public Command updatePose() {
-        poseEstimator = ambiguityCheck(allCameras[3]);
+        poseEstimator = ambiguityCheck(allCameras[0], allCameras[1], allCameras[2], allCameras[3]);
         Optional<EstimatedRobotPose> bool = poseEstimator.update();
-        if(bool.isPresent()){
-            return runOnce(()->System.out.println(bool.get().estimatedPose.getTranslation()));
+        if (bool.isPresent()) {
+            return runOnce(() -> System.out.println(bool.get().estimatedPose.getTranslation()));
         }
-        return runOnce(()->System.out.println("asfhorjogi"));
+        return runOnce(()-> System.out.println("nothing present"));
+    }
+
+
+    // This method will be called once per scheduler run
+    public Command updateRobotPose(){
+        poseEstimator = ambiguityCheck(allCameras[0], allCameras[1], allCameras[2], allCameras[3]);
+        Optional<EstimatedRobotPose> bool = poseEstimator.update();
+        return bool.map(estimatedRobotPose -> runOnce(() -> drive.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp()))).orElse(runOnce(()->System.out.println("no visible tag")));
     }
 }

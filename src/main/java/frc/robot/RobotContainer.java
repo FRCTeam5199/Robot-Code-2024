@@ -67,7 +67,9 @@ public class RobotContainer {
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-      aprilTagSubsystem.setDefaultCommand(aprilTagSubsystem.updatePose());
+
+
+      aprilTagSubsystem.setDefaultCommand(aprilTagSubsystem.updateRobotPose());
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
