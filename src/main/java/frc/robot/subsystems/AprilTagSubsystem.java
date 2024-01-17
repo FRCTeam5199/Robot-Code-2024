@@ -85,13 +85,13 @@ public class AprilTagSubsystem implements Subsystem {
 
     }
 
-    public PhotonPoseEstimator ambiguityCheck(PhotonCamera front, PhotonCamera left, PhotonCamera right, PhotonCamera back) {
+    public PhotonPoseEstimator ambiguityCheck(PhotonCamera back) {
         double[] ambiguity = new double[4];
-        PhotonCamera[] cameras = new PhotonCamera[]{front, left, right, back};
-        ambiguity[0] = front.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        ambiguity[1] = left.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        ambiguity[2] = right.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        ambiguity[3] = back.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        PhotonCamera[] cameras = new PhotonCamera[]{back};
+        ambiguity[0] = back.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        //ambiguity[1] = left.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        //ambiguity[2] = right.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        //ambiguity[3] = back.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
 
         OptionalDouble lowestambiguity = Arrays.stream(ambiguity).sorted().findFirst();
         if (lowestambiguity.isPresent()) {
@@ -110,7 +110,7 @@ public class AprilTagSubsystem implements Subsystem {
     }
 
     public Command updatePose() {
-        poseEstimator = ambiguityCheck(allCameras[0], allCameras[1], allCameras[2], allCameras[3]);
+        poseEstimator = ambiguityCheck(allCameras[3]);
         Optional<EstimatedRobotPose> bool = poseEstimator.update();
         if (bool.isPresent()) {
             return runOnce(() -> System.out.println(bool.get().estimatedPose.getTranslation()));
