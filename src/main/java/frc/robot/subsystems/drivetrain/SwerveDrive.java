@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.AprilTagSubsystem;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem
@@ -30,6 +31,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+    AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
     SwerveRequest autoRequest = new SwerveRequest.ApplyChassisSpeeds();
 
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
@@ -47,6 +49,9 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
+        if(aprilTagSubsystem.getVisionPose().isPresent()){
+            this.addVisionMeasurement(aprilTagSubsystem.getVisionPose().get().estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+        }
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
@@ -71,6 +76,9 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     }
 
     public Pose2d getPose() {
+        if(aprilTagSubsystem.getVisionPose().isPresent()){
+            this.addVisionMeasurement(aprilTagSubsystem.getVisionPose().get().estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+        }
         return m_odometry.getEstimatedPosition();
 
     }
