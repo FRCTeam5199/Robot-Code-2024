@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Autos;
 import frc.robot.commands.AprilTag.PoseEstimation;
 import frc.robot.generated.TunerConstants;
@@ -66,7 +67,7 @@ public class RobotContainer {
 
 
 
-      aprilTagSubsystem.setDefaultCommand(aprilTagSubsystem.updateRobotPose());
+      aprilTagSubsystem.setDefaultCommand(new SequentialCommandGroup(aprilTagSubsystem.updatePose(), aprilTagSubsystem.updateRobotPose()));
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }

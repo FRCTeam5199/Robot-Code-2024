@@ -64,10 +64,7 @@ public class AprilTagSubsystem implements Subsystem {
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 
     public AprilTagSubsystem() {
-        for (int i = 0; i <= Constants.cameraNames.length; i++) {
-            allCameras[i] = new PhotonCamera(Constants.cameraNames[i]);
-
-        }
+        allCameras[3] = new PhotonCamera("Back");
 
     }
 
@@ -95,11 +92,11 @@ public class AprilTagSubsystem implements Subsystem {
 
         OptionalDouble lowestambiguity = Arrays.stream(ambiguity).sorted().findFirst();
         if (lowestambiguity.isPresent()) {
-            for (int i = 0; i <= ambiguity.length; i++) {
-                if (cameras[i].getLatestResult().getMultiTagResult().estimatedPose.isPresent && cameras[i].getLatestResult().getMultiTagResult().estimatedPose.ambiguity == ambiguity[i]) {
-                    return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameras[i], Constants.cameraPositions[i]);
+          //  for (int i = 4; i <= ambiguity.length; i++) {
+                if (cameras[3].getLatestResult().getMultiTagResult().estimatedPose.isPresent && cameras[3].getLatestResult().getMultiTagResult().estimatedPose.ambiguity == ambiguity[0]) {
+                    return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameras[0], Constants.cameraPositions[3]);
                 }
-            }
+
         }
         if (back.getLatestResult().getMultiTagResult().estimatedPose.isPresent) {
             System.out.println(back.getLatestResult().getMultiTagResult().estimatedPose.ambiguity);
@@ -111,12 +108,25 @@ public class AprilTagSubsystem implements Subsystem {
 
     public Command updatePose() {
         poseEstimator = ambiguityCheck(allCameras[3]);
+
         Optional<EstimatedRobotPose> bool = poseEstimator.update();
         if (bool.isPresent()) {
-            return runOnce(() -> System.out.println(bool.get().estimatedPose.getTranslation()));
+            if(bool.get().estimatedPose.toPose2d() != testthing()) {
+                return runOnce(() -> System.out.println(bool.get().estimatedPose.getTranslation()));
+            }
+        }else {
+            return runOnce(() -> System.out.println("nothing present"));
         }
-        return runOnce(()-> System.out.println("nothing present"));
+        return null;
     }
+
+    public Pose2d testthing() {
+        poseEstimator = ambiguityCheck(allCameras[3]);
+
+        Optional<EstimatedRobotPose> bool = poseEstimator.update();
+        return bool.map(estimatedRobotPose -> estimatedRobotPose.estimatedPose.toPose2d()).orElse(null);
+    }
+
 
 
     // This method will be called once per scheduler run
