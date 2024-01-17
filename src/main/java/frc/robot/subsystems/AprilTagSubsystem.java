@@ -8,7 +8,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -20,7 +20,9 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.constants.MainConstants;
 
 import java.util.Arrays;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.OptionalDouble;
 
 import frc.robot.generated.TunerConstants;
@@ -37,6 +39,7 @@ public class AprilTagSubsystem implements Subsystem {
     public MainConstants Constants = new MainConstants();
     PhotonPoseEstimator poseEstimator;
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
+    SwerveDrive drive = TunerConstants.DriveTrain;
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = limelight.getEntry("tx");
@@ -45,8 +48,6 @@ public class AprilTagSubsystem implements Subsystem {
     double x = tx.getDouble(0);
     double y = ty.getDouble(0);
     double z = tz.getDouble(0);
-
-    SwerveDrive drive = TunerConstants.DriveTrain;
 
 
     AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
@@ -64,8 +65,15 @@ public class AprilTagSubsystem implements Subsystem {
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 
     public AprilTagSubsystem() {
-        allCameras[3] = new PhotonCamera("Back");
+        for (int i = 0; i <= Constants.cameraNames.length; i++) {
+            allCameras[i] = new PhotonCamera(Constants.cameraNames[i]);
 
+        }
+    }
+
+    @Override
+    public void periodic(){
+        updatePose();
     }
 
     public String getAllianceColor() {
@@ -82,21 +90,21 @@ public class AprilTagSubsystem implements Subsystem {
 
     }
 
-    public PhotonPoseEstimator ambiguityCheck(PhotonCamera back) {
+    public PhotonPoseEstimator ambiguityCheck(PhotonCamera front, PhotonCamera left, PhotonCamera right, PhotonCamera back) {
         double[] ambiguity = new double[4];
-        PhotonCamera[] cameras = new PhotonCamera[]{back};
-        ambiguity[0] = back.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        //ambiguity[1] = left.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        //ambiguity[2] = right.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        //ambiguity[3] = back.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        PhotonCamera[] cameras = new PhotonCamera[]{front, left, right, back};
+        ambiguity[0] = front.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        ambiguity[1] = left.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        ambiguity[2] = right.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
+        ambiguity[3] = back.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
 
         OptionalDouble lowestambiguity = Arrays.stream(ambiguity).sorted().findFirst();
         if (lowestambiguity.isPresent()) {
-          //  for (int i = 4; i <= ambiguity.length; i++) {
-                if (cameras[3].getLatestResult().getMultiTagResult().estimatedPose.isPresent && cameras[3].getLatestResult().getMultiTagResult().estimatedPose.ambiguity == ambiguity[0]) {
-                    return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameras[0], Constants.cameraPositions[3]);
+            for (int i = 0; i <= ambiguity.length; i++) {
+                if (cameras[i].getLatestResult().getMultiTagResult().estimatedPose.isPresent && cameras[i].getLatestResult().getMultiTagResult().estimatedPose.ambiguity == ambiguity[i]) {
+                    return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameras[i], Constants.cameraPositions[i]);
                 }
-
+            }
         }
         if (back.getLatestResult().getMultiTagResult().estimatedPose.isPresent) {
             System.out.println(back.getLatestResult().getMultiTagResult().estimatedPose.ambiguity);
@@ -107,31 +115,18 @@ public class AprilTagSubsystem implements Subsystem {
     }
 
     public Command updatePose() {
-        poseEstimator = ambiguityCheck(allCameras[3]);
-
+        poseEstimator = ambiguityCheck(allCameras[0], allCameras[1], allCameras[2], allCameras[3]);
         Optional<EstimatedRobotPose> bool = poseEstimator.update();
         if (bool.isPresent()) {
-            if(bool.get().estimatedPose.toPose2d() != testthing()) {
-                return runOnce(() -> System.out.println(bool.get().estimatedPose.getTranslation()));
-            }
-        }else {
-            return runOnce(() -> System.out.println("nothing present"));
+            return runOnce(() -> System.out.println(bool.get().estimatedPose.getTranslation()));
         }
-        return null;
+        return runOnce(()-> System.out.println("nothing present"));
     }
-
-    public Pose2d testthing() {
-        poseEstimator = ambiguityCheck(allCameras[3]);
-
-        Optional<EstimatedRobotPose> bool = poseEstimator.update();
-        return bool.map(estimatedRobotPose -> estimatedRobotPose.estimatedPose.toPose2d()).orElse(null);
-    }
-
 
 
     // This method will be called once per scheduler run
     public Command updateRobotPose(){
-        poseEstimator = ambiguityCheck(allCameras[3]);
+        poseEstimator = ambiguityCheck(allCameras[0], allCameras[1], allCameras[2], allCameras[3]);
         Optional<EstimatedRobotPose> bool = poseEstimator.update();
         return bool.map(estimatedRobotPose -> runOnce(() -> drive.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp()))).orElse(runOnce(()->System.out.println("no visible tag")));
     }
