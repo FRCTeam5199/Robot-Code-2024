@@ -6,13 +6,30 @@ package frc.robot.subsystems;
 
 
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix6.hardware.TalonFX;
 
-public class ShooterSubsystem extends SubsystemBase {
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.MainConstants;
+
+public class ShooterSubsystem implements Subsystem{
+
+  public MainConstants constants = new MainConstants();
+  TalonFX krakenShooter;
   /** Creates a new shooter. */
+
+  //one shooter (probably kraken), feeder (probably bag)
   public ShooterSubsystem() {
     
+    krakenShooter = new TalonFX(constants.krakenShooter);
+    
   }
+
+  public Command setSpeedShooter(double speed){
+    return this.run(()-> krakenShooter.set(speed));
+  }  
+  
 
   @Override
   public void periodic() {
