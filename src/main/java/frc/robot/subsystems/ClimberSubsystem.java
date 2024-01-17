@@ -5,10 +5,11 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.MainConstants;
 
-public class ClimberSubsystem extends SubsystemBase {
+public class ClimberSubsystem implements Subsystem {
   public CANSparkMax climberJointMotor;
   public CANSparkMax climberWristMotor;
   public CANSparkMax climberClawMotor;

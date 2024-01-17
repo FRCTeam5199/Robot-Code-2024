@@ -5,10 +5,11 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.MainConstants;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class IntakeSubsystem implements Subsystem{
   public CANSparkMax intakeMotor;
   public CANSparkMax intakeAngleMotor;
   public SparkPIDController pidController;
