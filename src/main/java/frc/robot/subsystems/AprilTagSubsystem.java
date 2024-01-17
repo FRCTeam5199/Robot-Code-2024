@@ -121,7 +121,7 @@ public class AprilTagSubsystem implements Subsystem {
 
     // This method will be called once per scheduler run
     public Command updateRobotPose(){
-        poseEstimator = ambiguityCheck(allCameras[0], allCameras[1], allCameras[2], allCameras[3]);
+        poseEstimator = ambiguityCheck(allCameras[3]);
         Optional<EstimatedRobotPose> bool = poseEstimator.update();
         return bool.map(estimatedRobotPose -> runOnce(() -> drive.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp()))).orElse(runOnce(()->System.out.println("no visible tag")));
     }
