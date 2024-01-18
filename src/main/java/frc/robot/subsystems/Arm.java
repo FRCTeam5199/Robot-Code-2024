@@ -15,10 +15,13 @@ public class Arm extends SubsystemBase {
 	public MainConstants constants = new MainConstants();
 
 	PIDController rotatePIDController;
+	TalonFX krakenArmLeader;
+	TalonFX krakenArmFollower;
 	
   public Arm() {
-	TalonFX krakenArmFollower;
-	krakenArmFollower = new TalonFX(constants.krakenArmFollower);
+	krakenArmLeader = new TalonFX(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID );
+	krakenArmFollower = new TalonFX(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
+	krakenArmFollower.foll
 
 	PIDInit();
   }

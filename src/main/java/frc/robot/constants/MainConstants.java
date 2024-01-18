@@ -52,6 +52,10 @@ public class MainConstants {
             public static int CLIMBER_JOINT_MOTOR_ID = 0;
             public static int CLIMBER_WRIST_MOTOR_ID = 0;
             public static int CLIMBER_CLAW_MOTOR_ID = 0;
+
+            //Arm
+            public static int ARM_LEADER_MOTOR_ID = 0;
+            public static int ARM_FOLLOWER_MOTOR_ID = 0;
         }
     }
     
@@ -94,8 +98,6 @@ public class MainConstants {
 
   
     public int krakenShooter = 0;
-    public int krakenArmLeader = 0;
-    public int krakenArmFollower = 0;
 
     //Drive Constants
     public static boolean INVERT_FL_DRIVE = false;
