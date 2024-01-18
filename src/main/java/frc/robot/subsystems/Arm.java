@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class Arm extends SubsystemBase {
+public class Arm implements Subsystem {
   /** Creates a new Arm. */
-  public Arm() {}
+  public Arm() {
+
+
+  }
 
   @Override
   public void periodic() {
