@@ -1,20 +1,46 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import com.ctre.phoenix6.hardware.TalonFX;
 
-public class Arm implements Subsystem {
-  /** Creates a new Arm. */
+import frc.robot.Main;
+import frc.robot.constants.MainConstants;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
+public class Arm extends SubsystemBase {
+  
+	public MainConstants constants = new MainConstants();
+
+	PIDController rotatePIDController;
+	
   public Arm() {
+	TalonFX krakenArmFollower;
+	krakenArmFollower = new TalonFX(constants.krakenArmFollower);
 
+	PIDInit();
+  }
+
+  public void init(){
 
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    
   }
+
+  public void PIDInit() {
+		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_FOLLOWER_PID.P, MainConstants.PIDConstants.ARM_FOLLOWER_PID.I,
+				MainConstants.PIDConstants.ARM_FOLLOWER_PID.D);
+	}
+
+
+	public Command setRotateSetpoint(int setpoint) {
+		return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
+	}
+
+  
 }

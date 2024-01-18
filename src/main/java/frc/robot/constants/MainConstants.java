@@ -62,6 +62,9 @@ public class MainConstants {
         public static PID CLIMBER_CLAW_PID = new PID(0.1, 0, 0);
 
         public static final PID INTAKE_PID = new PID(0, 0, 0);
+
+        public static PID ARM_FOLLOWER_PID = new PID(0, 0, 0);
+        public static PID ARM_LEADER_PID = new PID(0, 0, 0);
     }
 
     //Mechanical Constants
@@ -91,6 +94,9 @@ public class MainConstants {
 
   
     public int krakenShooter = 0;
+    public int krakenArmLeader = 0;
+    public int krakenArmFollower = 0;
+
     //Drive Constants
     public static boolean INVERT_FL_DRIVE = false;
     public static boolean INVERT_FL_STEER = false;
