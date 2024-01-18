@@ -10,11 +10,16 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 /**
@@ -25,8 +30,10 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
  */
 public class RobotContainer {
 
-
-
+  private final XboxController driveXboxController = new XboxController(0);
+  private final ManualControls manualControls = new ManualControls(driveXboxController);
+  public final static ArmSubsystem arm = new ArmSubsystem();
+  
    Autos auton;
 
    private final double MaxSpeed = 6; // 6 meters per second desired top speed
@@ -48,6 +55,12 @@ public class RobotContainer {
     public RobotContainer() {
         auton = new Autos(drivetrain);
         configureBindings();
+        // Human player command composition
+    ConditionalCommand humanPlayerCommandGroup = 
+    new ConditionalCommand(
+      new InstantCommand(() -> arm.rotateHumanPlayer()
+      ), new InstantCommand(() -> arm.rotateStable()
+      ), arm::isFront);
     }
 
   private void configureBindings() {
