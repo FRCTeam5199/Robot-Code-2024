@@ -1,8 +1,0 @@
-package frc.robot.abstractMotorInterfaces;
-
-public class VortexMotorController extends AbstractMotorController{
-
-    public VortexMotorController(){
-
-    }
-}
