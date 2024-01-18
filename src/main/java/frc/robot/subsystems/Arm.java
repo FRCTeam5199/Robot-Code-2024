@@ -20,6 +20,18 @@ public class Arm extends SubsystemBase {
 	krakenArmFollower = new TalonFX(MainConstants.krakenArmFollower)	;
 	TalonFX krakenArmLeader;
 	krakenArmFollower = new TalonFX(MainConstants.krakenArmLeader);
+  
+	public MainConstants constants = new MainConstants();
+
+	PIDController rotatePIDController;
+	TalonFX krakenArmLeader;
+	TalonFX krakenArmFollower;
+	
+  public Arm() {
+	krakenArmLeader = new TalonFX(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID );
+	krakenArmFollower = new TalonFX(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
+	krakenArmFollower.foll
+
 	PIDInit();
   }
 
@@ -29,7 +41,9 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
+
 	krakenArmLeader.setspeed.set(rotatePIDController.calculate(krakenArmLeader.getRotations()));
+
   }
 
   public void PIDInit() {
@@ -54,7 +68,6 @@ public class Arm extends SubsystemBase {
 
 	public void rotateLow() {
 		rotatePIDController.setSetpoint(-120);
-		
-	}	
-  
+
+	}
 }
