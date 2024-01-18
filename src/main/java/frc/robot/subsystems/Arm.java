@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import frc.robot.Main;
 import frc.robot.constants.MainConstants;
 
@@ -15,14 +16,15 @@ public class Arm extends SubsystemBase {
 
 	PIDController rotatePIDController;
 	TalonFX krakenArmLeader;
-	Follower krakenArmFollower;
+	TalonFX krakenArmFollower;
 
 
 
 
   public Arm() {
 	krakenArmLeader = new TalonFX(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID );
-	krakenArmFollower = new Follower(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID,true);
+	krakenArmFollower = new TalonFX(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
+	krakenArmFollower.setControl(new Follower(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID,true));
   }
 
   public void init(){
