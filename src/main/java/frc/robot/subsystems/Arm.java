@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import frc.robot.Main;
@@ -13,36 +14,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Arm extends SubsystemBase {
 
 	PIDController rotatePIDController;
-
-
-  public Arm() {
-	TalonFX krakenArmFollower;
-	krakenArmFollower = new TalonFX(MainConstants.krakenArmFollower)	;
 	TalonFX krakenArmLeader;
-	krakenArmFollower = new TalonFX(MainConstants.krakenArmLeader);
-  
-	public MainConstants constants = new MainConstants();
+	Follower krakenArmFollower;
 
-	PIDController rotatePIDController;
-	TalonFX krakenArmLeader;
-	TalonFX krakenArmFollower;
-	
+
+
+
   public Arm() {
 	krakenArmLeader = new TalonFX(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID );
-	krakenArmFollower = new TalonFX(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
-	krakenArmFollower.foll
-
-	PIDInit();
+	krakenArmFollower = new Follower(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID,true);
   }
 
   public void init(){
-
+	  PIDInit();
   }
 
   @Override
   public void periodic() {
-
-	krakenArmLeader.setspeed.set(rotatePIDController.calculate(krakenArmLeader.getRotations()));
 
   }
 
