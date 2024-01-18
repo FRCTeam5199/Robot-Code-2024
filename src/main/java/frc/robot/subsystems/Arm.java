@@ -1,17 +1,60 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
+import frc.robot.Main;
+import frc.robot.constants.MainConstants;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
 public class Arm extends SubsystemBase {
-  /** Creates a new Arm. */
-  public Arm() {}
+
+	PIDController rotatePIDController;
+
+
+  public Arm() {
+	TalonFX krakenArmFollower;
+	krakenArmFollower = new TalonFX(MainConstants.krakenArmFollower)	;
+	TalonFX krakenArmLeader;
+	krakenArmFollower = new TalonFX(MainConstants.krakenArmLeader);
+	PIDInit();
+  }
+
+  public void init(){
+
+  }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+	krakenArmLeader.setspeed.set(rotatePIDController.calculate(krakenArmLeader.getRotations()));
   }
+
+  public void PIDInit() {
+		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_FOLLOWER_PID.P, MainConstants.PIDConstants.ARM_FOLLOWER_PID.I,
+				MainConstants.PIDConstants.ARM_FOLLOWER_PID.D);
+	}
+
+
+	public Command setRotateSetpoint(int setpoint) {
+		return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
+	}
+
+	public void rotateHigh() {
+		rotatePIDController.setSetpoint(-110);
+
+	}
+
+	public void rotateMedium() {
+		rotatePIDController.setSetpoint(-89);
+
+	}
+
+	public void rotateLow() {
+		rotatePIDController.setSetpoint(-120);
+		
+	}	
+  
 }
