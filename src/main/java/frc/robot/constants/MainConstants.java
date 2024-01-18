@@ -67,6 +67,13 @@ public class MainConstants {
         public static PID ARM_LEADER_PID = new PID(0, 0, 0);
     }
 
+    public static class Setpoints {
+        public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 0;
+        public static double ARM_ROTATE_SETPOINT_STABLE = 0;
+        public static double ARM_ROTATE_SETPOINT_HIGH = 0;
+        public static double ARM_ROTATE_SETPOINT_MID = 0;
+        public static double ARM_ROTATE_SETPOINT_LOW = 0;
+    }
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 4;
@@ -93,9 +100,9 @@ public class MainConstants {
         new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
 
   
-    public int krakenShooter = 0;
-    public int krakenArmLeader = 0;
-    public int krakenArmFollower = 0;
+    public static int krakenShooter = 0;
+    public static int krakenArmLeader = 0;
+    public static int krakenArmFollower = 0;
 
     //Drive Constants
     public static boolean INVERT_FL_DRIVE = false;
