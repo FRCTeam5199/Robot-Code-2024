@@ -1,21 +1,62 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Main;
+import frc.robot.abstractMotorInterfaces.TalonMotorController;
+import frc.robot.constants.MainConstants;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class Arm implements Subsystem {
-  /** Creates a new Arm. */
+	TalonMotorController krakenArmLeader;
+	TalonMotorController krakenArmFollower;
+	PIDController rotatePIDController;
+
+	/** Creates a new Arm. */
   public Arm() {
+	krakenArmLeader = new TalonMotorController(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID );
+	krakenArmFollower = new TalonMotorController(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
+	krakenArmFollower.follow(krakenArmLeader, true);
+  }
 
-
+  public void init(){
+	  PIDInit();
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+
   }
+
+  public void PIDInit() {
+		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_FOLLOWER_PID.P, MainConstants.PIDConstants.ARM_FOLLOWER_PID.I,
+				MainConstants.PIDConstants.ARM_FOLLOWER_PID.D);
+	}
+
+
+	public Command setRotateSetpoint(int setpoint) {
+		return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
+	}
+
+	public void rotateHigh() {
+		rotatePIDController.setSetpoint(-110);
+
+	}
+
+	public void rotateMedium() {
+		rotatePIDController.setSetpoint(-89);
+
+	}
+
+	public void rotateLow() {
+		rotatePIDController.setSetpoint(-120);
+
+	}
 }
