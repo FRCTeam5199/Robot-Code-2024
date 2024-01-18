@@ -1,6 +1,7 @@
 package frc.robot.abstractMotorInterfaces;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -14,6 +15,12 @@ public class TalonMotorController extends AbstractMotorController{
     public TalonMotorController(int ID, String bus){
         super();
         talon = new TalonFX(ID, bus);
+        talon.getConfigurator().apply(configuration);
+    }
+
+    public TalonMotorController(int ID){
+        super();
+        talon = new TalonFX(ID);
         talon.getConfigurator().apply(configuration);
     }
 
@@ -84,7 +91,7 @@ public class TalonMotorController extends AbstractMotorController{
     }
 
     @Override
-    public double getID() {
+    public int getID() {
         return talon.getDeviceID();
     }
 
@@ -104,7 +111,8 @@ public class TalonMotorController extends AbstractMotorController{
 
     @Override
     public AbstractMotorController follow(AbstractMotorController leader, boolean invert) {
-        return null;
+        talon.setControl(new Follower(leader.getID(), invert));
+        return this;
     }
 
     public void setConfiguration(double currentLimit, double peakVoltage){
