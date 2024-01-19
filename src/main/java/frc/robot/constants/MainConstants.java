@@ -71,6 +71,10 @@ public class MainConstants {
         public static PID ARM_LEADER_PID = new PID(0, 0, 0);
     }
 
+    //Intake Setpoints
+    public static final double STOW_INTAKE = 0;
+    public static final double DEPLOY_INTAKE = 40;
+
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 4;
