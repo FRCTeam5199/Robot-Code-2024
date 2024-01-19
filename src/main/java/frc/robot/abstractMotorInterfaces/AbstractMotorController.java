@@ -28,7 +28,7 @@ public abstract class AbstractMotorController {
 
     public abstract double getCurrent();
 
-    public abstract double getID();
+    public abstract int getID();
 
     public abstract void setCurrentLimit(double limit);
 

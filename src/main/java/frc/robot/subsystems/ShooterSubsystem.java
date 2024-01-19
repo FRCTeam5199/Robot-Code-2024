@@ -4,35 +4,53 @@
 
 package frc.robot.subsystems;
 
-
-
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import com.revrobotics.CANSparkLowLevel;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 import com.revrobotics.CANSparkFlex;
 
 public class ShooterSubsystem implements Subsystem{
-
-  public MainConstants constants = new MainConstants();
-  TalonFX krakenShooter;
-  CANSparkFlex shooter;
+  public VortexMotorController shooterMotorLeader;
+  public VortexMotorController shooterMotorFollower;
   /** Creates a new shooter. */
 
-  //one shooter (probably kraken), feeder (probably bag)
   public ShooterSubsystem() {
-    shooter = new CANSparkFlex(1, CANSparkLowLevel.MotorType.kBrushless);
-    shooter.setOpenLoopRampRate(5);
+    init();
+}
+
+public void init() {
+    motorInit();
+}
+
+  //one shooter (probably kraken), feeder (probably bag)
+  public void motorInit() {
+    shooterMotorLeader = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_LEADER_MOTOR_ID);
+    shooterMotorLeader.setOpenLoopRampRate(1);
+
+    shooterMotorFollower.follow(shooterMotorLeader);
   }
-
-
-  
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public Command shootSpeaker(){
+    return this.runOnce(() -> shooterMotorLeader.set(0));
+  }
+
+  public Command shootAmp(){
+    return this.runOnce(() -> shooterMotorLeader.set(0));
+  }
+
+  public Command shootTrap(){
+    return this.runOnce(() -> shooterMotorLeader.set(0));
   }
 }

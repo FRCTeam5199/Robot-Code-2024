@@ -1,17 +1,14 @@
 package frc.robot.abstractMotorInterfaces;
 
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.SparkFlexExternalEncoder;
-import com.revrobotics.SparkRelativeEncoder;
+import com.revrobotics.*;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkFlex;
-import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 public class VortexMotorController extends AbstractMotorController{
-    CANSparkFlex vortex;
+    CANSparkBase vortex;
     public VortexMotorController(int ID){
+        super();
         vortex = new CANSparkFlex(ID, CANSparkLowLevel.MotorType.kBrushless);
     }
 
@@ -80,8 +77,8 @@ public class VortexMotorController extends AbstractMotorController{
     }
 
     @Override
-    public double getID() {
-        return 0;
+    public int getID() {
+        return vortex.getDeviceId();
     }
 
     @Override
@@ -101,6 +98,7 @@ public class VortexMotorController extends AbstractMotorController{
 
     @Override
     public AbstractMotorController follow(AbstractMotorController leader, boolean invert) {
-        return null;
+        vortex.follow(new CANSparkFlex(leader.getID(), CANSparkLowLevel.MotorType.kBrushless));
+        return this;
     }
 }
