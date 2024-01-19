@@ -25,7 +25,7 @@ public class ShooterSubsystem implements Subsystem{
   //one shooter (probably kraken), feeder (probably bag)
   public ShooterSubsystem() {
     shooter = new CANSparkFlex(1, CANSparkLowLevel.MotorType.kBrushless);
-    shooter.setOpenLoopRampRate(5);
+    shooter.setOpenLoopRampRate(1);
   }
 
 
