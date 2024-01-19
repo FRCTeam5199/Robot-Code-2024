@@ -58,7 +58,7 @@ public class MainConstants {
             public static int ARM_FOLLOWER_MOTOR_ID = 0;
         }
     }
-    
+
     public static class PIDConstants {
         // Climber
         public static PID CLIMBER_JOINT_PID = new PID(0.1, 0, 0);
@@ -71,9 +71,13 @@ public class MainConstants {
         public static PID ARM_LEADER_PID = new PID(0, 0, 0);
     }
 
-    //Intake Setpoints
-    public static final double STOW_INTAKE = 0;
-    public static final double DEPLOY_INTAKE = 40;
+    public static class Setpoints {
+        public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 0;
+        public static double ARM_ROTATE_SETPOINT_STABLE = 0;
+        public static double ARM_ROTATE_SETPOINT_HIGH = 0;
+        public static double ARM_ROTATE_SETPOINT_MID = 0;
+        public static double ARM_ROTATE_SETPOINT_LOW = 0;
+    }
 
     //Mechanical Constants
     public static String CAN_BUS = "";
@@ -91,17 +95,17 @@ public class MainConstants {
     public static double DRIVETRAIN_WHEELBASE_METERS = .6477;
 
     public static SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
-        // Front left
-        new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
-        // Front right
-        new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0),
-        // Back left
-        new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
-        // Back right
-        new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
+            // Front left
+            new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            // Front right
+            new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            // Back left
+            new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            // Back right
+            new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
 
-  
-    public int krakenShooter = 0;
+
+    public static int krakenShooter = 0;
 
     //Drive Constants
     public static boolean INVERT_FL_DRIVE = false;
@@ -117,9 +121,9 @@ public class MainConstants {
     public static boolean INVERT_BR_STEER = false;
 
     public static double MAX_VELOCITY_METERS_PER_SECOND = 0;
-    
 
-//Operator Constants
+
+    //Operator Constants
     public static int CONTROLLER_PORT = 0;
     public static int BUTTON_PANEL_PORT = 0;
 
@@ -164,10 +168,10 @@ public class MainConstants {
 
 
     // final double TARGET_HEIGHT_METERS = Units.feetToMeters(5);
-  
+
     public static double GOAL_RANGE_METERS = Units.feetToMeters(2);
 
     public static boolean ENABLE_OVERHEAT_DETECTION = false;
     public static int OVERHEAT_THRESHOLD = 80;
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
-    }
+}
