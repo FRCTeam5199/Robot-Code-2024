@@ -30,8 +30,6 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
  */
 public class RobotContainer {
 
-  private final XboxController driveXboxController = new XboxController(0);
-  private final ManualControls manualControls = new ManualControls(driveXboxController);
   public final static ArmSubsystem arm = new ArmSubsystem();
   
    Autos auton;
@@ -55,15 +53,16 @@ public class RobotContainer {
     public RobotContainer() {
         auton = new Autos(drivetrain);
         configureBindings();
-        // Human player command composition
+    }
+
+  private void configureBindings() {
+
+            // Human player command composition
     ConditionalCommand humanPlayerCommandGroup = 
     new ConditionalCommand(
       new InstantCommand(() -> arm.rotateHumanPlayer()
       ), new InstantCommand(() -> arm.rotateStable()
       ), arm::isFront);
-    }
-
-  private void configureBindings() {
 
     // Drive
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
@@ -80,7 +79,7 @@ public class RobotContainer {
     commandXboxController.a().whileTrue(drivetrain.applyRequest(() -> brake));
     commandXboxController.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(), -commandXboxController.getLeftX()))));
-
+    commandXboxController.x().onTrue(humanPlayerCommandGroup);//button mappings can be done later
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
