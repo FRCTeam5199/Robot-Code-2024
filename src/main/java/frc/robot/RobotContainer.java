@@ -20,6 +20,7 @@ import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 /**
@@ -32,6 +33,7 @@ public class RobotContainer {
 
   private final XboxController driveXboxController = new XboxController(0);
   public final static ArmSubsystem arm = new ArmSubsystem();
+  public final static IntakeSubsystem intake = new IntakeSubsystem();
   
    Autos auton;
 
@@ -79,6 +81,8 @@ public class RobotContainer {
     commandXboxController.a().whileTrue(drivetrain.applyRequest(() -> brake));
     commandXboxController.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(), -commandXboxController.getLeftX()))));
+    commandXboxController.x().onTrue(intake.deployIntake());
+    commandXboxController.y().onTrue(intake.stowIntake());
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

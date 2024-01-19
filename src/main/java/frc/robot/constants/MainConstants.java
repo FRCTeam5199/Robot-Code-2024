@@ -72,11 +72,16 @@ public class MainConstants {
     }
 
     public static class Setpoints {
+        //Arm Setpoints
         public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 0;
         public static double ARM_ROTATE_SETPOINT_STABLE = 0;
         public static double ARM_ROTATE_SETPOINT_HIGH = 0;
         public static double ARM_ROTATE_SETPOINT_MID = 0;
         public static double ARM_ROTATE_SETPOINT_LOW = 0;
+
+        //Intake Setpoints
+        public static final double STOW_INTAKE = 0;
+        public static final double DEPLOY_INTAKE = 40;
     }
 
     //Mechanical Constants

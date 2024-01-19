@@ -54,10 +54,10 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command stowIntake() {
-    return this.runOnce(() -> setpoint = MainConstants.STOW_INTAKE);
+    return this.runOnce(() -> setpoint = MainConstants.Setpoints.STOW_INTAKE);
   }
 
   public Command deployIntake() {
-    return this.runOnce(() -> setpoint = MainConstants.DEPLOY_INTAKE);
+    return this.runOnce(() -> setpoint = MainConstants.Setpoints.DEPLOY_INTAKE);
   }
 }
