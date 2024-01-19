@@ -52,6 +52,10 @@ public class MainConstants {
             public static int CLIMBER_JOINT_MOTOR_ID = 0;
             public static int CLIMBER_WRIST_MOTOR_ID = 0;
             public static int CLIMBER_CLAW_MOTOR_ID = 0;
+
+            //Arm
+            public static int ARM_LEADER_MOTOR_ID = 0;
+            public static int ARM_FOLLOWER_MOTOR_ID = 0;
         }
     }
     
@@ -67,13 +71,6 @@ public class MainConstants {
         public static PID ARM_LEADER_PID = new PID(0, 0, 0);
     }
 
-    public static class Setpoints {
-        public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 0;
-        public static double ARM_ROTATE_SETPOINT_STABLE = 0;
-        public static double ARM_ROTATE_SETPOINT_HIGH = 0;
-        public static double ARM_ROTATE_SETPOINT_MID = 0;
-        public static double ARM_ROTATE_SETPOINT_LOW = 0;
-    }
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 4;

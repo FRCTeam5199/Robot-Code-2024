@@ -1,5 +1,6 @@
 package frc.robot.subsystems.drivetrain;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
@@ -12,6 +13,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
+import org.photonvision.EstimatedRobotPose;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem
@@ -33,6 +36,8 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     private double m_lastSimTime;
     AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
     SwerveRequest autoRequest = new SwerveRequest.ApplyChassisSpeeds();
+    SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(m_kinematics, this.getState().Pose.getRotation(), this.getModulePositions(), new Pose2d());
+
 
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
@@ -49,9 +54,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
-        if(aprilTagSubsystem.getVisionPose().isPresent()){
-            this.addVisionMeasurement(aprilTagSubsystem.getVisionPose().get().estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-        }
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
@@ -76,9 +78,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     }
 
     public Pose2d getPose() {
-        if(aprilTagSubsystem.getVisionPose().isPresent()){
-            this.addVisionMeasurement(aprilTagSubsystem.getVisionPose().get().estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-        }
         return m_odometry.getEstimatedPosition();
 
     }

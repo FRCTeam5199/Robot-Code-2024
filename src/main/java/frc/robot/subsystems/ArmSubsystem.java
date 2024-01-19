@@ -16,6 +16,8 @@ public class ArmSubsystem extends SubsystemBase {
   public CANSparkMax ArmMotor; 
   public double rotateSetpoint = 0;
   private boolean isFront = false;
+  private boolean isStable = false;
+  private boolean isHigh = false;
 	PIDController rotatePIDController;
 	
   public ArmSubsystem() {
@@ -23,7 +25,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void init(){
-	ArmMotor = new CANSparkMax(MainConstants.ArmLeader, MotorType.kBrushless);//idk if brushed or brushless
+	ArmMotor = new CANSparkMax(MainConstants.krakenArmLeader, MotorType.kBrushless);//idk if brushed or brushless
 
 	ArmMotor.getEncoder().setPosition(0);
 
@@ -38,26 +40,34 @@ public class ArmSubsystem extends SubsystemBase {
 
 	public void rotateHumanPlayer() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_HUMANPLAYER;
+		this.isFront = true;
+		this.isHigh = false;
 	}
 
 	public void rotateStable() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_STABLE;
+		this.isFront = true;
+		this.isHigh = false;
 	}
 
 	public void rotateHigh() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_HIGH;
+		this.isFront = false;
+		this.isHigh = true;
 	}
 
 	public void rotateMid() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_MID;
+		this.isFront = false;
+		this.isHigh = false;
 	}
 
 	public void rotateLow() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_LOW;
+		this.isFront = false;
+		this.isHigh = false;
 	}
 	public boolean isFront() {
 		return this.isFront;
 	}
-
-
 }

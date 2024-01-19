@@ -37,7 +37,6 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 public class AprilTagSubsystem implements Subsystem {
 
     public MainConstants Constants = new MainConstants();
-    PhotonPoseEstimator poseEstimator;
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
     SwerveDrive drive = TunerConstants.DriveTrain;
 
@@ -54,6 +53,9 @@ public class AprilTagSubsystem implements Subsystem {
 
     AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+    PhotonPoseEstimator multiPoseEstimator = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[3]);
+    PhotonPoseEstimator singlePoseEstimator = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Back"), Constants.cameraPositions[3]);
+
     public static PhotonCamera frontCamera;
     public static PhotonCamera leftCamera;
     public static PhotonCamera rightCamera;
@@ -117,29 +119,30 @@ public class AprilTagSubsystem implements Subsystem {
       }
 
        */
-        if (four.getLatestResult().getMultiTagResult().estimatedPose.isPresent) {
-            System.out.println(four.getLatestResult().getMultiTagResult().estimatedPose.ambiguity);
+            System.out.println("Two tags");
             return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR , new PhotonCamera("Back"), Constants.cameraPositions[0]);
-        }else {
-            System.out.println("1 Tag");
-            return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Back"), Constants.cameraPositions[0]);
-        }
+
     }
 
     public Command updatePose() {
-        poseEstimator = ambiguityCheck(allCameras[3]);
-        Optional<EstimatedRobotPose> bool = poseEstimator.update();
+        multiPoseEstimator = ambiguityCheck(allCameras[3]);
+        Optional<EstimatedRobotPose> bool = multiPoseEstimator.update();
         if(bool.isPresent()){
             return runOnce(()->System.out.println(bool.get().estimatedPose.getTranslation()));
         }
         return runOnce(()->System.out.println("asfhorjogi"));
     }
 
-    public Optional<EstimatedRobotPose> getVisionPose(){
-        poseEstimator = ambiguityCheck(allCameras[3]);
-        System.out.println("Using Vision");
-        return poseEstimator.update();
+    public Optional<EstimatedRobotPose> getVisionPose() {
+        var result = allCameras[3].getLatestResult();
+        if(result.getMultiTagResult().estimatedPose.isPresent){
+            return multiPoseEstimator.update();
+        }else if(result.hasTargets()){
+            return singlePoseEstimator.update();
+
+        }else{
+            System.out.println("O Tags");
+            return Optional.empty();
+        }
     }
-
-
 }
