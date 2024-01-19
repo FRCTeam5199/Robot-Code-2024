@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class ArmSubsystem extends SubsystemBase {
-  public CANSparkMax ArmMotor; 
+  public CANSparkFlex ArmMotor; 
   public double rotateSetpoint = 0;
   private boolean isFront = false;
   private boolean isStable = false;
@@ -25,7 +26,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void init(){
-	ArmMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID, MotorType.kBrushless);//idk if brushed or brushless
+	ArmMotor = new CANSparkFlex(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID, MotorType.kBrushless);//idk if brushed or brushless
 
 	ArmMotor.getEncoder().setPosition(0);
 
