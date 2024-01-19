@@ -98,7 +98,6 @@ public class VortexMotorController extends AbstractMotorController{
 
     @Override
     public AbstractMotorController follow(AbstractMotorController leader, boolean invert) {
-
         vortex.follow(new CANSparkFlex(leader.getID(), CANSparkLowLevel.MotorType.kBrushless));
         return this;
     }

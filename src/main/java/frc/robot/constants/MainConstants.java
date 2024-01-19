@@ -128,6 +128,9 @@ public class MainConstants {
             public static int ARM_FOLLOWER_MOTOR_ID = 0;
             // Drive
             final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
+            //Shooter
+            public static int SHOOTER_LEADER_MOTOR_ID = 0;
+            public static int SHOOTER_FOLLOWER_MOTOR_ID = 0;
         }
     }
 
