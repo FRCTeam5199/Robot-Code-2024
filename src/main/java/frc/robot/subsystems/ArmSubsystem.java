@@ -51,6 +51,12 @@ public class ArmSubsystem extends SubsystemBase {
 		this.isHigh = false;
 	}
 
+	public void rotateAmp() {
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_AMP;
+		this.isFront = false;
+		this.isHigh = false;
+	}
+
 	public void rotateHigh() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_HIGH;
 		this.isFront = false;
