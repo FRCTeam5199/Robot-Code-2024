@@ -31,7 +31,6 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
 public class RobotContainer {
 
   private final XboxController driveXboxController = new XboxController(0);
-  private final ManualControls manualControls = new ManualControls(driveXboxController);
   public final static ArmSubsystem arm = new ArmSubsystem();
   
    Autos auton;

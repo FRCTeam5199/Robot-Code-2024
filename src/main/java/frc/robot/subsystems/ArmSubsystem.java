@@ -14,13 +14,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
-public class Arm implements Subsystem {
+public class ArmSubsystem implements Subsystem {
 	TalonMotorController krakenArmLeader;
 	TalonMotorController krakenArmFollower;
 	PIDController rotatePIDController;
 
 	/** Creates a new Arm. */
-  public Arm() {
+  public ArmSubsystem() {
 	krakenArmLeader = new TalonMotorController(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID );
 	krakenArmFollower = new TalonMotorController(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
 	krakenArmFollower.follow(krakenArmLeader, true);
