@@ -40,7 +40,14 @@ public class ArmSubsystem implements Subsystem {
 		return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
 	}
 
-	public void rotateHumanPlayer() {
+	public Command rotateHumanPlayer() {
+	  return this.runOnce(() -> rotatePIDController.setSetpoint(-110));
+	}
+
+	public Command rotateStable() {
+		return this.runOnce(() -> rotatePIDController.setSetpoint(80));
+	}
+	/**public void rotateHumanPlayer() {
 		rotatePIDController.setSetpoint(-110);
 
 	}
@@ -54,6 +61,7 @@ public class ArmSubsystem implements Subsystem {
 		rotatePIDController.setSetpoint(-120);
 
 	}
+	**/
 
 	public boolean isFront() {
 	  isFront = true;
