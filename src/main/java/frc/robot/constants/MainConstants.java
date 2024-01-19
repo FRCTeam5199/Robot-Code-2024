@@ -71,6 +71,10 @@ public class MainConstants {
         public static PID ARM_LEADER_PID = new PID(0, 0, 0);
     }
 
+    //Intake Setpoints
+    public static final double STOW_INTAKE = 0;
+    public static final double DEPLOY_INTAKE = 40;
+
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 4;
@@ -97,7 +101,7 @@ public class MainConstants {
         new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
 
   
-    public static int krakenShooter = 0;
+    public int krakenShooter = 0;
 
     //Drive Constants
     public static boolean INVERT_FL_DRIVE = false;
