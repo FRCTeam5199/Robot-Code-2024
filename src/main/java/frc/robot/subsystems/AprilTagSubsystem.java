@@ -90,52 +90,9 @@ public class AprilTagSubsystem implements Subsystem {
     }
 
 
-    public PhotonPoseEstimator ambiguityCheck(PhotonCamera four) {
-        double[] result = new double[4];
-        MultiTargetPNPResult[] pnpResult = new MultiTargetPNPResult[4];
-        //result[0] = one.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        //result[1] = two.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        //result[2] = three.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-        result[3] = four.getLatestResult().getMultiTagResult().estimatedPose.ambiguity;
-
-        OptionalDouble lowestambiguity = Arrays.stream(result).sorted().findFirst();
-      /*
-      if (lowestambiguity.isPresent()) {
-          if (one.getLatestResult().getMultiTagResult().estimatedPose.ambiguity == lowestambiguity.getAsDouble()) {
-              return new PhotonPoseEstimator(fieldLayout, poseStrategy, one, Constants.cameraPositions[0]);
-          } else {
-              if (two.getLatestResult().getMultiTagResult().estimatedPose.ambiguity == lowestambiguity.getAsDouble()) {
-                  return new PhotonPoseEstimator(fieldLayout, poseStrategy, two, Constants.cameraPositions[1]);
-              } else {
-                  if (three.getLatestResult().getMultiTagResult().estimatedPose.ambiguity == lowestambiguity.getAsDouble()) {
-                      return new PhotonPoseEstimator(fieldLayout, poseStrategy, three, Constants.cameraPositions[2]);
-                  } else {
-                      if (four.getLatestResult().getMultiTagResult().estimatedPose.ambiguity == lowestambiguity.getAsDouble()) {
-                          return new PhotonPoseEstimator(fieldLayout, poseStrategy, four, Constants.cameraPositions[3]);
-                      }
-                  }
-              }
-          }
-      }
-
-       */
-            System.out.println("Two tags");
-            return new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR , new PhotonCamera("Back"), Constants.cameraPositions[0]);
-
-    }
-
-    public Command updatePose() {
-        multiPoseEstimator = ambiguityCheck(allCameras[3]);
-        Optional<EstimatedRobotPose> bool = multiPoseEstimator.update();
-        if(bool.isPresent()){
-            return runOnce(()->System.out.println(bool.get().estimatedPose.getTranslation()));
-        }
-        return runOnce(()->System.out.println("asfhorjogi"));
-    }
-
-    public Optional<EstimatedRobotPose> getVisionPose() {
-        var result = allCameras[3].getLatestResult();
-        if(result.getMultiTagResult().estimatedPose.isPresent){
+    public Optional<EstimatedRobotPose> getVisionPoseFront() {
+        var result = allCameras[0].getLatestResult();
+        if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
             return multiPoseEstimator.update();
         }else if(result.hasTargets()){
             return singlePoseEstimator.update();
@@ -145,4 +102,41 @@ public class AprilTagSubsystem implements Subsystem {
             return Optional.empty();
         }
     }
+    public Optional<EstimatedRobotPose> getVisionPoseRight() {
+        var result = allCameras[1].getLatestResult();
+        if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
+            return multiPoseEstimator.update();
+        }else if(result.hasTargets()){
+            return singlePoseEstimator.update();
+
+        }else{
+            System.out.println("O Tags");
+            return Optional.empty();
+        }
+    }
+    public Optional<EstimatedRobotPose> getVisionPoseLeft() {
+        var result = allCameras[2].getLatestResult();
+        if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
+            return multiPoseEstimator.update();
+        }else if(result.hasTargets()){
+            return singlePoseEstimator.update();
+
+        }else{
+            System.out.println("O Tags");
+            return Optional.empty();
+        }
+    }
+    public Optional<EstimatedRobotPose> getVisionPoseBack() {
+        var result = allCameras[3].getLatestResult();
+        if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
+            return multiPoseEstimator.update();
+        }else if(result.hasTargets()){
+            return singlePoseEstimator.update();
+
+        }else{
+            System.out.println("O Tags");
+            return Optional.empty();
+        }
+    }
+
 }
