@@ -22,7 +22,7 @@ public class ArmSubsystem extends SubsystemBase {
 	PIDController rotatePIDController;
 	
   public ArmSubsystem() {
-
+	init();
   }
 
   public void init(){
