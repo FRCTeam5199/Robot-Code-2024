@@ -1,26 +1,21 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.hardware.TalonFX;
-
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Main;
 import frc.robot.abstractMotorInterfaces.TalonMotorController;
 import frc.robot.constants.MainConstants;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
-public class Arm implements Subsystem {
+public class ArmSubsystem implements Subsystem {
 	TalonMotorController krakenArmLeader;
 	TalonMotorController krakenArmFollower;
 	PIDController rotatePIDController;
+	boolean isFront;
 
 	/** Creates a new Arm. */
-  public Arm() {
+  public ArmSubsystem() {
 	krakenArmLeader = new TalonMotorController(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID );
 	krakenArmFollower = new TalonMotorController(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
 	krakenArmFollower.follow(krakenArmLeader, true);
@@ -45,12 +40,12 @@ public class Arm implements Subsystem {
 		return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
 	}
 
-	public void rotateHigh() {
+	public void rotateHumanPlayer() {
 		rotatePIDController.setSetpoint(-110);
 
 	}
 
-	public void rotateMedium() {
+	public void rotateStable() {
 		rotatePIDController.setSetpoint(-89);
 
 	}
@@ -58,5 +53,10 @@ public class Arm implements Subsystem {
 	public void rotateLow() {
 		rotatePIDController.setSetpoint(-120);
 
+	}
+
+	public boolean isFront() {
+	  isFront = true;
+	  return true;
 	}
 }
