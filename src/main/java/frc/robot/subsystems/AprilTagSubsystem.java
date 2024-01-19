@@ -98,7 +98,7 @@ public class AprilTagSubsystem implements Subsystem {
             return singlePoseEstimator.update();
 
         }else{
-            System.out.println("O Tags");
+            System.out.println("O Tags on Front");
             return Optional.empty();
         }
     }
@@ -110,7 +110,7 @@ public class AprilTagSubsystem implements Subsystem {
             return singlePoseEstimator.update();
 
         }else{
-            System.out.println("O Tags");
+            System.out.println("O Tags On Right");
             return Optional.empty();
         }
     }
@@ -122,7 +122,7 @@ public class AprilTagSubsystem implements Subsystem {
             return singlePoseEstimator.update();
 
         }else{
-            System.out.println("O Tags");
+            System.out.println("O Tags On Left");
             return Optional.empty();
         }
     }
@@ -134,7 +134,7 @@ public class AprilTagSubsystem implements Subsystem {
             return singlePoseEstimator.update();
 
         }else{
-            System.out.println("O Tags");
+            System.out.println("O Tags Back");
             return Optional.empty();
         }
     }
