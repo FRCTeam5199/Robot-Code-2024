@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.abstractMotorInterfaces.TalonMotorController;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
@@ -12,43 +10,34 @@ import frc.robot.constants.MainConstants;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 
 public class ArmSubsystem extends SubsystemBase {
-  public CANSparkFlex ArmMotor; 
-  public double rotateSetpoint = 0;
-  private boolean isFront = false;
-  private boolean isStable = false;
-  private boolean isHigh = false;
+	public CANSparkFlex ArmMotor;
+	public double rotateSetpoint = 0;
+	private boolean isFront = false;
+	private boolean isStable = false;
+	private boolean isHigh = false;
 	PIDController rotatePIDController;
-	
-  public ArmSubsystem() {
-	init();
-  }
 
-  public void init(){
-	ArmMotor = new CANSparkFlex(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID, MotorType.kBrushless);//idk if brushed or brushless
+	public ArmSubsystem() {
+		init();
+	}
 
-	ArmMotor.getEncoder().setPosition(0);
+	public void init(){
+		ArmMotor = new CANSparkFlex(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID, MotorType.kBrushless);//idk if brushed or brushless
 
-	rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_FOLLOWER_PID.P, MainConstants.PIDConstants.ARM_FOLLOWER_PID.I,
-				MainConstants.PIDConstants.ARM_FOLLOWER_PID.D);
-  }
+		ArmMotor.getEncoder().setPosition(0);
 
-  @Override
-  public void periodic() {
-  }
-
-  public void PIDInit() {
 		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_FOLLOWER_PID.P, MainConstants.PIDConstants.ARM_FOLLOWER_PID.I,
 				MainConstants.PIDConstants.ARM_FOLLOWER_PID.D);
 	}
-	
-	public boolean isFront() {
-	  isFront = true;
-	  return true;
 
-    ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition()*1D, rotateSetpoint));
-  }
+	@Override
+	public void periodic() {
+		ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition()*1D, rotateSetpoint));
+	}
 
 	public void rotateHumanPlayer() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_HUMANPLAYER;
@@ -78,5 +67,8 @@ public class ArmSubsystem extends SubsystemBase {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_LOW;
 		this.isFront = false;
 		this.isHigh = false;
+	}
+	public boolean isFront() {
+		return this.isFront;
 	}
 }
