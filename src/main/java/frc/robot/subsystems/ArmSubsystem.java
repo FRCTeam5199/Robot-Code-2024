@@ -17,10 +17,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
 	public VortexMotorController ArmMotor;
-	/**
-	 * public TalonMotorController ArmLeader;
-	 * public TalonMotorController ArmFollower;
-	 **/
+	
+	 public TalonMotorController ArmLeader;
+	  public TalonMotorController ArmFollower;
+
 	public double rotateSetpoint = 0;
 	private boolean isFront = false;
 	private boolean isStable = false;
@@ -33,6 +33,9 @@ public class ArmSubsystem extends SubsystemBase {
 
 	public void init(){
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID);//idk if brushed or brushless
+		ArmLeader = new TalonMotorController(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID);
+		ArmFollower = new TalonMotorController(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
+
 
 		ArmMotor.getEncoder().setPosition(0);
 
