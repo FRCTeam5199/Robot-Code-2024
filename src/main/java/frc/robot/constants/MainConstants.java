@@ -71,6 +71,14 @@ public class MainConstants {
         public static PID ARM_LEADER_PID = new PID(0, 0, 0);
     }
 
+    public static class Setpoints {
+        public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 0;
+        public static double ARM_ROTATE_SETPOINT_STABLE = 0;
+        public static double ARM_ROTATE_SETPOINT_HIGH = 0;
+        public static double ARM_ROTATE_SETPOINT_MID = 0;
+        public static double ARM_ROTATE_SETPOINT_LOW = 0;
+    }
+
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 4;
@@ -98,8 +106,6 @@ public class MainConstants {
 
   
     public static int krakenShooter = 0;
-    public static int ArmLeader = 0;//renamed bc its a vortex
-    public static int krakenArmFollower = 0;
 
     //Drive Constants
     public static boolean INVERT_FL_DRIVE = false;

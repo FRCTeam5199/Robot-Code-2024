@@ -25,7 +25,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void init(){
-	ArmMotor = new CANSparkMax(MainConstants.krakenArmLeader, MotorType.kBrushless);//idk if brushed or brushless
+	ArmMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID, MotorType.kBrushless);//idk if brushed or brushless
 
 	ArmMotor.getEncoder().setPosition(0);
 
