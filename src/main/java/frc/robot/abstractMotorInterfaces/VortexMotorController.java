@@ -15,6 +15,12 @@ public class VortexMotorController extends AbstractMotorController{
 
     @Override
     public void setVelocity(double Velocity) {
+        double speed = 0;
+        vortex.set(0);
+        while (vortex.getEncoder().getVelocity() <= Velocity) {
+            speed++;
+            vortex.set(speed);
+        }
     }
 
     @Override
