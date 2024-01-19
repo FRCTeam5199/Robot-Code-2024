@@ -101,7 +101,7 @@ public class MainConstants {
 
   
     public static int krakenShooter = 0;
-    public static int krakenArmLeader = 0;
+    public static int ArmLeader = 0;//renamed bc its a vortex
     public static int krakenArmFollower = 0;
 
     //Drive Constants
