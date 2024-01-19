@@ -6,6 +6,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Main;
+import frc.robot.abstractMotorInterfaces.TalonMotorController;
+import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -14,7 +16,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class ArmSubsystem extends SubsystemBase {
-	public CANSparkFlex ArmMotor;
+	public VortexMotorController ArmMotor;
+	/**
+	 * public TalonMotorController ArmLeader;
+	 * public TalonMotorController ArmFollower;
+	 **/
 	public double rotateSetpoint = 0;
 	private boolean isFront = false;
 	private boolean isStable = false;
@@ -26,7 +32,7 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public void init(){
-		ArmMotor = new CANSparkFlex(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID, MotorType.kBrushless);//idk if brushed or brushless
+		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID);//idk if brushed or brushless
 
 		ArmMotor.getEncoder().setPosition(0);
 
