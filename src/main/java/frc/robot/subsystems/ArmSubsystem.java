@@ -33,8 +33,6 @@ public class ArmSubsystem extends SubsystemBase {
 
 	public void init(){
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID);//idk if brushed or brushless
-		//ArmFollower = new TalonMotorController(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
-
 
 		ArmMotor.getEncoder().setPosition(0);
 
@@ -61,7 +59,7 @@ public class ArmSubsystem extends SubsystemBase {
 			ArmMotor.set(0);
 			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
 		} else {
-				ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition()*1D, rotateSetpoint));
+				ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
 		}
 	}
 
