@@ -171,4 +171,10 @@ public class AprilTagSubsystem implements Subsystem {
            return Optional.empty();
        }
     }
+
+    public void shooterAlign(){
+        if(getAllianceColor() == "Red"){
+            
+        }
+    }
 }
