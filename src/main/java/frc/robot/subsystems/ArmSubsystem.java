@@ -38,14 +38,24 @@ public class ArmSubsystem extends SubsystemBase {
 
 		ArmMotor.getEncoder().setPosition(0);
 
-		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_FOLLOWER_PID.P, MainConstants.PIDConstants.ARM_FOLLOWER_PID.I,
-				MainConstants.PIDConstants.ARM_FOLLOWER_PID.D);
-		ArmMotor.setBrake(true);
+		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I,
+				MainConstants.PIDConstants.ARM_PID.D);
+		ArmMotor.setInvert(true);
+		ArmMotor.setBrake(false);
 	}
 
 	@Override
 	public void periodic() {
-		ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition()*1D, rotateSetpoint));
+		if (ArmMotor.getEncoder().getPosition() > 5 && ArmMotor.getEncoder().getPosition() < 70) {
+			ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition()*1D, rotateSetpoint));
+		} else {
+			while (ArmMotor.getEncoder().getPosition() < 5) {
+				ArmMotor.set(0.1);
+			}
+
+			ArmMotor.set(0);
+			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
+		}
 	}
 
 	public void rotateHumanPlayer() {
@@ -55,8 +65,17 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public Command moveAtPercent(double percent) {
-		return this.run(() -> ArmMotor.set(percent));
+		
+		return this.run(() -> ArmMotor.set(this.rotateSetpoint));
 	}
+	
+	public Command changeArmSetpoint(double rotations) {
+    return this.runOnce(() -> this.rotateSetpoint += rotations);
+  }
+  
+	public Command setArmSetpoint(double setpoint) {
+    return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
+  }
 
 	public void rotateStable() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_STABLE;

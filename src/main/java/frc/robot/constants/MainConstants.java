@@ -141,8 +141,7 @@ public class MainConstants {
         public static PID CLIMBER_PID = new PID(0.1, 0, 0);
 
         // Arm
-        public static PID ARM_FOLLOWER_PID = new PID(0, 0, 0);
-        public static PID ARM_LEADER_PID = new PID(0.01, 0, 0);
+        public static PID ARM_PID = new PID(0.1, 0, 0);
     }
 
     public static class Setpoints {
@@ -158,11 +157,11 @@ public class MainConstants {
         public static final double CLIMBER_WRIST_STORE_SETPOINT = 0;
 
         //Arm Setpoints
-        public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 40;
-        public static double ARM_ROTATE_SETPOINT_STABLE = 0;
-        public static double ARM_ROTATE_SETPOINT_AMP = 0;
-        public static double ARM_ROTATE_SETPOINT_HIGH = 0;
-        public static double ARM_ROTATE_SETPOINT_MID = 0;
-        public static double ARM_ROTATE_SETPOINT_LOW = 0;
+        public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 0;
+        public static double ARM_ROTATE_SETPOINT_STABLE = 6;
+        public static double ARM_ROTATE_SETPOINT_AMP = 35;
+        public static double ARM_ROTATE_SETPOINT_HIGH = 60;
+        public static double ARM_ROTATE_SETPOINT_MID = 40;
+        public static double ARM_ROTATE_SETPOINT_LOW = 20;
     }
 }

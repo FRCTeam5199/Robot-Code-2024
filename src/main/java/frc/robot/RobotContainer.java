@@ -22,7 +22,7 @@ import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 /**
@@ -33,8 +33,9 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
  */
 public class RobotContainer {
 
+        //     public final static IntakeSubsystem intake = new IntakeSubsystem();
     public final static ArmSubsystem arm = new ArmSubsystem();
-//     public final static IntakeSubsystem intake = new IntakeSubsystem();
+    public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
     private final XboxController driveXboxController = new XboxController(0);
     private final double MaxSpeed = 6; // 6 meters per second desired top speed
@@ -52,7 +53,7 @@ public class RobotContainer {
     Autos auton;
 
     public RobotContainer() {
-        climberSubsystem.init();
+        // climberSubsystem.init();
 
         auton = new Autos(drivetrain);
         configureBindings();
@@ -97,8 +98,15 @@ public class RobotContainer {
         commandXboxController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         commandXboxController.b().whileTrue(drivetrain
                 .applyRequest(() -> point.withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(), -commandXboxController.getLeftX()))));
-        commandXboxController.x().onTrue(arm.moveAtPercent(.3)).onFalse(arm.moveAtPercent(0));
-        commandXboxController.y().onTrue(arm.moveAtPercent(-.3)).onFalse(arm.moveAtPercent(0));
+
+        commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateHigh()));
+        commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateLow()));
+        commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateMid()));
+        commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateAmp()));
+        commandXboxController.leftBumper().onTrue(new InstantCommand(() -> arm.rotateStable()));
+        commandXboxController.rightBumper().onTrue(new InstantCommand(() -> shooterSubsystem.changeGoal()));
+        commandXboxController.rightTrigger().onTrue(shooterSubsystem.runShooter());
+        
         // commandXboxController.x().onTrue(intake.deployIntake());
         // commandXboxController.y().onTrue(intake.stowIntake());
         // commandXboxController.rightBumper().whileTrue(intake.setIntakeSpeed(.3));
@@ -110,7 +118,7 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
     // Climber
-    commandXboxController.rightTrigger().onTrue(climbCommandGroup);
+//     commandXboxController.rightTrigger().onTrue(climbCommandGroup);
   }
 
     /**

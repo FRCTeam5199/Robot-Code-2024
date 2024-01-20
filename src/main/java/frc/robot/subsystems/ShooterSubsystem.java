@@ -10,6 +10,9 @@ import com.revrobotics.CANSparkLowLevel;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
@@ -17,8 +20,12 @@ import frc.robot.constants.MainConstants;
 import com.revrobotics.CANSparkFlex;
 
 public class ShooterSubsystem implements Subsystem{
-  public VortexMotorController shooterMotorLeader;
-  public VortexMotorController shooterMotorFollower;
+  public VortexMotorController shooterMotor1;
+  public VortexMotorController shooterMotor2;
+
+  public VortexMotorController shooterIndexMotor;
+
+  private boolean goalAmp = false;
   /** Creates a new shooter. */
 
   public ShooterSubsystem() {
@@ -31,11 +38,13 @@ public void init() {
 
   //one shooter (probably kraken), feeder (probably bag)
   public void motorInit() {
-    shooterMotorLeader = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_LEADER_MOTOR_ID);
-    shooterMotorFollower = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_FOLLOWER_MOTOR_ID);
-    shooterMotorLeader.setOpenLoopRampRate(1);
+    shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_LEADER_MOTOR_ID);
+    shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_FOLLOWER_MOTOR_ID);
+    
+    shooterIndexMotor = new VortexMotorController(4);
+    // shooterMotorLeader.setOpenLoopRampRate(1);
 
-    shooterMotorFollower.follow(shooterMotorLeader.vortex, false);
+    // shooterMotorFollower.follow(shooterMotorLeader.vortex, false);
   }
 
   @Override
@@ -43,15 +52,23 @@ public void init() {
     // This method will be called once per scheduler run
   }
 
-  public Command shootSpeaker(){
-    return this.runOnce(() -> shooterMotorLeader.set(0));
+  public Command runShooter() {
+        return new InstantCommand(() -> run());
   }
 
-  public Command shootAmp(){
-    return this.runOnce(() -> shooterMotorLeader.set(0));
+  public void run() {
+      System.out.println("run()");
+      shooterMotor1.set(1);
+      shooterMotor2.set(1);
+      shooterIndexMotor.set(1);
   }
 
-  public Command shootTrap(){
-    return this.runOnce(() -> shooterMotorLeader.set(0));
+  public void changeGoal(){
+    if (goalAmp) {
+      goalAmp = false;
+    } else {
+      goalAmp = true;
+    }
   }
+
 }
