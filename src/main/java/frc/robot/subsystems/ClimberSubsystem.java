@@ -52,7 +52,7 @@ public class ClimberSubsystem implements Subsystem {
   }
 
   public Command setClimberSpeed(double percent) {
-    return this.runEnd(() -> climberMotor1.set(percent), (() -> climberMotor2.set(percent)));
+    return this.runOnce(() -> climberMotor1.set(percent)).andThen((() -> climberMotor2.set(percent)));
   }
 
   public Command setClimberTarget(double target) {
