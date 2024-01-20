@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
@@ -77,11 +76,16 @@ public class RobotContainer {
                 ));
 
         // Climber
-        ParallelCommandGroup climbCommandGroup = 
-                new ParallelCommandGroup(
-                        new InstantCommand(() -> intake.stowIntake()),
-                        new InstantCommand(() -> climberSubsystem.climbClimber())
-                );
+        ConditionalCommand climbCommandGroup = 
+                new ConditionalCommand( 
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> intake.stowIntake()),
+                                new InstantCommand(() -> climberSubsystem.climbClimber())
+                        ),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> climberSubsystem.storeClimber())
+                        ),
+                climberSubsystem::isClimbed);
 
         // reset the field-centric heading by pressing start button/hamburger menu button
         commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
