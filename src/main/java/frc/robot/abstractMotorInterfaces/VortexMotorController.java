@@ -2,6 +2,7 @@ package frc.robot.abstractMotorInterfaces;
 
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.revrobotics.*;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkFlex;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
@@ -14,12 +15,22 @@ public class VortexMotorController extends AbstractMotorController{
 
     @Override
     public void setVelocity(double Velocity) {
+        double speed = 0;
+        vortex.set(0);
+        while (vortex.getEncoder().getVelocity() <= Velocity) {
+            speed++;
+            vortex.set(speed);
+        }
     }
 
     @Override
     public AbstractMotorController setInvert(boolean invert) {
         vortex.setInverted(invert);
         return this;
+    }
+
+    public RelativeEncoder getEncoder(){
+        return vortex.getEncoder();
     }
 
     @Override
