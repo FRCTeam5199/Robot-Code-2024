@@ -27,7 +27,7 @@ public class ClimberSubsystem implements Subsystem {
 
   public void motorInit() {
     climberMotor1 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_JOINT_MOTOR_ID);
-    climberMotor2 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_WRIST_MOTOR_ID);
+    climberMotor2 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_CLAW_MOTOR_ID);
 
     climberMotor1.setInvert(false);
     climberMotor2.setInvert(true);
