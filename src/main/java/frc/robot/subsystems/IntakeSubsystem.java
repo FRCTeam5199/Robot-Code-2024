@@ -50,7 +50,7 @@ public class IntakeSubsystem implements Subsystem {
     }
 
     public Command setIntakeSpeed(double percent) {
-        return this.runOnce(() -> intakeMotor.set(percent));
+        return this.run(() -> intakeMotor.set(percent));
     }
 
     public Command stowIntake() {
