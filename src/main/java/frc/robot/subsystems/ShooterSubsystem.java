@@ -66,18 +66,18 @@ public void init() {
   }
 
   public Command intakeShooter() {
-        return new ParallelCommandGroup(
-          new InstantCommand(() -> shooterMotor1.set(-0.4)),
-          new InstantCommand(() -> shooterMotor2.set(-0.4)),
-          new InstantCommand(() -> shooterIndexerMotor.set(-0.2))
-        );
+    return new ParallelCommandGroup(
+      new InstantCommand(() -> shooterMotor1.set(-0.3)),
+      new InstantCommand(() -> shooterMotor2.set(-0.3)),
+      new InstantCommand(() -> shooterIndexerMotor.set(-0.2))
+    );
   }
 
   public Command stopShooter() {
-        return new ParallelCommandGroup(
-          new InstantCommand(() -> shooterMotor1.set(0)),
-          new InstantCommand(() -> shooterMotor2.set(0)),
-          new InstantCommand(() -> shooterIndexerMotor.set(0))
-        );
+    return new ParallelCommandGroup(
+      new InstantCommand(() -> shooterMotor1.set(0)),
+      new InstantCommand(() -> shooterMotor2.set(0)),
+      new InstantCommand(() -> shooterIndexerMotor.set(0))
+    );
   }
 }

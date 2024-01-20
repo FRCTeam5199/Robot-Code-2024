@@ -140,10 +140,10 @@ public class MainConstants {
     public static class PIDConstants {
         public static final PID INTAKE_PID = new PID(0.01, 0, 0);
         // Climber
-        public static PID CLIMBER_PID = new PID(0.1, 0, 0);
+        public static PID CLIMBER_PID = new PID(0.01, 0, 0);
 
         // Arm
-        public static PID ARM_PID = new PID(0.1, 0, 0);
+        public static PID ARM_PID = new PID(0.01, 0, 0);
     }
 
     public static class Setpoints {
