@@ -38,7 +38,8 @@ public class ClimberSubsystem implements Subsystem {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    climberJointMotor.set(climberJointPIDController.calculate(climberJointMotor.getPosition().getValue()));
+    climberClawMotor.set(climberClawPIDController.calculate(climberClawMotor.getPosition().getValue()));
   }
 
   @Override
@@ -59,29 +60,24 @@ public class ClimberSubsystem implements Subsystem {
   }
 
   public Command setClimberClawTarget(double target) {
-    return this.runOnce(() -> climberJointPIDController.setSetpoint(target));
+    return this.runOnce(() -> climberClawPIDController.setSetpoint(target));
   }
 
   public Command climbClimber() {
-    return this.runOnce(() -> startClimb());
+    return this.runOnce(() -> climb());
   }
 
   public Command storeClimber() {
-    return this.runOnce(() -> storeClimb());
+    return this.runOnce(() -> store());
   }
 
-  public void startClimb() {
-    climberJointPIDController.setSetpoint(0);
-    climberClawPIDController.setSetpoint(0);
+  public void climb() {
+    climberJointPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_JOINT_CLIMB_SETPOINT);
+    climberClawPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_CLAW_CLIMB_SETPOINT);
   }
 
-  public void fullClimb() {
-    climberJointPIDController.setSetpoint(0);
-    climberClawPIDController.setSetpoint(0);
-  }
-
-  public void storeClimb() {
-    climberJointPIDController.setSetpoint(0);
-    climberClawPIDController.setSetpoint(0);
+  public void store() {
+    climberJointPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_JOINT_STORE_SETPOINT);
+    climberClawPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_JOINT_STORE_SETPOINT);
   }
 }

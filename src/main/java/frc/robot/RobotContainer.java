@@ -78,7 +78,7 @@ public class RobotContainer {
         ParallelCommandGroup climbCommandGroup = 
                 new ParallelCommandGroup(
                         new InstantCommand(() -> intake.stowIntake()),
-                        new InstantCommand(() -> climberSubsystem.fullClimb())
+                        new InstantCommand(() -> climberSubsystem.climbClimber())
                 );
 
         // reset the field-centric heading by pressing start button/hamburger menu button

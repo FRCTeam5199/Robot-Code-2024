@@ -7,8 +7,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.utility.PID;
 
-import javax.management.modelmbean.ModelMBeanNotificationBroadcaster;
-
 
 public class MainConstants {
 
@@ -119,14 +117,18 @@ public class MainConstants {
 
             //Intake
             public static int INTAKE_MOTOR_ID = 54;
+
             //Climber
             public static int CLIMBER_JOINT_MOTOR_ID = 54;
             public static int CLIMBER_CLAW_MOTOR_ID = 0;
+
             //Arm
             public static int ARM_LEADER_MOTOR_ID = 0;
             public static int ARM_FOLLOWER_MOTOR_ID = 0;
+
             // Drive
             final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
+            
             //Shooter
             public static int SHOOTER_LEADER_MOTOR_ID = 0;
             public static int SHOOTER_FOLLOWER_MOTOR_ID = 0;
@@ -138,6 +140,8 @@ public class MainConstants {
         // Climber
         public static PID CLIMBER_JOINT_PID = new PID(0.1, 0, 0);
         public static PID CLIMBER_CLAW_PID = new PID(0.1, 0, 0);
+
+        // Arm
         public static PID ARM_FOLLOWER_PID = new PID(0, 0, 0);
         public static PID ARM_LEADER_PID = new PID(0, 0, 0);
     }
@@ -146,6 +150,14 @@ public class MainConstants {
         //Intake Setpoints
         public static final double STOW_INTAKE = 0;
         public static final double DEPLOY_INTAKE = 40;
+
+        // Climber Setpoints
+        public static final double CLIMBER_JOINT_CLIMB_SETPOINT = 0;
+        public static final double CLIMBER_CLAW_CLIMB_SETPOINT = 0;
+        
+        public static final double CLIMBER_JOINT_STORE_SETPOINT = 0;
+        public static final double CLIMBER_CLAW_STORE_SETPOINT = 0;
+
         //Arm Setpoints
         public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 0;
         public static double ARM_ROTATE_SETPOINT_STABLE = 0;
