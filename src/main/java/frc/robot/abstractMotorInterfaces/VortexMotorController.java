@@ -2,6 +2,8 @@ package frc.robot.abstractMotorInterfaces;
 
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.revrobotics.*;
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkFlex;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -59,7 +61,8 @@ public class VortexMotorController extends AbstractMotorController{
 
     @Override
     public AbstractMotorController setBrake(boolean brake) {
-        return null;
+        vortex.setIdleMode(IdleMode.kBrake);
+        return this;
     }
 
     @Override

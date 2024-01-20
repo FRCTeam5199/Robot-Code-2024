@@ -22,7 +22,7 @@ public class ArmSubsystem extends SubsystemBase {
 	  public TalonMotorController ArmFollower;
 
 	public double rotateSetpoint = 0;
-	private boolean isFront = false;
+	private boolean isFront = true;
 	private boolean isStable = false;
 	private boolean isHigh = false;
 	PIDController rotatePIDController;
@@ -33,14 +33,14 @@ public class ArmSubsystem extends SubsystemBase {
 
 	public void init(){
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID);//idk if brushed or brushless
-		ArmLeader = new TalonMotorController(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID);
-		ArmFollower = new TalonMotorController(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
+		//ArmFollower = new TalonMotorController(MainConstants.IDs.Motors.ARM_FOLLOWER_MOTOR_ID);
 
 
 		ArmMotor.getEncoder().setPosition(0);
 
 		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_FOLLOWER_PID.P, MainConstants.PIDConstants.ARM_FOLLOWER_PID.I,
 				MainConstants.PIDConstants.ARM_FOLLOWER_PID.D);
+		ArmMotor.setBrake(true);
 	}
 
 	@Override
@@ -52,6 +52,10 @@ public class ArmSubsystem extends SubsystemBase {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_HUMANPLAYER;
 		this.isFront = true;
 		this.isHigh = false;
+	}
+
+	public Command moveAtPercent(double percent) {
+		return this.run(() -> ArmMotor.set(percent));
 	}
 
 	public void rotateStable() {

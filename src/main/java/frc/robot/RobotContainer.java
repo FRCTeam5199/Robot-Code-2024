@@ -74,7 +74,11 @@ public class RobotContainer {
                         .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                         .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
                 ));
-
+        //ConditionalCommand humanPlayerCommandGroup =
+                //new ConditionalCommand(
+                        InstantCommand humanPlayerCommandGroup = new InstantCommand(() -> arm.rotateHumanPlayer()
+                        );//, new InstantCommand(() -> arm.rotateStable()
+                //), arm::isFront);
         // Climber
         ConditionalCommand climbCommandGroup = 
                 new ConditionalCommand( 
@@ -93,6 +97,8 @@ public class RobotContainer {
         commandXboxController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         commandXboxController.b().whileTrue(drivetrain
                 .applyRequest(() -> point.withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(), -commandXboxController.getLeftX()))));
+        commandXboxController.x().onTrue(arm.moveAtPercent(.3)).onFalse(arm.moveAtPercent(0));
+        commandXboxController.y().onTrue(arm.moveAtPercent(-.3)).onFalse(arm.moveAtPercent(0));
         // commandXboxController.x().onTrue(intake.deployIntake());
         // commandXboxController.y().onTrue(intake.stowIntake());
         // commandXboxController.rightBumper().whileTrue(intake.setIntakeSpeed(.3));
