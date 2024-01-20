@@ -73,12 +73,13 @@ public class MainConstants {
     public static boolean ENABLE_OVERHEAT_DETECTION = false;
     public static int OVERHEAT_THRESHOLD = 80;
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
-    public String[] cameraNames = {"Front", "Left", "Right", "Back"};
+    public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //front
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //left
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //right
-            new Transform3d(-.2667, .025, .3, new Rotation3d(0, Math.toRadians(15), Math.toRadians(180)))// Back Camera
+            new Transform3d(-.2667, .025, .3, new Rotation3d(0, Math.toRadians(15), Math.toRadians(180))),
+            new Transform3d(0,0,0, new Rotation3d(0, 0, 0))
     };
 
 
