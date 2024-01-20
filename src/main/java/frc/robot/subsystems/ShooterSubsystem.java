@@ -32,9 +32,10 @@ public void init() {
   //one shooter (probably kraken), feeder (probably bag)
   public void motorInit() {
     shooterMotorLeader = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_LEADER_MOTOR_ID);
+    shooterMotorFollower = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_FOLLOWER_MOTOR_ID);
     shooterMotorLeader.setOpenLoopRampRate(1);
 
-    shooterMotorFollower.follow(shooterMotorLeader);
+    shooterMotorFollower.follow(shooterMotorLeader.vortex, false);
   }
 
   @Override

@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMSparkFlex;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 public class VortexMotorController extends AbstractMotorController{
-    CANSparkBase vortex;
+    public CANSparkBase vortex;
     public VortexMotorController(int ID){
         super();
         vortex = new CANSparkFlex(ID, CANSparkLowLevel.MotorType.kBrushless);
@@ -107,9 +107,14 @@ public class VortexMotorController extends AbstractMotorController{
 
     }
 
+    public AbstractMotorController follow(CANSparkBase leader, boolean invert) {
+        vortex.follow(leader);
+        return this;
+    }
+
     @Override
     public AbstractMotorController follow(AbstractMotorController leader, boolean invert) {
-        vortex.follow(new CANSparkFlex(leader.getID(), CANSparkLowLevel.MotorType.kBrushless));
-        return this;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'follow'");
     }
 }

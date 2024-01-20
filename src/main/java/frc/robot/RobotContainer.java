@@ -34,7 +34,7 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
 public class RobotContainer {
 
     public final static ArmSubsystem arm = new ArmSubsystem();
-    public final static IntakeSubsystem intake = new IntakeSubsystem();
+//     public final static IntakeSubsystem intake = new IntakeSubsystem();
     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
     private final XboxController driveXboxController = new XboxController(0);
     private final double MaxSpeed = 6; // 6 meters per second desired top speed
@@ -79,7 +79,7 @@ public class RobotContainer {
         ConditionalCommand climbCommandGroup = 
                 new ConditionalCommand( 
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> intake.stowIntake()),
+                                // new InstantCommand(() -> intake.stowIntake()),
                                 new InstantCommand(() -> climberSubsystem.climbClimber())
                         ),
                         new ParallelCommandGroup(
@@ -93,10 +93,10 @@ public class RobotContainer {
         commandXboxController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         commandXboxController.b().whileTrue(drivetrain
                 .applyRequest(() -> point.withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(), -commandXboxController.getLeftX()))));
-        commandXboxController.x().onTrue(intake.deployIntake());
-        commandXboxController.y().onTrue(intake.stowIntake());
-        commandXboxController.rightBumper().whileTrue(intake.setIntakeSpeed(.3));
-        commandXboxController.leftBumper().whileTrue(intake.setIntakeSpeed(-.3));
+        // commandXboxController.x().onTrue(intake.deployIntake());
+        // commandXboxController.y().onTrue(intake.stowIntake());
+        // commandXboxController.rightBumper().whileTrue(intake.setIntakeSpeed(.3));
+        // commandXboxController.leftBumper().whileTrue(intake.setIntakeSpeed(-.3));
 
         if (Utils.isSimulation()) {
             drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
   SwerveDrive drive = TunerConstants.DriveTrain;
-  AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+  // AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
 
   private RobotContainer m_robotContainer;
@@ -62,26 +62,26 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
 
     CommandScheduler.getInstance().run();
-    Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
-    Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
-    Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
-    Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
-    if(estimatePose1.isPresent()){
-      EstimatedRobotPose robotPose = estimatePose1.get();
-      drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    }
-    if(estimatePose2.isPresent()){
-      EstimatedRobotPose robotPose = estimatePose2.get();
-      drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    }
-    if(estimatePose3.isPresent()){
-      EstimatedRobotPose robotPose = estimatePose3.get();
-      drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    }
-    if(estimatePose4.isPresent()){
-      EstimatedRobotPose robotPose = estimatePose4.get();
-      drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    }
+    // Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
+    // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
+    // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
+    // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
+    // if(estimatePose1.isPresent()){
+    //   EstimatedRobotPose robotPose = estimatePose1.get();
+    //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    // }
+    // if(estimatePose2.isPresent()){
+    //   EstimatedRobotPose robotPose = estimatePose2.get();
+    //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    // }
+    // if(estimatePose3.isPresent()){
+    //   EstimatedRobotPose robotPose = estimatePose3.get();
+    //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    // }
+    // if(estimatePose4.isPresent()){
+    //   EstimatedRobotPose robotPose = estimatePose4.get();
+    //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    // }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

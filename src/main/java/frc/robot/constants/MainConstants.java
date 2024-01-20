@@ -119,20 +119,19 @@ public class MainConstants {
             public static int INTAKE_MOTOR_ID = 54;
 
             //Climber
-            public static int CLIMBER_JOINT_MOTOR_ID = 3;
-            public static int CLIMBER_WRIST_MOTOR_ID = 4;
-            public static int CLIMBER_CLAW_MOTOR_ID = 5;
+            public static int CLIMBER_JOINT_MOTOR_ID = 6;
+            public static int CLIMBER_CLAW_MOTOR_ID = 7;
 
             //Arm
-            public static int ARM_LEADER_MOTOR_ID = 0;
+            public static int ARM_LEADER_MOTOR_ID = 5;
             public static int ARM_FOLLOWER_MOTOR_ID = 0;
 
             // Drive
             final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
             
             //Shooter
-            public static int SHOOTER_LEADER_MOTOR_ID = 0;
-            public static int SHOOTER_FOLLOWER_MOTOR_ID = 0;
+            public static int SHOOTER_LEADER_MOTOR_ID = 2;
+            public static int SHOOTER_FOLLOWER_MOTOR_ID = 3;
         }
     }
 

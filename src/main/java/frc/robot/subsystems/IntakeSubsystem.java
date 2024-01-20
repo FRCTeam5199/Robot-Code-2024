@@ -46,9 +46,7 @@ public class IntakeSubsystem implements Subsystem {
     }
 
     public void PIDInit() {
-        pidController.setP(MainConstants.PIDConstants.INTAKE_PID.P);
-        pidController.setP(MainConstants.PIDConstants.INTAKE_PID.I);
-        pidController.setP(MainConstants.PIDConstants.INTAKE_PID.D);
+        pidController = new PIDController(MainConstants.PIDConstants.INTAKE_PID.P, MainConstants.PIDConstants.INTAKE_PID.I, MainConstants.PIDConstants.INTAKE_PID.D);
     }
 
     public Command setIntakeSpeed(double percent) {
