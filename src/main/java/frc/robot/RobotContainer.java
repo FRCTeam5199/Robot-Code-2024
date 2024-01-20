@@ -7,6 +7,7 @@ package frc.robot;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -15,11 +16,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
@@ -33,6 +36,7 @@ public class RobotContainer {
 
     public final static ArmSubsystem arm = new ArmSubsystem();
     public final static IntakeSubsystem intake = new IntakeSubsystem();
+    public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
     private final XboxController driveXboxController = new XboxController(0);
     private final double MaxSpeed = 6; // 6 meters per second desired top speed
     private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
@@ -48,7 +52,6 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
     Autos auton;
 
-
     public RobotContainer() {
         auton = new Autos(drivetrain);
         configureBindings();
@@ -58,10 +61,11 @@ public class RobotContainer {
                         new InstantCommand(() -> arm.rotateHumanPlayer()
                         ), new InstantCommand(() -> arm.rotateStable()
                 ), arm::isFront);
+        
     }
 
     private void configureBindings() {
-
+        
         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) // Drive forward with
@@ -70,6 +74,12 @@ public class RobotContainer {
                         .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
                 ));
 
+        // Climber
+        ParallelCommandGroup climbCommandGroup = 
+                new ParallelCommandGroup(
+                        new InstantCommand(() -> intake.stowIntake()),
+                        new InstantCommand(() -> climberSubsystem.climbClimber())
+                );
 
         // reset the field-centric heading by pressing start button/hamburger menu button
         commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
@@ -87,11 +97,9 @@ public class RobotContainer {
         }
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        // Intake
-
-        // Climber
-    }
-
+    // Climber
+    commandXboxController.rightTrigger().onTrue(climbCommandGroup);
+  }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
