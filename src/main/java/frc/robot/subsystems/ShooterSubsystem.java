@@ -39,12 +39,14 @@ public void init() {
 
   //one shooter (probably kraken), feeder (probably bag)
   public void motorInit() {
-    shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_LEADER_MOTOR_ID);
-    shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_FOLLOWER_MOTOR_ID);
-    shooterIndexerMotor = new VortexMotorController(4);
+    shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
+    shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
+    shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
 
     shooterMotor1.setInvert(true);
     shooterMotor2.setInvert(false);
+
+    shooterIndexerMotor.setBrake(true);
     // shooterMotorLeader.setOpenLoopRampRate(1);
 
     // shooterMotorFollower.follow(shooterMotorLeader.vortex, false);

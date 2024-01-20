@@ -51,8 +51,8 @@ public class ArmSubsystem extends SubsystemBase {
 			
 			ArmMotor.set(0);
 			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
-		} else if (ArmMotor.getEncoder().getPosition() > 100) {
-			while (ArmMotor.getEncoder().getPosition() > 100) {
+		} else if (ArmMotor.getEncoder().getPosition() > 120) {
+			while (ArmMotor.getEncoder().getPosition() > 120) {
 				ArmMotor.set(-0.5);
 			}
 
@@ -61,12 +61,6 @@ public class ArmSubsystem extends SubsystemBase {
 		} else {
 				ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
 		}
-	}
-
-	public void rotateHumanPlayer() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_HUMANPLAYER;
-		this.isFront = true;
-		this.isHigh = false;
 	}
 
 	public Command moveAtPercent(double percent) {
@@ -83,25 +77,25 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
 	public void rotateStable() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_STABLE;
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT;
 		this.isFront = true;
 		this.isHigh = false;
 	}
 
 	public void rotateAmp() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_AMP;
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_AMP_SETPOINT;
 		this.isFront = false;
 		this.isHigh = false;
 	}
 
-	public void rotateHigh() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_HIGH;
+	public void rotateBack() {
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT;
 		this.isFront = false;
 		this.isHigh = true;
 	}
 
-	public void rotateMid() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_MID;
+	public void rotateFront() {
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT;
 		this.isFront = false;
 		this.isHigh = false;
 	}

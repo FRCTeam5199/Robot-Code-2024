@@ -62,10 +62,6 @@ public class RobotContainer {
 
                 auton = new Autos(drivetrain);
                 configureBindings();
-                // Human player command composition
-                ConditionalCommand humanPlayerCommandGroup = new ConditionalCommand(
-                                new InstantCommand(() -> arm.rotateHumanPlayer()),
-                                new InstantCommand(() -> arm.rotateStable()), arm::isFront);
         }
 
         private void configureBindings() {
@@ -89,13 +85,6 @@ public class RobotContainer {
                                                                                                                          // X
                                                                                                                          // (left)
                                 ));
-                // ConditionalCommand humanPlayerCommandGroup =
-                // new ConditionalCommand(
-                InstantCommand humanPlayerCommandGroup = new InstantCommand(() -> arm.rotateHumanPlayer());// , new
-                                                                                                           // InstantCommand(()
-                                                                                                           // ->
-                                                                                                           // arm.rotateStable()
-                // ), arm::isFront);
                 // Climber
                 ConditionalCommand climbCommandGroup = new ConditionalCommand(
                                 new ParallelCommandGroup(
@@ -115,9 +104,9 @@ public class RobotContainer {
                                                 .withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(),
                                                                 -commandXboxController.getLeftX()))));
 
-                commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateHigh()));
+                commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
                 commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateLow()));
-                commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateMid()));
+                commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateFront()));
                 commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateAmp()));
                 commandXboxController.y().onTrue(new InstantCommand(() -> arm.rotateStable()));
 

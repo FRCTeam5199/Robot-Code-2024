@@ -131,8 +131,9 @@ public class MainConstants {
             final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
             
             //Shooter
-            public static int SHOOTER_LEADER_MOTOR_ID = 2;
-            public static int SHOOTER_FOLLOWER_MOTOR_ID = 3;
+            public static int SHOOTER_MOTOR_1_ID = 2;
+            public static int SHOOTER_MOTOR_2_ID = 3;
+            public static int SHOOTER_INDEXER_MOTOR_ID = 4;
         }
     }
 
@@ -158,11 +159,10 @@ public class MainConstants {
         public static final double CLIMBER_WRIST_STORE_SETPOINT = 0;
 
         //Arm Setpoints
-        public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 0;
-        public static double ARM_ROTATE_SETPOINT_STABLE = 4;
-        public static double ARM_ROTATE_SETPOINT_AMP = 50;
-        public static double ARM_ROTATE_SETPOINT_HIGH = 100;
-        public static double ARM_ROTATE_SETPOINT_MID = 70;
+        public static double ARM_STABLE_SETPOINT = 3.5;
+        public static double ARM_AMP_SETPOINT = 50;
+        public static double ARM_SPEAKER_BACK_SETPOINT = 115;
+        public static double ARM_SPEAKER_FRONT_SETPOINT = 65;
         public static double ARM_ROTATE_SETPOINT_LOW = 40;
     }
 }

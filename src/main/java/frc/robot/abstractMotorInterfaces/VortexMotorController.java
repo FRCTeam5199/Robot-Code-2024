@@ -61,7 +61,11 @@ public class VortexMotorController extends AbstractMotorController{
 
     @Override
     public AbstractMotorController setBrake(boolean brake) {
-        vortex.setIdleMode(IdleMode.kBrake);
+        if (brake) {
+            vortex.setIdleMode(IdleMode.kBrake);
+        } else {
+            vortex.setIdleMode(IdleMode.kCoast);
+        }
         return this;
     }
 
