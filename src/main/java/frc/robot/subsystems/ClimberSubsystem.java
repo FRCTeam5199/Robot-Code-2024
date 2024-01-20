@@ -18,7 +18,7 @@ public class ClimberSubsystem implements Subsystem {
   public ClimberSubsystem() {
     // init();
   }
-  
+
   public void init() {
     motorInit();
     PIDInit();
@@ -42,7 +42,7 @@ public class ClimberSubsystem implements Subsystem {
   @Override
   public void periodic() {
     climberJointMotor.set(climberJointPIDController.calculate(climberJointMotor.getPosition().getValue()));
-    climberClawMotor.set(climberWristPIDController.calculate(climberClawMotor.getPosition().getValue()));
+    climberWristMotor.set(climberWristPIDController.calculate(climberWristMotor.getPosition().getValue()));
   }
 
   @Override
@@ -55,7 +55,7 @@ public class ClimberSubsystem implements Subsystem {
   }
 
   public Command setClimberWristSpeed(double percent) {
-    return this.runOnce(() -> climberClawMotor.set(percent));
+    return this.runOnce(() -> climberWristMotor.set(percent));
   }
 
   public Command setClimberClawSpeed(double percent) {
@@ -67,7 +67,7 @@ public class ClimberSubsystem implements Subsystem {
   }
 
   public Command setClimberWristTarget(double target) {
-    return this.runOnce(() -> climberJointPIDController.setSetpoint(target));
+    return this.runOnce(() -> climberWristPIDController.setSetpoint(target));
   }
 
   // public Command setClimberClawTarget(double target) {
