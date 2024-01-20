@@ -120,8 +120,7 @@ public class MainConstants {
             //Intake
             public static int INTAKE_MOTOR_ID = 54;
             //Climber
-            public static int CLIMBER_JOINT_MOTOR_ID = 0;
-            public static int CLIMBER_WRIST_MOTOR_ID = 0;
+            public static int CLIMBER_JOINT_MOTOR_ID = 54;
             public static int CLIMBER_CLAW_MOTOR_ID = 0;
             //Arm
             public static int ARM_LEADER_MOTOR_ID = 0;
@@ -138,7 +137,6 @@ public class MainConstants {
         public static final PID INTAKE_PID = new PID(0.01, 0, 0);
         // Climber
         public static PID CLIMBER_JOINT_PID = new PID(0.1, 0, 0);
-        public static PID CLIMBER_WRIST_PID = new PID(0.1, 0, 0);
         public static PID CLIMBER_CLAW_PID = new PID(0.1, 0, 0);
         public static PID ARM_FOLLOWER_PID = new PID(0, 0, 0);
         public static PID ARM_LEADER_PID = new PID(0, 0, 0);

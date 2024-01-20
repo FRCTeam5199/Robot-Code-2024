@@ -1,25 +1,18 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.MainConstants;
 
 public class ClimberSubsystem implements Subsystem {
-  public CANSparkMax climberJointMotor;
-  public CANSparkMax climberWristMotor;
-  public CANSparkMax climberClawMotor;
+  public TalonFX climberJointMotor;
+  public TalonFX climberClawMotor;
 
   public PIDController climberJointPIDController;
-  public PIDController climberWristPIDController;
   public PIDController climberClawPIDController;
-
-  private boolean climbed = false;
-  private boolean climbing = false;
 
   public ClimberSubsystem() {
     init();
@@ -31,17 +24,15 @@ public class ClimberSubsystem implements Subsystem {
   }
 
   public void motorInit() {
-    climberJointMotor = new CANSparkMax(MainConstants.IDs.Motors.CLIMBER_JOINT_MOTOR_ID, MotorType.kBrushed);
-    climberWristMotor = new CANSparkMax(MainConstants.IDs.Motors.CLIMBER_WRIST_MOTOR_ID, MotorType.kBrushed);
-    climberClawMotor = new CANSparkMax(MainConstants.IDs.Motors.CLIMBER_CLAW_MOTOR_ID, MotorType.kBrushed);
+    climberJointMotor = new TalonFX(MainConstants.IDs.Motors.CLIMBER_JOINT_MOTOR_ID);
+    climberClawMotor = new TalonFX(MainConstants.IDs.Motors.CLIMBER_CLAW_MOTOR_ID);
 
-    climberJointMotor.getEncoder().setPosition(0);
-    climberWristMotor.getEncoder().setPosition(0);
-    climberClawMotor.getEncoder().setPosition(0);
+    climberJointMotor.setPosition(0);
+    climberClawMotor.setPosition(0);
   }
+
   private void PIDInit() {
     climberJointPIDController = new PIDController(MainConstants.PIDConstants.CLIMBER_JOINT_PID.P, MainConstants.PIDConstants.CLIMBER_JOINT_PID.I, MainConstants.PIDConstants.CLIMBER_JOINT_PID.D);
-    climberWristPIDController = new PIDController(MainConstants.PIDConstants.CLIMBER_WRIST_PID.P, MainConstants.PIDConstants.CLIMBER_WRIST_PID.I, MainConstants.PIDConstants.CLIMBER_WRIST_PID.D);
     climberClawPIDController = new PIDController(MainConstants.PIDConstants.CLIMBER_CLAW_PID.P, MainConstants.PIDConstants.CLIMBER_CLAW_PID.I, MainConstants.PIDConstants.CLIMBER_CLAW_PID.D);
   }
 
@@ -58,10 +49,6 @@ public class ClimberSubsystem implements Subsystem {
   public Command setClimberJointSpeed(double percent) {
     return this.runOnce(() -> climberJointMotor.set(percent));
   }
-  
-  public Command setClimberWristSpeed(double percent) {
-    return this.runOnce(() -> climberWristMotor.set(percent));
-  }
 
   public Command setClimberClawSpeed(double percent) {
     return this.runOnce(() -> climberClawMotor.set(percent));
@@ -71,20 +58,12 @@ public class ClimberSubsystem implements Subsystem {
     return this.runOnce(() -> climberJointPIDController.setSetpoint(target));
   }
 
-  public Command setClimberWristTarget(double target) {
-    return this.runOnce(() -> climberJointPIDController.setSetpoint(target));
-  }
-
   public Command setClimberClawTarget(double target) {
     return this.runOnce(() -> climberJointPIDController.setSetpoint(target));
   }
 
-  public Command runClimber() {
+  public Command climbClimber() {
     return this.runOnce(() -> startClimb());
-  }
-
-  public Command fullClimber() {
-    return this.runOnce(() -> fullClimb());
   }
 
   public Command storeClimber() {
@@ -93,36 +72,16 @@ public class ClimberSubsystem implements Subsystem {
 
   public void startClimb() {
     climberJointPIDController.setSetpoint(0);
-    climberWristPIDController.setSetpoint(0);
     climberClawPIDController.setSetpoint(0);
-
-    this.climbed = false;
-    this.climbing = true;
   }
 
   public void fullClimb() {
     climberJointPIDController.setSetpoint(0);
-    climberWristPIDController.setSetpoint(0);
     climberClawPIDController.setSetpoint(0);
-
-    this.climbed = true;
-    this.climbing = false;
   }
 
   public void storeClimb() {
     climberJointPIDController.setSetpoint(0);
-    climberWristPIDController.setSetpoint(0);
     climberClawPIDController.setSetpoint(0);
-
-    this.climbed = false;
-    this.climbing = false;
-  }
-
-  public boolean isClimbed() {
-    return this.climbed;
-  }
-
-  public boolean isClimbing() {
-    return this.climbing;
   }
 }
