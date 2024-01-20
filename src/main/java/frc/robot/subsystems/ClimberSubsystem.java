@@ -9,13 +9,14 @@ import frc.robot.constants.MainConstants;
 
 public class ClimberSubsystem implements Subsystem {
   public TalonFX climberJointMotor;
+  public TalonFX climberWristMotor;
   public TalonFX climberClawMotor;
 
   public PIDController climberJointPIDController;
-  public PIDController climberClawPIDController;
+  public PIDController climberWristPIDController;
 
   public ClimberSubsystem() {
-    init();
+    // init();
   }
   
   public void init() {
@@ -25,21 +26,23 @@ public class ClimberSubsystem implements Subsystem {
 
   public void motorInit() {
     climberJointMotor = new TalonFX(MainConstants.IDs.Motors.CLIMBER_JOINT_MOTOR_ID);
+    climberWristMotor = new TalonFX(MainConstants.IDs.Motors.CLIMBER_WRIST_MOTOR_ID);
     climberClawMotor = new TalonFX(MainConstants.IDs.Motors.CLIMBER_CLAW_MOTOR_ID);
 
     climberJointMotor.setPosition(0);
+    climberWristMotor.setPosition(0);
     climberClawMotor.setPosition(0);
   }
 
   private void PIDInit() {
     climberJointPIDController = new PIDController(MainConstants.PIDConstants.CLIMBER_JOINT_PID.P, MainConstants.PIDConstants.CLIMBER_JOINT_PID.I, MainConstants.PIDConstants.CLIMBER_JOINT_PID.D);
-    climberClawPIDController = new PIDController(MainConstants.PIDConstants.CLIMBER_CLAW_PID.P, MainConstants.PIDConstants.CLIMBER_CLAW_PID.I, MainConstants.PIDConstants.CLIMBER_CLAW_PID.D);
+    climberWristPIDController = new PIDController(MainConstants.PIDConstants.CLIMBER_WRIST_PID.P, MainConstants.PIDConstants.CLIMBER_WRIST_PID.I, MainConstants.PIDConstants.CLIMBER_WRIST_PID.D);
   }
 
   @Override
   public void periodic() {
     climberJointMotor.set(climberJointPIDController.calculate(climberJointMotor.getPosition().getValue()));
-    climberClawMotor.set(climberClawPIDController.calculate(climberClawMotor.getPosition().getValue()));
+    climberClawMotor.set(climberWristPIDController.calculate(climberClawMotor.getPosition().getValue()));
   }
 
   @Override
@@ -51,6 +54,10 @@ public class ClimberSubsystem implements Subsystem {
     return this.runOnce(() -> climberJointMotor.set(percent));
   }
 
+  public Command setClimberWristSpeed(double percent) {
+    return this.runOnce(() -> climberClawMotor.set(percent));
+  }
+
   public Command setClimberClawSpeed(double percent) {
     return this.runOnce(() -> climberClawMotor.set(percent));
   }
@@ -59,9 +66,13 @@ public class ClimberSubsystem implements Subsystem {
     return this.runOnce(() -> climberJointPIDController.setSetpoint(target));
   }
 
-  public Command setClimberClawTarget(double target) {
-    return this.runOnce(() -> climberClawPIDController.setSetpoint(target));
+  public Command setClimberWristTarget(double target) {
+    return this.runOnce(() -> climberJointPIDController.setSetpoint(target));
   }
+
+  // public Command setClimberClawTarget(double target) {
+  //   return this.runOnce(() -> climberClawPIDController.setSetpoint(target));
+  // }
 
   public Command climbClimber() {
     return this.runOnce(() -> climb());
@@ -73,11 +84,11 @@ public class ClimberSubsystem implements Subsystem {
 
   public void climb() {
     climberJointPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_JOINT_CLIMB_SETPOINT);
-    climberClawPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_CLAW_CLIMB_SETPOINT);
+    climberWristPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_WRIST_CLIMB_SETPOINT);
   }
 
   public void store() {
     climberJointPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_JOINT_STORE_SETPOINT);
-    climberClawPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_JOINT_STORE_SETPOINT);
+    climberWristPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_WRIST_STORE_SETPOINT);
   }
 }

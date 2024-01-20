@@ -119,8 +119,9 @@ public class MainConstants {
             public static int INTAKE_MOTOR_ID = 54;
 
             //Climber
-            public static int CLIMBER_JOINT_MOTOR_ID = 54;
-            public static int CLIMBER_CLAW_MOTOR_ID = 0;
+            public static int CLIMBER_JOINT_MOTOR_ID = 3;
+            public static int CLIMBER_WRIST_MOTOR_ID = 4;
+            public static int CLIMBER_CLAW_MOTOR_ID = 5;
 
             //Arm
             public static int ARM_LEADER_MOTOR_ID = 0;
@@ -139,7 +140,7 @@ public class MainConstants {
         public static final PID INTAKE_PID = new PID(0.01, 0, 0);
         // Climber
         public static PID CLIMBER_JOINT_PID = new PID(0.1, 0, 0);
-        public static PID CLIMBER_CLAW_PID = new PID(0.1, 0, 0);
+        public static PID CLIMBER_WRIST_PID = new PID(0.1, 0, 0);
 
         // Arm
         public static PID ARM_FOLLOWER_PID = new PID(0, 0, 0);
@@ -153,10 +154,10 @@ public class MainConstants {
 
         // Climber Setpoints
         public static final double CLIMBER_JOINT_CLIMB_SETPOINT = 0;
-        public static final double CLIMBER_CLAW_CLIMB_SETPOINT = 0;
+        public static final double CLIMBER_WRIST_CLIMB_SETPOINT = 0;
         
         public static final double CLIMBER_JOINT_STORE_SETPOINT = 0;
-        public static final double CLIMBER_CLAW_STORE_SETPOINT = 0;
+        public static final double CLIMBER_WRIST_STORE_SETPOINT = 0;
 
         //Arm Setpoints
         public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 0;

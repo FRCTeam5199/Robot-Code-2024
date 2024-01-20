@@ -53,6 +53,8 @@ public class RobotContainer {
     Autos auton;
 
     public RobotContainer() {
+        climberSubsystem.init();
+
         auton = new Autos(drivetrain);
         configureBindings();
         // Human player command composition
