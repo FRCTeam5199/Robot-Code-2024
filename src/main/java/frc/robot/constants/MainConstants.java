@@ -158,10 +158,10 @@ public class MainConstants {
 
         //Arm Setpoints
         public static double ARM_ROTATE_SETPOINT_HUMANPLAYER = 0;
-        public static double ARM_ROTATE_SETPOINT_STABLE = 6;
-        public static double ARM_ROTATE_SETPOINT_AMP = 35;
-        public static double ARM_ROTATE_SETPOINT_HIGH = 60;
-        public static double ARM_ROTATE_SETPOINT_MID = 40;
-        public static double ARM_ROTATE_SETPOINT_LOW = 20;
+        public static double ARM_ROTATE_SETPOINT_STABLE = 4;
+        public static double ARM_ROTATE_SETPOINT_AMP = 50;
+        public static double ARM_ROTATE_SETPOINT_HIGH = 100;
+        public static double ARM_ROTATE_SETPOINT_MID = 70;
+        public static double ARM_ROTATE_SETPOINT_LOW = 40;
     }
 }

@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,7 +24,7 @@ public class ShooterSubsystem implements Subsystem{
   public VortexMotorController shooterMotor1;
   public VortexMotorController shooterMotor2;
 
-  public VortexMotorController shooterIndexMotor;
+  public VortexMotorController shooterIndexerMotor;
 
   private boolean goalAmp = false;
   /** Creates a new shooter. */
@@ -40,7 +41,7 @@ public void init() {
   public void motorInit() {
     shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_LEADER_MOTOR_ID);
     shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_FOLLOWER_MOTOR_ID);
-    shooterIndexMotor = new VortexMotorController(4);
+    shooterIndexerMotor = new VortexMotorController(4);
 
     shooterMotor1.setInvert(true);
     shooterMotor2.setInvert(false);
@@ -54,32 +55,27 @@ public void init() {
     // This method will be called once per scheduler run
   }
 
-  public Command runShooter() {
-        return new InstantCommand(() -> run());
+  public Command setIndexerSpeed(double percent) {
+    return this.runOnce(() -> shooterIndexerMotor.set(percent));
+  }
+  
+  public Command setShooterSpeed(double percent) {
+    return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
+  }
+
+  public Command intakeShooter() {
+        return new ParallelCommandGroup(
+          new InstantCommand(() -> shooterMotor1.set(-0.4)),
+          new InstantCommand(() -> shooterMotor2.set(-0.4)),
+          new InstantCommand(() -> shooterIndexerMotor.set(-0.2))
+        );
   }
 
   public Command stopShooter() {
-        return new InstantCommand(() -> stop());
+        return new ParallelCommandGroup(
+          new InstantCommand(() -> shooterMotor1.set(0)),
+          new InstantCommand(() -> shooterMotor2.set(0)),
+          new InstantCommand(() -> shooterIndexerMotor.set(0))
+        );
   }
-  
-  public void run() {
-    shooterMotor1.set(0.85);
-    shooterMotor2.set(0.85);
-    shooterIndexMotor.set(0.5);
-  }
-
-  public void stop() {
-    shooterMotor1.set(0);
-    shooterMotor2.set(0);
-    shooterIndexMotor.set(0);
-  }
-
-  public void changeGoal(){
-    if (goalAmp) {
-      goalAmp = false;
-    } else {
-      goalAmp = true;
-    }
-  }
-
 }
