@@ -40,8 +40,10 @@ public void init() {
   public void motorInit() {
     shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_LEADER_MOTOR_ID);
     shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_FOLLOWER_MOTOR_ID);
-    
     shooterIndexMotor = new VortexMotorController(4);
+
+    shooterMotor1.setInvert(true);
+    shooterMotor2.setInvert(false);
     // shooterMotorLeader.setOpenLoopRampRate(1);
 
     // shooterMotorFollower.follow(shooterMotorLeader.vortex, false);
@@ -56,11 +58,20 @@ public void init() {
         return new InstantCommand(() -> run());
   }
 
+  public Command stopShooter() {
+        return new InstantCommand(() -> stop());
+  }
+  
   public void run() {
-      System.out.println("run()");
-      shooterMotor1.set(1);
-      shooterMotor2.set(1);
-      shooterIndexMotor.set(1);
+    shooterMotor1.set(0.85);
+    shooterMotor2.set(0.85);
+    shooterIndexMotor.set(0.5);
+  }
+
+  public void stop() {
+    shooterMotor1.set(0);
+    shooterMotor2.set(0);
+    shooterIndexMotor.set(0);
   }
 
   public void changeGoal(){
