@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -41,6 +42,7 @@ public class RobotContainer {
         public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
         public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
         public final static IntakeSubsystem intake = new IntakeSubsystem();
+        public final static AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
         private final XboxController driveXboxController = new XboxController(0);
         private final double MaxSpeed = 6; // 6 meters per second desired top speed
         private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
@@ -123,8 +125,9 @@ public class RobotContainer {
                                         .onFalse(intake.setIntakeSpeed(0))
                                         .onFalse(shooterSubsystem.stopShooter())
                                         .onFalse(new InstantCommand(() -> arm.rotateFront()));
-
-                commandXboxController.leftTrigger().onTrue(arm.moveToAngle());
+                
+                InstantCommand aprilTag = new InstantCommand(() -> aprilTagSubsystem.speakersAligning());
+                commandXboxController.leftTrigger().onTrue(aprilTag);
 
                 // commandXboxController.button(6).onTrue(intake.setIntakeSpeed(.3)).onFalse(intake.setIntakeSpeed(0));
                 // commandXboxController.button(7).onTrue(intake.setIntakeSpeed(-.3)).onFalse(intake.setIntakeSpeed(0));
