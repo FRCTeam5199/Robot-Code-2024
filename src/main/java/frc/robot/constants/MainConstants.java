@@ -75,7 +75,7 @@ public class MainConstants {
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
-            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //front
+            new Transform3d(0.2794, 0.0254, 0.1905, new Rotation3d(0, -42, 0)), //front
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //left
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //right
             new Transform3d(-.2667, .025, .3, new Rotation3d(0, Math.toRadians(15), Math.toRadians(180))),
