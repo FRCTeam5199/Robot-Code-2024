@@ -4,9 +4,9 @@
 
 package frc.robot.subsystems;
 
-// import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFX;
 
-// import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.CANSparkLowLevel;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,60 +20,63 @@ import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 import com.revrobotics.CANSparkFlex;
 
-public class ShooterSubsystem implements Subsystem{
-  public VortexMotorController shooterMotor1;
-  public VortexMotorController shooterMotor2;
+public class ShooterSubsystem implements Subsystem {
+    public VortexMotorController shooterMotor1;
+    public VortexMotorController shooterMotor2;
 
-  public VortexMotorController shooterIndexerMotor;
+    public VortexMotorController shooterIndexerMotor;
 
-  private boolean goalAmp = false;
-  /** Creates a new shooter. */
+    private boolean goalAmp = false;
 
-//   public ShooterSubsystem() {
-//     init();
-// }
+    /**
+     * Creates a new shooter.
+     */
 
-// public void init() {
-//     motorInit();
-// }
+    public ShooterSubsystem() {
+        init();
+    }
 
-  //one shooter (probably kraken), feeder (probably bag)
-  public void motorInit() {
-    shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
-    shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
-    shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
+    public void init() {
+        motorInit();
+    }
 
-    shooterMotor1.setInvert(true);
-    shooterMotor2.setInvert(false);
+    //one shooter (probably kraken), feeder (probably bag)
+    public void motorInit() {
+        shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
+        shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
+        shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
 
-    shooterIndexerMotor.setBrake(true);
-    // shooterMotorLeader.setOpenLoopRampRate(1);
+        shooterMotor1.setInvert(true);
+        shooterMotor2.setInvert(false);
 
-    // shooterMotorFollower.follow(shooterMotorLeader.vortex, false);
-  }
+        shooterIndexerMotor.setBrake(true);
+        // shooterMotorLeader.setOpenLoopRampRate(1);
 
-//   @Override
-//   public void periodic() {
-//     // This method will be called once per scheduler run
-//   }
+        // shooterMotorFollower.follow(shooterMotorLeader.vortex, false);
+    }
 
-  public Command setIndexerSpeed(double percent) {
-    return this.runOnce(() -> shooterIndexerMotor.set(percent));
-  }
-  
-  public Command setShooterSpeed(double percent) {
-    return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
-  }
+    @Override
+    public void periodic() {
+        // This method will be called once per scheduler run
+    }
 
-  public Command intakeShooter() {
-    return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
-      new InstantCommand(() -> shooterMotor1.set(-0.3)),
-      new InstantCommand(() -> shooterMotor2.set(-0.3)));
-  }
+    public Command setIndexerSpeed(double percent) {
+        return this.runOnce(() -> shooterIndexerMotor.set(percent));
+    }
 
-  public Command stopShooter() {
-    return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
-      new InstantCommand(() -> shooterMotor1.set(0)),
-      new InstantCommand(() -> shooterMotor2.set(0)));
-  }
+    public Command setShooterSpeed(double percent) {
+        return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
+    }
+
+    public Command intakeShooter() {
+        return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
+                new InstantCommand(() -> shooterMotor1.set(-0.3)),
+                new InstantCommand(() -> shooterMotor2.set(-0.3)));
+    }
+
+    public Command stopShooter() {
+        return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
+                new InstantCommand(() -> shooterMotor1.set(0)),
+                new InstantCommand(() -> shooterMotor2.set(0)));
+    }
 }
