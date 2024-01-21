@@ -1,6 +1,6 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+//  Copyright (c) FIRST and other WPILib contributors.
+//  Open Source Software; you can modify and/or share it under the terms of
+//  the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
 
@@ -26,47 +26,41 @@ public class ShooterSubsystem implements Subsystem {
 
     public VortexMotorController shooterIndexerMotor;
 
-    private boolean goalAmp = false;
+  private boolean goalAmp = false;
+  /** Creates a new shooter. */
 
-    /**
-     * Creates a new shooter.
-     */
+   public ShooterSubsystem() {
+     init();
+ }
 
-    public ShooterSubsystem() {
-        init();
-    }
+ public void init() {
+     motorInit();
+ }
 
-    public void init() {
-        motorInit();
-    }
-
-    //one shooter (probably kraken), feeder (probably bag)
-    public void motorInit() {
-        shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
-        shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
-        shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
+  // one shooter (probably kraken), feeder (probably bag)
+  public void motorInit() {
+    shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
+    shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
+    shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
 
         shooterMotor1.setInvert(true);
         shooterMotor2.setInvert(false);
 
-        shooterIndexerMotor.setBrake(true);
-        // shooterMotorLeader.setOpenLoopRampRate(1);
+    shooterIndexerMotor.setBrake(true);
+  }
 
-        // shooterMotorFollower.follow(shooterMotorLeader.vortex, false);
-    }
+   @Override
+   public void periodic() {
+      // This method will be called once per scheduler run
+   }
 
-    @Override
-    public void periodic() {
-        // This method will be called once per scheduler run
-    }
-
-    public Command setIndexerSpeed(double percent) {
-        return this.runOnce(() -> shooterIndexerMotor.set(percent));
-    }
-
-    public Command setShooterSpeed(double percent) {
-        return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
-    }
+  public Command setIndexerSpeed(double percent) {
+    return this.runOnce(() -> shooterIndexerMotor.set(percent));
+  }
+  
+  public Command setShooterSpeed(double percent) {
+    return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
+  }
 
     public Command intakeShooter() {
         return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
