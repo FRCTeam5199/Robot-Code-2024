@@ -32,7 +32,7 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public void init(){
-		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_LEADER_MOTOR_ID);//idk if brushed or brushless
+		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);//idk if brushed or brushless
 
 		ArmMotor.getEncoder().setPosition(0);
 
@@ -44,15 +44,15 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		if (ArmMotor.getEncoder().getPosition() < 3) {
-			while (ArmMotor.getEncoder().getPosition() < 3) {
+		if (ArmMotor.getEncoder().getPosition() < 1) {
+			while (ArmMotor.getEncoder().getPosition() < 1) {
 					ArmMotor.set(0.5);
 			}
 			
 			ArmMotor.set(0);
 			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
-		} else if (ArmMotor.getEncoder().getPosition() > 120) {
-			while (ArmMotor.getEncoder().getPosition() > 120) {
+		} else if (ArmMotor.getEncoder().getPosition() > 70) {
+			while (ArmMotor.getEncoder().getPosition() > 70) {
 				ArmMotor.set(-0.5);
 			}
 
@@ -79,12 +79,6 @@ public class ArmSubsystem extends SubsystemBase {
 	public void rotateStable() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT;
 		this.isFront = true;
-		this.isHigh = false;
-	}
-
-	public void rotateAmp() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_AMP_SETPOINT;
-		this.isFront = false;
 		this.isHigh = false;
 	}
 

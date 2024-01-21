@@ -124,8 +124,7 @@ public class MainConstants {
             public static int CLIMBER_CLAW_MOTOR_ID = 7;
 
             //Arm
-            public static int ARM_LEADER_MOTOR_ID = 5;
-            public static int ARM_FOLLOWER_MOTOR_ID = 0;
+            public static int ARM_MOTOR_ID = 5;
 
             // Drive
             final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
@@ -143,7 +142,7 @@ public class MainConstants {
         public static PID CLIMBER_PID = new PID(0.01, 0, 0);
 
         // Arm
-        public static PID ARM_PID = new PID(0.01, 0, 0);
+        public static PID ARM_PID = new PID(0.03, 0, 0);
     }
 
     public static class Setpoints {
@@ -153,16 +152,13 @@ public class MainConstants {
 
         // Climber Setpoints
         public static final double CLIMBER_CLIMB_SETPOINT = 0;
-        public static final double CLIMBER_WRIST_CLIMB_SETPOINT = 0;
         
         public static final double CLIMBER_STORE_SETPOINT = 0;
-        public static final double CLIMBER_WRIST_STORE_SETPOINT = 0;
 
         //Arm Setpoints
-        public static double ARM_STABLE_SETPOINT = 3.5;
-        public static double ARM_AMP_SETPOINT = 50;
-        public static double ARM_SPEAKER_BACK_SETPOINT = 115;
-        public static double ARM_SPEAKER_FRONT_SETPOINT = 65;
-        public static double ARM_ROTATE_SETPOINT_LOW = 40;
+        public static double ARM_STABLE_SETPOINT = 1.5;
+        public static double ARM_SPEAKER_BACK_SETPOINT = 70;
+        public static double ARM_SPEAKER_FRONT_SETPOINT = 31;
+        public static double ARM_ROTATE_SETPOINT_LOW = 10;
     }
 }

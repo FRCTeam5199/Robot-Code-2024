@@ -107,15 +107,14 @@ public class RobotContainer {
                 commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
                 commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateLow()));
                 commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateFront()));
-                commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateAmp()));
-                commandXboxController.y().onTrue(new InstantCommand(() -> arm.rotateStable()));
+                commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateStable()));
                 
 
                 commandXboxController.x().onTrue(shooterSubsystem.intakeShooter())
                                 .onFalse(shooterSubsystem.stopShooter());
                 commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5))
                                 .onFalse(shooterSubsystem.setIndexerSpeed(0));
-                commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.3))
+                commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2))
                                 .onFalse(shooterSubsystem.setShooterSpeed(0));
                 commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85))
                                 .onFalse(shooterSubsystem.setShooterSpeed(0));
