@@ -78,7 +78,7 @@ public class MainConstants {
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //front
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //left
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //right
-            new Transform3d(-.3048, 0, .33655, new Rotation3d(0, Math.toRadians(15), Math.toRadians(180))),
+            new Transform3d(-.2667, .025, .3, new Rotation3d(0, Math.toRadians(15), Math.toRadians(180))),
             new Transform3d(0,0,0, new Rotation3d(0, 0, 0))
     };
 
@@ -159,6 +159,11 @@ public class MainConstants {
         public static double ARM_STABLE_SETPOINT = 1.5;
         public static double ARM_SPEAKER_BACK_SETPOINT = 70;
         public static double ARM_SPEAKER_FRONT_SETPOINT = 31;
-        public static double ARM_INTAKE_SETPOINT = 10;
+        public static double ARM_ROTATE_SETPOINT_LOW = 10;
     }
+
+    public static final double ROTATIONS_PER_1_DEGREE_ARM = 2.721911;
+
+    public static final double ARM_PIVOT_X_OFFSET = -7.573;
+    public static final double ARM_PIVOT_Z_OFFSET = 19.032;
 }
