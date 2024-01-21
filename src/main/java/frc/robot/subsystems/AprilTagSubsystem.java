@@ -182,7 +182,7 @@ public static PhotonCamera shooter;
         return run(()-> speakersAligning());
     }
 
-    private double speakersAligning(){
+    public double speakersAligning(){
     double angleForShooter = 0;
     double speakerHeight = 2.340102;
     // slightly in front of april tag so it doesnt aim out of field

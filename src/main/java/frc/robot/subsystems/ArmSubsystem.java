@@ -18,14 +18,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ArmSubsystem extends SubsystemBase {
 	public VortexMotorController ArmMotor;
 	
-	 public TalonMotorController ArmLeader;
-	  public TalonMotorController ArmFollower;
+	public TalonMotorController ArmLeader;
+	public TalonMotorController ArmFollower;
 
 	public double rotateSetpoint = 0;
 	private boolean isFront = true;
 	private boolean isStable = false;
 	private boolean isHigh = false;
 	PIDController rotatePIDController;
+
+	AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
 	public ArmSubsystem() {
 		init();
@@ -64,7 +66,6 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public Command moveAtPercent(double percent) {
-		
 		return this.run(() -> ArmMotor.set(this.rotateSetpoint));
 	}
 	
@@ -76,7 +77,14 @@ public class ArmSubsystem extends SubsystemBase {
     return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
   }
 
-  public Command moveToAngle(double angle) {
+  public Command moveToAngle() {
+	double pigeonAngle = aprilTagSubsystem.speakersAligning();
+	double speakerZ = 92.13;
+	double pigeonX = speakerZ / Math.tan(pigeonAngle);
+	double pivotX = pigeonX + MainConstants.ARM_PIVOT_X_OFFSET;
+	double pigeonZ = 3; //Change this
+	double pivotZ = pigeonZ + MainConstants.ARM_PIVOT_Z_OFFSET;
+	double angle = Math.atan(pivotZ / pivotX);
 	return this.runOnce(() -> rotateSetpoint = MainConstants.ROTATIONS_PER_1_DEGREE_ARM * angle);
   }
 
