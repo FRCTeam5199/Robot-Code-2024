@@ -4,9 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
+// import com.ctre.phoenix6.hardware.TalonFX;
 
-import com.revrobotics.CANSparkLowLevel;
+// import com.revrobotics.CANSparkLowLevel;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,13 +29,13 @@ public class ShooterSubsystem implements Subsystem{
   private boolean goalAmp = false;
   /** Creates a new shooter. */
 
-  public ShooterSubsystem() {
-    init();
-}
+//   public ShooterSubsystem() {
+//     init();
+// }
 
-public void init() {
-    motorInit();
-}
+// public void init() {
+//     motorInit();
+// }
 
   //one shooter (probably kraken), feeder (probably bag)
   public void motorInit() {
@@ -52,10 +52,10 @@ public void init() {
     // shooterMotorFollower.follow(shooterMotorLeader.vortex, false);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+//   @Override
+//   public void periodic() {
+//     // This method will be called once per scheduler run
+//   }
 
   public Command setIndexerSpeed(double percent) {
     return this.runOnce(() -> shooterIndexerMotor.set(percent));
