@@ -1,4 +1,4 @@
-package frc.robot.abstractMotorInterfaces;
+package frc.robot.abstractmotorinterfaces;
 
 public abstract class AbstractMotorController {
 

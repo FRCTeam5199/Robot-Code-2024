@@ -1,25 +1,25 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+ import com.ctre.phoenix6.hardware.TalonFX;
+ import com.revrobotics.CANSparkFlex;
+ import com.revrobotics.CANSparkMax;
+ import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import frc.robot.Main;
-import frc.robot.abstractMotorInterfaces.TalonMotorController;
-import frc.robot.abstractMotorInterfaces.VortexMotorController;
-import frc.robot.constants.MainConstants;
+ import frc.robot.Main;
+ import frc.robot.abstractmotorinterfaces.TalonMotorController;
+ import frc.robot.abstractmotorinterfaces.VortexMotorController;
+ import frc.robot.constants.MainConstants;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+ import edu.wpi.first.math.controller.PIDController;
+ import edu.wpi.first.wpilibj2.command.Command;
+ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
-public class ArmSubsystem extends SubsystemBase {
-	public VortexMotorController ArmMotor;
+ public class ArmSubsystem extends SubsystemBase {
+ 	public VortexMotorController ArmMotor;
 	
-	 public TalonMotorController ArmLeader;
-	  public TalonMotorController ArmFollower;
+ 	 public TalonMotorController ArmLeader;
+ 	  public TalonMotorController ArmFollower;
 
 	public double rotateSetpoint = 0;
 	private boolean isFront = true;
@@ -27,14 +27,11 @@ public class ArmSubsystem extends SubsystemBase {
 	private boolean isHigh = false;
 	PIDController rotatePIDController;
 
-	public ArmSubsystem() {
-		init();
-	}
 
 	public void init(){
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);//idk if brushed or brushless
 
-		ArmMotor.getEncoder().setPosition(0);
+ 		ArmMotor.getEncoder().setPosition(0);
 
 		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I,
 				MainConstants.PIDConstants.ARM_PID.D);
