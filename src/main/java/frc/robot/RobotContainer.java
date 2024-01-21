@@ -21,10 +21,9 @@ import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
-// import frc.robot.subsystems.ArmSubsystem;
-// import frc.robot.subsystems.ClimberSubsystem;
-// import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+
+import static edu.wpi.first.wpilibj2.command.Commands.run;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -39,6 +38,8 @@ public class RobotContainer {
 //     public final static IntakeSubsystem intake = new IntakeSubsystem();
 //     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 //     public final static IntakeSubsystem intake = new IntakeSubsystem();
+    public static final AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+
     private final XboxController driveXboxController = new XboxController(0);
     private final double MaxSpeed = 6; // 6 meters per second desired top speed
     private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
@@ -49,7 +50,6 @@ public class RobotContainer {
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
     // driving in open loop
-    public AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final Telemetry logger = new Telemetry(MaxSpeed);
@@ -77,6 +77,8 @@ public class RobotContainer {
                         .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                         .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
                 ));
+
+        commandXboxController.x().whileTrue(run(()->aprilTagSubsystem.shooterAlign(commandXboxController.getLeftX(), commandXboxController.getLeftY())));
 
         // Climber
         // ConditionalCommand climbCommandGroup = 

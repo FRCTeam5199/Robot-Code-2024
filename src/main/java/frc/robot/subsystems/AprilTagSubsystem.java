@@ -5,13 +5,17 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -25,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.constants.MainConstants;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
@@ -83,6 +88,7 @@ public static PhotonCamera shooter;
     public PhotonCamera[] allCameras = {frontCamera, rightCamera, leftCamera, backCamera, shooter};
     public PhotonTrackedTarget[] bestTargetFromCameras;
     public MultiTargetPNPResult[] multiTargetPNPResults;
+    PIDController aimControl;
 
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 
@@ -91,6 +97,7 @@ public static PhotonCamera shooter;
 
         allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
+        aimControl = new PIDController(1, .01, 0);
     }
 
 
@@ -173,10 +180,67 @@ public static PhotonCamera shooter;
        
     }
 
-    public void shooterAlign(){
-        if(getAllianceColor() == "Red"){
-            
+    public void shooterAlign(double speedX, double speedY){
+        PhotonCamera targetCam = null;
+        if(Objects.equals(getAllianceColor(), "Red")){
+            //for(int i = 0; i <= allCameras.length; i++){
+                //if(allCameras[i].getLatestResult().getMultiTagResult().fiducialIDsUsed.contains(3) || allCameras[i].getLatestResult().getMultiTagResult().fiducialIDsUsed.contains(4) || allCameras[i].getLatestResult().getBestTarget().getFiducialId() == 3 || allCameras[i].getLatestResult().getBestTarget().getFiducialId() == 4){
+                  //  targetCam = allCameras[i];
+                  //  break;
+                //}
+                //if(i == 4){
+                //    i = -1;
+              //  }
+            //}
+            targetCam = allCameras[3];
+            while(Objects.equals(targetCam.getName(), "Right") || Objects.equals(targetCam.getName(), "Left")) {
+                drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(0, 0, 1)));
+                if(allCameras[0].getLatestResult().getBestTarget().getFiducialId() == 3 || allCameras[0].getLatestResult().getBestTarget().getFiducialId() == 4){
+                    targetCam = allCameras[0];
+                    break;
+                }
+                if(allCameras[3].getLatestResult().getBestTarget().getFiducialId() == 3 || allCameras[3].getLatestResult().getBestTarget().getFiducialId() == 4){
+                    targetCam = allCameras[3];
+                    break;
+                }
+            }
+            if (targetCam.getLatestResult().hasTargets() && targetCam.getLatestResult().getBestTarget().getFiducialId() == 3) {
+                drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(speedX, speedY, aimControl.calculate(targetCam.getLatestResult().getBestTarget().getYaw(), 10) * .05)));
+            }
+            if (targetCam.getLatestResult().hasTargets() && targetCam.getLatestResult().getBestTarget().getFiducialId() == 4) {
+                drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(speedX, speedY, aimControl.calculate(targetCam.getLatestResult().getBestTarget().getYaw(), 0) * .05)));
+            }
         }
+        if(getAllianceColor() == "Blue"){
+            for(int i = 0; i <= allCameras.length; i++){
+                if(allCameras[i].getLatestResult().getMultiTagResult().fiducialIDsUsed.contains(7) || allCameras[i].getLatestResult().getMultiTagResult().fiducialIDsUsed.contains(8) || allCameras[i].getLatestResult().getBestTarget().getFiducialId() == 7 || allCameras[i].getLatestResult().getBestTarget().getFiducialId() == 8){
+                    targetCam = allCameras[i];
+                    break;
+                }
+                if(i == 4){
+                    i = -1;
+                }
+            }
+            while(Objects.equals(targetCam.getName(), "Right") || Objects.equals(targetCam.getName(), "Left")) {
+                drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(0, 0, 1)));
+                if(allCameras[0].getLatestResult().getBestTarget().getFiducialId() == 7 || allCameras[0].getLatestResult().getBestTarget().getFiducialId() == 8){
+                    targetCam = allCameras[0];
+                    break;
+                }
+                if(allCameras[3].getLatestResult().getBestTarget().getFiducialId() == 7 || allCameras[3].getLatestResult().getBestTarget().getFiducialId() == 8){
+                    targetCam = allCameras[3];
+                    break;
+                }
+            }
+            if(targetCam.getLatestResult().getBestTarget().getFiducialId() == 7){
+                drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(0, 0, aimControl.calculate(targetCam.getLatestResult().getBestTarget().getYaw(), 10)* .06)));
+            }
+            if(targetCam.getLatestResult().getBestTarget().getFiducialId() == 8){
+                drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(0, 0, aimControl.calculate(targetCam.getLatestResult().getBestTarget().getYaw(), 0)* .06)));
+            }
+        }
+
+
     }
     public Command alignSpeaker(){
         return run(()-> speakersAligning());
