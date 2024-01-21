@@ -159,7 +159,7 @@ public class MainConstants {
         public static double ARM_STABLE_SETPOINT = 1.5;
         public static double ARM_SPEAKER_BACK_SETPOINT = 70;
         public static double ARM_SPEAKER_FRONT_SETPOINT = 31;
-        public static double ARM_ROTATE_SETPOINT_LOW = 10;
+        public static double ARM_ROTATE_INTAKE = 10;
     }
 
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 2.721911;

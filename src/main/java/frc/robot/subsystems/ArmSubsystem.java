@@ -98,8 +98,8 @@ public class ArmSubsystem extends SubsystemBase {
 		this.isHigh = false;
 	}
 
-	public void rotateLow() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_LOW;
+	public void rotateIntake() {
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_INTAKE;
 		this.isFront = false;
 		this.isHigh = false;
 	}
