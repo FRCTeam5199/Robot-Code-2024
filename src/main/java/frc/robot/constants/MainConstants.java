@@ -165,5 +165,8 @@ public class MainConstants {
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 2.721911;
 
     public static final double ARM_PIVOT_X_OFFSET = -7.573;
-    public static final double ARM_PIVOT_Z_OFFSET = 19.032;
+    public static final double ARM_PIVOT_Z = 22.032;
+    public static final double ARM_ORIGINAL_DEGREES = 0; //Change this - This is the degrees after the arm moves 1.5 motor rotations on initialization
+
+    public static final double SPEAKER_Z = 92.13;
 }

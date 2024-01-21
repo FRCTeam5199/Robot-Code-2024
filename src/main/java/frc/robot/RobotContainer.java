@@ -124,6 +124,8 @@ public class RobotContainer {
                                         .onFalse(shooterSubsystem.stopShooter())
                                         .onFalse(new InstantCommand(() -> arm.rotateFront()));
 
+                commandXboxController.leftTrigger().onTrue(arm.moveToAngle());
+
                 // commandXboxController.button(6).onTrue(intake.setIntakeSpeed(.3)).onFalse(intake.setIntakeSpeed(0));
                 // commandXboxController.button(7).onTrue(intake.setIntakeSpeed(-.3)).onFalse(intake.setIntakeSpeed(0));
 

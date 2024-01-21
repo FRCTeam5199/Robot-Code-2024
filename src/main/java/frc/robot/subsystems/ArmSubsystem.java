@@ -28,6 +28,11 @@ public class ArmSubsystem extends SubsystemBase {
 	PIDController rotatePIDController;
 
 	AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+	double pigeonAngle;
+	double pigeonX;
+	double pivotX;
+	double finalAngle;
+	double rotateDegrees;
 
 	public ArmSubsystem() {
 		init();
@@ -78,14 +83,16 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public Command moveToAngle() {
-	double pigeonAngle = aprilTagSubsystem.speakersAligning();
-	double speakerZ = 92.13;
-	double pigeonX = speakerZ / Math.tan(pigeonAngle);
-	double pivotX = pigeonX + MainConstants.ARM_PIVOT_X_OFFSET;
-	double pigeonZ = 3; //Change this
-	double pivotZ = pigeonZ + MainConstants.ARM_PIVOT_Z_OFFSET;
-	double angle = Math.atan(pivotZ / pivotX);
-	return this.runOnce(() -> rotateSetpoint = MainConstants.ROTATIONS_PER_1_DEGREE_ARM * angle);
+	return this.run(() -> calculateSetpointBasedOnAngle());
+  }
+
+  public void calculateSetpointBasedOnAngle() {
+	pigeonAngle = aprilTagSubsystem.speakersAligning();
+	pigeonX = MainConstants.SPEAKER_Z / Math.tan(pigeonAngle);
+	pivotX = pigeonX + MainConstants.ARM_PIVOT_X_OFFSET;
+	finalAngle = Math.atan(MainConstants.ARM_PIVOT_Z / pivotX);
+	rotateDegrees = (180 - finalAngle) - MainConstants.ARM_ORIGINAL_DEGREES;
+	rotateSetpoint = MainConstants.ROTATIONS_PER_1_DEGREE_ARM * rotateDegrees;
   }
 
 	public void rotateStable() {
