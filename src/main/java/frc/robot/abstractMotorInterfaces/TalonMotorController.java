@@ -1,4 +1,4 @@
-package frc.robot.abstractmotorinterfaces;
+package frc.robot.abstractMotorInterfaces;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;

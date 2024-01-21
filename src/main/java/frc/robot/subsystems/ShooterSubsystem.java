@@ -1,6 +1,6 @@
- Copyright (c) FIRST and other WPILib contributors.
- Open Source Software; you can modify and/or share it under the terms of
- the WPILib BSD license file in the root directory of this project.
+//  Copyright (c) FIRST and other WPILib contributors.
+//  Open Source Software; you can modify and/or share it under the terms of
+//  the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
 
@@ -37,7 +37,7 @@ public class ShooterSubsystem implements Subsystem{
      motorInit();
  }
 
-  one shooter (probably kraken), feeder (probably bag)
+  // one shooter (probably kraken), feeder (probably bag)
   public void motorInit() {
     shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
     shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
@@ -47,14 +47,11 @@ public class ShooterSubsystem implements Subsystem{
     shooterMotor2.setInvert(false);
 
     shooterIndexerMotor.setBrake(true);
-     shooterMotorLeader.setOpenLoopRampRate(1);
-
-     shooterMotorFollower.follow(shooterMotorLeader.vortex, false);
   }
 
    @Override
    public void periodic() {
-      This method will be called once per scheduler run
+      // This method will be called once per scheduler run
    }
 
   public Command setIndexerSpeed(double percent) {

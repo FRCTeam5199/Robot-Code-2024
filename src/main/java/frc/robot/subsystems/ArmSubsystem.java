@@ -6,8 +6,8 @@ package frc.robot.subsystems;
  import com.revrobotics.CANSparkLowLevel.MotorType;
 
  import frc.robot.Main;
- import frc.robot.abstractmotorinterfaces.TalonMotorController;
- import frc.robot.abstractmotorinterfaces.VortexMotorController;
+ import frc.robot.abstractMotorInterfaces.TalonMotorController;
+ import frc.robot.abstractMotorInterfaces.VortexMotorController;
  import frc.robot.constants.MainConstants;
 
  import edu.wpi.first.math.controller.PIDController;
