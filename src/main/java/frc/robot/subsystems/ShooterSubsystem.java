@@ -66,18 +66,14 @@ public class ShooterSubsystem implements Subsystem{
   }
 
   public Command intakeShooter() {
-    return new ParallelCommandGroup(
+    return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
       new InstantCommand(() -> shooterMotor1.set(-0.3)),
-      new InstantCommand(() -> shooterMotor2.set(-0.3)),
-      new InstantCommand(() -> shooterIndexerMotor.set(-0.2))
-    );
+      new InstantCommand(() -> shooterMotor2.set(-0.3)));
   }
 
   public Command stopShooter() {
-    return new ParallelCommandGroup(
+    return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
       new InstantCommand(() -> shooterMotor1.set(0)),
-      new InstantCommand(() -> shooterMotor2.set(0)),
-      new InstantCommand(() -> shooterIndexerMotor.set(0))
-    );
+      new InstantCommand(() -> shooterMotor2.set(0)));
   }
 }

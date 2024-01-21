@@ -41,16 +41,16 @@ package frc.robot.subsystems;
 //         intakeMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_MOTOR_ID);
 //         intakeAngleMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ANGLE_MOTOR_ID);
 
-//         intakeMotor.setPosition(0);
-//         intakeAngleMotor.setPosition(0);
-//     }
+        intakeMotor.getEncoder().setPosition(0);
+        intakeAngleMotor.getEncoder().setPosition(0);
+    }
 
 //     public void PIDInit() {
 //         pidController = new PIDController(MainConstants.PIDConstants.INTAKE_PID.P, MainConstants.PIDConstants.INTAKE_PID.I, MainConstants.PIDConstants.INTAKE_PID.D);
 //     }
 
     public Command setIntakeSpeed(double percent) {
-        return this.run(() -> intakeMotor.set(percent));
+        return this.runOnce(() -> intakeMotor.set(percent));
     }
 
 //     public Command stowIntake() {

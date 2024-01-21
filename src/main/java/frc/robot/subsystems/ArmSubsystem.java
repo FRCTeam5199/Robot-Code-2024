@@ -94,12 +94,13 @@ package frc.robot.subsystems;
 		this.isHigh = false;
 	}
 
-// 	public void rotateLow() {
-// 		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_SETPOINT_LOW;
-// 		this.isFront = false;
-// 		this.isHigh = false;
-// 	}
-// 	public boolean isFront() {
-// 		return this.isFront;
-// 	}
-// }
+	public void rotateIntake() {
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_INTAKE_SETPOINT;
+		this.isFront = false;
+		this.isHigh = false;
+	}
+
+	public boolean isFront() {
+		return this.isFront;
+	}
+}
