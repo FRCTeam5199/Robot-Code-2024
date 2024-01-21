@@ -20,9 +20,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.AprilTagSubsystem;
+// import frc.robot.subsystems.ArmSubsystem;
+// import frc.robot.subsystems.ClimberSubsystem;
+// import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 /**
@@ -34,10 +35,10 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
 public class RobotContainer {
 
 
-    public final static ArmSubsystem arm = new ArmSubsystem();
+//     public final static ArmSubsystem arm = new ArmSubsystem();
 //     public final static IntakeSubsystem intake = new IntakeSubsystem();
-    public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-    public final static IntakeSubsystem intake = new IntakeSubsystem();
+//     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+//     public final static IntakeSubsystem intake = new IntakeSubsystem();
     private final XboxController driveXboxController = new XboxController(0);
     private final double MaxSpeed = 6; // 6 meters per second desired top speed
     private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
@@ -48,22 +49,23 @@ public class RobotContainer {
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
     // driving in open loop
+    public AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final Telemetry logger = new Telemetry(MaxSpeed);
     Autos auton;
 
     public RobotContainer() {
-        climberSubsystem.init();
+        // climberSubsystem.init();
 
         auton = new Autos(drivetrain);
         configureBindings();
         // Human player command composition
-        ConditionalCommand humanPlayerCommandGroup =
-                new ConditionalCommand(
-                        new InstantCommand(() -> arm.rotateHumanPlayer()
-                        ), new InstantCommand(() -> arm.rotateStable()
-                ), arm::isFront);
+        // ConditionalCommand humanPlayerCommandGroup =
+        //         new ConditionalCommand(
+        //                 new InstantCommand(() -> arm.rotateHumanPlayer()
+        //                 ), new InstantCommand(() -> arm.rotateStable()
+        //         ), arm::isFront);
     }
 
     private void configureBindings() {
@@ -77,18 +79,19 @@ public class RobotContainer {
                 ));
 
         // Climber
-        ConditionalCommand climbCommandGroup = 
-                new ConditionalCommand( 
-                        new ParallelCommandGroup(
-                                // new InstantCommand(() -> intake.stowIntake()),
-                                new InstantCommand(() -> climberSubsystem.climbClimber())
-                        ),
-                        new ParallelCommandGroup(
-                                new InstantCommand(() -> climberSubsystem.storeClimber())
-                        ),
-                climberSubsystem::isClimbed);
+        // ConditionalCommand climbCommandGroup = 
+        //         new ConditionalCommand( 
+        //                 new ParallelCommandGroup(
+        //                         // new InstantCommand(() -> intake.stowIntake()),
+        //                         new InstantCommand(() -> climberSubsystem.climbClimber())
+        //                 ),
+        //                 new ParallelCommandGroup(
+        //                         new InstantCommand(() -> climberSubsystem.storeClimber())
+        //                 ),
+        //         climberSubsystem::isClimbed);
 
         // reset the field-centric heading by pressing start button/hamburger menu button
+        commandXboxController.x().onTrue(aprilTagSubsystem.alignSpeaker());
         commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
         commandXboxController.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -107,7 +110,7 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
     // Climber
-    commandXboxController.rightTrigger().onTrue(climbCommandGroup);
+//     commandXboxController.rightTrigger().onTrue(climbCommandGroup);
   }
 
     /**

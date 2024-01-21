@@ -30,7 +30,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
   SwerveDrive drive = TunerConstants.DriveTrain;
-  // AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
 
   private RobotContainer m_robotContainer;
