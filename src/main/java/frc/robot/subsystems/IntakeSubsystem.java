@@ -41,8 +41,8 @@ public class IntakeSubsystem implements Subsystem {
         intakeMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_MOTOR_ID);
         intakeAngleMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ANGLE_MOTOR_ID);
 
-        intakeMotor.setPosition(0);
-        intakeAngleMotor.setPosition(0);
+        intakeMotor.getEncoder().setPosition(0);
+        intakeAngleMotor.getEncoder().setPosition(0);
     }
 
     public void PIDInit() {
@@ -50,7 +50,7 @@ public class IntakeSubsystem implements Subsystem {
     }
 
     public Command setIntakeSpeed(double percent) {
-        return this.run(() -> intakeMotor.set(percent));
+        return this.runOnce(() -> intakeMotor.set(percent));
     }
 
     public Command stowIntake() {

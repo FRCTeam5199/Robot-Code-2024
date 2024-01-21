@@ -105,23 +105,27 @@ public class RobotContainer {
                                                                 -commandXboxController.getLeftX()))));
 
                 commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
-                commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateLow()));
+                commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateIntake()));
                 commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateFront()));
                 commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateStable()));
-                
 
-                commandXboxController.x().onTrue(shooterSubsystem.intakeShooter())
-                                .onFalse(shooterSubsystem.stopShooter());
-                commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5))
-                                .onFalse(shooterSubsystem.setIndexerSpeed(0));
-                commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2))
-                                .onFalse(shooterSubsystem.setShooterSpeed(0));
-                commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85))
-                                .onFalse(shooterSubsystem.setShooterSpeed(0));
-                commandXboxController.button(6).onTrue(intake.setIntakeSpeed(.3))
-                                .onFalse(intake.setIntakeSpeed(0));
-                commandXboxController.button(7).onTrue(intake.setIntakeSpeed(-.3))
-                                .onFalse(intake.setIntakeSpeed(0));
+                commandXboxController.y().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
+                commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
+                commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                
+                commandXboxController.x().onTrue(intake.deployIntake())
+                                        .onTrue(intake.setIntakeSpeed(.3))
+                                        .onTrue(new InstantCommand(() -> arm.rotateIntake()))
+                                        .onTrue(shooterSubsystem.intakeShooter())
+
+                                        .onFalse(intake.stowIntake())
+                                        .onFalse(intake.setIntakeSpeed(0))
+                                        .onFalse(shooterSubsystem.stopShooter())
+                                        .onFalse(new InstantCommand(() -> arm.rotateFront()));
+
+                // commandXboxController.button(6).onTrue(intake.setIntakeSpeed(.3)).onFalse(intake.setIntakeSpeed(0));
+                // commandXboxController.button(7).onTrue(intake.setIntakeSpeed(-.3)).onFalse(intake.setIntakeSpeed(0));
 
                 // commandXboxController.x().onTrue(intake.deployIntake());
                 // commandXboxController.y().onTrue(intake.stowIntake());
