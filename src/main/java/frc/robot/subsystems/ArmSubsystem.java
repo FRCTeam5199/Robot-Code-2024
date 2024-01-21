@@ -91,7 +91,7 @@ public class ArmSubsystem extends SubsystemBase {
 	pigeonX = MainConstants.SPEAKER_Z / Math.tan(pigeonAngle);
 	pivotX = pigeonX + MainConstants.ARM_PIVOT_X_OFFSET;
 	finalAngle = Math.atan(MainConstants.ARM_PIVOT_Z / pivotX);
-	rotateDegrees = (180 - finalAngle) - MainConstants.ARM_ORIGINAL_DEGREES;
+	rotateDegrees = finalAngle - MainConstants.ARM_ORIGINAL_DEGREES; //do (180 - finalAngle) to shoot backwardes
 	rotateSetpoint = MainConstants.ROTATIONS_PER_1_DEGREE_ARM * rotateDegrees;
   }
 
