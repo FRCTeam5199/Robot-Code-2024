@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Main;
 import frc.robot.constants.MainConstants;
 
 import java.util.Arrays;
@@ -248,7 +249,7 @@ public static PhotonCamera shooter;
 
     public double speakersAligning(){
     double angleForShooter = 0;
-    double speakerHeight = 2.340102;
+    double speakerHeight = MainConstants.SPEAKER_Z - MainConstants.ARM_PIVOT_Z;
     // slightly in front of april tag so it doesnt aim out of field
     double distanceFromRobot = 0;
         if (getAllianceColor().equals("Blue")){
@@ -256,14 +257,15 @@ public static PhotonCamera shooter;
             distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
         }
         else if (getAllianceColor().equals("Red")){
-        distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.5478679999999999));
-
+        // distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.5478679999999999));
+        distanceFromRobot = new Translation2d(14.700 - 0.0254, 5.54).getDistance(new Translation2d(16.579342, 5.5478679999999999));
         }
-        // System.out.println(drive.getPose().getTranslation());
+        distanceFromRobot += Math.sqrt(Math.pow(MainConstants.ARM_PIVOT_X_OFFSET, 2) * 2);;
         angleForShooter = Math.toDegrees(Math.atan(speakerHeight/distanceFromRobot));
-        // System.out.println("angle    " + angleForShooter);
+        System.out.println("orihinal " + angleForShooter);
+        // System.out.println("angle:   " + angleForShooter);
         // System.out.println("distance:" + distanceFromRobot * 39.37);
-        System.out.println(angleForShooter);
+        // System.out.println(angleForShooter);
         return angleForShooter;
       }  
 }

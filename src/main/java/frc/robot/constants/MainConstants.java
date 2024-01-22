@@ -75,7 +75,7 @@ public class MainConstants {
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
-            new Transform3d(0.2794, 0.0254, 0.1905, new Rotation3d(0, -57, 0)), //front
+            new Transform3d(0.2794, 0, 0.1905, new Rotation3d(0, -79, 0)), //front
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //left
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //right
             new Transform3d(0,0,0, new Rotation3d(0, 0, 0)),
@@ -142,7 +142,7 @@ public class MainConstants {
         public static PID CLIMBER_PID = new PID(0.01, 0, 0);
 
         // Arm
-        public static PID ARM_PID = new PID(0.03, 0, 0);
+        public static PID ARM_PID = new PID(0.1, 0, 0);
     }
 
     public static class Setpoints {
@@ -162,11 +162,11 @@ public class MainConstants {
         public static double ARM_ROTATE_INTAKE = 10;
     }
 
-    public static final double ROTATIONS_PER_1_DEGREE_ARM = 2.721911;
+    public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.40902166;
 
-    public static final double ARM_PIVOT_X_OFFSET = -7.573;
-    public static final double ARM_PIVOT_Z = 22.032;
-    public static final double ARM_ORIGINAL_DEGREES = 33.0828665; //This is the degrees after the arm moves 1.5 motor rotations on initialization
+    public static final double ARM_PIVOT_X_OFFSET = 0.1923542; //meters
+    public static final double ARM_PIVOT_Z = 0.5596128; //meters
+    public static final double ARM_ORIGINAL_DEGREES = -36;
 
-    public static final double SPEAKER_Z = 92.13;
+    public static final double SPEAKER_Z = 2.340102;
 }

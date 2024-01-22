@@ -128,8 +128,7 @@ public class RobotContainer {
                                         .onFalse(shooterSubsystem.stopShooter())
                                         .onFalse(new InstantCommand(() -> arm.rotateFront()));
                 
-                InstantCommand aprilTag = new InstantCommand(() -> aprilTagSubsystem.speakersAligning());
-                commandXboxController.leftTrigger().onTrue(aprilTag);
+                commandXboxController.leftTrigger().onTrue(arm.moveToAngle());
 
                 // commandXboxController.button(6).onTrue(intake.setIntakeSpeed(.3)).onFalse(intake.setIntakeSpeed(0));
                 // commandXboxController.button(7).onTrue(intake.setIntakeSpeed(-.3)).onFalse(intake.setIntakeSpeed(0));
