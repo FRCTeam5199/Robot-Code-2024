@@ -72,13 +72,16 @@ public class RobotContainer {
         
         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) // Drive forward with
+                drivetrain.applyRequest(() -> drive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(.4) // Drive forward with
                         // negative Y (forward)
-                        .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                        .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                        .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed).withDeadband(.4) // Drive left with negative X (left)
+                        .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate).withDeadband(.4) // Drive counterclockwise with negative X (left)
                 ));
 
-        commandXboxController.x().whileTrue(run(()->aprilTagSubsystem.shooterAlign(commandXboxController.getLeftX(), commandXboxController.getLeftY())));
+        commandXboxController.rightBumper().toggleOnTrue(drivetrain.applyRequest(()-> drive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(.4)
+                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed).withDeadband(.4)
+                .withRotationalRate(aprilTagSubsystem.shooterAlign())));
+
 
         // Climber
         // ConditionalCommand climbCommandGroup = 
