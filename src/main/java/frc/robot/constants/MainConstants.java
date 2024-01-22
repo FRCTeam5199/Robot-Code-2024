@@ -162,11 +162,12 @@ public class MainConstants {
         public static double ARM_ROTATE_INTAKE = 10;
     }
 
-    public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.40902166;
+    public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.37642177; //.40902166
 
     public static final double ARM_PIVOT_X_OFFSET = 0.1923542; //meters
     public static final double ARM_PIVOT_Z = 0.5596128; //meters
     public static final double ARM_ORIGINAL_DEGREES = -36;
 
-    public static final double SPEAKER_Z = 2.340102;
+    // public static final double SPEAKER_Z = 2.340102;
+    public static final double SPEAKER_Z = 2.136902;
 }
