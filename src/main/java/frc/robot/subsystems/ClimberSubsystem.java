@@ -4,7 +4,10 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -56,10 +59,10 @@ public class ClimberSubsystem implements Subsystem {
   }
 
   public Command climbClimber() {
-    return this.runOnce(() -> climb());
-  }
-
-  public void climb() {
-    climberPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_CLIMB_SETPOINT);
+    return null;//this.runOnce(new SequentialCommandGroup(
+  //     new InstantCommand(setClimberSpeed(0.5)),
+  //     new WaitCommand(0.2),
+  //     new InstantCommand(setClimberSpeed(0))
+  //   ));
   }
 }

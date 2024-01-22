@@ -150,13 +150,10 @@ public class MainConstants {
         public static final double STOW_INTAKE = 0;
         public static final double DEPLOY_INTAKE = 40;
 
-        // Climber Setpoints
-        public static final double CLIMBER_CLIMB_SETPOINT = 0;
-
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 15;
-        public static final double ARM_SPEAKER_BACK_SETPOINT = 70;
-        public static final double ARM_SPEAKER_FRONT_SETPOINT = 29;
+        public static final double ARM_STABLE_SETPOINT = 15.8;
+        public static final double ARM_SPEAKER_BACK_SETPOINT = 60;
+        public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 5.5;
     }
 }

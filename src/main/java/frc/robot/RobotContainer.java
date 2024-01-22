@@ -66,64 +66,74 @@ public class RobotContainer {
         }
 
         private void configureBindings() {
-
                 // Drive
                 drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-                                drivetrain.applyRequest(() -> drive
-                                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) // Drive
-                                                                                                             // forward
-                                                                                                             // with
-                                                // negative Y (forward)
-                                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) // Drive
-                                                                                                             // left
-                                                                                                             // with
-                                                                                                             // negative
-                                                                                                             // X (left)
-                                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive
-                                                                                                                         // counterclockwise
-                                                                                                                         // with
-                                                                                                                         // negative
-                                                                                                                         // X
-                                                                                                                         // (left)
-                                ));
-                // reset the field-centric heading by pressing start button/hamburger menu
-                // button
-                commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
+                        drivetrain.applyRequest(() -> drive
+                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) // Drive
+                                                                                                // forward
+                                                                                                // with
+                                // negative Y (forward)
+                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) // Drive
+                                                                                                // left
+                                                                                                // with
+                                                                                                // negative
+                                                                                                // X (left)
+                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive
+                                                                                                                // counterclockwise
+                                                                                                                // with
+                                                                                                                // negative
+                                                                                                                // X
+                                                                                                                // (left)
+                        ));
+                try {
+                        // reset the field-centric heading by pressing start button/hamburger menu button
+                        commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
-                commandXboxController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-                commandXboxController.b().whileTrue(drivetrain
-                                .applyRequest(() -> point
-                                                .withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(),
-                                                                -commandXboxController.getLeftX()))));
+                        commandXboxController.button(6).whileTrue(drivetrain.applyRequest(() -> brake));
+                        commandXboxController.button(7).whileTrue(drivetrain
+                                        .applyRequest(() -> point
+                                                        .withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(),
+                                                                        -commandXboxController.getLeftX()))));
 
-                commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
-                commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
-                commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
-                commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateIntake()));
+                        commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
+                        commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
+                        commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
+                        // commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateIntake()));
+                        
+                        commandXboxController.b().onTrue(arm.changeArmSetpoint(0.5));
+                        commandXboxController.x().onTrue(arm.changeArmSetpoint(-0.5));
+                        commandXboxController.y().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
+                        commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                        commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                        commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
 
-                commandXboxController.y().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
-                commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
-                commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
-                commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
+                        // commandXboxController.leftTrigger().onTrue(intake.deployIntake())
+                        //                         .onTrue(intake.setIntakeSpeed(.3))
+                        //                         .onTrue(new InstantCommand(() -> arm.rotateIntake()))
+                        //                         .onTrue(shooterSubsystem.intakeShooter())
 
-                commandXboxController.leftTrigger().onTrue(intake.deployIntake())
-                                        .onTrue(intake.setIntakeSpeed(.3))
-                                        .onTrue(new InstantCommand(() -> arm.rotateIntake()))
-                                        .onTrue(shooterSubsystem.intakeShooter())
+                        //                         .onFalse(intake.stowIntake())
+                        //                         .onFalse(intake.setIntakeSpeed(0))
+                        //                         .onFalse(shooterSubsystem.stopShooter())
+                        //                         .onFalse(new InstantCommand(() -> arm.rotateStable()));
 
-                                        .onFalse(intake.stowIntake())
-                                        .onFalse(intake.setIntakeSpeed(0))
-                                        .onFalse(shooterSubsystem.stopShooter())
-                                        .onFalse(new InstantCommand(() -> arm.rotateStable()));
+                        // commandXboxController.y().onTrue(climberSubsystem.climbClimber());
 
-                // commandXboxController.y().onTrue(climberSubsystem.climbClimber());
+                } catch (Exception exception) {
+                        System.err.println("One or more bindings is causing an error.");
+                        System.err.println("Exception Message:" + exception.getMessage());
+                        System.err.println("Exception Stack Trace:" + exception.getStackTrace());
+                        System.out.println("Recalling Method...");
+                        configureBindings();
+                        System.out.println("Recalled Method");
+                }
 
                 if (Utils.isSimulation()) {
                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
                 }
                 drivetrain.registerTelemetry(logger::telemeterize);
 
-                // Climber
+                
         }
 
         /**

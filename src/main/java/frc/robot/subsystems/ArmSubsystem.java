@@ -51,8 +51,8 @@ public class ArmSubsystem extends SubsystemBase {
 			
 			ArmMotor.set(0);
 			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
-		} else if (ArmMotor.getEncoder().getPosition() > 70) {
-			while (ArmMotor.getEncoder().getPosition() > 70) {
+		} else if (ArmMotor.getEncoder().getPosition() > 61) {
+			while (ArmMotor.getEncoder().getPosition() > 61) {
 				ArmMotor.set(-0.5);
 			}
 
@@ -64,11 +64,11 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public Command moveAtPercent(double percent) {
-		
-		return this.run(() -> ArmMotor.set(this.rotateSetpoint));
+		return this.runOnce(() -> ArmMotor.set(this.rotateSetpoint));
 	}
 	
 	public Command changeArmSetpoint(double rotations) {
+    System.out.println(rotateSetpoint + rotations);
     return this.runOnce(() -> this.rotateSetpoint += rotations);
   }
   
