@@ -14,11 +14,7 @@ public class ClimberSubsystem implements Subsystem {
 
   public PIDController climberPIDController;
 
-  private boolean isClimbed = false;
-
-  public ClimberSubsystem() {
-    // init();
-  }
+  public ClimberSubsystem() {}
 
   public void init() {
     motorInit();
@@ -63,21 +59,7 @@ public class ClimberSubsystem implements Subsystem {
     return this.runOnce(() -> climb());
   }
 
-  public Command storeClimber() {
-    return this.runOnce(() -> store());
-  }
-
   public void climb() {
     climberPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_CLIMB_SETPOINT);
-    isClimbed = true;
-  }
-
-  public void store() {
-    climberPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_STORE_SETPOINT);
-    isClimbed = false;
-  }
-
-  public boolean isClimbed() {
-    return isClimbed;
   }
 }

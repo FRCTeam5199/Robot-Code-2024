@@ -44,9 +44,9 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		if (ArmMotor.getEncoder().getPosition() < 1) {
-			while (ArmMotor.getEncoder().getPosition() < 1) {
-					ArmMotor.set(0.5);
+		if (ArmMotor.getEncoder().getPosition() < 15) {
+			while (ArmMotor.getEncoder().getPosition() < 15) {
+					ArmMotor.set(0.3);
 			}
 			
 			ArmMotor.set(0);

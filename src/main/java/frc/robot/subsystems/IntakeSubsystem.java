@@ -1,14 +1,8 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkPIDController;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Main;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -18,9 +12,7 @@ public class IntakeSubsystem implements Subsystem {
     public PIDController pidController;
     public double setpoint;
 
-    public IntakeSubsystem() {
-        init();
-    }
+    public IntakeSubsystem() {}
 
     public void init() {
         motorInit();

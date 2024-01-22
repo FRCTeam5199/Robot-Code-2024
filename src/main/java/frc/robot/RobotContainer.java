@@ -58,6 +58,7 @@ public class RobotContainer {
         Autos auton;
 
         public RobotContainer() {
+                // intakeSubsystem.init();
                 // climberSubsystem.init();
 
                 auton = new Autos(drivetrain);
@@ -85,15 +86,6 @@ public class RobotContainer {
                                                                                                                          // X
                                                                                                                          // (left)
                                 ));
-                // Climber
-                ConditionalCommand climbCommandGroup = new ConditionalCommand(
-                                new ParallelCommandGroup(
-                                                // new InstantCommand(() -> intake.stowIntake()),
-                                                new InstantCommand(() -> climberSubsystem.climbClimber())),
-                                new ParallelCommandGroup(
-                                                new InstantCommand(() -> climberSubsystem.storeClimber())),
-                                climberSubsystem::isClimbed);
-
                 // reset the field-centric heading by pressing start button/hamburger menu
                 // button
                 commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
@@ -105,16 +97,16 @@ public class RobotContainer {
                                                                 -commandXboxController.getLeftX()))));
 
                 commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
-                commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateIntake()));
-                commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateFront()));
-                commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateStable()));
+                commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
+                commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
+                commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateIntake()));
 
                 commandXboxController.y().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
-                commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
                 commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
                 commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
-                
-                commandXboxController.x().onTrue(intake.deployIntake())
+                commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
+
+                commandXboxController.leftTrigger().onTrue(intake.deployIntake())
                                         .onTrue(intake.setIntakeSpeed(.3))
                                         .onTrue(new InstantCommand(() -> arm.rotateIntake()))
                                         .onTrue(shooterSubsystem.intakeShooter())
@@ -122,15 +114,9 @@ public class RobotContainer {
                                         .onFalse(intake.stowIntake())
                                         .onFalse(intake.setIntakeSpeed(0))
                                         .onFalse(shooterSubsystem.stopShooter())
-                                        .onFalse(new InstantCommand(() -> arm.rotateFront()));
+                                        .onFalse(new InstantCommand(() -> arm.rotateStable()));
 
-                // commandXboxController.button(6).onTrue(intake.setIntakeSpeed(.3)).onFalse(intake.setIntakeSpeed(0));
-                // commandXboxController.button(7).onTrue(intake.setIntakeSpeed(-.3)).onFalse(intake.setIntakeSpeed(0));
-
-                // commandXboxController.x().onTrue(intake.deployIntake());
-                // commandXboxController.y().onTrue(intake.stowIntake());
-                // commandXboxController.rightBumper().whileTrue(intake.setIntakeSpeed(.3));
-                // commandXboxController.leftBumper().whileTrue(intake.setIntakeSpeed(-.3));
+                // commandXboxController.y().onTrue(climberSubsystem.climbClimber());
 
                 if (Utils.isSimulation()) {
                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
@@ -138,7 +124,6 @@ public class RobotContainer {
                 drivetrain.registerTelemetry(logger::telemeterize);
 
                 // Climber
-                // commandXboxController.rightTrigger().onTrue(climbCommandGroup);
         }
 
         /**

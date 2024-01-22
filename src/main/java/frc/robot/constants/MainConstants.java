@@ -117,32 +117,32 @@ public class MainConstants {
             public static int BACK_RIGHT_ENCODER = 14;
 
             //Intake
-            public static int INTAKE_MOTOR_ID = 54;
+            public static int INTAKE_MOTOR_ID = 0;
 
             //Climber
-            public static int CLIMBER_JOINT_MOTOR_ID = 6;
-            public static int CLIMBER_CLAW_MOTOR_ID = 7;
-
-            //Arm
-            public static int ARM_MOTOR_ID = 5;
+            public static final int CLIMBER_JOINT_MOTOR_ID = 6;
+            public static final int CLIMBER_CLAW_MOTOR_ID = 7;
 
             // Drive
             final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
             
+            //Arm
+            public static final int ARM_MOTOR_ID = 5;
+
             //Shooter
-            public static int SHOOTER_MOTOR_1_ID = 2;
-            public static int SHOOTER_MOTOR_2_ID = 3;
-            public static int SHOOTER_INDEXER_MOTOR_ID = 4;
+            public static final int SHOOTER_MOTOR_1_ID = 2;
+            public static final int SHOOTER_MOTOR_2_ID = 3;
+            public static final int SHOOTER_INDEXER_MOTOR_ID = 4;
         }
     }
 
     public static class PIDConstants {
         public static final PID INTAKE_PID = new PID(0.01, 0, 0);
         // Climber
-        public static PID CLIMBER_PID = new PID(0.01, 0, 0);
+        public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 
         // Arm
-        public static PID ARM_PID = new PID(0.03, 0, 0);
+        public static final PID ARM_PID = new PID(0.03, 0, 0);
     }
 
     public static class Setpoints {
@@ -152,13 +152,11 @@ public class MainConstants {
 
         // Climber Setpoints
         public static final double CLIMBER_CLIMB_SETPOINT = 0;
-        
-        public static final double CLIMBER_STORE_SETPOINT = 0;
 
         //Arm Setpoints
-        public static double ARM_STABLE_SETPOINT = 1.5;
-        public static double ARM_SPEAKER_BACK_SETPOINT = 70;
-        public static double ARM_SPEAKER_FRONT_SETPOINT = 31;
-        public static double ARM_INTAKE_SETPOINT = 10;
+        public static final double ARM_STABLE_SETPOINT = 15;
+        public static final double ARM_SPEAKER_BACK_SETPOINT = 70;
+        public static final double ARM_SPEAKER_FRONT_SETPOINT = 29;
+        public static final double ARM_INTAKE_SETPOINT = 5.5;
     }
 }
