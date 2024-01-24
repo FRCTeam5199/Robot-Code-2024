@@ -10,11 +10,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -178,6 +174,22 @@ public static PhotonCamera shooter;
         }
        
     }
+
+    public double getTargetAngle(Pose2d currentPose){
+        if(getAllianceColor() == "Red") {
+            Pose2d target = new Pose2d(16.579342, 5.547867999999999, new Rotation2d(180));
+            Translation2d difference = target.minus(currentPose).getTranslation();
+            return Math.toDegrees(Math.atan(difference.getX() / difference.getY()));
+        }
+        if(getAllianceColor() == "Blue"){
+            Pose2d target = new Pose2d(-0.038099999999999995, 5.547867999999999, new Rotation2d(0));
+            Translation2d difference = target.minus(currentPose).getTranslation();
+            return Math.toDegrees(Math.atan(difference.getX()/difference.getY()));
+        }
+        return 0;
+    }
+
+    
 
     public double shooterAlign() {
         PhotonCamera targetCam = null;

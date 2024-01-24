@@ -5,8 +5,8 @@ import java.util.function.Supplier;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.*;
 
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Notifier;
@@ -31,6 +31,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
     }
+
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         if (Utils.isSimulation()) {
@@ -71,11 +72,15 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
     }
 
+    public SwerveDriveKinematics getKinematics() {
+        return m_kinematics;
+    }
+
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }
 
-    public SwerveModule[] getSwerveModules(){
+    public SwerveModule[] getSwerveModules() {
         SwerveModule[] swerveModules = new SwerveModule[4];
         swerveModules[0] = this.getModule(0);
         swerveModules[1] = this.getModule(1);
@@ -84,6 +89,10 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         return swerveModules;
     }
 
+    public void rotateTarget(double X, double Y){
+        this.applyRequest(()-> new SwerveRequest.FieldCentricFacingAngle().withVelocityX(X).withVelocityY(Y).withTargetDirection(new Rotation2d(aprilTagSubsystem.getTargetAngle(this.getPose()))));
+
+    }
 
 
 }

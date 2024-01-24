@@ -78,9 +78,12 @@ public class RobotContainer {
                         .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate).withDeadband(.4) // Drive counterclockwise with negative X (left)
                 ));
 
-        commandXboxController.rightBumper().toggleOnTrue(drivetrain.applyRequest(()-> drive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(.4)
+        commandXboxController.rightBumper().whileTrue(drivetrain.applyRequest(()-> drive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(.4)
                 .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed).withDeadband(.4)
                 .withRotationalRate(aprilTagSubsystem.shooterAlign())));
+
+        commandXboxController.rightBumper().whileTrue(run(()->drivetrain.rotateTarget(commandXboxController.getLeftX(), commandXboxController.getLeftY())));
+
 
 
         // Climber
