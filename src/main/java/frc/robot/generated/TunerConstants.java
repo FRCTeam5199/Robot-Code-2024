@@ -16,13 +16,13 @@ public class TunerConstants {
     // The steer motor uses any SwerveModule.SteerRequestType control request with the
     // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
     private static final Slot0Configs steerGains = new Slot0Configs()
-        .withKP(1).withKI(0).withKD(0.2)
-        .withKS(0).withKV(1.5).withKA(0);
+            .withKP(100).withKI(0).withKD(0.2)
+            .withKS(0).withKV(1.5).withKA(0);
     // When using closed-loop control, the drive motor uses the control
     // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
     private static final Slot0Configs driveGains = new Slot0Configs()
-        .withKP(3).withKI(0).withKD(0)
-        .withKS(0).withKV(0).withKA(0);
+            .withKP(3).withKI(0).withKD(0)
+            .withKS(0).withKV(0).withKA(0);
 
     // The closed-loop output type to use for the steer motors;
     // This affects the PID/FF gains for the steer motors
@@ -48,8 +48,8 @@ public class TunerConstants {
     private static final double kWheelRadiusInches = 2;
 
     private static final boolean kSteerMotorReversed = true;
-    private static final boolean kInvertLeftSide = false;
-    private static final boolean kInvertRightSide = true;
+    private static final boolean kInvertLeftSide = true;
+    private static final boolean kInvertRightSide = false;
 
     private static final String kCANbusName = "meow";
     private static final int kPigeonId = 0;
@@ -89,7 +89,7 @@ public class TunerConstants {
     private static final int kFrontLeftDriveMotorId = 51;
     private static final int kFrontLeftSteerMotorId = 53;
     private static final int kFrontLeftEncoderId = 3;
-    private static final double kFrontLeftEncoderOffset = 0.458984375;
+    private static final double kFrontLeftEncoderOffset = 0.454833984375;
 
     private static final double kFrontLeftXPosInches = 9.875;
     private static final double kFrontLeftYPosInches = 9.875;
@@ -98,7 +98,7 @@ public class TunerConstants {
     private static final int kFrontRightDriveMotorId = 57;
     private static final int kFrontRightSteerMotorId = 56;
     private static final int kFrontRightEncoderId = 1;
-    private static final double kFrontRightEncoderOffset = -0.094482421875;
+    private static final double kFrontRightEncoderOffset = -0.097412109375;
 
     private static final double kFrontRightXPosInches = 9.875;
     private static final double kFrontRightYPosInches = -9.875;
@@ -107,7 +107,7 @@ public class TunerConstants {
     private static final int kBackLeftDriveMotorId = 50;
     private static final int kBackLeftSteerMotorId = 54;
     private static final int kBackLeftEncoderId = 2;
-    private static final double kBackLeftEncoderOffset = 0.270751953125;
+    private static final double kBackLeftEncoderOffset = 0.22509765625;
 
     private static final double kBackLeftXPosInches = -9.875;
     private static final double kBackLeftYPosInches = 9.875;
@@ -116,7 +116,7 @@ public class TunerConstants {
     private static final int kBackRightDriveMotorId = 52;
     private static final int kBackRightSteerMotorId = 55;
     private static final int kBackRightEncoderId = 4;
-    private static final double kBackRightEncoderOffset = -0.003173828125;
+    private static final double kBackRightEncoderOffset = -0.01318359375;
 
     private static final double kBackRightXPosInches = -9.875;
     private static final double kBackRightYPosInches = -9.875;
