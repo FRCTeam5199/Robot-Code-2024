@@ -27,9 +27,7 @@ public class ArmSubsystem extends SubsystemBase {
 	private boolean isHigh = false;
 	PIDController rotatePIDController;
 
-	public ArmSubsystem() {
-		init();
-	}
+	public ArmSubsystem() {}
 
 	public void init(){
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);//idk if brushed or brushless

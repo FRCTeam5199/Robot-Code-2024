@@ -37,10 +37,6 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
  */
 public class RobotContainer {
 
-        public final static ArmSubsystem arm = new ArmSubsystem();
-        public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-        public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-        public final static IntakeSubsystem intake = new IntakeSubsystem();
         private final XboxController driveXboxController = new XboxController(0);
         private final double MaxSpeed = 6; // 6 meters per second desired top speed
         private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
@@ -55,13 +51,41 @@ public class RobotContainer {
         private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
         private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
         private final Telemetry logger = new Telemetry(MaxSpeed);
+        
+        public final static ArmSubsystem arm = new ArmSubsystem();
+        public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+        public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+        public final static IntakeSubsystem intake = new IntakeSubsystem();
+        
         Autos auton;
 
         public RobotContainer() {
-                // intakeSubsystem.init();
-                // climberSubsystem.init();
+                try { shooterSubsystem.init(); } catch (Exception exception) {
+                        System.err.println("One or more errors occured while trying to initalize the Shooter Subsystem");
+                        System.err.println("Exception Message:" + exception.getMessage());
+                        System.err.println("Exception Cause:" + exception.getCause());
+                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+
+                try { arm.init(); } catch (Exception exception) {
+                        System.err.println("One or more errors occured while trying to initalize the Arm Subsystem");
+                        System.err.println("Exception Message:" + exception.getMessage());
+                        System.err.println("Exception Cause:" + exception.getCause());
+                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+                
+                try { intake.init(); } catch (Exception exception) {
+                        System.err.println("One or more errors occured while trying to initalize the Intake Subsystem");
+                        System.err.println("Exception Message:" + exception.getMessage());
+                        System.err.println("Exception Cause:" + exception.getCause());
+                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+
+                try { climberSubsystem.init(); } catch (Exception exception) {
+                        System.err.println("One or more errors occured while trying to initalize the Climber Subsystem");
+                        System.err.println("Exception Message:" + exception.getMessage());
+                        System.err.println("Exception Cause:" + exception.getCause());
+                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
 
                 auton = new Autos(drivetrain);
+                
                 configureBindings();
         }
 
@@ -85,7 +109,7 @@ public class RobotContainer {
                                                                                                                 // X
                                                                                                                 // (left)
                         ));
-                try {
+                        
                         // reset the field-centric heading by pressing start button/hamburger menu button
                         commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
@@ -117,16 +141,7 @@ public class RobotContainer {
                         //                         .onFalse(shooterSubsystem.stopShooter())
                         //                         .onFalse(new InstantCommand(() -> arm.rotateStable()));
 
-                        // commandXboxController.y().onTrue(climberSubsystem.climbClimber());
-
-                } catch (Exception exception) {
-                        System.err.println("One or more bindings is causing an error.");
-                        System.err.println("Exception Message:" + exception.getMessage());
-                        System.err.println("Exception Stack Trace:" + exception.getStackTrace());
-                        System.out.println("Recalling Method...");
-                        configureBindings();
-                        System.out.println("Recalled Method");
-                }
+                        commandXboxController.a().onTrue(climberSubsystem.climbClimber());
 
                 if (Utils.isSimulation()) {
                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

@@ -59,10 +59,10 @@ public class ClimberSubsystem implements Subsystem {
   }
 
   public Command climbClimber() {
-    return null;//this.runOnce(new SequentialCommandGroup(
-  //     new InstantCommand(setClimberSpeed(0.5)),
-  //     new WaitCommand(0.2),
-  //     new InstantCommand(setClimberSpeed(0))
-  //   ));
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> setClimberTarget(0.5)),
+      new WaitCommand(0.4),
+      new InstantCommand(() -> setClimberTarget(0))
+    );
   }
 }

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 import com.revrobotics.CANSparkFlex;
@@ -26,12 +27,7 @@ public class ShooterSubsystem implements Subsystem{
 
   public VortexMotorController shooterIndexerMotor;
 
-  private boolean goalAmp = false;
-  /** Creates a new shooter. */
-
-  public ShooterSubsystem() {
-    init();
-}
+  public ShooterSubsystem() {}
 
 public void init() {
     motorInit();
@@ -47,14 +43,21 @@ public void init() {
     shooterMotor2.setInvert(false);
 
     shooterIndexerMotor.setBrake(true);
-    // shooterMotorLeader.setOpenLoopRampRate(1);
 
-    // shooterMotorFollower.follow(shooterMotorLeader.vortex, false);
+    shooterMotor1.getEncoder().setPosition(0);
+    shooterMotor2.getEncoder().setPosition(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (shooterMotor1.getVelocity() >= 15 && shooterMotor1.getVelocity() >= 15) {
+      new SequentialCommandGroup(
+        new InstantCommand(() -> setIndexerSpeed(0.5)),
+        new WaitCommand(0.2),
+        new InstantCommand(() -> setIndexerSpeed(0)).andThen(setShooterSpeed(0))
+      );
+    }
   }
 
   public Command setIndexerSpeed(double percent) {
@@ -63,6 +66,10 @@ public void init() {
   
   public Command setShooterSpeed(double percent) {
     return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
+  }
+
+  public Command setShooterVelocity(double velocity) {
+    return this.runOnce(() -> shooterMotor1.setVelocity(velocity)).andThen(() -> shooterMotor2.setVelocity(velocity));
   }
 
   public Command intakeShooter() {
