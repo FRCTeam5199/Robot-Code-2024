@@ -76,4 +76,12 @@ public void init() {
       new InstantCommand(() -> shooterMotor1.set(0)),
       new InstantCommand(() -> shooterMotor2.set(0)));
   }
+  
+  public boolean checkForGamePiece(){
+    if (shooterIndexerMotor.getVelocity() < 5){
+      return true;
+    } 
+    return false;
+  }
+
 }

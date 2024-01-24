@@ -2,6 +2,8 @@ package frc.robot.abstractMotorInterfaces;
 
 public abstract class AbstractMotorController {
 
+    public double sensorToRealDistanceFactor = 1D;
+
     public abstract void setVelocity(double Velocity);
 
     public abstract AbstractMotorController setInvert(boolean invert);
@@ -30,7 +32,7 @@ public abstract class AbstractMotorController {
 
     public abstract int getID();
 
-    public abstract void setCurrentLimit(double limit);
+    public abstract void setCurrentLimit(int limit);
 
     /**
     *@param Ramp This sets the rate at which you want the motor to reach its speed.
