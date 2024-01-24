@@ -10,6 +10,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -170,5 +171,24 @@ public class AprilTagSubsystem implements Subsystem {
            System.out.println("No apriltag visible, Cannot aim");
            return Optional.empty();
        }
+    }
+    public double getShooterSpeed(){
+        double distanceFromAprilTag = 0;
+        if (getAllianceColor().equals("Blue")){
+            distanceFromAprilTag = drive.getPose().getTranslation().getDistance(new Translation2d(-0.0380, 5.5478679999999999));
+        }
+        else if (getAllianceColor().equals("Red")){
+            distanceFromAprilTag = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.5478679999999999));
+    
+        }
+        double distanceFromSpeaker = Math.sqrt(Math.pow(distanceFromAprilTag, 2) + Math.pow(2.340102, distanceFromAprilTag));
+
+        double distance_min = 0;
+        double distance_max = 0;
+
+        double out_min = 0;
+        double out_max = 0;
+
+        return (distanceFromSpeaker - distance_min) * (out_max - out_min) / (distance_max - distance_min) + out_min;
     }
 }
