@@ -19,11 +19,17 @@ public class ClimberSubsystem implements Subsystem {
 
   public ClimberSubsystem() {}
 
+  /**
+   * init for climber
+   */
   public void init() {
     motorInit();
     PIDInit();
   }
 
+  /**
+   * init for motor climbers 
+   */
   public void motorInit() {
     climberMotor1 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_JOINT_MOTOR_ID);
     climberMotor2 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_CLAW_MOTOR_ID);
@@ -50,14 +56,25 @@ public class ClimberSubsystem implements Subsystem {
     // This method will be called once per scheduler run during simulation
   }
 
+  /**
+   * 
+   * @param percent sets climber speed 
+   * @return command to set climber speed
+   */
   public Command setClimberSpeed(double percent) {
     return this.runOnce(() -> climberMotor1.set(percent)).andThen((() -> climberMotor2.set(percent)));
   }
 
+  /**
+   * 
+   * @param target position where motor needs to go to 
+   * @return command that makes motor go to a setPositions 
+   */
   public Command setClimberTarget(double target) {
     return this.runOnce(() -> climberPIDController.setSetpoint(target));
   }
 
+  
   public Command climbClimber() {
     return new SequentialCommandGroup(
       new InstantCommand(() -> setClimberTarget(0.5)),

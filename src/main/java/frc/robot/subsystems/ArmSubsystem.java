@@ -29,6 +29,9 @@ public class ArmSubsystem extends SubsystemBase {
 
 	public ArmSubsystem() {}
 
+	/**
+	 * init for arm and pid controller
+	 */
 	public void init(){
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);//idk if brushed or brushless
 
@@ -61,42 +64,72 @@ public class ArmSubsystem extends SubsystemBase {
 		}
 	}
 
+	/**
+	 * 
+	 * @param percent move armMotor at a percent(-1 to 1)
+	 * @return command to spin motor at percent
+	 */
 	public Command moveAtPercent(double percent) {
 		return this.runOnce(() -> ArmMotor.set(this.rotateSetpoint));
 	}
 	
+	/**
+	 * 
+	 * @param rotations adds this to setPoint variable(setpoint)
+	 * @return command to move to setPoint
+	 */
 	public Command changeArmSetpoint(double rotations) {
     System.out.println(rotateSetpoint + rotations);
     return this.runOnce(() -> this.rotateSetpoint += rotations);
   }
   
+    /**
+	 * 
+	 * @param setpoint set armMotor to setPoint
+	 * @return command to move armMotor to setPoint
+	 */
 	public Command setArmSetpoint(double setpoint) {
     return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
   }
-
+  	/**
+	 * set Setpoint variable to Stable
+	 */
 	public void rotateStable() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT;
 		this.isFront = true;
 		this.isHigh = false;
 	}
 
+	/**
+	 * set Setpoint variable to back
+	 */
 	public void rotateBack() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT;
 		this.isFront = false;
 		this.isHigh = true;
 	}
-
+	
+	/**
+	 * set Setpoint variable to front
+	 */
 	public void rotateFront() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT;
 		this.isFront = false;
 		this.isHigh = false;
 	}
 
+	/**
+	 * set Setpoint variable to slightly above retracted intake
+	 */
 	public void rotateIntake() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_INTAKE_SETPOINT;
 		this.isFront = false;
 		this.isHigh = false;
 	}
+	/**
+	 * 
+	 * @return boolean of isFront
+	 */
 
 	public boolean isFront() {
 		return this.isFront;
