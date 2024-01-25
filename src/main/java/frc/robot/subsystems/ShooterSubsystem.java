@@ -60,30 +60,52 @@ public void init() {
     }
   }
 
+  /**
+   * Sets the Indexer motor speed to a percent between -1 and 1
+   * @param
+   */
   public Command setIndexerSpeed(double percent) {
     return this.runOnce(() -> shooterIndexerMotor.set(percent));
   }
-  
+
+  /**
+   * Sets the Shooter motor speed to a percent between -1 and 1
+   * @param
+   */
   public Command setShooterSpeed(double percent) {
     return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
   }
 
+  /**
+   * Sets the Shooter motor velocity based on the RPM of the motor
+   * @param
+   */
   public Command setShooterVelocity(double velocity) {
     return this.runOnce(() -> shooterMotor1.setVelocity(velocity)).andThen(() -> shooterMotor2.setVelocity(velocity));
   }
 
+  /**
+   * Runs the Shooter Motor to Intake
+   */
   public Command intakeShooter() {
     return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
       new InstantCommand(() -> shooterMotor1.set(-0.3)),
       new InstantCommand(() -> shooterMotor2.set(-0.3)));
   }
 
+  /**
+   * Stops the Shooter Motor
+   */
   public Command stopShooter() {
     return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
       new InstantCommand(() -> shooterMotor1.set(0)),
       new InstantCommand(() -> shooterMotor2.set(0)));
   }
   
+  /**
+   * Checks if a game piece is in the Indexer
+   * @return True if a game piece is in the Indexer
+   */
   public boolean checkForGamePiece(){
     if (shooterIndexerMotor.getVelocity() < 5){
       return true;
