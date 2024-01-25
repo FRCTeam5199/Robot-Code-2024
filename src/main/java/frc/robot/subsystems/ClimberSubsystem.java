@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -74,11 +72,18 @@ public class ClimberSubsystem implements Subsystem {
     return this.runOnce(() -> climberPIDController.setSetpoint(target));
   }
 
-  
-  public Command climbClimber() {
+  public Command extendClimber() {
     return new SequentialCommandGroup(
       new InstantCommand(() -> setClimberTarget(0.5)),
-      new WaitCommand(0.4),
+      new WaitCommand(2),
+      new InstantCommand(() -> setClimberTarget(0))
+    );
+  }
+
+  public Command retractClimber() {
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> setClimberTarget(-0.5)),
+      new WaitCommand(2),
       new InstantCommand(() -> setClimberTarget(0))
     );
   }

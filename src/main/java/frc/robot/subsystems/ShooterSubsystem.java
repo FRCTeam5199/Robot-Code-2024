@@ -33,7 +33,9 @@ public void init() {
     motorInit();
 }
 
-  //one shooter (probably kraken), feeder (probably bag)
+  /*
+   * Initalizes the motor(s) for this subsystem
+   */
   public void motorInit() {
     shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
     shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);

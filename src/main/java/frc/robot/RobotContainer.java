@@ -141,14 +141,12 @@ public class RobotContainer {
                         //                         .onFalse(shooterSubsystem.stopShooter())
                         //                         .onFalse(new InstantCommand(() -> arm.rotateStable()));
 
-                        commandXboxController.a().onTrue(climberSubsystem.climbClimber());
+                        commandXboxController.a().onTrue(climberSubsystem.extendClimber());
 
                 if (Utils.isSimulation()) {
                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
                 }
                 drivetrain.registerTelemetry(logger::telemeterize);
-
-                
         }
 
         /**
