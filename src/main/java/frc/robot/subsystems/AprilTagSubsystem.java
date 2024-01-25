@@ -96,6 +96,10 @@ public class AprilTagSubsystem implements Subsystem {
 
 
 
+    /**
+     * get alliance
+     * @return "Red" or "Blue"
+     */
     public String getAllianceColor() {
         Optional<Alliance> ally = DriverStation.getAlliance();
         if (ally.isPresent()) {
@@ -110,6 +114,9 @@ public class AprilTagSubsystem implements Subsystem {
 
     }
 
+    /**
+     * estimated posistion from front
+     */
 
     public Optional<EstimatedRobotPose> getVisionPoseFront() {
         var result = allCameras[0].getLatestResult();
@@ -126,6 +133,9 @@ public class AprilTagSubsystem implements Subsystem {
             return Optional.empty();
         }
     }
+    /**
+     * estimated pose right 
+     */
     public Optional<EstimatedRobotPose> getVisionPoseRight() {
         var result = allCameras[1].getLatestResult();
         if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
@@ -138,6 +148,9 @@ public class AprilTagSubsystem implements Subsystem {
             return Optional.empty();
         }
     }
+    /**
+     * estimated pose left
+     */
     public Optional<EstimatedRobotPose> getVisionPoseLeft() {
         var result = allCameras[2].getLatestResult();
         if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
@@ -150,6 +163,9 @@ public class AprilTagSubsystem implements Subsystem {
             return Optional.empty();
         }
     }
+    /**
+     * estimated pose back
+     */
     public Optional<EstimatedRobotPose> getVisionPoseBack() {
         var result = allCameras[3].getLatestResult();
         if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
@@ -163,6 +179,9 @@ public class AprilTagSubsystem implements Subsystem {
             return Optional.empty();
         }
     }
+    /**
+     * shooter gamera pose estimation
+     */
     public Optional<Pose3d> getShooterVision(){
        PhotonPipelineResult result = allCameras[4].getLatestResult();
        if(singlePoseEstimatorShooter.update().isPresent()){
@@ -172,6 +191,10 @@ public class AprilTagSubsystem implements Subsystem {
            return Optional.empty();
        }
     }
+    /**
+     *gets speed shooter needs to be based on alliane
+     *@returns velocity of shooter 
+     */
     public double getShooterSpeed(){
         double distanceFromAprilTag = 0;
         if (getAllianceColor().equals("Blue")){
