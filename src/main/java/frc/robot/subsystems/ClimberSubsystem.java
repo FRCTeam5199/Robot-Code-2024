@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -23,6 +24,8 @@ public class ClimberSubsystem implements Subsystem {
   public void init() {
     motorInit();
     PIDInit();
+
+    Shuffleboard.getTab("Status").add("Climber Subsystem Status", true).getEntry();
   }
 
   /**

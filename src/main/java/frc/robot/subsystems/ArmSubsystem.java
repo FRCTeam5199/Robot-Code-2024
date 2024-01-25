@@ -11,6 +11,7 @@ import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -41,6 +42,8 @@ public class ArmSubsystem extends SubsystemBase {
 				MainConstants.PIDConstants.ARM_PID.D);
 		ArmMotor.setInvert(true);
 		ArmMotor.setBrake(false);
+		
+		Shuffleboard.getTab("Status").add("Arm Subsystem Status", true).getEntry();
 	}
 
 	@Override

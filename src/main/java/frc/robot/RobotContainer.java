@@ -89,6 +89,9 @@ public class RobotContainer {
                 configureBindings();
         }
 
+        /**
+         * Configures the bindings for commands
+         */
         private void configureBindings() {
                 // Drive
                 drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically

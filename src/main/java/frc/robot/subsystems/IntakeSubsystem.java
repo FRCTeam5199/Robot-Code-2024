@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
@@ -17,6 +18,8 @@ public class IntakeSubsystem implements Subsystem {
     public void init() {
         motorInit();
         PIDInit();
+        
+        Shuffleboard.getTab("Status").add("Intake Subsystem Status", true).getEntry();
     }
 
     @Override

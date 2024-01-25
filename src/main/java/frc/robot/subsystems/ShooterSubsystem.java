@@ -4,22 +4,14 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
-import com.revrobotics.CANSparkLowLevel;
-
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
-import com.revrobotics.CANSparkFlex;
 
 public class ShooterSubsystem implements Subsystem{
   public VortexMotorController shooterMotor1;
@@ -31,6 +23,8 @@ public class ShooterSubsystem implements Subsystem{
 
 public void init() {
     motorInit();
+
+    Shuffleboard.getTab("Status").add("Shooter Subsystem Status", true).getEntry();
 }
 
   /*
