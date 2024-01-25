@@ -58,10 +58,18 @@ public class ClimberSubsystem implements Subsystem {
     return this.runOnce(() -> climberPIDController.setSetpoint(target));
   }
 
-  public Command climbClimber() {
+  public Command extendClimber() {
     return new SequentialCommandGroup(
       new InstantCommand(() -> setClimberTarget(0.5)),
-      new WaitCommand(0.4),
+      new WaitCommand(2),
+      new InstantCommand(() -> setClimberTarget(0))
+    );
+  }
+
+  public Command retractClimber() {
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> setClimberTarget(-0.5)),
+      new WaitCommand(2),
       new InstantCommand(() -> setClimberTarget(0))
     );
   }
