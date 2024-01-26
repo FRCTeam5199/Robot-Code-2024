@@ -100,7 +100,7 @@ public class MainConstants {
         // public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = null;
 
         public static class Motors {
-            public static final int INTAKE_ANGLE_MOTOR_ID = 0;
+            public static final int INTAKE_ANGLE_MOTOR_ID = 9;
             public static int FRONT_LEFT_STEER_MOTOR_ID = 2;
             public static int FRONT_LEFT_ENCODER = 11;
 
@@ -117,7 +117,7 @@ public class MainConstants {
             public static int BACK_RIGHT_ENCODER = 14;
 
             //Intake
-            public static int INTAKE_MOTOR_ID = 0;
+            public static int INTAKE_MOTOR_ID = 6;
 
             //Climber
             public static final int CLIMBER_JOINT_MOTOR_ID = 6;
