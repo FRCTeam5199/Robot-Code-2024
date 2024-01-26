@@ -37,7 +37,7 @@ public class IntakeSubsystem implements Subsystem {
      */
     public void motorInit() {
         intakeMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_MOTOR_ID);
-        intakeAngleMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ANGLE_MOTOR_ID);
+        intakeAngleMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ACTUATOR_MOTOR_ID);
 
         intakeMotor.getEncoder().setPosition(0);
         intakeAngleMotor.getEncoder().setPosition(0);

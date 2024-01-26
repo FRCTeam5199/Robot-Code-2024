@@ -100,31 +100,31 @@ public class MainConstants {
         // public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = null;
 
         public static class Motors {
-            public static final int INTAKE_ANGLE_MOTOR_ID = 9;
-            public static int FRONT_LEFT_STEER_MOTOR_ID = 2;
-            public static int FRONT_LEFT_ENCODER = 11;
-
-            public static int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
-            public static int FRONT_RIGHT_STEER_MOTOR_ID = 4;
-            public static int FRONT_RIGHT_ENCODER = 12;
-
-            public static int BACK_LEFT_DRIVE_MOTOR_ID = 5;
-            public static int BACK_LEFT_STEER_MOTOR_ID = 6;
-            public static int BACK_LEFT_ENCODER = 13;
-
-            public static int BACK_RIGHT_DRIVE_MOTOR_ID = 7;
-            public static int BACK_RIGHT_STEER_MOTOR_ID = 8;
-            public static int BACK_RIGHT_ENCODER = 14;
-
             //Intake
-            public static int INTAKE_MOTOR_ID = 6;
+            public static final int INTAKE_ACTUATOR_MOTOR_ID = 9;
+            public static final int INTAKE_MOTOR_ID = 6;
 
             //Climber
-            public static final int CLIMBER_JOINT_MOTOR_ID = 6;
-            public static final int CLIMBER_CLAW_MOTOR_ID = 7;
+            public static final int CLIMBER_MOTOR_1_ID = 6;
+            public static final int CLIMBER_MOTOR_2_ID = 7;
 
             // Drive
-            final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
+            public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
+            public static final int FRONT_LEFT_STEER_MOTOR_ID = 2;
+            public static final int FRONT_LEFT_ENCODER = 11;
+
+            public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
+            public static final int FRONT_RIGHT_STEER_MOTOR_ID = 4;
+            public static final int FRONT_RIGHT_ENCODER = 12;
+
+            public static final int BACK_LEFT_DRIVE_MOTOR_ID = 5;
+            public static final int BACK_LEFT_STEER_MOTOR_ID = 6;
+            public static final int BACK_LEFT_ENCODER = 13;
+
+            public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 7;
+            public static final int BACK_RIGHT_STEER_MOTOR_ID = 8;
+            public static final int BACK_RIGHT_ENCODER = 14;
+
             
             //Arm
             public static final int ARM_MOTOR_ID = 5;

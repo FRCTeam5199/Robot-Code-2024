@@ -32,14 +32,14 @@ public class ClimberSubsystem implements Subsystem {
    * init for motor climbers 
    */
   public void motorInit() {
-    climberMotor1 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_JOINT_MOTOR_ID);
-    climberMotor2 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_CLAW_MOTOR_ID);
+    climberMotor1 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_MOTOR_1_ID);
+    // climberMotor2 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_CLAW_MOTOR_ID);
 
     climberMotor1.setInvert(false);
-    climberMotor2.setInvert(true);
+    // climberMotor2.setInvert(true);
 
     climberMotor1.getEncoder().setPosition(0);
-    climberMotor2.getEncoder().setPosition(0);
+    // climberMotor2.getEncoder().setPosition(0);
   }
   private void PIDInit() {
     climberPIDController = new PIDController(MainConstants.PIDConstants.CLIMBER_PID.P, MainConstants.PIDConstants.CLIMBER_PID.I, MainConstants.PIDConstants.CLIMBER_PID.D);
@@ -49,7 +49,7 @@ public class ClimberSubsystem implements Subsystem {
   public void periodic() {
     // This method will be called once per scheduler run
     climberMotor1.set(climberPIDController.calculate(climberMotor1.getRotations()));
-    climberMotor2.set(climberPIDController.calculate(climberMotor2.getRotations()));
+    // climberMotor2.set(climberPIDController.calculate(climberMotor2.getRotations()));
   }
 
   @Override
@@ -63,7 +63,7 @@ public class ClimberSubsystem implements Subsystem {
    * @return command to set climber speed
    */
   public Command setClimberSpeed(double percent) {
-    return this.runOnce(() -> climberMotor1.set(percent)).andThen((() -> climberMotor2.set(percent)));
+    return this.runOnce(() -> climberMotor1.set(percent))/*.andThen((() -> climberMotor2.set(percent)))*/;
   }
 
   /**
