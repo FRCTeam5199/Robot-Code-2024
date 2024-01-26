@@ -129,11 +129,12 @@ public class RobotContainer {
                         
                         commandXboxController.b().onTrue(arm.changeArmSetpoint(0.5));
                         commandXboxController.x().onTrue(arm.changeArmSetpoint(-0.5));
-                        commandXboxController.y().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
+                        commandXboxController.y().onTrue(/*shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter()*/ intake.stowIntake());
+                        
                         commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
-
+                
                         // commandXboxController.leftTrigger().onTrue(intake.deployIntake())
                         //                         .onTrue(intake.setIntakeSpeed(.3))
                         //                         .onTrue(new InstantCommand(() -> arm.rotateIntake()))

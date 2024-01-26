@@ -34,16 +34,26 @@ public class ArmSubsystem extends SubsystemBase {
 	 * init for arm and pid controller
 	 */
 	public void init(){
-		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);//idk if brushed or brushless
+		motorInit();
+		PIDInit();
 
-		ArmMotor.getEncoder().setPosition(0);
+		this.rotateSetpoint = 15;
 
-		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I,
-				MainConstants.PIDConstants.ARM_PID.D);
+		Shuffleboard.getTab("Status").add("Arm Subsystem Status", true).getEntry();
+	}
+
+	public void motorInit() {
+		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
+
 		ArmMotor.setInvert(true);
 		ArmMotor.setBrake(false);
-		
-		Shuffleboard.getTab("Status").add("Arm Subsystem Status", true).getEntry();
+
+		ArmMotor.getEncoder().setPosition(0);
+	}
+
+	public void PIDInit() {
+				rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I,
+				MainConstants.PIDConstants.ARM_PID.D);
 	}
 
 	@Override

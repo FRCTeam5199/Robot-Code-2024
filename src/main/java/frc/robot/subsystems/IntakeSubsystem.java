@@ -3,13 +3,15 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
 public class IntakeSubsystem implements Subsystem {
     public VortexMotorController intakeMotor;
-    public VortexMotorController intakeAngleMotor;
+    public VortexMotorController intakeActuatorMotor;
     public PIDController pidController;
     public double setpoint;
 
@@ -20,11 +22,12 @@ public class IntakeSubsystem implements Subsystem {
         PIDInit();
         
         Shuffleboard.getTab("Status").add("Intake Subsystem Status", true).getEntry();
+
     }
 
     @Override
     public void periodic() {
-        intakeAngleMotor.set(pidController.calculate(intakeAngleMotor.getRotations(), setpoint));
+        intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint));
     }
 
     @Override
@@ -37,10 +40,13 @@ public class IntakeSubsystem implements Subsystem {
      */
     public void motorInit() {
         intakeMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_MOTOR_ID);
-        intakeAngleMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ACTUATOR_MOTOR_ID);
+        intakeActuatorMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ACTUATOR_MOTOR_ID);
 
         intakeMotor.getEncoder().setPosition(0);
-        intakeAngleMotor.getEncoder().setPosition(0);
+        intakeActuatorMotor.getEncoder().setPosition(0);
+
+        intakeMotor.setInvert(false);
+        intakeActuatorMotor.setInvert(true);
     }
 
     /**
@@ -57,6 +63,10 @@ public class IntakeSubsystem implements Subsystem {
      */
     public Command setIntakeSpeed(double percent) {
         return this.runOnce(() -> intakeMotor.set(percent));
+    }
+
+    public Command setIntakeActuatorSpeed(double percent) {
+        return this.runOnce(() -> intakeActuatorMotor.set(percent));
     }
 
     /**
