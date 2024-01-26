@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,6 +17,7 @@ public class IntakeSubsystem implements Subsystem {
     public VortexMotorController intakeActuatorMotor;
     public PIDController pidController;
     public double setpoint;
+    public SparkPIDController sparkPIDController;
 
     public IntakeSubsystem() {}
 
@@ -27,7 +31,7 @@ public class IntakeSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-        intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint));
+        // intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint));
     }
 
     @Override
@@ -45,8 +49,8 @@ public class IntakeSubsystem implements Subsystem {
         intakeMotor.getEncoder().setPosition(0);
         intakeActuatorMotor.getEncoder().setPosition(0);
 
-        intakeMotor.setInvert(false);
-        intakeActuatorMotor.setInvert(true);
+        intakeMotor.setInvert(true);
+        intakeActuatorMotor.setInvert(false);
     }
 
     /**
@@ -54,6 +58,10 @@ public class IntakeSubsystem implements Subsystem {
      */
     public void PIDInit() {
         pidController = new PIDController(MainConstants.PIDConstants.INTAKE_PID.P, MainConstants.PIDConstants.INTAKE_PID.I, MainConstants.PIDConstants.INTAKE_PID.D);
+        sparkPIDController = intakeActuatorMotor.vortex.getPIDController();
+        sparkPIDController.setP(MainConstants.PIDConstants.ARM_PID.P);
+        sparkPIDController.setI(MainConstants.PIDConstants.ARM_PID.I);
+        sparkPIDController.setD(MainConstants.PIDConstants.ARM_PID.D);
     }
 
     /**
@@ -67,6 +75,10 @@ public class IntakeSubsystem implements Subsystem {
 
     public Command setIntakeActuatorSpeed(double percent) {
         return this.runOnce(() -> intakeActuatorMotor.set(percent));
+    }
+
+    public Command testIntakeActuatorMotor(double setpoint) {
+        return this.runOnce(() -> sparkPIDController.setReference(setpoint, ControlType.kPosition));
     }
 
     /**

@@ -58,14 +58,14 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		if (ArmMotor.getEncoder().getPosition() < 15) {
-			while (ArmMotor.getEncoder().getPosition() < 15) {
-					ArmMotor.set(0.3);
-			}
+		// if (ArmMotor.getEncoder().getPosition() < 15) {
+			// while (ArmMotor.getEncoder().getPosition() < 15) {
+			// 		ArmMotor.set(0.3);
+			// }
 			
-			ArmMotor.set(0);
-			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
-		} else if (ArmMotor.getEncoder().getPosition() > 61) {
+			// ArmMotor.set(0);
+			// this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
+		if (ArmMotor.getEncoder().getPosition() > 61) {
 			while (ArmMotor.getEncoder().getPosition() > 61) {
 				ArmMotor.set(-0.5);
 			}

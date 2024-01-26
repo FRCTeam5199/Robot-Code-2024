@@ -72,6 +72,7 @@ public class RobotContainer {
                         System.err.println("Exception Cause:" + exception.getCause());
                         System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
                 
+                
                 try { intake.init(); } catch (Exception exception) {
                         System.err.println("One or more errors occured while trying to initalize the Intake Subsystem");
                         System.err.println("Exception Message:" + exception.getMessage());
@@ -129,21 +130,23 @@ public class RobotContainer {
                         
                         commandXboxController.b().onTrue(arm.changeArmSetpoint(0.5));
                         commandXboxController.x().onTrue(arm.changeArmSetpoint(-0.5));
-                        commandXboxController.y().onTrue(/*shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter()*/ intake.stowIntake());
+                        commandXboxController.y().onTrue(/*shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter()*/ intake.testIntakeActuatorMotor(10));
                         
                         commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
                 
-                        // commandXboxController.leftTrigger().onTrue(intake.deployIntake())
-                        //                         .onTrue(intake.setIntakeSpeed(.3))
-                        //                         .onTrue(new InstantCommand(() -> arm.rotateIntake()))
-                        //                         .onTrue(shooterSubsystem.intakeShooter())
+                        commandXboxController.leftTrigger()
+                                // intake.deployIntake()
 
-                        //                         .onFalse(intake.stowIntake())
-                        //                         .onFalse(intake.setIntakeSpeed(0))
-                        //                         .onFalse(shooterSubsystem.stopShooter())
-                        //                         .onFalse(new InstantCommand(() -> arm.rotateStable()));
+                                                .onTrue(intake.setIntakeSpeed(1))
+                                                .onTrue(new InstantCommand(() -> arm.rotateIntake()))
+                                                .onTrue(shooterSubsystem.intakeShooter())
+
+                                                // .onFalse(intake.stowIntake())
+                                                .onFalse(intake.setIntakeSpeed(0))
+                                                .onFalse(shooterSubsystem.stopShooter())
+                                                .onFalse(new InstantCommand(() -> arm.rotateStable()));
 
                         commandXboxController.a().onTrue(climberSubsystem.extendClimber());
 
