@@ -145,7 +145,7 @@ public class RobotContainer {
                                 .onFalse(new SequentialCommandGroup(
                                         intake.setIntakeSpeed(0),
                                         new InstantCommand(() -> arm.rotateStable()),
-                                        new WaitCommand(0.15),
+                                        new WaitCommand(0.25),
                                         shooterSubsystem.stopShooter(),
                                         intake.stowIntake()));
 

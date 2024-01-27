@@ -75,8 +75,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }
-
-
 }
 
 

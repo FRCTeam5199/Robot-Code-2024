@@ -14,7 +14,6 @@ public class UserInterface extends SubsystemBase {
     static ShuffleboardTab ShuffleboardGameTab = Shuffleboard.getTab("Game");
     
     public UserInterface() {
-        
         Shuffleboard.getTab("Drive");
         Shuffleboard.getTab("Auton");
         Shuffleboard.getTab("Visual");
@@ -78,17 +77,17 @@ public class UserInterface extends SubsystemBase {
 
         // ShuffleboardGameTab.add("Field", "").withWidget(BuiltInWidgets.kField);
     }  
-    
+
     public static void updateGameTab() {
-        ShuffleboardGameTab.add("Event Name", DriverStation.getEventName()).getEntry();
-        ShuffleboardGameTab.add("Match Number", DriverStation.getMatchNumber()).getEntry();
-        ShuffleboardGameTab.add("Match Type", DriverStation.getMatchType().toString()).getEntry();
-        ShuffleboardGameTab.add("Alliance Color", DriverStation.getAlliance().toString()).getEntry();
-        ShuffleboardGameTab.add("Station Number", DriverStation.getLocation().toString()).getEntry();
-        ShuffleboardGameTab.add("Station Number", DriverStation.getGameSpecificMessage()).getEntry();
+        ShuffleboardGameTab.add("Event Name", "").getEntry().setString(DriverStation.getEventName());
+        ShuffleboardGameTab.add("Match Number", 0).getEntry().setInteger(DriverStation.getMatchNumber());
+        ShuffleboardGameTab.add("Match Type", "").getEntry().setString(DriverStation.getMatchType().toString());
+        ShuffleboardGameTab.add("Alliance Color", "").getEntry().setString(DriverStation.getAlliance().toString());
+        ShuffleboardGameTab.add("Station Number", "").getEntry().setString(DriverStation.getLocation().toString());
+        ShuffleboardGameTab.add("Game Message", "").getEntry().setString(DriverStation.getGameSpecificMessage());
         
-        ShuffleboardGameTab.add("Robot Enabled", DriverStation.isEnabled()).getEntry();
-        ShuffleboardGameTab.add("Teleop Enabled", DriverStation.isTeleopEnabled()).getEntry();
+        ShuffleboardGameTab.add("Robot Enabled", false).getEntry().setBoolean(DriverStation.isEnabled());
+        ShuffleboardGameTab.add("Teleop Enabled", false).getEntry().setBoolean(DriverStation.isTeleopEnabled());
     }
 
     /**
