@@ -124,7 +124,6 @@ public class MainConstants {
             public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 7;
             public static final int BACK_RIGHT_STEER_MOTOR_ID = 8;
             public static final int BACK_RIGHT_ENCODER = 14;
-
             
             //Arm
             public static final int ARM_MOTOR_ID = 5;

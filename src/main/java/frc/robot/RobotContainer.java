@@ -97,16 +97,16 @@ public class RobotContainer {
                 // Drive
                 drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                         drivetrain.applyRequest(() -> drive
-                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(.8) // Drive
+                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(1) // Drive
                                                                                                 // forward
                                                                                                 // with
                                 // negative Y (forward)
-                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed).withDeadband(.8) // Drive
+                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed).withDeadband(1) // Drive
                                                                                                 // left
                                                                                                 // with
                                                                                                 // negative
                                                                                                 // X (left)
-                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(.8) // Drive
+                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(1) // Drive
                                                                                                                 // counterclockwise
                                                                                                                 // with
                                                                                                                 // negative
@@ -137,14 +137,15 @@ public class RobotContainer {
 
                         commandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(
                                         intake.deployIntake(),
-                                        new WaitCommand(0.8),
+                                        new WaitCommand(0.3),
                                         new InstantCommand(() -> arm.rotateIntake()),
+                                        new WaitCommand(0.15),
                                         intake.setIntakeSpeed(1),
                                         shooterSubsystem.intakeShooter()))
                                 .onFalse(new SequentialCommandGroup(
-                                        new InstantCommand(() -> arm.rotateStable()),
                                         intake.setIntakeSpeed(0),
-                                        new WaitCommand(0.8),
+                                        new InstantCommand(() -> arm.rotateStable()),
+                                        new WaitCommand(0.15),
                                         shooterSubsystem.stopShooter(),
                                         intake.stowIntake()));
 
