@@ -16,9 +16,6 @@ import frc.robot.constants.MainConstants;
  	  public TalonMotorController ArmFollower;
 
 	public double rotateSetpoint = 0;
-	private boolean isFront = true;
-	private boolean isStable = false;
-	private boolean isHigh = false;
 	PIDController rotatePIDController;
 
 	public ArmSubsystem() {}
@@ -51,16 +48,16 @@ import frc.robot.constants.MainConstants;
 
 	@Override
 	public void periodic() {
-		// if (ArmMotor.getEncoder().getPosition() < 15) {
-			// while (ArmMotor.getEncoder().getPosition() < 15) {
-			// 		ArmMotor.set(0.3);
-			// }
+		if (ArmMotor.getEncoder().getPosition() < 1.5) {
+			while (ArmMotor.getEncoder().getPosition() < 1.5) {
+					ArmMotor.set(0.3);
+			}
 			
-			// ArmMotor.set(0);
-			// this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
-		if (ArmMotor.getEncoder().getPosition() > 61) {
+			ArmMotor.set(0);
+			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
+		} else if (ArmMotor.getEncoder().getPosition() > 61) {
 			while (ArmMotor.getEncoder().getPosition() > 61) {
-				ArmMotor.set(-0.5);
+				ArmMotor.set(-0.3);
 			}
 
 			ArmMotor.set(0);
@@ -102,8 +99,6 @@ import frc.robot.constants.MainConstants;
 	 */
 	public void rotateStable() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT;
-		this.isFront = true;
-		this.isHigh = false;
 	}
 
 	/**
@@ -111,8 +106,6 @@ import frc.robot.constants.MainConstants;
 	 */
 	public void rotateBack() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT;
-		this.isFront = false;
-		this.isHigh = true;
 	}
 	
 	/**
@@ -120,8 +113,6 @@ import frc.robot.constants.MainConstants;
 	 */
 	public void rotateFront() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT;
-		this.isFront = false;
-		this.isHigh = false;
 	}
 
 	/**
@@ -129,15 +120,12 @@ import frc.robot.constants.MainConstants;
 	 */
 	public void rotateIntake() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_INTAKE_SETPOINT;
-		this.isFront = false;
-		this.isHigh = false;
 	}
-	/**
-	 * 
-	 * @return boolean of isFront
-	 */
 
-	public boolean isFront() {
-		return this.isFront;
+	/**
+	 * set Setpoint variable to slightly above retracted intake
+	 */
+	public void rotateClimb() {
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_CLIMBER_SETPOINT;
 	}
 }

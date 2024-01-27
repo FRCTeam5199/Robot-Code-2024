@@ -42,36 +42,36 @@ public class UserInterface extends SubsystemBase {
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withPosition(3, 1).withSize(1, 1).getEntry();
 
-        ShuffleboardGameTab.add("Event Name", DriverStation.getEventName())
+        ShuffleboardGameTab.add("Event Name", "")
         .withWidget(BuiltInWidgets.kTextView)
         .withSize(2, 1)
         .withPosition(0, 0).getEntry();
-        ShuffleboardGameTab.add("Match Number", DriverStation.getMatchNumber())
-        .withWidget(BuiltInWidgets.kNumberBar)
+        ShuffleboardGameTab.add("Match Number", 0)
+        .withWidget(BuiltInWidgets.kTextView)
         .withSize(1, 1)
         .withPosition(2, 0).getEntry();
-        ShuffleboardGameTab.add("Match Type", DriverStation.getMatchType())
+        ShuffleboardGameTab.add("Match Type", "")
         .withWidget(BuiltInWidgets.kTextView)
         .withSize(1, 1)
         .withPosition(3, 0).getEntry();
-        ShuffleboardGameTab.add("Alliance Color", DriverStation.getAlliance())
+        ShuffleboardGameTab.add("Alliance Color", "")
         .withWidget(BuiltInWidgets.kTextView)
         .withSize(1, 1)
         .withPosition(4, 0).getEntry();
-        ShuffleboardGameTab.add("Station Number", DriverStation.getLocation())
+        ShuffleboardGameTab.add("Station Number", "")
         .withWidget(BuiltInWidgets.kTextView)
         .withSize(1, 1)
         .withPosition(5, 0).getEntry();
-        ShuffleboardGameTab.add("Station Number", DriverStation.getGameSpecificMessage())
+        ShuffleboardGameTab.add("Station Number", "")
         .withWidget(BuiltInWidgets.kTextView)
         .withSize(5, 1)
         .withPosition(6, 0).getEntry();
-        
-        ShuffleboardGameTab.add("Robot Enabled", DriverStation.isEnabled())
+
+        ShuffleboardGameTab.add("Robot Enabled", false)
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withSize(1, 1)
         .withPosition(0, 1).getEntry();
-        ShuffleboardGameTab.add("Teleop Enabled", DriverStation.isTeleopEnabled())
+        ShuffleboardGameTab.add("Teleop Enabled", false)
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withSize(1, 1)
         .withPosition(1, 1).getEntry();
@@ -82,9 +82,9 @@ public class UserInterface extends SubsystemBase {
     public static void updateGameTab() {
         ShuffleboardGameTab.add("Event Name", DriverStation.getEventName()).getEntry();
         ShuffleboardGameTab.add("Match Number", DriverStation.getMatchNumber()).getEntry();
-        ShuffleboardGameTab.add("Match Type", DriverStation.getMatchType()).getEntry();
-        ShuffleboardGameTab.add("Alliance Color", DriverStation.getAlliance()).getEntry();
-        ShuffleboardGameTab.add("Station Number", DriverStation.getLocation()).getEntry();
+        ShuffleboardGameTab.add("Match Type", DriverStation.getMatchType().toString()).getEntry();
+        ShuffleboardGameTab.add("Alliance Color", DriverStation.getAlliance().toString()).getEntry();
+        ShuffleboardGameTab.add("Station Number", DriverStation.getLocation().toString()).getEntry();
         ShuffleboardGameTab.add("Station Number", DriverStation.getGameSpecificMessage()).getEntry();
         
         ShuffleboardGameTab.add("Robot Enabled", DriverStation.isEnabled()).getEntry();

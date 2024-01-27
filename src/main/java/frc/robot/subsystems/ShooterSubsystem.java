@@ -47,13 +47,6 @@ public void init() {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (shooterMotor1.getVelocity() >= 15 && shooterMotor1.getVelocity() >= 15) {
-      new SequentialCommandGroup(
-        new InstantCommand(() -> setIndexerSpeed(0.5)),
-        new WaitCommand(0.2),
-        new InstantCommand(() -> setIndexerSpeed(0)).andThen(setShooterSpeed(0))
-      );
-    }
   }
 
   /**

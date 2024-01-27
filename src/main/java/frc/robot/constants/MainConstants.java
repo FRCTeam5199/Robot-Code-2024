@@ -105,8 +105,8 @@ public class MainConstants {
             public static final int INTAKE_MOTOR_ID = 6;
 
             //Climber
-            public static final int CLIMBER_MOTOR_1_ID = 6;
-            public static final int CLIMBER_MOTOR_2_ID = 7;
+            public static final int CLIMBER_MOTOR_1_ID = 7;
+            public static final int CLIMBER_MOTOR_2_ID = 0;
 
             // Drive
             public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
@@ -124,7 +124,6 @@ public class MainConstants {
             public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 7;
             public static final int BACK_RIGHT_STEER_MOTOR_ID = 8;
             public static final int BACK_RIGHT_ENCODER = 14;
-
             
             //Arm
             public static final int ARM_MOTOR_ID = 5;
@@ -147,13 +146,14 @@ public class MainConstants {
 
     public static class Setpoints {
         //Intake Setpoints
-        public static final double STOW_INTAKE = 10;
+        public static final double STOW_INTAKE = 15;
         public static final double DEPLOY_INTAKE = 0;
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 15.8;
+        public static final double ARM_STABLE_SETPOINT = 16.3;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 60;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 4.5;
+        public static final double ARM_CLIMBER_SETPOINT = 40;
     }
 }
