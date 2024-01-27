@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -46,7 +47,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-
   }
 
   /**
@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
 
     CommandScheduler.getInstance().run();
+    
     Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseBack();
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
@@ -79,7 +80,10 @@ public class Robot extends TimedRobot {
     //   EstimatedRobotPose robotPose = estimatePose3.get();
     //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
     // }
-    Superstructure.update();
+    // if(estimatePose4.isPresent()){
+    //   EstimatedRobotPose robotPose = estimatePose4.get();
+    //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    // }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

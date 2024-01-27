@@ -64,69 +64,76 @@ public class RobotContainer {
     public RobotContainer() {
         // climberSubsystem.init();
 
-        auton = new Autos(drivetrain);
-        configureBindings();
-        // Human player command composition
-        // ConditionalCommand humanPlayerCommandGroup =
-        //         new ConditionalCommand(
-        //                 new InstantCommand(() -> arm.rotateHumanPlayer()
-        //                 ), new InstantCommand(() -> arm.rotateStable()
-        //         ), arm::isFront);
-    }
-
-    private void configureBindings() {
-        
-        // Drive
-        drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(.4) // Drive forward with
-                        // negative Y (forward)
-                        .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed).withDeadband(.4) // Drive left with negative X (left)
-                        .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate).withDeadband(.4) // Drive counterclockwise with negative X (left)
-                ));
-
-
-        commandXboxController.rightBumper().whileTrue(run(()->drivetrain.rotateTarget(commandXboxController.getLeftX(), commandXboxController.getLeftY())));
-
-        new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
-            if (DriverStation.isDisabled()) {
-                ArmSubsystem.toggleBrakeMode();
-            }
-        }));
-
-        // Climber
-        // ConditionalCommand climbCommandGroup = 
-        //         new ConditionalCommand( 
-        //                 new ParallelCommandGroup(
-        //                         // new InstantCommand(() -> intake.stowIntake()),
-        //                         new InstantCommand(() -> climberSubsystem.climbClimber())
-        //                 ),
-        //                 new ParallelCommandGroup(
-        //                         new InstantCommand(() -> climberSubsystem.storeClimber())
-        //                 ),
-        //         climberSubsystem::isClimbed);
-
-        // reset the field-centric heading by pressing start button/hamburger menu button
-        commandXboxController.x().onTrue(aprilTagSubsystem.alignSpeaker());
-        commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
-
-        commandXboxController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        commandXboxController.b().whileTrue(drivetrain
-                .applyRequest(() -> point.withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(), -commandXboxController.getLeftX()))));
-
-        // commandXboxController.x().onTrue(intake.deployIntake());
-        // commandXboxController.y().onTrue(intake.stowIntake());
-        // commandXboxController.rightBumper().whileTrue(intake.setIntakeSpeed(.3));
-        // commandXboxController.leftBumper().whileTrue(intake.setIntakeSpeed(-.3));
-
-
-        if (Utils.isSimulation()) {
-            drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
+                auton = new Autos(drivetrain);
+                configureBindings();
         }
-        drivetrain.registerTelemetry(logger::telemeterize);
 
-    // Climber
-//     commandXboxController.rightTrigger().onTrue(climbCommandGroup);
-  }
+        /**
+         * Configures the bindings for commands
+         */
+        private void configureBindings() {
+                // Drive
+                drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+                        drivetrain.applyRequest(() -> drive
+                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) // Drive
+                                                                                                // forward
+                                                                                                // with
+                                // negative Y (forward)
+                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) // Drive
+                                                                                                // left
+                                                                                                // with
+                                                                                                // negative
+                                                                                                // X (left)
+                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive
+                                                                                                                // counterclockwise
+                                                                                                                // with
+                                                                                                                // negative
+                                                                                                                // X
+                                                                                                                // (left)
+                        ));
+                        
+                        // reset the field-centric heading by pressing start button/hamburger menu button
+                        commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
+
+                        commandXboxController.button(6).whileTrue(drivetrain.applyRequest(() -> brake));
+                        commandXboxController.button(7).whileTrue(drivetrain
+                                        .applyRequest(() -> point
+                                                        .withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(),
+                                                                        -commandXboxController.getLeftX()))));
+
+                        commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
+                        commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
+                        commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
+                        // commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateIntake()));
+                        
+                        commandXboxController.b().onTrue(arm.changeArmSetpoint(0.5));
+                        commandXboxController.x().onTrue(arm.changeArmSetpoint(-0.5));
+                        commandXboxController.y().onTrue(intake.stowIntake());
+                        commandXboxController.a().onTrue(intake.deployIntake());
+                        
+                        commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                        commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                        commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
+                
+                        commandXboxController.leftTrigger()
+                                // intake.deployIntake()
+
+                                                .onTrue(intake.setIntakeSpeed(1))
+                                                .onTrue(new InstantCommand(() -> arm.rotateIntake()))
+                                                .onTrue(shooterSubsystem.intakeShooter())
+
+                                                // .onFalse(intake.stowIntake())
+                                                .onFalse(intake.setIntakeSpeed(0))
+                                                .onFalse(shooterSubsystem.stopShooter())
+                                                .onFalse(new InstantCommand(() -> arm.rotateStable()));
+
+                        commandXboxController.a().onTrue(climberSubsystem.extendClimber());
+
+                if (Utils.isSimulation()) {
+                        drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
+                }
+                drivetrain.registerTelemetry(logger::telemeterize);
+        }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
