@@ -16,6 +16,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
@@ -194,14 +195,12 @@ public class AprilTagSubsystem implements Subsystem {
      */
     public Optional<Pose3d> getShooterVision() {
         PhotonPipelineResult result = allCameras[4].getLatestResult();
-        if (singlePoseEstimatorShooter.update().isPresent())
+        if (singlePoseEstimatorShooter.update().isPresent()) {
             return Optional.ofNullable(singlePoseEstimatorShooter.update().get().estimatedPose);
-    }else
-
-    {
-        System.out.println("No apriltag visible, Cannot aim");
-        return Optional.empty();
-    }
+        } else {
+            System.out.println("No apriltag visible, Cannot aim");
+            return Optional.empty();
+        }
     }
 
     /**

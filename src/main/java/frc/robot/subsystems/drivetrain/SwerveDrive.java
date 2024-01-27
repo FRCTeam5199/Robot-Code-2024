@@ -3,12 +3,16 @@ package frc.robot.subsystems.drivetrain;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.mechanisms.swerve.*;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -89,9 +93,9 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         return swerveModules;
     }
 
-    public void rotateTarget(double X, double Y){
-        this.applyRequest(()-> new SwerveRequest.FieldCentricFacingAngle().withVelocityX(Y).withVelocityY(X).withTargetDirection(new Rotation2d(aprilTagSubsystem.getTargetAngle(this.getPose()))));
-
+    public void rotateTarget(double X, double Y) {
+        // aprilTagSubsystem.getTargetAngle does not exsist.
+        // this.applyRequest(()-> new SwerveRequest.FieldCentricFacingAngle().withVelocityX(Y).withVelocityY(X).withTargetDirection(new Rotation2d(aprilTagSubsystem.getTargetAngle(this.getPose()))));
     }
 
 
