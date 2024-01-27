@@ -57,7 +57,7 @@ public class IntakeSubsystem implements Subsystem {
      * init of the pidController
      */
     public void PIDInit() {
-        pidController = new PIDController(MainConstants.PIDConstants.INTAKE_PID.P, MainConstants.PIDConstants.INTAKE_PID.I, MainConstants.PIDConstants.INTAKE_PID.D);
+        // pidController = new PIDController(MainConstants.PIDConstants.INTAKE_PID.P, MainConstants.PIDConstants.INTAKE_PID.I, MainConstants.PIDConstants.INTAKE_PID.D);
         sparkPIDController = intakeActuatorMotor.vortex.getPIDController();
         sparkPIDController.setP(MainConstants.PIDConstants.ARM_PID.P);
         sparkPIDController.setI(MainConstants.PIDConstants.ARM_PID.I);
@@ -77,16 +77,12 @@ public class IntakeSubsystem implements Subsystem {
         return this.runOnce(() -> intakeActuatorMotor.set(percent));
     }
 
-    public Command testIntakeActuatorMotor(double setpoint) {
-        return this.runOnce(() -> sparkPIDController.setReference(setpoint, ControlType.kPosition));
-    }
-
     /**
      * retract the intake 
      * @return command to retract intake
      */
     public Command stowIntake() {
-        return this.runOnce(() -> setpoint = MainConstants.Setpoints.STOW_INTAKE);
+        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.STOW_INTAKE, ControlType.kPosition));
     }
 
     /**
@@ -94,6 +90,6 @@ public class IntakeSubsystem implements Subsystem {
      * @return command to deploy the intake
      */
     public Command deployIntake() {
-        return this.runOnce(() -> setpoint = MainConstants.Setpoints.DEPLOY_INTAKE);
+        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.DEPLOY_INTAKE, ControlType.kPosition));
     }
 }
