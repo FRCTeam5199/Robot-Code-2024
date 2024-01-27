@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.utility.superstructure.Superstructure;
+
 import org.photonvision.EstimatedRobotPose;
 
 import java.util.Optional;
@@ -77,6 +79,7 @@ public class Robot extends TimedRobot {
     //   EstimatedRobotPose robotPose = estimatePose3.get();
     //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
     // }
+    Superstructure.update();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

@@ -16,7 +16,7 @@ package frc.robot.subsystems;
 
 
  public class ArmSubsystem extends SubsystemBase {
- 	public VortexMotorController ArmMotor;
+ 	public static VortexMotorController ArmMotor;
 	
  	 public TalonMotorController ArmLeader;
  	  public TalonMotorController ArmFollower;
@@ -26,6 +26,7 @@ package frc.robot.subsystems;
 	private boolean isStable = false;
 	private boolean isHigh = false;
 	PIDController rotatePIDController;
+	private static boolean isBrakeMode = false; 
 
 
 	public void init(){
@@ -36,7 +37,7 @@ package frc.robot.subsystems;
 		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I,
 				MainConstants.PIDConstants.ARM_PID.D);
 		ArmMotor.setInvert(true);
-		ArmMotor.setBrake(false);
+		ArmMotor.setBrake(isBrakeMode);
 	}
 
 	@Override
@@ -100,4 +101,9 @@ package frc.robot.subsystems;
 	public boolean isFront() {
 		return this.isFront;
 	}
+
+	public static void toggleBrakeMode() {
+        isBrakeMode = !isBrakeMode;
+        ArmMotor.setBrake(isBrakeMode);
+    }
 }

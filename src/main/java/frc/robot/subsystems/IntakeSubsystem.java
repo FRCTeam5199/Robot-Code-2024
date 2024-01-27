@@ -14,9 +14,11 @@ package frc.robot.subsystems;
 
  public class IntakeSubsystem implements Subsystem {
      public VortexMotorController intakeMotor;
-     public VortexMotorController intakeAngleMotor;
+     public static VortexMotorController intakeAngleMotor;
      public PIDController pidController;
      public double setpoint;
+     private static boolean isBrakeMode = false; 
+
 
      public IntakeSubsystem() {
          init();
@@ -60,4 +62,9 @@ package frc.robot.subsystems;
      public Command deployIntake() {
          return this.runOnce(() -> setpoint = MainConstants.Setpoints.DEPLOY_INTAKE);
      }
+
+     public static void toggleBrakeMode() {
+        isBrakeMode = !isBrakeMode;
+        intakeAngleMotor.setBrake(isBrakeMode);
+    }
  }
