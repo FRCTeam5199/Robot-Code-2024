@@ -9,9 +9,11 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.*;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -98,6 +100,10 @@ public static PhotonCamera shooter;
 
 
 
+    /**
+     * get alliance
+     * @return "Red" or "Blue"
+     */
     public String getAllianceColor() {
         Optional<Alliance> ally = DriverStation.getAlliance();
         if (ally.isPresent()) {
@@ -112,6 +118,9 @@ public static PhotonCamera shooter;
 
     }
 
+    /**
+     * estimated posistion from front
+     */
 
     public Optional<EstimatedRobotPose> getVisionPoseFront() {
         var result = allCameras[0].getLatestResult();
@@ -128,6 +137,9 @@ public static PhotonCamera shooter;
             return Optional.empty();
         }
     }
+    /**
+     * estimated pose right 
+     */
     public Optional<EstimatedRobotPose> getVisionPoseRight() {
         var result = allCameras[1].getLatestResult();
         if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
@@ -140,6 +152,9 @@ public static PhotonCamera shooter;
             return Optional.empty();
         }
     }
+    /**
+     * estimated pose left
+     */
     public Optional<EstimatedRobotPose> getVisionPoseLeft() {
         var result = allCameras[2].getLatestResult();
         if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
@@ -152,6 +167,9 @@ public static PhotonCamera shooter;
             return Optional.empty();
         }
     }
+    /**
+     * estimated pose back
+     */
     public Optional<EstimatedRobotPose> getVisionPoseBack() {
         var result = allCameras[3].getLatestResult();
         if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
@@ -165,116 +183,39 @@ public static PhotonCamera shooter;
             return Optional.empty();
         }
     }
+    /**
+     * shooter gamera pose estimation
+     */
     public Optional<Pose3d> getShooterVision(){
        PhotonPipelineResult result = allCameras[4].getLatestResult();
        if(singlePoseEstimatorShooter.update().isPresent())
            return Optional.ofNullable(singlePoseEstimatorShooter.update().get().estimatedPose);
-        else{
-            return Optional.empty();
-        }
-       
+       }else{
+           System.out.println("No apriltag visible, Cannot aim");
+           return Optional.empty();
+       }
     }
-
-    public double getTargetAngle(Pose2d currentPose){
-        if(getAllianceColor() == "Red") {
-            Pose2d target = new Pose2d(16.579342, 5.547867999999999, new Rotation2d(180));
-            Translation2d difference = target.minus(currentPose).getTranslation();
-            return Math.toDegrees(Math.atan(difference.getX() / difference.getY()));
-        }
-        if(getAllianceColor() == "Blue"){
-            Pose2d target = new Pose2d(-0.038099999999999995, 5.547867999999999, new Rotation2d(0));
-            Translation2d difference = target.minus(currentPose).getTranslation();
-            return Math.toDegrees(Math.atan(difference.getX()/difference.getY()));
-        }
-        return 0;
-    }
-
-    
-
-    public double shooterAlign() {
-        PhotonCamera targetCam = null;
-        if (Objects.equals(getAllianceColor(), "Red")) {
-            //for(int i = 0; i <= allCameras.length; i++){
-            //if(allCameras[i].getLatestResult().getMultiTagResult().fiducialIDsUsed.contains(3) || allCameras[i].getLatestResult().getMultiTagResult().fiducialIDsUsed.contains(4) || allCameras[i].getLatestResult().getBestTarget().getFiducialId() == 3 || allCameras[i].getLatestResult().getBestTarget().getFiducialId() == 4){
-            //  targetCam = allCameras[i];
-            //  break;
-            //}
-            //if(i == 4){
-            //    i = -1;
-            //  }
-            //}
-            targetCam = allCameras[3];
-            while (Objects.equals(targetCam.getName(), "Right") || Objects.equals(targetCam.getName(), "Left")) {
-                drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(0, 0, 1)));
-                if (allCameras[0].getLatestResult().getBestTarget().getFiducialId() == 3 || allCameras[0].getLatestResult().getBestTarget().getFiducialId() == 4) {
-                    targetCam = allCameras[0];
-                    break;
-                }
-                if (allCameras[3].getLatestResult().getBestTarget().getFiducialId() == 3 || allCameras[3].getLatestResult().getBestTarget().getFiducialId() == 4) {
-                    targetCam = allCameras[3];
-                    break;
-                }
-            }
-            if (targetCam.getLatestResult().hasTargets() && targetCam.getLatestResult().getBestTarget().getFiducialId() == 3) {
-                return aimControl.calculate(targetCam.getLatestResult().getBestTarget().getYaw(), 10) * .05;
-            }
-            if (targetCam.getLatestResult().hasTargets() && targetCam.getLatestResult().getBestTarget().getFiducialId() == 4) {
-                return aimControl.calculate(targetCam.getLatestResult().getBestTarget().getYaw(), 0) * .05;
-            }
-        }
-        if (getAllianceColor() == "Blue") {
-            for (int i = 0; i <= allCameras.length; i++) {
-                if (allCameras[i].getLatestResult().getMultiTagResult().fiducialIDsUsed.contains(7) || allCameras[i].getLatestResult().getMultiTagResult().fiducialIDsUsed.contains(8) || allCameras[i].getLatestResult().getBestTarget().getFiducialId() == 7 || allCameras[i].getLatestResult().getBestTarget().getFiducialId() == 8) {
-                    targetCam = allCameras[i];
-                    break;
-                }
-                if (i == 4) {
-                    i = -1;
-                }
-            }
-            while (Objects.equals(targetCam.getName(), "Right") || Objects.equals(targetCam.getName(), "Left")) {
-                drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(0, 0, 1)));
-                if (allCameras[0].getLatestResult().getBestTarget().getFiducialId() == 7 || allCameras[0].getLatestResult().getBestTarget().getFiducialId() == 8) {
-                    targetCam = allCameras[0];
-                    break;
-                }
-                if (allCameras[3].getLatestResult().getBestTarget().getFiducialId() == 7 || allCameras[3].getLatestResult().getBestTarget().getFiducialId() == 8) {
-                    targetCam = allCameras[3];
-                    break;
-                }
-            }
-            if (targetCam.getLatestResult().getBestTarget().getFiducialId() == 7) {
-                drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(0, 0, aimControl.calculate(targetCam.getLatestResult().getBestTarget().getYaw(), 10) * .06)));
-            }
-            if (targetCam.getLatestResult().getBestTarget().getFiducialId() == 8) {
-                drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(0, 0, aimControl.calculate(targetCam.getLatestResult().getBestTarget().getYaw(), 0) * .06)));
-            }
-        }
-        return 0;
-    }
-    public Command alignSpeaker(){
-        return run(()-> speakersAligning());
-    }
-
-    private void speakersAligning(){
-    double angleForShooter = 0;
-    double speakerHeight = 2.340102;
-    // slightly in front of april tag so it doesnt aim out of field
-    double distanceFromRobot = 0;
+    /**
+     *gets speed shooter needs to be based on alliane
+     *@returns velocity of shooter 
+     */
+    public double getShooterSpeed(){
+        double distanceFromAprilTag = 0;
         if (getAllianceColor().equals("Blue")){
-        //   distanceFromRobot = poseEstimation.getPoseEstimator().getEstimatedPosition().getTranslation().getDistance(new Translation2d(2, 218.42));
-            distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
+            distanceFromAprilTag = drive.getPose().getTranslation().getDistance(new Translation2d(-0.0380, 5.5478679999999999));
         }
         else if (getAllianceColor().equals("Red")){
-        distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.5478679999999999));
-
+            distanceFromAprilTag = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.5478679999999999));
+    
         }
-        // System.out.println(drive.getPose().getTranslation());
-        angleForShooter = Math.toDegrees(Math.atan(speakerHeight/distanceFromRobot));
-        // System.out.println("angle    " + angleForShooter);
-        // System.out.println("distance:" + distanceFromRobot * 39.37);
-        System.out.println(angleForShooter);
-        // System.out.println(angleForShooter);
-        // return angleForShooter;
-      }  
+        double distanceFromSpeaker = Math.sqrt(Math.pow(distanceFromAprilTag, 2) + Math.pow(2.340102, distanceFromAprilTag));
+
+        double distance_min = 0;
+        double distance_max = 0;
+
+        double out_min = 0;
+        double out_max = 0;
+
+        return (distanceFromSpeaker - distance_min) * (out_max - out_min) / (distance_max - distance_min) + out_min;
+    }
 }
