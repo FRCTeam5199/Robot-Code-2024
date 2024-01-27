@@ -97,16 +97,16 @@ public class RobotContainer {
                 // Drive
                 drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                         drivetrain.applyRequest(() -> drive
-                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) // Drive
+                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(.8) // Drive
                                                                                                 // forward
                                                                                                 // with
                                 // negative Y (forward)
-                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) // Drive
+                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed).withDeadband(.8) // Drive
                                                                                                 // left
                                                                                                 // with
                                                                                                 // negative
                                                                                                 // X (left)
-                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive
+                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(.8) // Drive
                                                                                                                 // counterclockwise
                                                                                                                 // with
                                                                                                                 // negative
