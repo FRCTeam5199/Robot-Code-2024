@@ -47,10 +47,10 @@ public class UserInterface extends SubsystemBase {
         .withSize(2, 1)
         .withPosition(0, 0).getEntry();
         ShuffleboardGameTab.add("Match Number", DriverStation.getMatchNumber())
-        .withWidget(BuiltInWidgets.kNumberBar)
+        .withWidget(BuiltInWidgets.kTextView)
         .withSize(1, 1)
         .withPosition(2, 0).getEntry();
-        ShuffleboardGameTab.add("Match Type", DriverStation.getMatchType())
+        ShuffleboardGameTab.add("Match Type", DriverStation.getMatchType().toString())
         .withWidget(BuiltInWidgets.kTextView)
         .withSize(1, 1)
         .withPosition(3, 0).getEntry();
@@ -82,7 +82,7 @@ public class UserInterface extends SubsystemBase {
     public static void updateGameTab() {
         ShuffleboardGameTab.add("Event Name", DriverStation.getEventName()).getEntry();
         ShuffleboardGameTab.add("Match Number", DriverStation.getMatchNumber()).getEntry();
-        ShuffleboardGameTab.add("Match Type", DriverStation.getMatchType()).getEntry();
+        ShuffleboardGameTab.add("Match Type", DriverStation.getMatchType().toString()).getEntry();
         ShuffleboardGameTab.add("Alliance Color", DriverStation.getAlliance()).getEntry();
         ShuffleboardGameTab.add("Station Number", DriverStation.getLocation()).getEntry();
         ShuffleboardGameTab.add("Station Number", DriverStation.getGameSpecificMessage()).getEntry();

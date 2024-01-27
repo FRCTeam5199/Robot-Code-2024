@@ -14,6 +14,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
@@ -124,30 +126,30 @@ public class RobotContainer {
                         commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
                         commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
                         commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
-                        // commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateIntake()));
+                        commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
                         
-                        commandXboxController.b().onTrue(arm.changeArmSetpoint(0.5));
-                        commandXboxController.x().onTrue(arm.changeArmSetpoint(-0.5));
-                        commandXboxController.y().onTrue(intake.stowIntake());
-                        commandXboxController.a().onTrue(intake.deployIntake());
-                        
+                        // commandXboxController.b().onTrue(arm.changeArmSetpoint(0.5));
+                        // commandXboxController.x().onTrue(arm.changeArmSetpoint(-0.5));
+
                         commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
-                
-                        commandXboxController.leftTrigger()
-                                // intake.deployIntake()
 
-                                                .onTrue(intake.setIntakeSpeed(1))
-                                                .onTrue(new InstantCommand(() -> arm.rotateIntake()))
-                                                .onTrue(shooterSubsystem.intakeShooter())
+                        commandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(
+                                        intake.deployIntake(),
+                                        new WaitCommand(0.8),
+                                        new InstantCommand(() -> arm.rotateIntake()),
+                                        intake.setIntakeSpeed(1),
+                                        shooterSubsystem.intakeShooter()))
+                                .onFalse(new SequentialCommandGroup(
+                                        new InstantCommand(() -> arm.rotateStable()),
+                                        intake.setIntakeSpeed(0),
+                                        new WaitCommand(0.8),
+                                        shooterSubsystem.stopShooter(),
+                                        intake.stowIntake()));
 
-                                                // .onFalse(intake.stowIntake())
-                                                .onFalse(intake.setIntakeSpeed(0))
-                                                .onFalse(shooterSubsystem.stopShooter())
-                                                .onFalse(new InstantCommand(() -> arm.rotateStable()));
-
-                        commandXboxController.a().onTrue(climberSubsystem.extendClimber());
+                        commandXboxController.x().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
+                        commandXboxController.b().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
 
                 if (Utils.isSimulation()) {
                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

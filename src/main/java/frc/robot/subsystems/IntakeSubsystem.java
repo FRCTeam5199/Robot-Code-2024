@@ -43,12 +43,12 @@ public class IntakeSubsystem implements Subsystem {
     public void motorInit() {
         intakeMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_MOTOR_ID);
         intakeActuatorMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ACTUATOR_MOTOR_ID);
+        
+        intakeMotor.setInvert(true);
+        intakeActuatorMotor.setInvert(false);
 
         intakeMotor.getEncoder().setPosition(0);
         intakeActuatorMotor.getEncoder().setPosition(0);
-
-        intakeMotor.setInvert(true);
-        intakeActuatorMotor.setInvert(false);
     }
 
     /**

@@ -3,10 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -48,7 +45,7 @@ public class ClimberSubsystem implements Subsystem {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    climberMotor1.set(climberPIDController.calculate(climberMotor1.getRotations()));
+    // climberMotor1.set(climberPIDController.calculate(climberMotor1.getRotations()));
     // climberMotor2.set(climberPIDController.calculate(climberMotor2.getRotations()));
   }
 
@@ -76,18 +73,18 @@ public class ClimberSubsystem implements Subsystem {
   }
 
   public Command extendClimber() {
-    return new SequentialCommandGroup(
-      new InstantCommand(() -> setClimberTarget(0.5)),
-      new WaitCommand(2),
-      new InstantCommand(() -> setClimberTarget(0))
-    );
+    return this.runOnce(() -> setClimberSpeed(0.5));//new SequentialCommandGroup(
+      // new InstantCommand(() -> setClimberSpeed(0.5)),
+      // new WaitCommand(2),
+      // new InstantCommand(() -> setClimberSpeed(0))
+    // );
   }
 
   public Command retractClimber() {
-    return new SequentialCommandGroup(
-      new InstantCommand(() -> setClimberTarget(-0.5)),
-      new WaitCommand(2),
-      new InstantCommand(() -> setClimberTarget(0))
-    );
+    return this.runOnce(() -> setClimberSpeed(0));//new SequentialCommandGroup(
+    //   new InstantCommand(() -> setClimberSpeed(-0.5)),
+    //   new WaitCommand(2),
+    //   new InstantCommand(() -> setClimberSpeed(0))
+    // );
   }
 }

@@ -5,37 +5,28 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.constants.MainConstants;
-
-import java.util.Arrays;
 import java.util.Optional;
-import java.util.OptionalDouble;
 
-import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.drivetrain.SwerveDrive;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.constants.MainConstants;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 
 public class AprilTagSubsystem implements Subsystem {
@@ -186,7 +177,7 @@ public class AprilTagSubsystem implements Subsystem {
        PhotonPipelineResult result = allCameras[4].getLatestResult();
        if(singlePoseEstimatorShooter.update().isPresent()){
            return Optional.ofNullable(singlePoseEstimatorShooter.update().get().estimatedPose);
-       }else{
+       } else {
            System.out.println("No apriltag visible, Cannot aim");
            return Optional.empty();
        }
