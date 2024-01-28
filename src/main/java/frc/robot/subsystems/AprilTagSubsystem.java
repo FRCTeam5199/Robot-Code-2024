@@ -258,12 +258,15 @@ public static PhotonCamera shooter;
         }
         else if (getAllianceColor().equals("Red")){
         // distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.5478679999999999));
-        distanceFromRobot = new Translation2d(14.700 - 0.0254, 5.54).getDistance(new Translation2d(16.579342, 5.5478679999999999));
+        distanceFromRobot = new Translation2d(14.700 - 1.1176, 5.54).getDistance(new Translation2d(16.579342, 5.54));
         }
-        distanceFromRobot += Math.sqrt(Math.pow(MainConstants.ARM_PIVOT_X_OFFSET, 2) * 2);;
+        // System.out.println(distanceFromRobot);
+        distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
+        // System.out.println("distance" + distanceFromRobot);
+        // System.out.println("speakerHeight" + speakerHeight);
         angleForShooter = Math.toDegrees(Math.atan(speakerHeight/distanceFromRobot));
-        System.out.println("orihinal " + angleForShooter);
-        // System.out.println("angle:   " + angleForShooter);
+        // System.out.println("orihinal " + angleForShooter);
+        System.out.println("angle:   " + angleForShooter);
         // System.out.println("distance:" + distanceFromRobot * 39.37);
         // System.out.println(angleForShooter);
         return angleForShooter;

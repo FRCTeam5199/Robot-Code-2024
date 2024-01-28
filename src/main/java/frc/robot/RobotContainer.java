@@ -71,24 +71,24 @@ public class RobotContainer {
         private void configureBindings() {
 
                 // Drive
-                drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-                                drivetrain.applyRequest(() -> drive
-                                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) // Drive
-                                                                                                             // forward
-                                                                                                             // with
-                                                // negative Y (forward)
-                                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) // Drive
-                                                                                                             // left
-                                                                                                             // with
-                                                                                                             // negative
-                                                                                                             // X (left)
-                                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive
-                                                                                                                         // counterclockwise
-                                                                                                                         // with
-                                                                                                                         // negative
-                                                                                                                         // X
-                                                                                                                         // (left)
-                                ));
+                // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+                //                 drivetrain.applyRequest(() -> drive
+                //                                 .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) // Drive
+                //                                                                                              // forward
+                //                                                                                              // with
+                //                                 // negative Y (forward)
+                //                                 .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) // Drive
+                //                                                                                              // left
+                //                                                                                              // with
+                //                                                                                              // negative
+                //                                                                                              // X (left)
+                //                                 .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive
+                //                                                                                                          // counterclockwise
+                //                                                                                                          // with
+                //                                                                                                          // negative
+                //                                                                                                          // X
+                //                                                                                                          // (left)
+                //                 ));
                 // Climber
                 ConditionalCommand climbCommandGroup = new ConditionalCommand(
                                 new ParallelCommandGroup(
