@@ -24,6 +24,11 @@ public class ArmSubsystem extends SubsystemBase {
 
 	public ArmSubsystem() {}
 
+	public void init() {
+		motorInit();
+		PIDInit();
+	}
+
 	public void motorInit() {
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
 

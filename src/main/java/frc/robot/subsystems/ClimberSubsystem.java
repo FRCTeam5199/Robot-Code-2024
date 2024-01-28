@@ -44,17 +44,10 @@ public class ClimberSubsystem implements Subsystem {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    // climberMotor1.set(climberPIDController.calculate(climberMotor1.getRotations()));
-    // climberMotor2.set(climberPIDController.calculate(climberMotor2.getRotations()));
+      // This method will be called once per scheduler run
+      climberMotor1.set(climberPIDController.calculate(climberMotor1.getRotations()));
+      climberMotor2.set(climberPIDController.calculate(climberMotor2.getRotations()));
   }
-
-    @Override
-    public void periodic() {
-        // This method will be called once per scheduler run
-        climberMotor1.set(climberPIDController.calculate(climberMotor1.getRotations()));
-        climberMotor2.set(climberPIDController.calculate(climberMotor2.getRotations()));
-    }
 
   /**
    * 
