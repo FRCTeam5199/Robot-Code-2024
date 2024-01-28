@@ -11,10 +11,11 @@ import frc.robot.abstractMotorInterfaces.AbstractMotorController;
 
 public class VortexMotorController extends AbstractMotorController {
     public CANSparkBase vortex;
-
-    public VortexMotorController(int ID) {
+    public RelativeEncoder encoder;
+    public VortexMotorController(int ID){
         super();
         vortex = new CANSparkFlex(ID, CANSparkLowLevel.MotorType.kBrushless);
+        encoder = vortex.getEncoder();
     }
 
     @Override
@@ -59,7 +60,7 @@ public class VortexMotorController extends AbstractMotorController {
 
     @Override
     public double getVelocity() {
-        return 0;
+        return encoder.getVelocity();
     }
 
     @Override
@@ -79,12 +80,12 @@ public class VortexMotorController extends AbstractMotorController {
 
     @Override
     public double getRotations() {
-        return 0;
+        return encoder.getPosition() * sensorToRealDistanceFactor;
     }
 
     @Override
     public double getVoltage() {
-        return 0;
+        return vortex.getBusVoltage();
     }
 
     @Override
@@ -94,7 +95,7 @@ public class VortexMotorController extends AbstractMotorController {
 
     @Override
     public double getCurrent() {
-        return 0;
+        return vortex.getOutputCurrent();
     }
 
     @Override
@@ -103,8 +104,8 @@ public class VortexMotorController extends AbstractMotorController {
     }
 
     @Override
-    public void setCurrentLimit(double limit) {
-
+    public void setCurrentLimit(int limit) {
+        vortex.setSmartCurrentLimit(limit);
     }
 
     @Override

@@ -1,18 +1,12 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
-import frc.robot.Main;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.abstractMotorInterfaces.TalonMotorController;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class ArmSubsystem extends SubsystemBase {
@@ -22,42 +16,40 @@ public class ArmSubsystem extends SubsystemBase {
 	public TalonMotorController ArmFollower;
 
 	public double rotateSetpoint = 0;
-	private boolean isFront = true;
-	private boolean isStable = false;
-	private boolean isHigh = false;
 	PIDController rotatePIDController;
 
 	AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 	double shooterAngle;
 	double rotateDegrees;
 
-	public ArmSubsystem() {
-		init();
-	}
+	public ArmSubsystem() {}
 
-	public void init(){
-		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);//idk if brushed or brushless
+	public void motorInit() {
+		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
 
-		ArmMotor.getEncoder().setPosition(0);
-
-		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I,
-				MainConstants.PIDConstants.ARM_PID.D);
 		ArmMotor.setInvert(true);
 		ArmMotor.setBrake(false);
+
+		ArmMotor.getEncoder().setPosition(0);
+	}
+
+	public void PIDInit() {
+				rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I,
+				MainConstants.PIDConstants.ARM_PID.D);
 	}
 
 	@Override
 	public void periodic() {
-		if (ArmMotor.getEncoder().getPosition() < 1) {
-			while (ArmMotor.getEncoder().getPosition() < 1) {
-					ArmMotor.set(0.5);
+		if (ArmMotor.getEncoder().getPosition() < 1.5) {
+			while (ArmMotor.getEncoder().getPosition() < 1.5) {
+					ArmMotor.set(0.3);
 			}
 			
 			ArmMotor.set(0);
 			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
-		} else if (ArmMotor.getEncoder().getPosition() > 70) {
-			while (ArmMotor.getEncoder().getPosition() > 70) {
-				ArmMotor.set(-0.5);
+		} else if (ArmMotor.getEncoder().getPosition() > 61) {
+			while (ArmMotor.getEncoder().getPosition() > 61) {
+				ArmMotor.set(-0.3);
 			}
 
 			ArmMotor.set(0);
@@ -67,14 +59,30 @@ public class ArmSubsystem extends SubsystemBase {
 		}
 	}
 
+	/**
+	 * 
+	 * @param percent move armMotor at a percent(-1 to 1)
+	 * @return command to spin motor at percent
+	 */
 	public Command moveAtPercent(double percent) {
-		return this.run(() -> ArmMotor.set(this.rotateSetpoint));
+		return this.runOnce(() -> ArmMotor.set(this.rotateSetpoint));
 	}
 	
+	/**
+	 * 
+	 * @param rotations adds this to setPoint variable(setpoint)
+	 * @return command to move to setPoint
+	 */
 	public Command changeArmSetpoint(double rotations) {
+    System.out.println(rotateSetpoint + rotations);
     return this.runOnce(() -> this.rotateSetpoint += rotations);
   }
   
+    /**
+	 * 
+	 * @param setpoint set armMotor to setPoint
+	 * @return command to move armMotor to setPoint
+	 */
 	public Command setArmSetpoint(double setpoint) {
     return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
   }
@@ -91,30 +99,38 @@ public class ArmSubsystem extends SubsystemBase {
 	
   }
 
+  	/**
+	 * set Setpoint variable to Stable
+	 */
 	public void rotateStable() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT;
-		this.isFront = true;
-		this.isHigh = false;
 	}
 
+	/**
+	 * set Setpoint variable to back
+	 */
 	public void rotateBack() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT;
-		this.isFront = false;
-		this.isHigh = true;
 	}
-
+	
+	/**
+	 * set Setpoint variable to front
+	 */
 	public void rotateFront() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT;
-		this.isFront = false;
-		this.isHigh = false;
 	}
 
+	/**
+	 * set Setpoint variable to slightly above retracted intake
+	 */
 	public void rotateIntake() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_ROTATE_INTAKE;
-		this.isFront = false;
-		this.isHigh = false;
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_INTAKE_SETPOINT;
 	}
-	public boolean isFront() {
-		return this.isFront;
+
+	/**
+	 * set Setpoint variable to slightly above retracted intake
+	 */
+	public void rotateClimb() {
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_CLIMBER_SETPOINT;
 	}
 }

@@ -4,21 +4,14 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
-import com.revrobotics.CANSparkLowLevel;
-
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
-import com.revrobotics.CANSparkFlex;
 
 public class ShooterSubsystem implements Subsystem {
     public VortexMotorController shooterMotor1;
@@ -26,18 +19,17 @@ public class ShooterSubsystem implements Subsystem {
 
     public VortexMotorController shooterIndexerMotor;
 
-  private boolean goalAmp = false;
-  /** Creates a new shooter. */
+  public ShooterSubsystem() {}
 
-   public ShooterSubsystem() {
-     init();
- }
+public void init() {
+    motorInit();
 
- public void init() {
-     motorInit();
- }
+    Shuffleboard.getTab("Status").add("Shooter Subsystem Status", true).getEntry();
+}
 
-  // one shooter (probably kraken), feeder (probably bag)
+  /*
+   * Initalizes the motor(s) for this subsystem
+   */
   public void motorInit() {
     shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
     shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
@@ -47,6 +39,9 @@ public class ShooterSubsystem implements Subsystem {
         shooterMotor2.setInvert(false);
 
     shooterIndexerMotor.setBrake(true);
+
+    shooterMotor1.getEncoder().setPosition(0);
+    shooterMotor2.getEncoder().setPosition(0);
   }
 
    @Override
@@ -54,23 +49,57 @@ public class ShooterSubsystem implements Subsystem {
       // This method will be called once per scheduler run
    }
 
+  /**
+   * Sets the Indexer motor speed to a percent between -1 and 1
+   * @param
+   */
   public Command setIndexerSpeed(double percent) {
     return this.runOnce(() -> shooterIndexerMotor.set(percent));
   }
-  
+
+  /**
+   * Sets the Shooter motor speed to a percent between -1 and 1
+   * @param
+   */
   public Command setShooterSpeed(double percent) {
     return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
   }
 
-    public Command intakeShooter() {
-        return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
-                new InstantCommand(() -> shooterMotor1.set(-0.3)),
-                new InstantCommand(() -> shooterMotor2.set(-0.3)));
-    }
+  /**
+   * Sets the Shooter motor velocity based on the RPM of the motor
+   * @param
+   */
+  public Command setShooterVelocity(double velocity) {
+    return this.runOnce(() -> shooterMotor1.setVelocity(velocity)).andThen(() -> shooterMotor2.setVelocity(velocity));
+  }
 
-    public Command stopShooter() {
-        return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
-                new InstantCommand(() -> shooterMotor1.set(0)),
-                new InstantCommand(() -> shooterMotor2.set(0)));
-    }
+  /**
+   * Runs the Shooter Motor to Intake
+   */
+  public Command intakeShooter() {
+    return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
+      new InstantCommand(() -> shooterMotor1.set(-0.3)),
+      new InstantCommand(() -> shooterMotor2.set(-0.3)));
+  }
+
+  /**
+   * Stops the Shooter Motor
+   */
+  public Command stopShooter() {
+    return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
+      new InstantCommand(() -> shooterMotor1.set(0)),
+      new InstantCommand(() -> shooterMotor2.set(0)));
+  }
+  
+  /**
+   * Checks if a game piece is in the Indexer
+   * @return True if a game piece is in the Indexer
+   */
+  public boolean checkForGamePiece(){
+    if (shooterIndexerMotor.getVelocity() < 5){
+      return true;
+    } 
+    return false;
+  }
+
 }

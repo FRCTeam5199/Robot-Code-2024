@@ -9,7 +9,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import frc.robot.utility.PID;
 
-public class TalonMotorController extends AbstractMotorController {
+public class TalonMotorController extends AbstractMotorController{
+    
     TalonFX talon;
     TalonFXConfiguration configuration = new TalonFXConfiguration();
 
@@ -97,7 +98,7 @@ public class TalonMotorController extends AbstractMotorController {
     }
 
     @Override
-    public void setCurrentLimit(double limit) {
+    public void setCurrentLimit(int limit) {
         configuration.CurrentLimits.StatorCurrentLimit = limit;
     }
 
