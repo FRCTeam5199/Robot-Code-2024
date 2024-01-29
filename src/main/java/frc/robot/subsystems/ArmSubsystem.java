@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 	PIDController rotatePIDController;
 	private static boolean isBrakeMode = false; 
 
-	public ArmSubsystem() {}
+	public ArmSubsystem() {init();}
 
 	/**
 	 * init for arm and pid controller
@@ -70,13 +70,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 			// this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
 		if (ArmMotor.getEncoder().getPosition() > 61) {
 			while (ArmMotor.getEncoder().getPosition() > 61) {
-				ArmMotor.set(-0.5);
+				//ArmMotor.set(-0.5);
 			}
 
-			ArmMotor.set(0);
+			//ArmMotor.set(0);
 			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
 		} else {
-				ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
+				//ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
 		}
 	}
 

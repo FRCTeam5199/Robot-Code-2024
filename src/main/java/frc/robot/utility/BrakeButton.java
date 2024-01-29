@@ -8,7 +8,7 @@ public class BrakeButton {
     brakeButton = new DigitalInput(port);
     }
 
-    public static boolean get() {
-    return BrakeButton.get();
+    public boolean get() {
+    return brakeButton.get();
   }
 }

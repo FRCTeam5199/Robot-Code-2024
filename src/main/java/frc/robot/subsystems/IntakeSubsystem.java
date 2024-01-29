@@ -14,10 +14,11 @@ import frc.robot.constants.MainConstants;
 
 public class IntakeSubsystem implements Subsystem {
     public VortexMotorController intakeMotor;
-    public VortexMotorController intakeActuatorMotor;
+    public static VortexMotorController intakeActuatorMotor;
     public PIDController pidController;
     public double setpoint;
     public SparkPIDController sparkPIDController;
+    private static boolean isBrakeMode = false; 
 
     public IntakeSubsystem() {}
 
@@ -29,14 +30,10 @@ public class IntakeSubsystem implements Subsystem {
 
     }
 
-    @Override
-    public void periodic() {
-        // intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint));
-    }
 
      @Override
      public void periodic() {
-         intakeAngleMotor.set(pidController.calculate(intakeAngleMotor.getRotations(), setpoint));
+         intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint));
      }
 
     /**
@@ -85,16 +82,15 @@ public class IntakeSubsystem implements Subsystem {
         return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.STOW_INTAKE, ControlType.kPosition));
     }
 
-     /**
+    /**
      * deploy intake
      * @return command to deploy the intake
      */
     public Command deployIntake() {
-         return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.DEPLOY_INTAKE, ControlType.kPosition));
-     }
-
-     public static void toggleBrakeMode() {
+        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.DEPLOY_INTAKE, ControlType.kPosition));
+    }
+    public static void toggleBrakeMode() {
         isBrakeMode = !isBrakeMode;
-        intakeAngleMotor.setBrake(isBrakeMode);
+        intakeActuatorMotor.setBrake(isBrakeMode);
     }
  }

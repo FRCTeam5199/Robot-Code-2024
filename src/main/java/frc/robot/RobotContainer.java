@@ -25,6 +25,9 @@ import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.utility.BrakeButton;
 import frc.robot.utility.superstructure.Superstructure;
@@ -40,12 +43,11 @@ import static edu.wpi.first.wpilibj2.command.Commands.run;
 public class RobotContainer {
 
 
-//     public final static ArmSubsystem arm = new ArmSubsystem();
-//     public final static IntakeSubsystem intake = new IntakeSubsystem();
-//     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-//     public final static IntakeSubsystem intake = new IntakeSubsystem();
+    public final static ArmSubsystem arm = new ArmSubsystem();
+    public final static IntakeSubsystem intake = new IntakeSubsystem();
+    public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
     public static final AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
-
+    public static final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final XboxController driveXboxController = new XboxController(0);
     private final double MaxSpeed = 6; // 6 meters per second desired top speed
     private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
@@ -59,7 +61,6 @@ public class RobotContainer {
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final Telemetry logger = new Telemetry(MaxSpeed);
-    private final BrakeButton brakeButton = new BrakeButton(MainConstants.BrakeButtonid);
     Autos auton;
     public RobotContainer() {
         // climberSubsystem.init();
@@ -91,7 +92,12 @@ public class RobotContainer {
                                                                                                                 // X
                                                                                                                 // (left)
                         ));
-                        
+                        new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
+                                System.out.println("gamer");
+                            if (DriverStation.isDisabled()) {
+                                ArmSubsystem.toggleBrakeMode();
+                            }
+                        }));
                         // reset the field-centric heading by pressing start button/hamburger menu button
                         commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 

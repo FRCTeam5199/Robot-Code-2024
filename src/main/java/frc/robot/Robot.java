@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
   public static final boolean SECOND_TRY = false;
 
   private Command m_autonomousCommand;
-  AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+  //AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
   SwerveDrive drive = TunerConstants.DriveTrain;
 
 
@@ -65,13 +65,13 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().run();
     
-    Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseBack();
+    //Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseBack();
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
-     if(estimatePose1.isPresent()){
-       EstimatedRobotPose robotPose = estimatePose1.get();
-       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-     }
+    //  if(estimatePose1.isPresent()){
+    //    EstimatedRobotPose robotPose = estimatePose1.get();
+    //    drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    //  }
     // if(estimatePose2.isPresent()){
     //   EstimatedRobotPose robotPose = estimatePose2.get();
     //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
@@ -91,7 +91,9 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    Superstructure.update();
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override

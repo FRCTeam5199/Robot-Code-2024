@@ -90,7 +90,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     }
 
     public void rotateTarget(double X, double Y){
-        this.applyRequest(()-> new SwerveRequest.FieldCentricFacingAngle().withVelocityX(Y).withVelocityY(X).withTargetDirection(new Rotation2d(aprilTagSubsystem.getTargetAngle(this.getPose()))));
+        //this.applyRequest(()-> new SwerveRequest.FieldCentricFacingAngle().withVelocityX(Y).withVelocityY(X).withTargetDirection(new Rotation2d(aprilTagSubsystem.getTargetAngle(this.getPose()))));
 
     }
 
