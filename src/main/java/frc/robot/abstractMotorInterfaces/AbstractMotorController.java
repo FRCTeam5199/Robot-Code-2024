@@ -19,9 +19,7 @@ public abstract class AbstractMotorController {
     public abstract AbstractMotorController setBrake(boolean brake);
 
     public abstract double getVelocity();
-
-    public abstract void setVelocity(double Velocity);
-
+    
     public abstract double getAngularVelocity();
 
     public abstract double getRotations();

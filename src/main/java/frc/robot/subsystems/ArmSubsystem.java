@@ -1,9 +1,23 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.SparkRelativeEncoder;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkRelativeEncoder.Type;
+
+import edu.wpi.first.hal.CANAPITypes.CANDeviceType;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Main;
 import frc.robot.abstractMotorInterfaces.TalonMotorController;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
@@ -11,10 +25,10 @@ import frc.robot.constants.MainConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 	public VortexMotorController ArmMotor;
-	
-	public TalonMotorController ArmLeader;
-	public TalonMotorController ArmFollower;
 
+	CANSparkBase sparkMax = new CANSparkMax(8, MotorType.kBrushed);
+	RelativeEncoder encoder = sparkMax.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 8092);	
+	
 	public double rotateSetpoint = 0;
 	PIDController rotatePIDController;
 
@@ -27,13 +41,14 @@ public class ArmSubsystem extends SubsystemBase {
 	public void init() {
 		motorInit();
 		PIDInit();
+		encoder.setPosition(0);
 	}
 
 	public void motorInit() {
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
 
-		ArmMotor.setInvert(true);
-		ArmMotor.setBrake(false);
+		ArmMotor.setInvert(false);
+		ArmMotor.setBrake(false); //Make true and setpoint positive and zero arm at the top for working
 
 		ArmMotor.getEncoder().setPosition(0);
 	}
@@ -45,23 +60,25 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		if (ArmMotor.getEncoder().getPosition() < 1.5) {
-			while (ArmMotor.getEncoder().getPosition() < 1.5) {
-					ArmMotor.set(0.3);
-			}
+		// if (encoder.getPosition() < 2) {
+		// 	while (encoder.getPosition() < 2) {
+		// 			ArmMotor.set(0.3);
+		// 	}
 			
-			ArmMotor.set(0);
-			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
-		} else if (ArmMotor.getEncoder().getPosition() > 61) {
-			while (ArmMotor.getEncoder().getPosition() > 61) {
-				ArmMotor.set(-0.3);
-			}
+		// 	ArmMotor.set(0);
+		// 	this.rotateSetpoint = encoder.getPosition();
+		// } else if (encoder.getPosition() > 61) { //change this
+		// 	while (encoder.getPosition() > 61) { //change this
+		// 		ArmMotor.set(-0.3);
+		// 	}
 
-			ArmMotor.set(0);
-			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
-		} else {
-				ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
-		}
+		// 	ArmMotor.set(0);
+		// 	this.rotateSetpoint = encoder.getPosition();
+		// } else {
+		// 		ArmMotor.set(rotatePIDController.calculate(encoder.getPosition(), rotateSetpoint));
+		// }
+		ArmMotor.set(rotatePIDController.calculate(encoder.getPosition(), -30));
+		// System.out.println(rotatePIDController.calculate(encoder.getPosition(), rotateSetpoint * MainConstants.ENCODER_GEAR_RATIO));
 	}
 
 	/**
@@ -71,6 +88,10 @@ public class ArmSubsystem extends SubsystemBase {
 	 */
 	public Command moveAtPercent(double percent) {
 		return this.runOnce(() -> ArmMotor.set(this.rotateSetpoint));
+	}
+
+	public Command testEncoder() {
+		return this.runOnce(() -> System.out.println(encoder.getPosition()));
 	}
 	
 	/**
