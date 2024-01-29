@@ -94,4 +94,9 @@ public class IntakeSubsystem implements Subsystem {
     public Command deployIntake() {
         return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.DEPLOY_INTAKE, ControlType.kPosition));
     }
+
+    public void retractAndStopIntake(){
+        setIntakeSpeed(0);
+        stowIntake();
+    }
 }

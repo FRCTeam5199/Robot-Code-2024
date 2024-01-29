@@ -36,6 +36,7 @@ public class ClimberSubsystem implements Subsystem {
     // climberMotor2.setInvert(true);
 
     climberMotor1.getEncoder().setPosition(0);
+    climberMotor1.setBrake(true);
     // climberMotor2.getEncoder().setPosition(0);
   }
   private void PIDInit() {

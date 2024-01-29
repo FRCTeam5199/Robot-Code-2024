@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,7 +17,8 @@ public class ArmSubsystem extends SubsystemBase {
 	public VortexMotorController ArmMotor;
 	
 	 public TalonMotorController ArmLeader;
-	  public TalonMotorController ArmFollower;
+	public TalonMotorController ArmFollower;
+	public RelativeEncoder relativeEncoder;
 
 	public double rotateSetpoint = 0;
 	PIDController rotatePIDController;
@@ -24,10 +29,10 @@ public class ArmSubsystem extends SubsystemBase {
 	 * init for arm and pid controller
 	 */
 	public void init(){
+	
 		motorInit();
 		PIDInit();
 
-		this.rotateSetpoint = 15;
 
 		Shuffleboard.getTab("Status").add("Arm Subsystem Status", true).getEntry();
 	}
@@ -35,10 +40,14 @@ public class ArmSubsystem extends SubsystemBase {
 	public void motorInit() {
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
 
+		
 		ArmMotor.setInvert(true);
-		ArmMotor.setBrake(false);
+		ArmMotor.setBrake(true);
 
 		ArmMotor.getEncoder().setPosition(0);
+
+		
+
 	}
 
 	public void PIDInit() {
@@ -48,6 +57,7 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		
 		if (ArmMotor.getEncoder().getPosition() < 1.5) {
 			while (ArmMotor.getEncoder().getPosition() < 1.5) {
 					ArmMotor.set(0.3);
@@ -55,6 +65,7 @@ public class ArmSubsystem extends SubsystemBase {
 			
 			ArmMotor.set(0);
 			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
+
 		} else if (ArmMotor.getEncoder().getPosition() > 61) {
 			while (ArmMotor.getEncoder().getPosition() > 61) {
 				ArmMotor.set(-0.3);
@@ -63,7 +74,8 @@ public class ArmSubsystem extends SubsystemBase {
 			ArmMotor.set(0);
 			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
 		} else {
-				ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
+
+				// ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
 		}
 	}
 
@@ -73,7 +85,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @return command to spin motor at percent
 	 */
 	public Command moveAtPercent(double percent) {
-		return this.runOnce(() -> ArmMotor.set(this.rotateSetpoint));
+		return this.run(() -> ArmMotor.set(percent));
 	}
 	
 	/**

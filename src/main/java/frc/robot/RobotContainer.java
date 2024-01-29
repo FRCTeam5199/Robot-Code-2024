@@ -53,9 +53,9 @@ public class RobotContainer {
         private final Telemetry logger = new Telemetry(MaxSpeed);
         
         public final static ArmSubsystem arm = new ArmSubsystem();
-        public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
         public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
         public final static IntakeSubsystem intake = new IntakeSubsystem();
+         public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(intake, arm);
         
         Autos auton;
 
@@ -114,6 +114,7 @@ public class RobotContainer {
                                                                                                                 // (left)
                         ));
                         
+                        
                         // reset the field-centric heading by pressing start button/hamburger menu button
                         commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
@@ -123,13 +124,17 @@ public class RobotContainer {
                                                         .withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(),
                                                                         -commandXboxController.getLeftX()))));
 
-                        commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
-                        commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
-                        commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
-                        commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
+                        // commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
+                        // commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
+                        // commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
+                        // commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
+                        commandXboxController.povUp().onTrue(arm.moveAtPercent(0.2)).onFalse(arm.moveAtPercent(0));
+                        commandXboxController.povDown().onTrue(arm.moveAtPercent(-.2)).onFalse(arm.moveAtPercent(0));
                         
-                        // commandXboxController.b().onTrue(arm.changeArmSetpoint(0.5));
-                        // commandXboxController.x().onTrue(arm.changeArmSetpoint(-0.5));
+                        commandXboxController.y().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
+                        // commandXboxController.y().onTrue(shooterSubsystem.runIndexerTest(-.3)).onFalse(shooterSubsystem.runIndexerTest(.0));
+                        commandXboxController.a().onFalse(shooterSubsystem.checkCurrent());
+
 
                         commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
@@ -157,6 +162,7 @@ public class RobotContainer {
                 }
                 drivetrain.registerTelemetry(logger::telemeterize);
         }
+
 
         /**
          * Use this to pass the autonomous command to the main {@link Robot} class.

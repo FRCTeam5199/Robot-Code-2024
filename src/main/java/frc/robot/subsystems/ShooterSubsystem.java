@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -19,13 +21,25 @@ public class ShooterSubsystem implements Subsystem{
 
   public VortexMotorController shooterIndexerMotor;
 
-  public ShooterSubsystem() {}
+  public IntakeSubsystem intakeSubsystem;
+  public ArmSubsystem armSubsystem;
 
-public void init() {
-    motorInit();
+  
 
-    Shuffleboard.getTab("Status").add("Shooter Subsystem Status", true).getEntry();
-}
+  public ShooterSubsystem(IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
+    this.intakeSubsystem = intakeSubsystem;
+    this.armSubsystem = armSubsystem;
+
+  }
+
+
+  public void init() {
+      motorInit();
+
+      Shuffleboard.getTab("Status").add("Shooter Subsystem Status", true).getEntry();
+
+      
+  }
 
   /*
    * Initalizes the motor(s) for this subsystem
@@ -37,7 +51,8 @@ public void init() {
 
     shooterMotor1.setInvert(true);
     shooterMotor2.setInvert(false);
-
+    
+    shooterIndexerMotor.setInvert(true);
     shooterIndexerMotor.setBrake(true);
 
     shooterMotor1.getEncoder().setPosition(0);
@@ -81,6 +96,9 @@ public void init() {
       new InstantCommand(() -> shooterMotor1.set(-0.3)),
       new InstantCommand(() -> shooterMotor2.set(-0.3)));
   }
+  public Command runIndexerTest(Double speed){
+    return this.runOnce(()-> shooterIndexerMotor.set(speed));
+  }
 
   /**
    * Stops the Shooter Motor
@@ -91,15 +109,64 @@ public void init() {
       new InstantCommand(() -> shooterMotor2.set(0)));
   }
   
+  public Command checkCurrent(){
+    return this.runOnce(()-> System.out.println(checkForGamePiece()));
+  }
+
+  public void stopIntakeAction(){
+    stopShooter();
+    armSubsystem.rotateStable();
+    new WaitCommand(0.4);
+    intakeSubsystem.retractAndStopIntake();
+    
+  }
+
   /**
-   * Checks if a game piece is in the Indexer
+   * Checks for current spike inside of the indexer
    * @return True if a game piece is in the Indexer
    */
-  public boolean checkForGamePiece(){
-    if (shooterIndexerMotor.getVelocity() < 5){
+  private boolean currentCheck(){
+    new WaitCommand(0.4);
+    if (shooterIndexerMotor.getCurrent() < 55){
+      return false;
+    } 
+    new WaitCommand(0.5);
+    if (shooterIndexerMotor.getCurrent() > 55){
       return true;
     } 
-    return false;
+    return false;    
+  }
+
+  /**
+   * decides if a game piece is truly inside of 
+   * @return true if game piece false if not
+   */
+  public boolean checkForGamePiece(){
+    int piece = 0;
+    int noPiece = 0;
+    if(shooterIndexerMotor.getCurrent()>55){
+      for(int i = 0; i <=10; i++){
+        if(currentCheck() == true){
+          piece++;
+        }
+        else{
+          noPiece++;
+        }
+      }
+    }
+    if(piece > noPiece){
+      return true;
+    }
+    return false;     
+  }
+
+  public void gamePieceDected(){
+    if(checkForGamePiece()){
+      //stop spin bottom intake and shooter, retract bottom intake
+      stopIntakeAction();
+
+    }
+    
   }
 
 }
