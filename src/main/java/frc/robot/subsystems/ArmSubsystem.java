@@ -26,7 +26,7 @@ import frc.robot.constants.MainConstants;
 public class ArmSubsystem extends SubsystemBase {
 	public VortexMotorController ArmMotor;
 
-	CANSparkBase sparkMax = new CANSparkMax(8, MotorType.kBrushed);
+	CANSparkMax sparkMax = new CANSparkMax(8, MotorType.kBrushed);
 	RelativeEncoder encoder = sparkMax.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 8092);	
 	
 	public double rotateSetpoint = 0;
@@ -35,19 +35,21 @@ public class ArmSubsystem extends SubsystemBase {
 	AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 	double shooterAngle;
 	double rotateDegrees;
+	double poseOfEncoder = 0;
 
 	public ArmSubsystem() {}
 
 	public void init() {
 		motorInit();
 		PIDInit();
+		encoder.setInverted(true);
 		encoder.setPosition(0);
 	}
 
 	public void motorInit() {
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
 
-		ArmMotor.setInvert(false);
+		ArmMotor.setInvert(true);
 		ArmMotor.setBrake(false); //Make true and setpoint positive and zero arm at the top for working
 
 		ArmMotor.getEncoder().setPosition(0);
@@ -77,10 +79,18 @@ public class ArmSubsystem extends SubsystemBase {
 		// } else {
 		// 		ArmMotor.set(rotatePIDController.calculate(encoder.getPosition(), rotateSetpoint));
 		// }
-		ArmMotor.set(rotatePIDController.calculate(encoder.getPosition(), -30));
-		// System.out.println(rotatePIDController.calculate(encoder.getPosition(), rotateSetpoint * MainConstants.ENCODER_GEAR_RATIO));
+		
+		// ArmMotor.set(rotatePIDController.calculate(encoder.getPosition(), -30));
+		
+		// rotatePIDController.calculate(encoder.getPosition(), -0.176025390625);
+		// System.out.println(-rotatePIDController.calculate(encoder.getPosition(), -0.08835887163877487));
+		// ArmMotor.set((-rotatePIDController.calculate(encoder.getPosition(), -0.08835887163877487))/MainConstants.ROTATIONS_PER_1_DEGREE_ARM);// -0.05598121136426926)));
+		// ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
 	}
 
+	public Command ArmMotorPidMove(){
+		return this.run(()-> ArmMotor.set(-rotatePIDController.calculate(encoder.getPosition(), poseOfEncoder)/MainConstants.ROTATIONS_PER_1_DEGREE_ARM));
+	}
 	/**
 	 * 
 	 * @param percent move armMotor at a percent(-1 to 1)
@@ -91,9 +101,12 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public Command testEncoder() {
-		return this.runOnce(() -> System.out.println(encoder.getPosition()));
+		return this.runOnce(() -> System.out.println("pos //////////////////"+ encoder.getPosition()));
 	}
 	
+	public Command moveTo(){
+		return this.runOnce(()-> System.out.println(-rotatePIDController.calculate(encoder.getPosition(), -0.08835887163877487)/MainConstants.ROTATIONS_PER_1_DEGREE_ARM));
+	}
 	/**
 	 * 
 	 * @param rotations adds this to setPoint variable(setpoint)
@@ -130,6 +143,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 */
 	public void rotateStable() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT;
+		this.poseOfEncoder = -0.08835887163877487;
 	}
 
 	/**
@@ -144,6 +158,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 */
 	public void rotateFront() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT;
+		this.poseOfEncoder = -0.17572911083698273;
 	}
 
 	/**

@@ -141,7 +141,8 @@ public class MainConstants {
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 
         // Arm
-        public static final PID ARM_PID = new PID(0.00001, 0, 0);
+        // 2 / .8
+        public static final PID ARM_PID = new PID(0.8, 0.1, 0.001);
     }
 
     public static class Setpoints {
