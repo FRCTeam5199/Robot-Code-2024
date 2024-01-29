@@ -15,6 +15,8 @@ import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
+import java.util.Optional;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,7 +29,7 @@ public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
   SwerveDrive drive = TunerConstants.DriveTrain;
-  // AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+  AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
 
   private RobotContainer m_robotContainer;
@@ -59,15 +61,15 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
 
     CommandScheduler.getInstance().run();
-
-    // Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
+    System.out.println(drive.getPose());
+    Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
     // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
-    // if(estimatePose1.isPresent()){
-    //   EstimatedRobotPose robotPose = estimatePose1.get();
-    //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    // }
+    if(estimatePose1.isPresent()){
+       EstimatedRobotPose robotPose = estimatePose1.get();
+       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    }
     // if(estimatePose2.isPresent()){
     //   EstimatedRobotPose robotPose = estimatePose2.get();
     //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());

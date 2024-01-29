@@ -80,8 +80,6 @@ public class AprilTagSubsystem implements Subsystem {
     public AprilTagSubsystem() {
         allCameras[0] = new PhotonCamera("Front");
 
-        allCameras[3] = new PhotonCamera("Back");
-        allCameras[4] = new PhotonCamera("Shooter");
     }
 
 
