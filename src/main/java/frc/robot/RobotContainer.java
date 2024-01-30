@@ -20,10 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 /**
@@ -55,7 +52,8 @@ public class RobotContainer {
         public final static ArmSubsystem arm = new ArmSubsystem();
         public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
         public final static IntakeSubsystem intake = new IntakeSubsystem();
-         public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(intake, arm);
+        public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(intake, arm);
+        public static final AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
         
         Autos auton;
 
