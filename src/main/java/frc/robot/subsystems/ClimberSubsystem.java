@@ -49,6 +49,13 @@ public class ClimberSubsystem implements Subsystem {
       climberMotor2.set(climberPIDController.calculate(climberMotor2.getRotations()));
   }
 
+  public void stopOnButton(){
+    climberMotor1.set(0);
+  }
+  public Command print(){
+    return this.run(()-> System.out.println("//////////////////////////////////////////////////////////////////"));
+  }
+
   /**
    * 
    * @param percent sets climber speed 

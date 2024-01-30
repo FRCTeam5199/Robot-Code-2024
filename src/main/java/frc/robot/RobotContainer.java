@@ -11,12 +11,14 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
@@ -26,6 +28,8 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.utility.StopClimbButton;
+import frc.robot.utility.superstructure.Superstructure;
 
 import static edu.wpi.first.wpilibj2.command.Commands.run;
 
@@ -122,6 +126,7 @@ public class RobotContainer {
                                                                                                                 // X
                                                                                                                 // (left)
                         ));
+                            new Trigger(Superstructure::getClimbButtonPressed).onTrue(climberSubsystem.setClimberSpeed(0));
                         
                         arm.setDefaultCommand(arm.ArmMotorPidMove());
                         // reset the field-centric heading by pressing start button/hamburger menu button
@@ -141,7 +146,10 @@ public class RobotContainer {
                         // commandXboxController.b().onTrue(arm.changeArmSetpoint(0.5));
                         // commandXboxController.x().onTrue(arm.changeArmSetpoint(-0.5));
 
-                        commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                        new Trigger(Superstructure::getClimbButtonPressed).whileFalse(new InstantCommand(()->{
+                                climberSubsystem.stopOnButton();
+                               
+                        }));
                         commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
 

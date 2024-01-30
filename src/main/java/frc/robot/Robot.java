@@ -14,6 +14,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.utility.superstructure.Superstructure;
 
 
 /**
@@ -53,6 +54,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -119,7 +121,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    Superstructure.update();
+  }
 
   @Override
   public void testInit() {
