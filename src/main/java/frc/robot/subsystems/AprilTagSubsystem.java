@@ -5,6 +5,24 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.targeting.MultiTargetPNPResult;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.targeting.MultiTargetPNPResult;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -13,19 +31,13 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.constants.MainConstants;
 
 import java.util.Arrays;
@@ -35,12 +47,6 @@ import java.util.OptionalDouble;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.targeting.MultiTargetPNPResult;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 
 public class AprilTagSubsystem implements Subsystem {
@@ -95,14 +101,15 @@ public static PhotonCamera shooter;
     public AprilTagSubsystem() {
                 allCameras[0] = new PhotonCamera("Front");
 
-        allCameras[3] = new PhotonCamera("Back");
-        // allCameras[4] = new PhotonCamera("Shooter");
-        aimControl = new PIDController(1, .01, 0);
     }
 
 
 
 
+    /**
+     * get alliance
+     * @return "Red" or "Blue"
+     */
     public String getAllianceColor() {
         Optional<Alliance> ally = DriverStation.getAlliance();
         if (ally.isPresent()) {
@@ -117,6 +124,9 @@ public static PhotonCamera shooter;
 
     }
 
+    /**
+     * estimated posistion from front
+     */
 
     public Optional<EstimatedRobotPose> getVisionPoseFront() {
         var result = allCameras[0].getLatestResult();
@@ -133,6 +143,9 @@ public static PhotonCamera shooter;
             return Optional.empty();
         }
     }
+    /**
+     * estimated pose right 
+     */
     public Optional<EstimatedRobotPose> getVisionPoseRight() {
         var result = allCameras[1].getLatestResult();
         if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
@@ -145,6 +158,9 @@ public static PhotonCamera shooter;
             return Optional.empty();
         }
     }
+    /**
+     * estimated pose left
+     */
     public Optional<EstimatedRobotPose> getVisionPoseLeft() {
         var result = allCameras[2].getLatestResult();
         if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
@@ -157,6 +173,9 @@ public static PhotonCamera shooter;
             return Optional.empty();
         }
     }
+    /**
+     * estimated pose back
+     */
     public Optional<EstimatedRobotPose> getVisionPoseBack() {
         var result = allCameras[3].getLatestResult();
         if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
@@ -170,6 +189,9 @@ public static PhotonCamera shooter;
             return Optional.empty();
         }
     }
+    /**
+     * shooter gamera pose estimation
+     */
     public Optional<Pose3d> getShooterVision(){
        PhotonPipelineResult result = allCameras[4].getLatestResult();
        if(singlePoseEstimatorShooter.update().isPresent())

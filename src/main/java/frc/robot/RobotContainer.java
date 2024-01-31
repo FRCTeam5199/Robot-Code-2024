@@ -13,17 +13,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 import static edu.wpi.first.wpilibj2.command.Commands.run;
@@ -39,10 +36,6 @@ import static edu.wpi.first.wpilibj2.command.Commands.run;
  */
 public class RobotContainer {
 
-        public final static ArmSubsystem arm = new ArmSubsystem();
-        public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-        public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-        public final static IntakeSubsystem intake = new IntakeSubsystem();
         private final XboxController driveXboxController = new XboxController(0);
         private final double MaxSpeed = 6; // 6 meters per second desired top speed
         private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
@@ -57,91 +50,119 @@ public class RobotContainer {
         private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
         private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
         private final Telemetry logger = new Telemetry(MaxSpeed);
+        
+        public final static ArmSubsystem arm = new ArmSubsystem();
+        public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+        public final static IntakeSubsystem intake = new IntakeSubsystem();
+        public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(intake, arm);
+        public static final AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+        
         Autos auton;
 
         public RobotContainer() {
-                // climberSubsystem.init();
+                try { shooterSubsystem.init(); } catch (Exception exception) {
+                        System.err.println("One or more errors occured while trying to initalize the Shooter Subsystem");
+                        System.err.println("Exception Message:" + exception.getMessage());
+                        System.err.println("Exception Cause:" + exception.getCause());
+                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+
+                try { arm.init(); } catch (Exception exception) {
+                        System.err.println("One or more errors occured while trying to initalize the Arm Subsystem");
+                        System.err.println("Exception Message:" + exception.getMessage());
+                        System.err.println("Exception Cause:" + exception.getCause());
+                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+                
+                
+                try { intake.init(); } catch (Exception exception) {
+                        System.err.println("One or more errors occured while trying to initalize the Intake Subsystem");
+                        System.err.println("Exception Message:" + exception.getMessage());
+                        System.err.println("Exception Cause:" + exception.getCause());
+                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+
+                try { climberSubsystem.init(); } catch (Exception exception) {
+                        System.err.println("One or more errors occured while trying to initalize the Climber Subsystem");
+                        System.err.println("Exception Message:" + exception.getMessage());
+                        System.err.println("Exception Cause:" + exception.getCause());
+                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
 
                 auton = new Autos(drivetrain);
+                
                 configureBindings();
         }
 
+        /**
+         * Configures the bindings for commands
+         */
         private void configureBindings() {
-
                 // Drive
                 drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-                                drivetrain.applyRequest(() -> drive
-                                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) // Drive
-                                                                                                             // forward
-                                                                                                             // with
-                                                // negative Y (forward)
-                                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) // Drive
-                                                                                                             // left
-                                                                                                             // with
-                                                                                                             // negative
-                                                                                                             // X (left)
-                                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate) // Drive
-                                                                                                                         // counterclockwise
-                                                                                                                         // with
-                                                                                                                         // negative
-                                                                                                                         // X
-                                                                                                                         // (left)
-                                ));
-                // Climber
-                ConditionalCommand climbCommandGroup = new ConditionalCommand(
-                                new ParallelCommandGroup(
-                                                // new InstantCommand(() -> intake.stowIntake()),
-                                                new InstantCommand(() -> climberSubsystem.climbClimber())),
-                                new ParallelCommandGroup(
-                                                new InstantCommand(() -> climberSubsystem.storeClimber())),
-                                climberSubsystem::isClimbed);
+                        drivetrain.applyRequest(() -> drive
+                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(1) // Drive
+                                                                                                // forward
+                                                                                                // with
+                                // negative Y (forward)
+                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed).withDeadband(1) // Drive
+                                                                                                // left
+                                                                                                // with
+                                                                                                // negative
+                                                                                                // X (left)
+                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(1) // Drive
+                                                                                                                // counterclockwise
+                                                                                                                // with
+                                                                                                                // negative
+                                                                                                                // X
+                                                                                                                // (left)
+                        ));
+                        
+                        
+                        // reset the field-centric heading by pressing start button/hamburger menu button
+                        commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
-                // reset the field-centric heading by pressing start button/hamburger menu
-                // button
-                commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
+                        commandXboxController.button(6).whileTrue(drivetrain.applyRequest(() -> brake));
+                        commandXboxController.button(7).whileTrue(drivetrain
+                                        .applyRequest(() -> point
+                                                        .withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(),
+                                                                        -commandXboxController.getLeftX()))));
 
-                commandXboxController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-                commandXboxController.b().whileTrue(drivetrain
-                                .applyRequest(() -> point
-                                                .withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(),
-                                                                -commandXboxController.getLeftX()))));
+                        // commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
+                        // commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
+                        // commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
+                        // commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
+                        commandXboxController.povUp().onTrue(arm.moveAtPercent(0.2)).onFalse(arm.moveAtPercent(0));
+                        commandXboxController.povDown().onTrue(arm.moveAtPercent(-.2)).onFalse(arm.moveAtPercent(0));
+                        
+                        commandXboxController.y().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
+                        // commandXboxController.y().onTrue(shooterSubsystem.runIndexerTest(-.3)).onFalse(shooterSubsystem.runIndexerTest(.0));
+                        commandXboxController.a().onFalse(shooterSubsystem.checkCurrent());
 
-                commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
-                commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateIntake()));
-                commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateFront()));
-                commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateStable()));
 
-                commandXboxController.y().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
-                commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
-                commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
-                commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
-                
-                commandXboxController.x().onTrue(intake.deployIntake())
-                                        .onTrue(intake.setIntakeSpeed(.3))
-                                        .onTrue(new InstantCommand(() -> arm.rotateIntake()))
-                                        .onTrue(shooterSubsystem.intakeShooter())
+                        commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                        commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                        commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
 
-                                        .onFalse(intake.stowIntake())
-                                        .onFalse(intake.setIntakeSpeed(0))
-                                        .onFalse(shooterSubsystem.stopShooter())
-                                        .onFalse(new InstantCommand(() -> arm.rotateFront()));
+                        commandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(
+                                        intake.deployIntake(),
+                                        new WaitCommand(0.3),
+                                        new InstantCommand(() -> arm.rotateIntake()),
+                                        new WaitCommand(0.15),
+                                        intake.setIntakeSpeed(1),
+                                        shooterSubsystem.intakeShooter()))
+                                .onFalse(new SequentialCommandGroup(
+                                        intake.setIntakeSpeed(0),
+                                        new InstantCommand(() -> arm.rotateStable()),
+                                        new WaitCommand(0.25),
+                                        shooterSubsystem.stopShooter(),
+                                        intake.stowIntake()));
 
-                // commandXboxController.button(6).onTrue(intake.setIntakeSpeed(.3)).onFalse(intake.setIntakeSpeed(0));
-                // commandXboxController.button(7).onTrue(intake.setIntakeSpeed(-.3)).onFalse(intake.setIntakeSpeed(0));
-
-                // commandXboxController.x().onTrue(intake.deployIntake());
-                // commandXboxController.y().onTrue(intake.stowIntake());
-                // commandXboxController.rightBumper().whileTrue(intake.setIntakeSpeed(.3));
-                // commandXboxController.leftBumper().whileTrue(intake.setIntakeSpeed(-.3));
+                        commandXboxController.x().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
+                        commandXboxController.b().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
 
                 if (Utils.isSimulation()) {
                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
                 }
                 drivetrain.registerTelemetry(logger::telemeterize);
-
-                // Climber
-                // commandXboxController.rightTrigger().onTrue(climbCommandGroup);
         }
+
 
         /**
          * Use this to pass the autonomous command to the main {@link Robot} class.

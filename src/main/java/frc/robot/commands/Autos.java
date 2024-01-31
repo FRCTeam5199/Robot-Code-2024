@@ -5,6 +5,7 @@ import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.*;
 import com.pathplanner.lib.path.*;
 
@@ -18,26 +19,24 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.ShooterSubsystem;
-// import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 public class Autos extends Command{
   SwerveDrive swerveDrive;
+
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
-  ShooterSubsystem shooter = new ShooterSubsystem();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 2, .004,0), 5, .33, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 2, .004,0), 5, .21, new ReplanningConfig());
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
   public SendableChooser<Boolean> side = new SendableChooser<>();
 
-  private HashMap<String, Command> eventMap;
 
-
-  public Autos(SwerveDrive swerve){
+    public Autos(SwerveDrive swerve){
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
-    eventMap = new HashMap<>();
+        HashMap<String, Command> eventMap = new HashMap<>();
+      NamedCommands.registerCommand();
 
     Shuffleboard.getTab("Autons").add("Side", side);
     side.addOption("Red Side", true);
@@ -48,6 +47,7 @@ public class Autos extends Command{
     autonChooserRed.addOption("Shoot and Taxi Middle", shootTaxiMiddleRed());
 
     Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
+
 
   }
   public Command getAuton(){
