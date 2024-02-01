@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -30,6 +34,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
   SwerveDrive drive = TunerConstants.DriveTrain;
+  private static final Vector<N3> VISION_STDS = VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(.1));
+
 
 
   private RobotContainer m_robotContainer;
@@ -68,7 +74,7 @@ public class Robot extends TimedRobot {
     // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
     if(estimatePose1.isPresent()){
        EstimatedRobotPose robotPose = estimatePose1.get();
-       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp(),VISION_STDS);
     }
     // if(estimatePose2.isPresent()){
     //   EstimatedRobotPose robotPose = estimatePose2.get();
