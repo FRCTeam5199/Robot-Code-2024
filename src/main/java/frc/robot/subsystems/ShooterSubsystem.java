@@ -39,6 +39,7 @@ public void init() {
         shooterMotor2.setInvert(false);
 
     shooterIndexerMotor.setBrake(true);
+    shooterIndexerMotor.setInvert(true);
 
     shooterMotor1.getEncoder().setPosition(0);
     shooterMotor2.getEncoder().setPosition(0);

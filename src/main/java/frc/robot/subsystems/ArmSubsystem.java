@@ -26,8 +26,8 @@ import frc.robot.constants.MainConstants;
 public class ArmSubsystem extends SubsystemBase {
 	public VortexMotorController ArmMotor;
 
-	CANSparkMax sparkMax = new CANSparkMax(8, MotorType.kBrushed);
-	RelativeEncoder encoder = sparkMax.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 8092);	
+	public CANSparkMax sparkMax;
+	public RelativeEncoder encoder;	
 	
 	public double rotateSetpoint = 0;
 	PIDController rotatePIDController;
@@ -35,7 +35,7 @@ public class ArmSubsystem extends SubsystemBase {
 	AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 	double shooterAngle;
 	double rotateDegrees;
-	double poseOfEncoder = 0;
+	double angleSetpoint = 0;
 
 	public ArmSubsystem() {}
 
@@ -43,16 +43,20 @@ public class ArmSubsystem extends SubsystemBase {
 		motorInit();
 		PIDInit();
 		encoder.setInverted(true);
-		encoder.setPosition(0);
 	}
 
 	public void motorInit() {
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
 
 		ArmMotor.setInvert(true);
-		ArmMotor.setBrake(false); //Make true and setpoint positive and zero arm at the top for working
+		ArmMotor.setBrake(true); 
+		//Make true and setpoint positive and zero arm at the top for working
 
 		ArmMotor.getEncoder().setPosition(0);
+
+		sparkMax = new CANSparkMax(8, MotorType.kBrushed);
+		encoder = sparkMax.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 8092);	
+		encoder.setPosition(0);
 	}
 
 	public void PIDInit() {
@@ -86,11 +90,9 @@ public class ArmSubsystem extends SubsystemBase {
 		// System.out.println(-rotatePIDController.calculate(encoder.getPosition(), -0.08835887163877487));
 		// ArmMotor.set((-rotatePIDController.calculate(encoder.getPosition(), -0.08835887163877487))/MainConstants.ROTATIONS_PER_1_DEGREE_ARM);// -0.05598121136426926)));
 		// ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
+		ArmMotor.set(-rotatePIDController.calculate(encoder.getPosition(), angleSetpoint/360)/MainConstants.ROTATIONS_PER_1_DEGREE_ARM);
 	}
-
-	public Command ArmMotorPidMove(){
-		return this.run(()-> ArmMotor.set(-rotatePIDController.calculate(encoder.getPosition(), poseOfEncoder)/MainConstants.ROTATIONS_PER_1_DEGREE_ARM));
-	}
+	
 	/**
 	 * 
 	 * @param percent move armMotor at a percent(-1 to 1)
@@ -104,8 +106,8 @@ public class ArmSubsystem extends SubsystemBase {
 		return this.runOnce(() -> System.out.println("pos //////////////////"+ encoder.getPosition()));
 	}
 	
-	public Command moveTo(){
-		return this.runOnce(()-> System.out.println(-rotatePIDController.calculate(encoder.getPosition(), -0.08835887163877487)/MainConstants.ROTATIONS_PER_1_DEGREE_ARM));
+	public Command getSpeedOfArm(){
+		return this.runOnce(()-> System.out.println(-rotatePIDController.calculate(encoder.getPosition(), angleSetpoint/360)/MainConstants.ROTATIONS_PER_1_DEGREE_ARM));
 	}
 	/**
 	 * 
@@ -130,20 +132,24 @@ public class ArmSubsystem extends SubsystemBase {
 	return this.run(() -> calculateSetpointBasedOnAngle());
   }
 
+
+
   public void calculateSetpointBasedOnAngle() {
-	shooterAngle = aprilTagSubsystem.speakersAligning();
-	rotateDegrees = shooterAngle - MainConstants.ARM_ORIGINAL_DEGREES; //do (180 - finalAngle) to shoot backwardes
-	System.out.println(rotateDegrees);
-	rotateSetpoint = MainConstants.ROTATIONS_PER_1_DEGREE_ARM * rotateDegrees;
+	angleSetpoint = -1 * (aprilTagSubsystem.speakersAligning() - MainConstants.ARM_ORIGINAL_DEGREES);
+	// System.out.println(angleSetpoint);
 	
   }
+  
 
+
+  public Command setAngleSetPointZero() {
+		return this.run(()-> this.angleSetpoint = 0);
+	}
   	/**
 	 * set Setpoint variable to Stable
 	 */
-	public void rotateStable() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT;
-		this.poseOfEncoder = -0.08835887163877487;
+	public Command rotateStable() {
+		return this.run(()-> this.angleSetpoint = -32.8);
 	}
 
 	/**
@@ -156,9 +162,10 @@ public class ArmSubsystem extends SubsystemBase {
 	/**
 	 * set Setpoint variable to front
 	 */
-	public void rotateFront() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT;
-		this.poseOfEncoder = -0.17572911083698273;
+	public Command rotateFront() {
+		// this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT;
+		// this.angleSetpoint = 60.5;
+		return this.run(()-> this.angleSetpoint = -60.5);
 	}
 
 	/**

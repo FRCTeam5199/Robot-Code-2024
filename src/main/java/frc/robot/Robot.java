@@ -15,6 +15,7 @@ import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.utility.superstructure.Superstructure;
+import frc.robot.subsystems.ArmSubsystem;
 
 
 /**
@@ -26,9 +27,12 @@ import frc.robot.utility.superstructure.Superstructure;
 public class Robot extends TimedRobot {
   public static final boolean SECOND_TRY = false;
 
+
   private Command m_autonomousCommand;
   AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
   SwerveDrive drive = TunerConstants.DriveTrain;
+
+  
 
 
   private RobotContainer m_robotContainer;
@@ -88,10 +92,13 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
