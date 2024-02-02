@@ -31,8 +31,10 @@ public class Robot extends TimedRobot {
   SwerveDrive drive = TunerConstants.DriveTrain;
   AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
+  UserInterface userInterface = new UserInterface();
 
   private RobotContainer m_robotContainer;
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -42,8 +44,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    
+    userInterface.initalizeTestTab();
+    userInterface.initalizeGameTab();
 
+    m_robotContainer = new RobotContainer();
   }
 
   /**
@@ -61,7 +66,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
 
     CommandScheduler.getInstance().run();
-    System.out.println(drive.getPose());
+    // System.out.println(drive.getPose());
     Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
@@ -83,7 +88,7 @@ public class Robot extends TimedRobot {
     //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
     // }
     
-    // UserInterface.updateGameTab();
+    // userInterface.updateGameTab();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

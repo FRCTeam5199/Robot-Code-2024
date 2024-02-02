@@ -4,8 +4,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
-
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -21,24 +22,14 @@ public class ShooterSubsystem implements Subsystem{
 
   public VortexMotorController shooterIndexerMotor;
 
-  public IntakeSubsystem intakeSubsystem;
-  public ArmSubsystem armSubsystem;
+  public GenericHID genericHID = new GenericHID(0);
 
+  public ShooterSubsystem() {}
   
-
-  public ShooterSubsystem(IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
-    this.intakeSubsystem = intakeSubsystem;
-    this.armSubsystem = armSubsystem;
-
-  }
-
-
   public void init() {
       motorInit();
 
-      Shuffleboard.getTab("Status").add("Shooter Subsystem Status", true).getEntry();
-
-      
+      Shuffleboard.getTab("Status").add("Shooter Subsystem Status", true).getEntry();      
   }
 
   /*
@@ -62,6 +53,12 @@ public class ShooterSubsystem implements Subsystem{
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (checkForGamePiece()) {
+      System.out.println("RUMBLE");
+      genericHID.setRumble(RumbleType.kBothRumble, 1);
+    } else {
+      genericHID.setRumble(RumbleType.kBothRumble, 0);
+    }
   }
 
   /**
@@ -108,18 +105,6 @@ public class ShooterSubsystem implements Subsystem{
       new InstantCommand(() -> shooterMotor1.set(0)),
       new InstantCommand(() -> shooterMotor2.set(0)));
   }
-  
-  public Command checkCurrent(){
-    return this.runOnce(()-> System.out.println(checkForGamePiece()));
-  }
-
-  public void stopIntakeAction(){
-    stopShooter();
-    armSubsystem.rotateStable();
-    new WaitCommand(0.4);
-    intakeSubsystem.retractAndStopIntake();
-    
-  }
 
   /**
    * Checks for current spike inside of the indexer
@@ -159,14 +144,4 @@ public class ShooterSubsystem implements Subsystem{
     }
     return false;     
   }
-
-  public void gamePieceDected(){
-    if(checkForGamePiece()){
-      //stop spin bottom intake and shooter, retract bottom intake
-      stopIntakeAction();
-
-    }
-    
-  }
-
 }

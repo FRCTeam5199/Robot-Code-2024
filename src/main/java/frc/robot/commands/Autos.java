@@ -1,24 +1,19 @@
 package frc.robot.commands;
 
 import java.util.HashMap;
-import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.*;
-import com.pathplanner.lib.path.*;
-
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 public class Autos extends Command{
@@ -36,7 +31,7 @@ public class Autos extends Command{
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
         HashMap<String, Command> eventMap = new HashMap<>();
-      NamedCommands.registerCommand();
+      // NamedCommands.registerCommand();
 
     Shuffleboard.getTab("Autons").add("Side", side);
     side.addOption("Red Side", true);

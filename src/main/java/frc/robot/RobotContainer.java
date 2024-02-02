@@ -20,16 +20,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 /**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
@@ -50,10 +50,9 @@ public class RobotContainer {
         private final Telemetry logger = new Telemetry(MaxSpeed);
         
         public final static ArmSubsystem arm = new ArmSubsystem();
+        public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
         public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
         public final static IntakeSubsystem intake = new IntakeSubsystem();
-        public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(intake, arm);
-        public static final AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
         
         Autos auton;
 
@@ -112,7 +111,6 @@ public class RobotContainer {
                                                                                                                 // (left)
                         ));
                         
-                        
                         // reset the field-centric heading by pressing start button/hamburger menu button
                         commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
@@ -122,17 +120,13 @@ public class RobotContainer {
                                                         .withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(),
                                                                         -commandXboxController.getLeftX()))));
 
-                        // commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
-                        // commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
-                        // commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
-                        // commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
-                        commandXboxController.povUp().onTrue(arm.moveAtPercent(0.2)).onFalse(arm.moveAtPercent(0));
-                        commandXboxController.povDown().onTrue(arm.moveAtPercent(-.2)).onFalse(arm.moveAtPercent(0));
+                        commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
+                        commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
+                        commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
+                        commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
                         
-                        commandXboxController.y().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
-                        // commandXboxController.y().onTrue(shooterSubsystem.runIndexerTest(-.3)).onFalse(shooterSubsystem.runIndexerTest(.0));
-                        commandXboxController.a().onFalse(shooterSubsystem.checkCurrent());
-
+                        // commandXboxController.b().onTrue(arm.changeArmSetpoint(0.5));
+                        // commandXboxController.x().onTrue(arm.changeArmSetpoint(-0.5));
 
                         commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
@@ -148,7 +142,7 @@ public class RobotContainer {
                                 .onFalse(new SequentialCommandGroup(
                                         intake.setIntakeSpeed(0),
                                         new InstantCommand(() -> arm.rotateStable()),
-                                        new WaitCommand(0.25),
+                                        new WaitCommand(0.2),
                                         shooterSubsystem.stopShooter(),
                                         intake.stowIntake()));
 
@@ -161,13 +155,13 @@ public class RobotContainer {
                 drivetrain.registerTelemetry(logger::telemeterize);
         }
 
-
-        /**
-         * Use this to pass the autonomous command to the main {@link Robot} class.
-         *
-         * @return the command to run in autonomous
-         */
-        public Command getAutonomousCommand() {
-                return auton.twoPieceExtendedRed();
-        }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        return null;//auton.twoPieceExtendedRed();
+    }
 }
+  

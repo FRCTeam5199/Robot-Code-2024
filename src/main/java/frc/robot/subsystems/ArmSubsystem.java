@@ -29,10 +29,8 @@ public class ArmSubsystem extends SubsystemBase {
 	 * init for arm and pid controller
 	 */
 	public void init(){
-	
 		motorInit();
 		PIDInit();
-
 
 		Shuffleboard.getTab("Status").add("Arm Subsystem Status", true).getEntry();
 	}
@@ -40,14 +38,10 @@ public class ArmSubsystem extends SubsystemBase {
 	public void motorInit() {
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
 
-		
 		ArmMotor.setInvert(true);
 		ArmMotor.setBrake(true);
 
 		ArmMotor.getEncoder().setPosition(0);
-
-		
-
 	}
 
 	public void PIDInit() {
@@ -57,7 +51,6 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		
 		if (ArmMotor.getEncoder().getPosition() < 1.5) {
 			while (ArmMotor.getEncoder().getPosition() < 1.5) {
 					ArmMotor.set(0.3);
@@ -65,7 +58,6 @@ public class ArmSubsystem extends SubsystemBase {
 			
 			ArmMotor.set(0);
 			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
-
 		} else if (ArmMotor.getEncoder().getPosition() > 61) {
 			while (ArmMotor.getEncoder().getPosition() > 61) {
 				ArmMotor.set(-0.3);
@@ -74,8 +66,7 @@ public class ArmSubsystem extends SubsystemBase {
 			ArmMotor.set(0);
 			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
 		} else {
-
-				// ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
+				ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
 		}
 	}
 
