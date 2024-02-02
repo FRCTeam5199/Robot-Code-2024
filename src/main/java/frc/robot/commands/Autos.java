@@ -36,7 +36,6 @@ public class Autos extends Command{
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
         HashMap<String, Command> eventMap = new HashMap<>();
-      NamedCommands.registerCommand();
 
     Shuffleboard.getTab("Autons").add("Side", side);
     side.addOption("Red Side", true);
