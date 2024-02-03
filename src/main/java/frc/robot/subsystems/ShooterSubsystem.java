@@ -5,18 +5,15 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
-public class ShooterSubsystem implements Subsystem{
+public class ShooterSubsystem extends SubsystemBase {
   public VortexMotorController shooterMotor1;
   public VortexMotorController shooterMotor2;
 
@@ -29,7 +26,7 @@ public class ShooterSubsystem implements Subsystem{
   public void init() {
       motorInit();
 
-      Shuffleboard.getTab("Status").add("Shooter Subsystem Status", true).getEntry();      
+      Shuffleboard.getTab("Game").add("Shooter Subsystem Status", true).getEntry();      
   }
 
   /*
@@ -48,13 +45,14 @@ public class ShooterSubsystem implements Subsystem{
 
     shooterMotor1.getEncoder().setPosition(0);
     shooterMotor2.getEncoder().setPosition(0);
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
     if (checkForGamePiece()) {
-      System.out.println("RUMBLE");
       genericHID.setRumble(RumbleType.kBothRumble, 1);
     } else {
       genericHID.setRumble(RumbleType.kBothRumble, 0);

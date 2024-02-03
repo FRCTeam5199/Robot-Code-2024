@@ -1,10 +1,8 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -32,7 +30,7 @@ public class ArmSubsystem extends SubsystemBase {
 		motorInit();
 		PIDInit();
 
-		Shuffleboard.getTab("Status").add("Arm Subsystem Status", true).getEntry();
+		Shuffleboard.getTab("Game").add("Arm Subsystem Status", true).getEntry();
 	}
 
 	public void motorInit() {
