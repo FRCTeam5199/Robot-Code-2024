@@ -12,6 +12,8 @@ import frc.robot.constants.MainConstants;
 
 
 public class ArmSubsystem extends SubsystemBase {
+	private static ArmSubsystem armSubsystem;
+
 	public VortexMotorController ArmMotor;
 	
 	 public TalonMotorController ArmLeader;
@@ -23,14 +25,34 @@ public class ArmSubsystem extends SubsystemBase {
 
 	public ArmSubsystem() {}
 
+	/** 
+	 * Gets the instnace of the Arm Subsystem.
+	 */
+	public static ArmSubsystem getInstance() {
+		if (armSubsystem == null) {
+			armSubsystem = new ArmSubsystem();
+		}
+
+		return armSubsystem;
+	}
+
 	/**
 	 * init for arm and pid controller
 	 */
-	public void init(){
-		motorInit();
-		PIDInit();
+	public void init() {
+		try { motorInit(); } catch (Exception exception) {
+			System.err.println("One or more issues occured while trying to initalize motors for Arm Subsystem");
+			System.err.println("Exception Message:" + exception.getMessage());
+			System.err.println("Exception Cause:" + exception.getCause());
+			System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
 
-		Shuffleboard.getTab("Game").add("Arm Subsystem Status", true).getEntry();
+	try { PIDInit(); } catch (Exception exception) {
+			System.err.println("One or more issues occured while trying to initalize PID for Arm Subsystem");
+			System.err.println("Exception Message:" + exception.getMessage());
+			System.err.println("Exception Cause:" + exception.getCause());
+			System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+	
+		// Shuffleboard.getTab("Test").add("Arm Subsystem Initalized", true).getEntry();
 	}
 
 	public void motorInit() {
@@ -49,20 +71,20 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		if (ArmMotor.getEncoder().getPosition() < 1.5) {
-			while (ArmMotor.getEncoder().getPosition() < 1.5) {
+		if (ArmMotor.getEncoder().getPosition() < 0) {
+			while (ArmMotor.getEncoder().getPosition() < 0) {
 					ArmMotor.set(0.3);
 			}
 			
 			ArmMotor.set(0);
-			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
+			this.rotateSetpoint = 0;
 		} else if (ArmMotor.getEncoder().getPosition() > 61) {
 			while (ArmMotor.getEncoder().getPosition() > 61) {
 				ArmMotor.set(-0.3);
 			}
 
 			ArmMotor.set(0);
-			this.rotateSetpoint = ArmMotor.getEncoder().getPosition();
+			this.rotateSetpoint = 61;
 		} else {
 				ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
 		}

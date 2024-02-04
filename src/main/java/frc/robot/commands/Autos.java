@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -9,6 +10,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -33,22 +35,20 @@ public class Autos extends Command{
         HashMap<String, Command> eventMap = new HashMap<>();
       // NamedCommands.registerCommand();
 
-    Shuffleboard.getTab("Autons").add("Side", side);
-    side.addOption("Red Side", true);
-    side.addOption("Blue Side", false);
+      Shuffleboard.getTab("Autons").add("Side", side);
+      side.addOption("Red Side", true);
+      side.addOption("Blue Side", false);
 
     Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
     autonChooserRed.addOption("Do nothing", doNothing());
     autonChooserRed.addOption("Shoot and Taxi Middle", shootTaxiMiddleRed());
 
     Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
-
-
   }
   public Command getAuton(){
-    if(side.getSelected()){
+    if(DriverStation.getAlliance().get().name() == "Red"){
       return autonChooserRed.getSelected();
-    }else{
+    } else {
       return autonChooserBlue.getSelected();
     }
   }

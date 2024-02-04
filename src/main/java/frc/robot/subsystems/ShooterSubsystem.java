@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,6 +15,8 @@ import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
+  private static ShooterSubsystem shooterSubsystem;
+
   public VortexMotorController shooterMotor1;
   public VortexMotorController shooterMotor2;
 
@@ -23,10 +26,25 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public ShooterSubsystem() {}
   
-  public void init() {
-      motorInit();
+	/** 
+	 * Gets the instnace of the Arm Subsystem.
+	 */
+	public static ShooterSubsystem getInstance() {
+		if (shooterSubsystem == null) {
+			shooterSubsystem = new ShooterSubsystem();
+		}
 
-      Shuffleboard.getTab("Game").add("Shooter Subsystem Status", true).getEntry();      
+		return shooterSubsystem;
+	}
+  
+  public void init() {
+        try { motorInit(); } catch (Exception exception) {
+            System.err.println("One or more issues occured while trying to initalize motors for Shooter Subsystem");
+            System.err.println("Exception Message:" + exception.getMessage());
+            System.err.println("Exception Cause:" + exception.getCause());
+            System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+
+      // Shuffleboard.getTab("Test").add("Shooter Subsystem Initalized", true).getEntry();      
   }
 
   /*
@@ -73,6 +91,10 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public Command setShooterSpeed(double percent) {
     return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
+  }
+  
+  public Command setBottomShooterSpeed(double percent) {
+    return this.runOnce(() -> shooterMotor2.set(percent));
   }
 
   /**

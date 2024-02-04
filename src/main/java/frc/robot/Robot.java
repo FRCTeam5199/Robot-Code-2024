@@ -45,8 +45,9 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     
+    userInterface.initalizeConfigTab();
     userInterface.initalizeTestTab();
-    userInterface.initalizeGameTab();
+    // userInterface.initalizeGameTab();
 
     m_robotContainer = new RobotContainer();
   }

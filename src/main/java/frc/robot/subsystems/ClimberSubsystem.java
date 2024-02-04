@@ -1,33 +1,53 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
+  private static ClimberSubsystem climberSubsystem;
+
   public CANSparkMax climberMotor1;
   public CANSparkMax climberMotor2;
 
   public PIDController climberPIDController;
 
   public ClimberSubsystem() {}
+  
+	/** 
+	 * Gets the instnace of the Arm Subsystem.
+	 */
+	public static ClimberSubsystem getInstance() {
+		if (climberSubsystem == null) {
+			climberSubsystem = new ClimberSubsystem();
+		}
+
+		return climberSubsystem;
+	}
 
   /**
    * init for climber
    */
   public void init() {
-    motorInit();
-    PIDInit();
+    try { motorInit(); } catch (Exception exception) {
+        System.err.println("One or more issues occured while trying to initalize motors for Climber Subsystem");
+        System.err.println("Exception Message:" + exception.getMessage());
+        System.err.println("Exception Cause:" + exception.getCause());
+        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
 
-    Shuffleboard.getTab("Game").add("Climber Subsystem Status", true).getEntry();
+    try { PIDInit(); } catch (Exception exception) {
+        System.err.println("One or more issues occured while trying to initalize PID for Climber Subsystem");
+        System.err.println("Exception Message:" + exception.getMessage());
+        System.err.println("Exception Cause:" + exception.getCause());
+        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+    
+    // Shuffleboard.getTab("Test").add("Climber Subsystem Initalized", true).getEntry();
   }
 
   /**
@@ -69,6 +89,14 @@ public class ClimberSubsystem extends SubsystemBase {
    */
   public Command setClimberSpeed(double percent) {
     return this.runOnce(() -> climberMotor1.set(percent)).andThen((() -> climberMotor2.set(percent)));
+  }
+  
+  public Command setLeftClimberSpeed(double percent) {
+    return this.runOnce(() -> climberMotor1.set(percent));
+  }
+
+  public Command setRighttClimberSpeed(double percent) {
+    return this.runOnce(() -> climberMotor2.set(percent));
   }
 
   /**

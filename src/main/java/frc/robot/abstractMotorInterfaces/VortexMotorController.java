@@ -123,7 +123,6 @@ public class VortexMotorController extends AbstractMotorController{
 
     @Override
     public AbstractMotorController follow(AbstractMotorController leader, boolean invert) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'follow'");
     }
 }
