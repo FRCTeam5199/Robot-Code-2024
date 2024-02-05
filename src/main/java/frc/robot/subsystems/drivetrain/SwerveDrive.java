@@ -3,21 +3,16 @@ package frc.robot.subsystems.drivetrain;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.*;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.AprilTagSubsystem;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem
@@ -27,7 +22,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
-    AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
@@ -35,7 +29,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
     }
-
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         if (Utils.isSimulation()) {
@@ -76,29 +69,9 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
     }
 
-    public SwerveDriveKinematics getKinematics() {
-        return m_kinematics;
-    }
-
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }
-
-    public SwerveModule[] getSwerveModules() {
-        SwerveModule[] swerveModules = new SwerveModule[4];
-        swerveModules[0] = this.getModule(0);
-        swerveModules[1] = this.getModule(1);
-        swerveModules[2] = this.getModule(2);
-        swerveModules[3] = this.getModule(3);
-        return swerveModules;
-    }
-
-    public void rotateTarget(double X, double Y) {
-        // aprilTagSubsystem.getTargetAngle does not exsist.
-        // this.applyRequest(()-> new SwerveRequest.FieldCentricFacingAngle().withVelocityX(Y).withVelocityY(X).withTargetDirection(new Rotation2d(aprilTagSubsystem.getTargetAngle(this.getPose()))));
-    }
-
-
 }
 
 

@@ -11,20 +11,25 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.utility.StopClimbButton;
+import frc.robot.utility.superstructure.Superstructure;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -54,33 +59,41 @@ public class RobotContainer {
         public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
         public final static IntakeSubsystem intake = new IntakeSubsystem();
         
+        
         Autos auton;
 
         public RobotContainer() {
-                try { shooterSubsystem.init(); } catch (Exception exception) {
-                        System.err.println("One or more errors occured while trying to initalize the Shooter Subsystem");
-                        System.err.println("Exception Message:" + exception.getMessage());
-                        System.err.println("Exception Cause:" + exception.getCause());
-                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+                
+                // try { shooterSubsystem.init(); } catch (Exception exception) {
+                //         System.err.println("One or more errors occured while trying to initalize the Shooter Subsystem");
+                //         System.err.println("Exception Message:" + exception.getMessage());
+                //         System.err.println("Exception Cause:" + exception.getCause());
+                //         System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
 
-                try { arm.init(); } catch (Exception exception) {
-                        System.err.println("One or more errors occured while trying to initalize the Arm Subsystem");
-                        System.err.println("Exception Message:" + exception.getMessage());
-                        System.err.println("Exception Cause:" + exception.getCause());
-                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+                // try { arm.init(); } catch (Exception exception) {
+                //         System.err.println("One or more errors occured while trying to initalize the Arm Subsystem");
+                //         System.err.println("Exception Message:" + exception.getMessage());
+                //         System.err.println("Exception Cause:" + exception.getCause());
+                //         System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
                 
                 
-                try { intake.init(); } catch (Exception exception) {
-                        System.err.println("One or more errors occured while trying to initalize the Intake Subsystem");
-                        System.err.println("Exception Message:" + exception.getMessage());
-                        System.err.println("Exception Cause:" + exception.getCause());
-                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+                // try { intake.init(); } catch (Exception exception) {
+                //         System.err.println("One or more errors occured while trying to initalize the Intake Subsystem");
+                //         System.err.println("Exception Message:" + exception.getMessage());
+                //         System.err.println("Exception Cause:" + exception.getCause());
+                //         System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
 
-                try { climberSubsystem.init(); } catch (Exception exception) {
-                        System.err.println("One or more errors occured while trying to initalize the Climber Subsystem");
-                        System.err.println("Exception Message:" + exception.getMessage());
-                        System.err.println("Exception Cause:" + exception.getCause());
-                        System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+                // try { climberSubsystem.init(); } catch (Exception exception) {
+                //         System.err.println("One or more errors occured while trying to initalize the Climber Subsystem");
+                //         System.err.println("Exception Message:" + exception.getMessage());
+                //         System.err.println("Exception Cause:" + exception.getCause());
+                //         System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+
+                
+                shooterSubsystem.init();
+                arm.init();
+                climberSubsystem.init();
+                intake.init();
 
                 auton = new Autos(drivetrain);
                 
@@ -92,25 +105,27 @@ public class RobotContainer {
          */
         private void configureBindings() {
                 // Drive
-                drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-                        drivetrain.applyRequest(() -> drive
-                                .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(1) // Drive
-                                                                                                // forward
-                                                                                                // with
-                                // negative Y (forward)
-                                .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed).withDeadband(1) // Drive
-                                                                                                // left
-                                                                                                // with
-                                                                                                // negative
-                                                                                                // X (left)
-                                .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(1) // Drive
-                                                                                                                // counterclockwise
-                                                                                                                // with
-                                                                                                                // negative
-                                                                                                                // X
-                                                                                                                // (left)
-                        ));
+                // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+                //         drivetrain.applyRequest(() -> drive
+                //                 .withVelocityX(-commandXboxController.getLeftY() * MaxSpeed).withDeadband(1) // Drive
+                //                                                                                 // forward
+                //                                                                                 // with
+                //                 // negative Y (forward)
+                //                 .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed).withDeadband(1) // Drive
+                //                                                                                 // left
+                //                                                                                 // with
+                //                                                                                 // negative
+                //                                                                                 // X (left)
+                //                 .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(1) // Drive
+                //                                                                                                 // counterclockwise
+                //                                                                                                 // with
+                //                                                                                                 // negative
+                //                                                                                                 // X
+                //                                                                                                 // (left)
+                //         ));
+                            new Trigger(Superstructure::getClimbButtonPressed).onTrue(climberSubsystem.setClimberSpeed(0));
                         
+                
                         // reset the field-centric heading by pressing start button/hamburger menu button
                         commandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
@@ -120,17 +135,25 @@ public class RobotContainer {
                                                         .withModuleDirection(new Rotation2d(-commandXboxController.getLeftY(),
                                                                         -commandXboxController.getLeftX()))));
 
-                        commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
-                        commandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
-                        commandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
-                        commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
+                        // commandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
+                        commandXboxController.povRight().onTrue( arm.rotateFront());
+                        commandXboxController.povDown().onTrue(arm.rotateStable());
+                        // commandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
+
+                        commandXboxController.povUp().onTrue(intake.setIntakeSpeed(1)).onFalse(intake.setIntakeSpeed(0));
                         
+                      
                         // commandXboxController.b().onTrue(arm.changeArmSetpoint(0.5));
                         // commandXboxController.x().onTrue(arm.changeArmSetpoint(-0.5));
 
-                        commandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
-                        commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                        new Trigger(Superstructure::getClimbButtonPressed).whileFalse(new InstantCommand(()->{
+                                climberSubsystem.stopOnButton();
+                               
+                        }));
+                        // commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.259)).onFalse(shooterSubsystem.setShooterSpeed(0));
+                        commandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.70)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         commandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
+                        commandXboxController.povUp().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
 
                         commandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(
                                         intake.deployIntake(),
@@ -142,17 +165,22 @@ public class RobotContainer {
                                 .onFalse(new SequentialCommandGroup(
                                         intake.setIntakeSpeed(0),
                                         new InstantCommand(() -> arm.rotateStable()),
-                                        new WaitCommand(0.15),
+                                        new WaitCommand(0.25),
                                         shooterSubsystem.stopShooter(),
                                         intake.stowIntake()));
 
                         commandXboxController.x().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
-                        commandXboxController.b().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
+                        // commandXboxController.b().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
+                        commandXboxController.b().onTrue(arm.getSpeedOfArm());
+                        commandXboxController.y().onTrue(arm.testEncoder());
+                        commandXboxController.a().onTrue(arm.moveToAngle());
 
                 if (Utils.isSimulation()) {
                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
                 }
                 drivetrain.registerTelemetry(logger::telemeterize);
+                
+
         }
 
     /**

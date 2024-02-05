@@ -32,10 +32,10 @@ public class IntakeSubsystem implements Subsystem {
         // intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint));
     }
 
-     @Override
-     public void simulationPeriodic() {
-          //This method will be called once per scheduler run during simulation
-     }
+    @Override
+    public void simulationPeriodic() {
+        // This method will be called once per scheduler run during simulation
+    }
 
     /**
      * motor init of intake subsystem

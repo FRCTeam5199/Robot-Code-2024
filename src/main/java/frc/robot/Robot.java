@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.utility.superstructure.Superstructure;
+import frc.robot.subsystems.ArmSubsystem;
 
 
 /**
@@ -24,9 +26,12 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
 public class Robot extends TimedRobot {
   public static final boolean SECOND_TRY = false;
 
+
   private Command m_autonomousCommand;
   AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
   SwerveDrive drive = TunerConstants.DriveTrain;
+
+  
 
 
   private RobotContainer m_robotContainer;
@@ -52,6 +57,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -62,6 +68,7 @@ public class Robot extends TimedRobot {
     // Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
+    // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
     //  if(estimatePose1.isPresent()){
     //    EstimatedRobotPose robotPose = estimatePose1.get();
     //    drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
@@ -84,10 +91,13 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -117,7 +127,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    Superstructure.update();
+  }
 
   @Override
   public void testInit() {

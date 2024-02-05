@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
-public class ShooterSubsystem implements Subsystem{
-  public VortexMotorController shooterMotor1;
-  public VortexMotorController shooterMotor2;
+public class ShooterSubsystem implements Subsystem {
+    public VortexMotorController shooterMotor1;
+    public VortexMotorController shooterMotor2;
 
-  public VortexMotorController shooterIndexerMotor;
+    public VortexMotorController shooterIndexerMotor;
 
   public ShooterSubsystem() {}
 
@@ -35,19 +35,20 @@ public void init() {
     shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
     shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
 
-    shooterMotor1.setInvert(true);
-    shooterMotor2.setInvert(false);
+        shooterMotor1.setInvert(true);
+        shooterMotor2.setInvert(false);
 
     shooterIndexerMotor.setBrake(true);
+    shooterIndexerMotor.setInvert(true);
 
     shooterMotor1.getEncoder().setPosition(0);
     shooterMotor2.getEncoder().setPosition(0);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+   @Override
+   public void periodic() {
+      // This method will be called once per scheduler run
+   }
 
   /**
    * Sets the Indexer motor speed to a percent between -1 and 1
