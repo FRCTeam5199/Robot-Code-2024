@@ -13,13 +13,14 @@ public class TalonMotorController extends AbstractMotorController{
     
     TalonFX talon;
     TalonFXConfiguration configuration = new TalonFXConfiguration();
-    public TalonMotorController(int ID, String bus){
+
+    public TalonMotorController(int ID, String bus) {
         super();
         talon = new TalonFX(ID, bus);
         talon.getConfigurator().apply(configuration);
     }
 
-    public TalonMotorController(int ID){
+    public TalonMotorController(int ID) {
         super();
         talon = new TalonFX(ID);
         talon.getConfigurator().apply(configuration);
@@ -37,11 +38,6 @@ public class TalonMotorController extends AbstractMotorController{
     }
 
     @Override
-    public void setVelocity(double Velocity){
-        talon.setControl(new VelocityDutyCycle(Velocity));
-    }
-
-    @Override
     public void set(double Percent) {
         talon.set(Percent);
     }
@@ -52,13 +48,8 @@ public class TalonMotorController extends AbstractMotorController{
     }
 
     @Override
-    public void setPosition(double Position){
+    public void setPosition(double Position) {
         talon.setControl(new PositionDutyCycle(Position));
-    }
-
-    @Override
-    public void setVoltage(double Voltage) {
-        talon.setControl(new VoltageOut(Voltage));
     }
 
     @Override
@@ -69,6 +60,11 @@ public class TalonMotorController extends AbstractMotorController{
     @Override
     public double getVelocity() {
         return talon.getVelocity().getValue();
+    }
+
+    @Override
+    public void setVelocity(double Velocity) {
+        talon.setControl(new VelocityDutyCycle(Velocity));
     }
 
     @Override
@@ -84,6 +80,11 @@ public class TalonMotorController extends AbstractMotorController{
     @Override
     public double getVoltage() {
         return talon.getVelocity().getValue();
+    }
+
+    @Override
+    public void setVoltage(double Voltage) {
+        talon.setControl(new VoltageOut(Voltage));
     }
 
     @Override
@@ -116,8 +117,8 @@ public class TalonMotorController extends AbstractMotorController{
         return this;
     }
 
-    public void setConfiguration(double currentLimit, double peakVoltage){
-        configuration.CurrentLimits.StatorCurrentLimit  = currentLimit;
+    public void setConfiguration(double currentLimit, double peakVoltage) {
+        configuration.CurrentLimits.StatorCurrentLimit = currentLimit;
         configuration.Voltage.PeakForwardVoltage = peakVoltage;
         configuration.Voltage.PeakReverseVoltage = -peakVoltage;
     }

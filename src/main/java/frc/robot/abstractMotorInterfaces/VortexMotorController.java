@@ -7,8 +7,9 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkFlex;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import frc.robot.abstractMotorInterfaces.AbstractMotorController;
 
-public class VortexMotorController extends AbstractMotorController{
+public class VortexMotorController extends AbstractMotorController {
     public CANSparkBase vortex;
     public RelativeEncoder encoder;
     public VortexMotorController(int ID){
@@ -18,22 +19,12 @@ public class VortexMotorController extends AbstractMotorController{
     }
 
     @Override
-    public void setVelocity(double Velocity) {
-        double speed = 0;
-        vortex.set(0);
-        while (vortex.getEncoder().getVelocity() <= Velocity) {
-            speed++;
-            vortex.set(speed);
-        }
-    }
-
-    @Override
     public AbstractMotorController setInvert(boolean invert) {
         vortex.setInverted(invert);
         return this;
     }
 
-    public RelativeEncoder getEncoder(){
+    public RelativeEncoder getEncoder() {
         return vortex.getEncoder();
     }
 
@@ -51,14 +42,10 @@ public class VortexMotorController extends AbstractMotorController{
     public void setPosition(double Position) {
         vortex.getEncoder().setPosition(Position);
     }
+
     @Override
     public void setPosition(double Position, boolean FOC, double feed, int PidSlot, boolean brake, boolean forwardlimit, boolean backwardlimit, double Velocity) {
 
-    }
-
-    @Override
-    public void setVoltage(double Voltage) {
-        vortex.setVoltage(Voltage);
     }
 
     @Override
@@ -77,6 +64,16 @@ public class VortexMotorController extends AbstractMotorController{
     }
 
     @Override
+    public void setVelocity(double Velocity) {
+        double speed = 0;
+        vortex.set(0);
+        while (vortex.getEncoder().getVelocity() <= Velocity) {
+            speed++;
+            vortex.set(speed);
+        }
+    }
+
+    @Override
     public double getAngularVelocity() {
         return 0;
     }
@@ -89,6 +86,11 @@ public class VortexMotorController extends AbstractMotorController{
     @Override
     public double getVoltage() {
         return vortex.getBusVoltage();
+    }
+
+    @Override
+    public void setVoltage(double Voltage) {
+        vortex.setVoltage(Voltage);
     }
 
     @Override

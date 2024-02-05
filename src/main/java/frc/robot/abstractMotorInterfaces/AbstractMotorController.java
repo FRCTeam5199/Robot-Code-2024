@@ -16,17 +16,17 @@ public abstract class AbstractMotorController {
 
     public abstract void setPosition(double Position, boolean FOC, double feed, int PidSlot, boolean brake, boolean forwardlimit, boolean backwardlimit, double Velocity);
 
-    public abstract void setVoltage(double Voltage);
-
     public abstract AbstractMotorController setBrake(boolean brake);
 
     public abstract double getVelocity();
-
+    
     public abstract double getAngularVelocity();
 
     public abstract double getRotations();
 
     public abstract double getVoltage();
+
+    public abstract void setVoltage(double Voltage);
 
     public abstract double getCurrent();
 
@@ -35,7 +35,7 @@ public abstract class AbstractMotorController {
     public abstract void setCurrentLimit(int limit);
 
     /**
-    *@param Ramp This sets the rate at which you want the motor to reach its speed.
+     * @param Ramp This sets the rate at which you want the motor to reach its speed.
      */
     public abstract void setOpenLoopRampRate(double Ramp);
 
@@ -47,15 +47,11 @@ public abstract class AbstractMotorController {
      */
     public abstract void setRange(double minRange, double maxRange);
 
-    public AbstractMotorController follow(AbstractMotorController leader){
+    public AbstractMotorController follow(AbstractMotorController leader) {
         return follow(leader, false);
     }
+
     public abstract AbstractMotorController follow(AbstractMotorController leader, boolean invert);
-
-
-
-
-
 
 
 }
