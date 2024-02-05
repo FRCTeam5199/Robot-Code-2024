@@ -74,45 +74,29 @@ public class AprilTagSubsystem implements Subsystem {
 
     AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
-    PhotonPoseEstimator multiPoseEstimatorFront = new PhotonPoseEstimator(fieldLayout,
-            PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"),
-            Constants.cameraPositions[0]);
-    PhotonPoseEstimator singlePoseEstimatorFront = new PhotonPoseEstimator(fieldLayout,
-            PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Front"), Constants.cameraPositions[0]);
+    // PhotonPoseEstimator multiPoseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
+    // PhotonPoseEstimator singlePoseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Front"), Constants.cameraPositions[0]);
 
-    PhotonPoseEstimator multiPoseEstimatorRight = new PhotonPoseEstimator(fieldLayout,
-            PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Right"),
-            Constants.cameraPositions[1]);
-    PhotonPoseEstimator singlePoseEstimatorRight = new PhotonPoseEstimator(fieldLayout,
-            PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Right"), Constants.cameraPositions[1]);
+    // PhotonPoseEstimator multiPoseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Right"), Constants.cameraPositions[1]);
+    // PhotonPoseEstimator singlePoseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Right"), Constants.cameraPositions[1]);
 
-    PhotonPoseEstimator multiPoseEstimatorLeft = new PhotonPoseEstimator(fieldLayout,
-            PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Left"),
-            Constants.cameraPositions[3]);
-    PhotonPoseEstimator singlePoseEstimatorLeft = new PhotonPoseEstimator(fieldLayout,
-            PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Left"), Constants.cameraPositions[3]);
+    // PhotonPoseEstimator multiPoseEstimatorLeft = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Left"), Constants.cameraPositions[3]);
+    // PhotonPoseEstimator singlePoseEstimatorLeft = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Left"), Constants.cameraPositions[3]);
 
-    PhotonPoseEstimator multiPoseEstimatorBack = new PhotonPoseEstimator(fieldLayout,
-            PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"),
-            Constants.cameraPositions[3]);
-    PhotonPoseEstimator singlePoseEstimatorBack = new PhotonPoseEstimator(fieldLayout,
-            PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Back"), Constants.cameraPositions[3]);
+    // PhotonPoseEstimator multiPoseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[3]);
+    // PhotonPoseEstimator singlePoseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Back"), Constants.cameraPositions[3]);
 
-    PhotonPoseEstimator multiPoseEstimatorShooter = new PhotonPoseEstimator(fieldLayout,
-            PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Shooter"),
-            Constants.cameraPositions[4]);
-    PhotonPoseEstimator singlePoseEstimatorShooter = new PhotonPoseEstimator(fieldLayout,
-            PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Shooter"),
-            Constants.cameraPositions[4]);
+    // PhotonPoseEstimator multiPoseEstimatorShooter = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Shooter"), Constants.cameraPositions[4]);
+    // PhotonPoseEstimator singlePoseEstimatorShooter = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Shooter"), Constants.cameraPositions[4]);
 
-    public static PhotonCamera frontCamera;
-    public static PhotonCamera leftCamera;
-    public static PhotonCamera rightCamera;
-    public static PhotonCamera backCamera;
-    public static PhotonCamera shooter;
+    // public static PhotonCamera frontCamera;
+    // public static PhotonCamera leftCamera;
+    // public static PhotonCamera rightCamera;
+    // public static PhotonCamera backCamera;
+    // public static PhotonCamera shooter;
 
     // 0 Front, 1 Back, 2 Left, 3 Rigggggggggggggggght
-    public PhotonCamera[] allCameras = { frontCamera, rightCamera, leftCamera, backCamera, shooter };
+    // public PhotonCamera[] allCameras = {frontCamera, rightCamera, leftCamera, backCamera, shooter};
     public PhotonTrackedTarget[] bestTargetFromCameras;
     public MultiTargetPNPResult[] multiTargetPNPResults;
     PIDController aimControl;
@@ -120,7 +104,7 @@ public class AprilTagSubsystem implements Subsystem {
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 
     public AprilTagSubsystem() {
-        allCameras[0] = new PhotonCamera("Front");
+        // allCameras[0] = new PhotonCamera("Front");
 
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
@@ -151,72 +135,68 @@ public class AprilTagSubsystem implements Subsystem {
      */
 
     public Optional<EstimatedRobotPose> getVisionPoseFront() {
-        var result = allCameras[0].getLatestResult();
-        if (result.getMultiTagResult().estimatedPose.isPresent
-                && result.getMultiTagResult().estimatedPose.ambiguity < .2) {
-            // System.out.println("2 Tags Front");
+        // var result = allCameras[0].getLatestResult();
+        // if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
+        //     // System.out.println("2 Tags Front");
 
-            return multiPoseEstimatorFront.update();
-        } else if (result.hasTargets()) {
-            // System.out.println("1 Tag Front");
-            return singlePoseEstimatorFront.update();
+        //     return multiPoseEstimatorFront.update();
+        // }else if(result.hasTargets()){
+        //     // System.out.println("1 Tag Front");
+        //     return singlePoseEstimatorFront.update();
 
-        } else {
-            // System.out.println("O Tags on Front");
+        // }else{
+        //     // System.out.println("O Tags on Front");
             return Optional.empty();
-        }
+        // }
     }
 
     /**
      * estimated pose right
      */
     public Optional<EstimatedRobotPose> getVisionPoseRight() {
-        var result = allCameras[1].getLatestResult();
-        if (result.getMultiTagResult().estimatedPose.isPresent
-                && result.getMultiTagResult().estimatedPose.ambiguity < .2) {
-            return multiPoseEstimatorRight.update();
-        } else if (result.hasTargets()) {
-            return singlePoseEstimatorRight.update();
+        // var result = allCameras[1].getLatestResult();
+        // if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
+        //     return multiPoseEstimatorRight.update();
+        // }else if(result.hasTargets()){
+        //     return singlePoseEstimatorRight.update();
 
-        } else {
+        // }else{
             // System.out.println("O Tags On Right");
             return Optional.empty();
-        }
+        // }
     }
 
     /**
      * estimated pose left
      */
     public Optional<EstimatedRobotPose> getVisionPoseLeft() {
-        var result = allCameras[2].getLatestResult();
-        if (result.getMultiTagResult().estimatedPose.isPresent
-                && result.getMultiTagResult().estimatedPose.ambiguity < .2) {
-            return multiPoseEstimatorLeft.update();
-        } else if (result.hasTargets()) {
-            return singlePoseEstimatorLeft.update();
+        // var result = allCameras[2].getLatestResult();
+        // if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
+            // return multiPoseEstimatorLeft.update();
+        // }else if(result.hasTargets()){
+            // return singlePoseEstimatorLeft.update();
 
-        } else {
+        // }else{
             // System.out.println("O Tags On Left");
             return Optional.empty();
-        }
+        // }
     }
 
     /**
      * estimated pose back
      */
     public Optional<EstimatedRobotPose> getVisionPoseBack() {
-        var result = allCameras[3].getLatestResult();
-        if (result.getMultiTagResult().estimatedPose.isPresent
-                && result.getMultiTagResult().estimatedPose.ambiguity < .2) {
-            // System.out.println("2 Tags Back");
-            return multiPoseEstimatorBack.update();
-        } else if (result.hasTargets()) {
-            // System.out.println("1 Tag Back");
-            return singlePoseEstimatorBack.update();
-        } else {
+        // var result = allCameras[3].getLatestResult();
+        // if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
+        //     // System.out.println("2 Tags Back");
+        //     return multiPoseEstimatorBack.update();
+        // }else if(result.hasTargets()){
+        //     // System.out.println("1 Tag Back");
+        //     return singlePoseEstimatorBack.update();
+        // }else{
             // System.out.println("O Tags Back");
             return Optional.empty();
-        }
+        // }
     }
 
     /**
