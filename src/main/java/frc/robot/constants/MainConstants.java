@@ -87,7 +87,8 @@ public class MainConstants {
 
     public static class OperatorConstants {
         //Operator Constants
-        public static int CONTROLLER_PORT = 0;
+        public static int MAIN_CONTROLLER_PORT = 0;
+        public static int OPERATOR_CONTROLLER_PORT = 1;
         public static int BUTTON_PANEL_PORT = 0;
     }
 
@@ -100,14 +101,6 @@ public class MainConstants {
         // public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = null;
 
         public static class Motors {
-            //Intake
-            public static final int INTAKE_ACTUATOR_MOTOR_ID = 9;
-            public static final int INTAKE_MOTOR_ID = 6;
-
-            //Climber
-            public static final int CLIMBER_MOTOR_1_ID = 7;
-            public static final int CLIMBER_MOTOR_2_ID = 10;
-
             // Drive
             public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
             public static final int FRONT_LEFT_STEER_MOTOR_ID = 2;
@@ -125,6 +118,14 @@ public class MainConstants {
             public static final int BACK_RIGHT_STEER_MOTOR_ID = 8;
             public static final int BACK_RIGHT_ENCODER = 14;
             
+            //Intake
+            public static final int INTAKE_ACTUATOR_MOTOR_ID = 9;
+            public static final int INTAKE_MOTOR_ID = 6;
+
+            //Climber
+            public static final int CLIMBER_MOTOR_1_ID = 7;
+            public static final int CLIMBER_MOTOR_2_ID = 10;
+
             //Arm
             public static final int ARM_MOTOR_ID = 5;
 
@@ -147,8 +148,8 @@ public class MainConstants {
 
     public static class Setpoints {
         //Intake Setpoints
-        public static final double STOW_INTAKE = 15;
-        public static final double DEPLOY_INTAKE = 0;
+        public static final double STOW_INTAKE = 0;
+        public static final double DEPLOY_INTAKE = 15;
 
         //Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 16.3;

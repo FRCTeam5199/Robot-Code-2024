@@ -12,9 +12,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-import frc.robot.utility.superstructure.Superstructure;
-import frc.robot.subsystems.ArmSubsystem;
+
+import java.util.Optional;
 
 
 /**
@@ -26,15 +27,14 @@ import frc.robot.subsystems.ArmSubsystem;
 public class Robot extends TimedRobot {
   public static final boolean SECOND_TRY = false;
 
-
   private Command m_autonomousCommand;
-  AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
   SwerveDrive drive = TunerConstants.DriveTrain;
+  AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
-  
-
+  UserInterface userInterface = new UserInterface();
 
   private RobotContainer m_robotContainer;
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -44,8 +44,12 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    
+    userInterface.initalizeConfigTab();
+    userInterface.initalizeTestTab();
+    // userInterface.initalizeGameTab();
 
+    m_robotContainer = new RobotContainer();
   }
 
   /**
@@ -57,22 +61,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
 
     CommandScheduler.getInstance().run();
-
-    // Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
+    // System.out.println(drive.getPose());
+    Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
     // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
-    //  if(estimatePose1.isPresent()){
-    //    EstimatedRobotPose robotPose = estimatePose1.get();
-    //    drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    //  }
+    if(estimatePose1.isPresent()){
+       EstimatedRobotPose robotPose = estimatePose1.get();
+       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    }
     // if(estimatePose2.isPresent()){
     //   EstimatedRobotPose robotPose = estimatePose2.get();
     //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
@@ -86,18 +89,15 @@ public class Robot extends TimedRobot {
     //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
     // }
     
-    // UserInterface.updateGameTab();
+    // userInterface.updateGameTab();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {
-
-  }
+  public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {
-  }
+  public void disabledPeriodic() {}
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -127,9 +127,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    Superstructure.update();
-  }
+  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {

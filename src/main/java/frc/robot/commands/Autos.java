@@ -1,58 +1,54 @@
 package frc.robot.commands;
 
 import java.util.HashMap;
-import java.util.function.BooleanSupplier;
+import java.util.Optional;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.*;
-import com.pathplanner.lib.path.*;
-
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.ShooterSubsystem;
-// import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 public class Autos extends Command{
   SwerveDrive swerveDrive;
+
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 2, .004,0), 5, .33, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 2, .004,0), 5, .21, new ReplanningConfig());
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
   public SendableChooser<Boolean> side = new SendableChooser<>();
 
-  private HashMap<String, Command> eventMap;
 
-
-  public Autos(SwerveDrive swerve){
+    public Autos(SwerveDrive swerve){
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
-    eventMap = new HashMap<>();
+        HashMap<String, Command> eventMap = new HashMap<>();
+      // NamedCommands.registerCommand();
 
-    Shuffleboard.getTab("Autons").add("Side", side);
-    side.addOption("Red Side", true);
-    side.addOption("Blue Side", false);
+      Shuffleboard.getTab("Autons").add("Side", side);
+      side.addOption("Red Side", true);
+      side.addOption("Blue Side", false);
 
     Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
     autonChooserRed.addOption("Do nothing", doNothing());
     autonChooserRed.addOption("Shoot and Taxi Middle", shootTaxiMiddleRed());
 
     Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
-
   }
   public Command getAuton(){
-    if(side.getSelected()){
+    if(DriverStation.getAlliance().get().name() == "Red"){
       return autonChooserRed.getSelected();
-    }else{
+    } else {
       return autonChooserBlue.getSelected();
     }
   }

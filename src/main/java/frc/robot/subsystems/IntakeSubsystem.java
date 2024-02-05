@@ -1,16 +1,18 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
-public class IntakeSubsystem implements Subsystem {
+public class IntakeSubsystem extends SubsystemBase {
+    private static IntakeSubsystem intakeSubsystem;
+
     public VortexMotorController intakeMotor;
     public VortexMotorController intakeActuatorMotor;
     public PIDController pidController;
@@ -19,11 +21,31 @@ public class IntakeSubsystem implements Subsystem {
 
     public IntakeSubsystem() {}
 
+	/** 
+	 * Gets the instnace of the Arm Subsystem.
+	 */
+	public static IntakeSubsystem getInstance() {
+		if (intakeSubsystem == null) {
+			intakeSubsystem = new IntakeSubsystem();
+		}
+
+		return intakeSubsystem;
+	}
+
     public void init() {
-        motorInit();
-        PIDInit();
+        try { motorInit(); } catch (Exception exception) {
+            System.err.println("One or more issues occured while trying to initalize motors for Intake Subsystem");
+            System.err.println("Exception Message:" + exception.getMessage());
+            System.err.println("Exception Cause:" + exception.getCause());
+            System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+
+        try { PIDInit(); } catch (Exception exception) {
+            System.err.println("One or more issues occured while trying to initalize PID for Intake Subsystem");
+            System.err.println("Exception Message:" + exception.getMessage());
+            System.err.println("Exception Cause:" + exception.getCause());
+            System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
         
-        Shuffleboard.getTab("Status").add("Intake Subsystem Status", true).getEntry();
+        // Shuffleboard.getTab("Test").add("Intake Subsystem Initalized", true).getEntry();
 
     }
 
@@ -79,12 +101,14 @@ public class IntakeSubsystem implements Subsystem {
         return this.runOnce(() -> setpoint = target);
     }
 
+    // TODO: Swap deploy and stow intake set positions after absolute encoder gets finalized
+
     /**
      * retract the intake 
      * @return command to retract intake
      */
     public Command stowIntake() {
-        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.STOW_INTAKE, ControlType.kPosition));
+        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.DEPLOY_INTAKE, ControlType.kPosition));
     }
 
     /**
@@ -92,6 +116,11 @@ public class IntakeSubsystem implements Subsystem {
      * @return command to deploy the intake
      */
     public Command deployIntake() {
-        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.DEPLOY_INTAKE, ControlType.kPosition));
+        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.STOW_INTAKE, ControlType.kPosition));
+    }
+
+    public void retractAndStopIntake(){
+        setIntakeSpeed(0);
+        stowIntake();
     }
 }

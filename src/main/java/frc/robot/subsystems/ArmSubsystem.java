@@ -1,62 +1,67 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.EncoderType;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxRelativeEncoder;
-import com.revrobotics.SparkRelativeEncoder;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkRelativeEncoder.Type;
 
-import edu.wpi.first.hal.CANAPITypes.CANDeviceType;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Main;
 import frc.robot.abstractMotorInterfaces.TalonMotorController;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
 
 public class ArmSubsystem extends SubsystemBase {
-	public VortexMotorController ArmMotor;
+	private static ArmSubsystem armSubsystem;
 
-	public CANSparkMax sparkMax;
-	public RelativeEncoder encoder;	
+	public VortexMotorController ArmMotor;
 	
+	 public TalonMotorController ArmLeader;
+	public TalonMotorController ArmFollower;
+	public RelativeEncoder relativeEncoder;
+
 	public double rotateSetpoint = 0;
 	PIDController rotatePIDController;
 
-	AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
-	double shooterAngle;
-	double rotateDegrees;
-	double angleSetpoint = 0;
-
 	public ArmSubsystem() {}
 
+	/** 
+	 * Gets the instnace of the Arm Subsystem.
+	 */
+	public static ArmSubsystem getInstance() {
+		if (armSubsystem == null) {
+			armSubsystem = new ArmSubsystem();
+		}
+
+		return armSubsystem;
+	}
+
+	/**
+	 * init for arm and pid controller
+	 */
 	public void init() {
-		motorInit();
-		PIDInit();
-		encoder.setInverted(true);
+		try { motorInit(); } catch (Exception exception) {
+			System.err.println("One or more issues occured while trying to initalize motors for Arm Subsystem");
+			System.err.println("Exception Message:" + exception.getMessage());
+			System.err.println("Exception Cause:" + exception.getCause());
+			System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+
+	try { PIDInit(); } catch (Exception exception) {
+			System.err.println("One or more issues occured while trying to initalize PID for Arm Subsystem");
+			System.err.println("Exception Message:" + exception.getMessage());
+			System.err.println("Exception Cause:" + exception.getCause());
+			System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+	
+		// Shuffleboard.getTab("Test").add("Arm Subsystem Initalized", true).getEntry();
 	}
 
 	public void motorInit() {
 		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
 
 		ArmMotor.setInvert(true);
-		ArmMotor.setBrake(true); 
-		//Make true and setpoint positive and zero arm at the top for working
+		ArmMotor.setBrake(true);
 
 		ArmMotor.getEncoder().setPosition(0);
-
-		sparkMax = new CANSparkMax(8, MotorType.kBrushed);
-		encoder = sparkMax.getEncoder(SparkRelativeEncoder.Type.kQuadrature, 8092);	
-		encoder.setPosition(0);
 	}
 
 	public void PIDInit() {
@@ -66,49 +71,34 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		// if (encoder.getPosition() < 2) {
-		// 	while (encoder.getPosition() < 2) {
-		// 			ArmMotor.set(0.3);
-		// 	}
+		if (ArmMotor.getEncoder().getPosition() < 0) {
+			while (ArmMotor.getEncoder().getPosition() < 0) {
+					ArmMotor.set(0.3);
+			}
 			
-		// 	ArmMotor.set(0);
-		// 	this.rotateSetpoint = encoder.getPosition();
-		// } else if (encoder.getPosition() > 61) { //change this
-		// 	while (encoder.getPosition() > 61) { //change this
-		// 		ArmMotor.set(-0.3);
-		// 	}
+			ArmMotor.set(0);
+			this.rotateSetpoint = 0;
+		} else if (ArmMotor.getEncoder().getPosition() > 61) {
+			while (ArmMotor.getEncoder().getPosition() > 61) {
+				ArmMotor.set(-0.3);
+			}
 
-		// 	ArmMotor.set(0);
-		// 	this.rotateSetpoint = encoder.getPosition();
-		// } else {
-		// 		ArmMotor.set(rotatePIDController.calculate(encoder.getPosition(), rotateSetpoint));
-		// }
-		
-		// ArmMotor.set(rotatePIDController.calculate(encoder.getPosition(), -30));
-		
-		// rotatePIDController.calculate(encoder.getPosition(), -0.176025390625);
-		// System.out.println(-rotatePIDController.calculate(encoder.getPosition(), -0.08835887163877487));
-		// ArmMotor.set((-rotatePIDController.calculate(encoder.getPosition(), -0.08835887163877487))/MainConstants.ROTATIONS_PER_1_DEGREE_ARM);// -0.05598121136426926)));
-		// ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
-		ArmMotor.set(-rotatePIDController.calculate(encoder.getPosition(), angleSetpoint/360)/MainConstants.ROTATIONS_PER_1_DEGREE_ARM);
+			ArmMotor.set(0);
+			this.rotateSetpoint = 61;
+		} else {
+				ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
+		}
 	}
-	
+
 	/**
 	 * 
 	 * @param percent move armMotor at a percent(-1 to 1)
 	 * @return command to spin motor at percent
 	 */
 	public Command moveAtPercent(double percent) {
-		return this.runOnce(() -> ArmMotor.set(this.rotateSetpoint));
-	}
-
-	public Command testEncoder() {
-		return this.runOnce(() -> System.out.println("pos //////////////////"+ encoder.getPosition()));
+		return this.run(() -> ArmMotor.set(percent));
 	}
 	
-	public Command getSpeedOfArm(){
-		return this.runOnce(()-> System.out.println(-rotatePIDController.calculate(encoder.getPosition(), angleSetpoint/360)/MainConstants.ROTATIONS_PER_1_DEGREE_ARM));
-	}
 	/**
 	 * 
 	 * @param rotations adds this to setPoint variable(setpoint)
@@ -127,29 +117,11 @@ public class ArmSubsystem extends SubsystemBase {
 	public Command setArmSetpoint(double setpoint) {
     return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
   }
-
-  public Command moveToAngle() {
-	return this.run(() -> calculateSetpointBasedOnAngle());
-  }
-
-
-
-  public void calculateSetpointBasedOnAngle() {
-	angleSetpoint = -1 * (aprilTagSubsystem.speakersAligning() - MainConstants.ARM_ORIGINAL_DEGREES);
-	// System.out.println(angleSetpoint);
-	
-  }
-  
-
-
-  public Command setAngleSetPointZero() {
-		return this.run(()-> this.angleSetpoint = 0);
-	}
   	/**
 	 * set Setpoint variable to Stable
 	 */
-	public Command rotateStable() {
-		return this.run(()-> this.angleSetpoint = -32.8);
+	public void rotateStable() {
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT;
 	}
 
 	/**
@@ -162,10 +134,8 @@ public class ArmSubsystem extends SubsystemBase {
 	/**
 	 * set Setpoint variable to front
 	 */
-	public Command rotateFront() {
-		// this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT;
-		// this.angleSetpoint = 60.5;
-		return this.run(()-> this.angleSetpoint = -60.5);
+	public void rotateFront() {
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT;
 	}
 
 	/**
