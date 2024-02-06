@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.concurrent.locks.Condition;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -11,12 +13,15 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
@@ -25,6 +30,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.utility.Superstructure.Superstructure;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -68,11 +74,30 @@ public class RobotContainer {
                 
                 configureBindings();
         }
+        
 
         /**
          * Configures the bindings for commands
          */
         private void configureBindings() {
+                 new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
+                            if (DriverStation.isDisabled()) {
+                                ArmSubsystem.toggleBrakeMode();
+                            }
+                        }));
+
+
+                ConditionalCommand switchB = 
+                        new ConditionalCommand(
+                        climberSubsystem.setClimberSpeed(0.5), 
+                        shooterSubsystem.setShooterSpeed(0.2), 
+                        climberSubsystem::getClimbMode);
+                ConditionalCommand switchX = 
+                        new ConditionalCommand(
+                        climberSubsystem.setClimberSpeed(-0.5), 
+                        shooterSubsystem.setIndexerSpeed(0.2), 
+                        climberSubsystem::getClimbMode);
+
                 // Drive
                 drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                         drivetrain.applyRequest(() -> drive
@@ -102,16 +127,18 @@ public class RobotContainer {
                                                         .withModuleDirection(new Rotation2d(-mainCommandXboxController.getLeftY(),
                                                                         -mainCommandXboxController.getLeftX()))));
 
-                        // operatorCommandXboxController.povUp().onTrue(new InstantCommand(() -> arm.rotateBack()));
-                        // operatorCommandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
-                        operatorCommandXboxController.povDown().onTrue(new InstantCommand(() -> arm.rotateStable()));
-                        operatorCommandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
 
-                        mainCommandXboxController.povUp().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
-                        mainCommandXboxController.povRight().onTrue(shooterSubsystem.setBottomShooterSpeed(0.35)).onFalse(shooterSubsystem.setBottomShooterSpeed(0));
+                        operatorCommandXboxController.povUp().onTrue(new SequentialCommandGroup(climberSubsystem.teleOpMode(), arm.teleOpMode()));
+                        // operatorCommandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
+                        operatorCommandXboxController.povDown().onTrue(new SequentialCommandGroup(climberSubsystem.climbMode(), arm.climbMode()));
+                        // operatorCommandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
+
+
+                        // mainCommandXboxController.povUp().onTrue(shooterSubsystem.intakeShooter()).onFalse(shooterSubsystem.stopShooter());
+                        // mainCommandXboxController.povRight().onTrue(shooterSubsystem.setBottomShooterSpeed(0.35)).onFalse(shooterSubsystem.setBottomShooterSpeed(0));
                         
-                        operatorCommandXboxController.y().onTrue(arm.changeArmSetpoint(0.5));
-                        operatorCommandXboxController.a().onTrue(arm.changeArmSetpoint(-0.5));
+                        // operatorCommandXboxController.y().onTrue(arm.changeArmSetpoint(0.5));
+                        // operatorCommandXboxController.a().onTrue(arm.changeArmSetpoint(-0.5));
 
                         mainCommandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
                         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
@@ -131,11 +158,16 @@ public class RobotContainer {
                                         shooterSubsystem.stopShooter(),
                                         intake.stowIntake()));
 
-                        operatorCommandXboxController.b().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
-                        operatorCommandXboxController.x().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
                         
-                        // operatorCommandXboxController.x().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
-                        // operatorCommandXboxController.b().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
+                        
+                        operatorCommandXboxController.b().onTrue(switchB).onFalse(climberSubsystem.setClimberSpeed(0).andThen(shooterSubsystem.setShooterSpeed(0)));
+                        operatorCommandXboxController.x().onTrue(switchX).onFalse(climberSubsystem.setClimberSpeed(0).andThen(shooterSubsystem.setIndexerSpeed(0)));
+
+                        // operatorCommandXboxController.a().onTrue(()-> new InstantCommand(arm.getEncoder()));
+                        // operatorCommandXboxController.x().onTrue(climberSubsystem.setLeftClimberSpeed(0.5)).onFalse(climberSubsystem.setLeftClimberSpeed(0));
+                        // operatorCommandXboxController.b().onTrue(climberSubsystem.setRighttClimberSpeed(-0.5)).onFalse(climberSubsystem.setRighttClimberSpeed(0));
+                        // operatorCommandXboxController.a().onTrue(climberSubsystem.setLeftClimberSpeed(-0.5)).onFalse(climberSubsystem.setLeftClimberSpeed(0));
+                        // operatorCommandXboxController.y().onTrue(climberSubsystem.setRighttClimberSpeed(0.5)).onFalse(climberSubsystem.setRighttClimberSpeed(0));
 
                 if (Utils.isSimulation()) {
                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

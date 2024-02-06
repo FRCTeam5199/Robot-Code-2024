@@ -1,11 +1,18 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.TalonMotorController;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
@@ -14,14 +21,22 @@ import frc.robot.constants.MainConstants;
 public class ArmSubsystem extends SubsystemBase {
 	private static ArmSubsystem armSubsystem;
 
-	public VortexMotorController ArmMotor;
+	public static VortexMotorController ArmMotor;
 	
 	 public TalonMotorController ArmLeader;
 	public TalonMotorController ArmFollower;
-	public RelativeEncoder relativeEncoder;
 
 	public double rotateSetpoint = 0;
 	PIDController rotatePIDController;
+
+	private static boolean isBrakeMode = false; 
+
+	boolean climbModeEnabled = false;
+
+	public CANSparkMax encoderMotor;
+	public SparkAbsoluteEncoder encoder;
+
+	public double EncoderValue;
 
 	public ArmSubsystem() {}
 
@@ -62,6 +77,10 @@ public class ArmSubsystem extends SubsystemBase {
 		ArmMotor.setBrake(true);
 
 		ArmMotor.getEncoder().setPosition(0);
+
+		encoderMotor = new CANSparkMax(8, MotorType.kBrushed);
+		encoder = encoderMotor.getAbsoluteEncoder(Type.kDutyCycle);
+		
 	}
 
 	public void PIDInit() {
@@ -71,6 +90,10 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		if(encoder.getPosition() <175){
+			EncoderValue = encoder.getPosition();
+		}
+
 		if (ArmMotor.getEncoder().getPosition() < 0) {
 			while (ArmMotor.getEncoder().getPosition() < 0) {
 					ArmMotor.set(0.3);
@@ -86,10 +109,29 @@ public class ArmSubsystem extends SubsystemBase {
 			ArmMotor.set(0);
 			this.rotateSetpoint = 61;
 		} else {
-				ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), rotateSetpoint));
+			if(climbModeEnabled == false){
+				ArmMotor.set(rotatePIDController.calculate(EncoderValue, 40));
+			}
 		}
 	}
+	public Command teleOpMode(){
+	return this.run(()-> new InstantCommand(){{
+		climbModeEnabled = false;
+    }});
+	}
 
+	public Command climbMode(){
+    return this.run(()-> new Command(){{
+		climbModeEnabled = true;
+		if(climbModeEnabled){
+      	ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), 8));
+		// 	System.out.println("climb mode "+ rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), 0.1));
+		}
+    }});
+  }
+  	public void getEncoder(){
+		System.out.println(encoder.getPosition());
+	}
 	/**
 	 * 
 	 * @param percent move armMotor at a percent(-1 to 1)
@@ -150,5 +192,11 @@ public class ArmSubsystem extends SubsystemBase {
 	 */
 	public void rotateClimb() {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_CLIMBER_SETPOINT;
+		
 	}
+	public static void toggleBrakeMode() {
+        isBrakeMode = !isBrakeMode;
+        ArmMotor.setBrake(isBrakeMode);
+    }
+
 }

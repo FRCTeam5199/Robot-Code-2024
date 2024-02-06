@@ -143,7 +143,7 @@ public class MainConstants {
 
         // Arm
         // 2 / .8
-        public static final PID ARM_PID = new PID(0.95, 0.15, 0.01);
+        public static final PID ARM_PID = new PID(0.01, 0.0, 0.01);
     }
 
     public static class Setpoints {
