@@ -30,7 +30,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-import frc.robot.utility.Superstructure;
+import frc.robot.utility.Superstructure.Superstructure;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -60,7 +60,7 @@ public class RobotContainer {
         public final static ArmSubsystem arm = new ArmSubsystem();
         public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
         public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-        public final static IntakeSubsystem intake = new IntakeSubsystem();
+        public final static IntakeSubsystem intake = new IntakeSubsystem(arm, shooterSubsystem);
         
         Autos auton;
 
@@ -164,23 +164,27 @@ public class RobotContainer {
 
                 mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.setRunShooter(true))
                         .onFalse(shooterSubsystem.setRunShooter(false));
-//                mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
-//                                intake.deployIntake(),
-//                                new WaitCommand(0.3),
-//                                new InstantCommand(() -> arm.rotateIntake()),
-//                                new WaitCommand(0.15),
-//                                intake.setIntakeSpeed(1),
-//                                shooterSubsystem.setintakeShooter(true),
-//                                shooterSubsystem.setRunShooter(true)))
-//                        .onFalse(new SequentialCommandGroup(
-//                                intake.setIntakeSpeed(0),
-//                                new InstantCommand(() -> arm.rotateStable()),
-//                                new WaitCommand(0.2),
-//                                shooterSubsystem.setintakeShooter(false),
-//                                shooterSubsystem.setRunShooter(false),
-//                                intake.stowIntake()));
-//                mainCommandXboxController.rightTrigger().onTrue(intake.deployIntake());
+                mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
+                                intake.deployIntake(),
+                                new WaitCommand(0.3),
+                                new InstantCommand(() -> arm.rotateIntake()),
+                                new WaitCommand(0.15),
+                                intake.setIntakeSpeed(1),
+                                shooterSubsystem.setintakeShooter(true),
+                                shooterSubsystem.setRunShooter(true),
+                                shooterSubsystem.setRunIndexer(true)))
+                        .onFalse(new SequentialCommandGroup(
+                                intake.setIntakeSpeed(0),
+                                new InstantCommand(() -> arm.rotateStable()),
+                                new WaitCommand(0.2),
+                                shooterSubsystem.setintakeShooter(false),
+                                shooterSubsystem.setRunShooter(false),
+                                shooterSubsystem.setRunIndexer(false),
+                                intake.stowIntake()));
 
+                // mainCommandXboxController.rightTrigger().onTrue(intake.deployIntake());
+                // mainCommandXboxController.povRight().onTrue(intake.stowIntake());
+                // mainCommandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateIntake()));
                         
                         
                 // operatorCommandXboxController.a().onTrue(()-> new InstantCommand(arm.getEncoder()));
@@ -209,6 +213,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return auton.onePieceMiddleRed();
+        return null;//auton.twoPieceExtendedRed();
     }
 }

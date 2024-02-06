@@ -138,7 +138,7 @@ public class MainConstants {
     }
 
     public static class PIDConstants {
-        public static final PID INTAKE_PID = new PID(0.01, 0, 0);
+        public static final PID INTAKE_PID = new PID(0.03, 0, 0);
         // Climber
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 
@@ -152,10 +152,10 @@ public class MainConstants {
         public static final double DEPLOY_INTAKE = 15;
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 16.3;
+        public static final double ARM_STABLE_SETPOINT = 50;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 60;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
-        public static final double ARM_INTAKE_SETPOINT = 4.5;
+        public static final double ARM_INTAKE_SETPOINT = 7;
         public static final double ARM_CLIMB_SETPOINT = 40;
         public static final double ARM_TRAP_SETPOINT = 50;
     }

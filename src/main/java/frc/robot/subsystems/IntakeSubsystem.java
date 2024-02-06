@@ -6,7 +6,10 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -18,15 +21,20 @@ public class IntakeSubsystem extends SubsystemBase {
     public PIDController pidController;
     public double setpoint;
     public SparkPIDController sparkPIDController;
+    public final ShooterSubsystem shooter;
+    public final ArmSubsystem arm;
 
-    public IntakeSubsystem() {}
+    public IntakeSubsystem(ArmSubsystem arm, ShooterSubsystem shooter) {
+        this.shooter = shooter;
+        this.arm = arm;
+    }
 
 	/** 
 	 * Gets the instnace of the Arm Subsystem.
 	 */
 	public static IntakeSubsystem getInstance() {
 		if (intakeSubsystem == null) {
-			intakeSubsystem = new IntakeSubsystem();
+			intakeSubsystem = new IntakeSubsystem(intakeSubsystem.arm, intakeSubsystem.shooter);
 		}
 
 		return intakeSubsystem;
@@ -51,7 +59,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint));
+        intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint));
     }
 
     @Override
@@ -67,7 +75,7 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeActuatorMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ACTUATOR_MOTOR_ID);
         
         intakeMotor.setInvert(true);
-        intakeActuatorMotor.setInvert(false);
+        intakeActuatorMotor.setInvert(true);
 
         intakeMotor.getEncoder().setPosition(0);
         intakeActuatorMotor.getEncoder().setPosition(0);
@@ -77,11 +85,7 @@ public class IntakeSubsystem extends SubsystemBase {
      * init of the pidController
      */
     public void PIDInit() {
-        // pidController = new PIDController(MainConstants.PIDConstants.INTAKE_PID.P, MainConstants.PIDConstants.INTAKE_PID.I, MainConstants.PIDConstants.INTAKE_PID.D);
-        sparkPIDController = intakeActuatorMotor.vortex.getPIDController();
-        sparkPIDController.setP(MainConstants.PIDConstants.ARM_PID.P);
-        sparkPIDController.setI(MainConstants.PIDConstants.ARM_PID.I);
-        sparkPIDController.setD(MainConstants.PIDConstants.ARM_PID.D);
+        pidController = new PIDController(MainConstants.PIDConstants.INTAKE_PID.P, MainConstants.PIDConstants.INTAKE_PID.I, MainConstants.PIDConstants.INTAKE_PID.D);
     }
 
     /**
@@ -108,7 +112,7 @@ public class IntakeSubsystem extends SubsystemBase {
      * @return command to retract intake
      */
     public Command stowIntake() {
-        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.STOW_INTAKE, ControlType.kPosition));
+        return this.runOnce(() -> setpoint = MainConstants.Setpoints.STOW_INTAKE);
     }
 
     /**
@@ -116,6 +120,29 @@ public class IntakeSubsystem extends SubsystemBase {
      * @return command to deploy the intake
      */
     public Command deployIntake() {
-        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.DEPLOY_INTAKE, ControlType.kPosition));
+        return this.runOnce(() -> setpoint = MainConstants.Setpoints.DEPLOY_INTAKE);
+    }
+
+    public Command intakeAuton() {
+        return new SequentialCommandGroup(
+                                deployIntake(),
+                                new WaitCommand(0.3),
+                                new InstantCommand(() -> arm.rotateIntake()),
+                                new WaitCommand(0.15),
+                                setIntakeSpeed(1),
+                                shooter.setintakeShooter(true),
+                                shooter.setRunShooter(true),
+                                shooter.setRunIndexer(true));
+    }
+
+    public Command deployAuton() {
+        return new SequentialCommandGroup(
+            setIntakeSpeed(0),
+            new InstantCommand(() -> arm.rotateStable()),
+            new WaitCommand(0.2),
+            shooter.setintakeShooter(false),
+            shooter.setRunShooter(false),
+            shooter.setRunIndexer(false),
+            stowIntake());
     }
 }
