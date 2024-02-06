@@ -112,18 +112,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
   }
-  public Command AutonShooting(double Shooter, double Indexer){
-    return this.run(()-> new Command(){{
-      shooterMotor1.set(Shooter);
-      shooterMotor2.set(Shooter);
-      new WaitCommand(0.4);
-      shooterIndexerMotor.set(Indexer);
-      new WaitCommand(0.2);
-      shooterMotor1.set(0);
-      shooterMotor2.set(0);
-      shooterIndexerMotor.set(0);
-    }});
-  }
+//  public Command AutonShooting(double Shooter, double Indexer){
+//    return this.runOnce();
+//  }
 
   public Command setRunShooter(boolean runShooter) {
     return this.runOnce(() -> this.runShooter = runShooter);
@@ -137,6 +128,14 @@ public class ShooterSubsystem extends SubsystemBase {
     return this.runOnce(() -> this.ampAndClimbMode = ampAndClimbMode);
   }
 
+
+  public Command runAutonShooting() {
+    return new SequentialCommandGroup(setRunShooter(true), new WaitCommand(.3), setRunIndexer(true),
+            new WaitCommand(0.3), setRunShooter(false), setRunIndexer(false));
+  }
+  private void forShootingBackShot(){
+
+  }
 
    /**
    * Runs the Shooter Motor to Intake

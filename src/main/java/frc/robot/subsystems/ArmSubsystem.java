@@ -19,7 +19,7 @@ public class ArmSubsystem extends SubsystemBase {
 	private static VortexMotorController armMotor;
 
 	private PIDController rotatePIDController;
-	private double rotateSetpoint = 0;
+	private double rotateSetpoint = 120;
 
 	private static boolean isBrakeMode = false; 
 
@@ -141,7 +141,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @return command to move armMotor to setPoint
 	 */
 	public Command setArmSetpoint(double setpoint) {
-    return this.runOnce(() -> rotatePIDController.setSetpoint(setpoint));
+    return this.runOnce(()-> rotateSetpoint = setpoint);
   }
   	/**
 	 * set Setpoint variable to Stable

@@ -40,9 +40,9 @@ public class Autos extends Command{
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
         HashMap<String, Command> eventMap = new HashMap<>();
-      NamedCommands.registerCommand("deployIntake", runOnce(()->System.out.println("deploying")));
-      NamedCommands.registerCommand("retractIntake", runOnce(()->System.out.println("stowing")));
-      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(170), new WaitCommand(.5), shooter.AutonShooting(.6, .3)));
+      NamedCommands.registerCommand("deployIntake", runOnce(()-> intake.deployIntake()));
+      NamedCommands.registerCommand("retractIntake", runOnce(()-> intake.stowIntake()));
+      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(.5), shooter.runAutonShooting(), new WaitCommand(0.3), arm.setArmSetpoint(45)));
 
 
       Shuffleboard.getTab("Autons").add("Side", side);
@@ -51,7 +51,6 @@ public class Autos extends Command{
 
     Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
     autonChooserRed.addOption("Do nothing", doNothing());
-    autonChooserRed.addOption("Shoot and Taxi Middle", shootTaxiMiddleRed());
 
     Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
   }
@@ -108,8 +107,8 @@ public class Autos extends Command{
   }
 
 
-  public Command shootTaxiMiddleRed(){
-    return new PathPlannerAuto("Shoot and Taxi Middle Red");
+  public Command onePieceMiddleRed(){
+    return new PathPlannerAuto("1 Piece Taxi Middle Red");
   }
   public Command shootTaxiBottomRed(){
     return new PathPlannerAuto("Shoot and Taxi Bottom Red");

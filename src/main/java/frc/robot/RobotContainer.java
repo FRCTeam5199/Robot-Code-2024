@@ -30,7 +30,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-import frc.robot.utility.Superstructure.Superstructure;
+import frc.robot.utility.Superstructure;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -164,21 +164,22 @@ public class RobotContainer {
 
                 mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.setRunShooter(true))
                         .onFalse(shooterSubsystem.setRunShooter(false));
-                mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
-                                intake.deployIntake(),
-                                new WaitCommand(0.3),
-                                new InstantCommand(() -> arm.rotateIntake()),
-                                new WaitCommand(0.15),
-                                intake.setIntakeSpeed(1),
-                                shooterSubsystem.setintakeShooter(true),
-                                shooterSubsystem.setRunShooter(true)))
-                        .onFalse(new SequentialCommandGroup(
-                                intake.setIntakeSpeed(0),
-                                new InstantCommand(() -> arm.rotateStable()),
-                                new WaitCommand(0.2),
-                                shooterSubsystem.setintakeShooter(false),
-                                shooterSubsystem.setRunShooter(false),
-                                intake.stowIntake()));
+//                mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
+//                                intake.deployIntake(),
+//                                new WaitCommand(0.3),
+//                                new InstantCommand(() -> arm.rotateIntake()),
+//                                new WaitCommand(0.15),
+//                                intake.setIntakeSpeed(1),
+//                                shooterSubsystem.setintakeShooter(true),
+//                                shooterSubsystem.setRunShooter(true)))
+//                        .onFalse(new SequentialCommandGroup(
+//                                intake.setIntakeSpeed(0),
+//                                new InstantCommand(() -> arm.rotateStable()),
+//                                new WaitCommand(0.2),
+//                                shooterSubsystem.setintakeShooter(false),
+//                                shooterSubsystem.setRunShooter(false),
+//                                intake.stowIntake()));
+//                mainCommandXboxController.rightTrigger().onTrue(intake.deployIntake());
 
                         
                         
@@ -208,6 +209,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;//auton.twoPieceExtendedRed();
+        return auton.onePieceMiddleRed();
     }
 }
