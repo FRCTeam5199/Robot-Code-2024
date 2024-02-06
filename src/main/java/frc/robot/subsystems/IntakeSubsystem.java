@@ -123,7 +123,7 @@ public class IntakeSubsystem extends SubsystemBase {
         return this.runOnce(() -> setpoint = MainConstants.Setpoints.DEPLOY_INTAKE);
     }
 
-    public Command intakeAuton() {
+    public Command deployAuton() {
         return new SequentialCommandGroup(
                                 deployIntake(),
                                 new WaitCommand(0.3),
@@ -135,7 +135,7 @@ public class IntakeSubsystem extends SubsystemBase {
                                 shooter.setRunIndexer(true));
     }
 
-    public Command deployAuton() {
+    public Command stowAuton() {
         return new SequentialCommandGroup(
             setIntakeSpeed(0),
             new InstantCommand(() -> arm.rotateStable()),
