@@ -22,6 +22,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public VortexMotorController shooterIndexerMotor;
 
+  private double shooterSpeed;
+
   public GenericHID genericHID = new GenericHID(0);
 
   public ShooterSubsystem() {}
@@ -77,6 +79,21 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
+  
+  public Command runShooter() {
+    return this.runOnce(() -> shooterMotor1.set(shooterSpeed)).andThen(() -> shooterMotor2.set(shooterSpeed));
+  }
+  
+  public Command runBottomShooter() {
+    return this.runOnce(() -> shooterMotor2.set(shooterSpeed));
+  }
+
+  public Command stopShooter() {
+    return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
+      setShooterSpeed(0),
+      runShooter());
+  }
+  
   /**
    * Sets the Indexer motor speed to a percent between -1 and 1
    * @param
@@ -90,11 +107,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * @param
    */
   public Command setShooterSpeed(double percent) {
-    return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
-  }
-  
-  public Command setBottomShooterSpeed(double percent) {
-    return this.runOnce(() -> shooterMotor2.set(percent));
+    return this.runOnce(() -> shooterSpeed = percent);
   }
 
   /**
@@ -110,21 +123,13 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public Command intakeShooter() {
     return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
-      new InstantCommand(() -> shooterMotor1.set(-0.3)),
-      new InstantCommand(() -> shooterMotor2.set(-0.3)));
-  }
-  public Command runIndexerTest(Double speed){
-    return this.runOnce(()-> shooterIndexerMotor.set(speed));
+      setShooterSpeed(-0.3),
+      runShooter());
   }
 
   /**
    * Stops the Shooter Motor
    */
-  public Command stopShooter() {
-    return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
-      new InstantCommand(() -> shooterMotor1.set(0)),
-      new InstantCommand(() -> shooterMotor2.set(0)));
-  }
 
   /**
    * Checks for current spike inside of the indexer
@@ -132,11 +137,11 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   private boolean currentCheck(){
     new WaitCommand(0.4);
-    if (shooterIndexerMotor.getCurrent() < 55){
+    if (shooterIndexerMotor.getCurrent() < 65){
       return false;
     } 
     new WaitCommand(0.5);
-    if (shooterIndexerMotor.getCurrent() > 55){
+    if (shooterIndexerMotor.getCurrent() > 65){
       return true;
     } 
     return false;    
@@ -149,7 +154,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public boolean checkForGamePiece(){
     int piece = 0;
     int noPiece = 0;
-    if(shooterIndexerMotor.getCurrent()>55){
+    if(shooterIndexerMotor.getCurrent() > 65){
       for(int i = 0; i <=10; i++){
         if(currentCheck() == true){
           piece++;

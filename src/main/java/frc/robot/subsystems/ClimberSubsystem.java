@@ -123,11 +123,11 @@ public class ClimberSubsystem extends SubsystemBase {
     }});
   }
   
-  public Command setLeftClimberSpeed(double percent) {
+  public Command setClimberMotor1Speed(double percent) {
     return this.runOnce(() -> climberMotor1.set(percent));
   }
 
-  public Command setRighttClimberSpeed(double percent) {
+  public Command setClimberMotor2Speed(double percent) {
     return this.runOnce(() -> climberMotor2.set(percent));
   }
 

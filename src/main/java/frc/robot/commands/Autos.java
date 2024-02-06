@@ -45,8 +45,14 @@ public class Autos extends Command{
 
     Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
   }
-  public Command getAuton(){
-    if(DriverStation.getAlliance().get().name() == "Red"){
+  public Command getAuton() {
+    if(DriverStation.getAlliance().get().name() == "Red") {
+      System.out.println("Automatically showing autons for Red");
+      return autonChooserRed.getSelected();
+    } else if (DriverStation.getAlliance().get().name() == "Blue") {
+      System.out.println("Automatically showing autons for Blue");
+      return autonChooserBlue.getSelected();
+    } else if (side.getSelected()) {
       return autonChooserRed.getSelected();
     } else {
       return autonChooserBlue.getSelected();
