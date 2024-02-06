@@ -70,7 +70,7 @@ public class RobotContainer {
                 intake.init();
                 climberSubsystem.init();
 
-                auton = new Autos(drivetrain, intake, arm);
+                auton = new Autos(drivetrain, intake, arm, shooterSubsystem);
                 
                 configureBindings();
         }

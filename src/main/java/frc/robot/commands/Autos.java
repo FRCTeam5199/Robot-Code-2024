@@ -16,9 +16,11 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
@@ -34,13 +36,13 @@ public class Autos extends Command{
   public SendableChooser<Boolean> side = new SendableChooser<>();
 
 
-    public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm){
+    public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm, ShooterSubsystem shooter){
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
         HashMap<String, Command> eventMap = new HashMap<>();
       NamedCommands.registerCommand("deployIntake", runOnce(()->System.out.println("deploying")));
       NamedCommands.registerCommand("retractIntake", runOnce(()->System.out.println("stowing")));
-
+      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(170), new WaitCommand(.5), shooter.AutonShooting(.6, .3)));
 
 
       Shuffleboard.getTab("Autons").add("Side", side);

@@ -112,6 +112,18 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
   }
+  public Command AutonShooting(double Shooter, double Indexer){
+    return this.run(()-> new Command(){{
+      shooterMotor1.set(Shooter);
+      shooterMotor2.set(Shooter);
+      new WaitCommand(0.4);
+      shooterIndexerMotor.set(Indexer);
+      new WaitCommand(0.2);
+      shooterMotor1.set(0);
+      shooterMotor2.set(0);
+      shooterIndexerMotor.set(0);
+    }});
+  }
 
   public Command setRunShooter(boolean runShooter) {
     return this.runOnce(() -> this.runShooter = runShooter);
