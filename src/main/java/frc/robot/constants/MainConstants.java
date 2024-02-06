@@ -128,6 +128,7 @@ public class MainConstants {
 
             //Arm
             public static final int ARM_MOTOR_ID = 5;
+            public static final int ARM_ENCODER_MOTOR = 8;
 
             //Shooter
             public static final int SHOOTER_MOTOR_1_ID = 2;
@@ -142,8 +143,7 @@ public class MainConstants {
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 
         // Arm
-        // 2 / .8
-        public static final PID ARM_PID = new PID(0.01, 0.0, 0.01);
+        public static final PID ARM_PID = new PID(0.01, 0.0, 0);
     }
 
     public static class Setpoints {
@@ -156,7 +156,8 @@ public class MainConstants {
         public static final double ARM_SPEAKER_BACK_SETPOINT = 60;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 4.5;
-        public static final double ARM_CLIMBER_SETPOINT = 40;
+        public static final double ARM_CLIMB_SETPOINT = 40;
+        public static final double ARM_TRAP_SETPOINT = 50;
     }
 
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;

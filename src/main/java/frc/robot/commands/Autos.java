@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -16,7 +17,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+
+import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
 public class Autos extends Command{
   SwerveDrive swerveDrive;
@@ -29,11 +34,14 @@ public class Autos extends Command{
   public SendableChooser<Boolean> side = new SendableChooser<>();
 
 
-    public Autos(SwerveDrive swerve){
+    public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm){
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
         HashMap<String, Command> eventMap = new HashMap<>();
-      // NamedCommands.registerCommand();
+      NamedCommands.registerCommand("deployIntake", runOnce(()->System.out.println("deploying")));
+      NamedCommands.registerCommand("retractIntake", runOnce(()->System.out.println("stowing")));
+
+
 
       Shuffleboard.getTab("Autons").add("Side", side);
       side.addOption("Red Side", true);

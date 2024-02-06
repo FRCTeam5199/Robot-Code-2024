@@ -104,11 +104,11 @@ public class IntakeSubsystem extends SubsystemBase {
     // TODO: Swap deploy and stow intake set positions after absolute encoder gets finalized
 
     /**
-     * retract the intake 
+     * retract the intake
      * @return command to retract intake
      */
     public Command stowIntake() {
-        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.DEPLOY_INTAKE, ControlType.kPosition));
+        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.STOW_INTAKE, ControlType.kPosition));
     }
 
     /**
@@ -116,11 +116,6 @@ public class IntakeSubsystem extends SubsystemBase {
      * @return command to deploy the intake
      */
     public Command deployIntake() {
-        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.STOW_INTAKE, ControlType.kPosition));
-    }
-
-    public void retractAndStopIntake(){
-        setIntakeSpeed(0);
-        stowIntake();
+        return this.runOnce(() -> sparkPIDController.setReference(MainConstants.Setpoints.DEPLOY_INTAKE, ControlType.kPosition));
     }
 }
