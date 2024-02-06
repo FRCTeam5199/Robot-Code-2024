@@ -20,11 +20,11 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 14.231073477076146,
+        "x": 13.458155995534016,
         "y": 5.55
       },
       "nextControl": {
-        "x": 13.516534348535838,
+        "x": 14.506947895653866,
         "y": 5.55
       },
       "isLocked": false,
@@ -52,13 +52,31 @@
       "maxWaypointRelativePos": 2.0,
       "constraints": {
         "maxVelocity": 1.0,
-        "maxAcceleration": 3.0,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }
     }
   ],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "retract",
+      "waypointRelativePos": 1.05,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

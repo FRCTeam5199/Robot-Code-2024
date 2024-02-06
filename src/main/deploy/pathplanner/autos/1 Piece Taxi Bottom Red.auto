@@ -24,21 +24,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "deployIntake"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "2 Piece Bottom Red"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "backShot"
+            "pathName": "1 Piece Taxi Bottom Red"
           }
         }
       ]
