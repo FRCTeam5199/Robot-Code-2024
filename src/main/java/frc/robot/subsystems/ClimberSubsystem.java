@@ -139,20 +139,4 @@ public class ClimberSubsystem extends SubsystemBase {
   public Command setClimberTarget(double target) {
     return this.runOnce(() -> climberPIDController.setSetpoint(target));
   }
-
-  public Command extendClimber() {
-    return this.runOnce(() -> setClimberSpeed(0.5));//new SequentialCommandGroup(
-      // new InstantCommand(() -> setClimberSpeed(0.5)),
-      // new WaitCommand(2),
-      // new InstantCommand(() -> setClimberSpeed(0))
-    // );
-  }
-
-  public Command retractClimber() {
-    return this.runOnce(() -> setClimberSpeed(0));//new SequentialCommandGroup(
-    //   new InstantCommand(() -> setClimberSpeed(-0.5)),
-    //   new WaitCommand(2),
-    //   new InstantCommand(() -> setClimberSpeed(0))
-    // );
-  }
 }

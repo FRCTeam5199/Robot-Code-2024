@@ -1,19 +1,14 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.abstractMotorInterfaces.TalonMotorController;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -21,22 +16,19 @@ import frc.robot.constants.MainConstants;
 public class ArmSubsystem extends SubsystemBase {
 	private static ArmSubsystem armSubsystem;
 
-	public static VortexMotorController ArmMotor;
-	
-	 public TalonMotorController ArmLeader;
-	public TalonMotorController ArmFollower;
+	private static VortexMotorController armMotor;
 
-	public double rotateSetpoint = 0;
-	PIDController rotatePIDController;
+	private PIDController rotatePIDController;
+	private double rotateSetpoint = 0;
 
 	private static boolean isBrakeMode = false; 
 
-	boolean climbModeEnabled = false;
+	private boolean armClimbMode = false;
 
-	public CANSparkMax encoderMotor;
-	public SparkAbsoluteEncoder encoder;
+	private CANSparkMax encoderMotor;
+	private SparkAbsoluteEncoder encoder;
 
-	public double EncoderValue;
+	public double encoderValue;
 
 	public ArmSubsystem() {}
 
@@ -71,74 +63,66 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public void motorInit() {
-		ArmMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
+		armMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
 
-		ArmMotor.setInvert(true);
-		ArmMotor.setBrake(true);
+		armMotor.setInvert(true);
+		armMotor.setBrake(true);
 
-		ArmMotor.getEncoder().setPosition(0);
-
-		encoderMotor = new CANSparkMax(8, MotorType.kBrushed);
+		encoderMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_ENCODER_MOTOR, MotorType.kBrushed);
 		encoder = encoderMotor.getAbsoluteEncoder(Type.kDutyCycle);
 		
 	}
 
 	public void PIDInit() {
-				rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I,
-				MainConstants.PIDConstants.ARM_PID.D);
+		rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I, MainConstants.PIDConstants.ARM_PID.D);
 	}
 
 	@Override
 	public void periodic() {
-		if(encoder.getPosition() <175){
-			EncoderValue = encoder.getPosition();
+		if(encoder.getPosition() < 175){
+			encoderValue = encoder.getPosition();
 		}
 
-		if (ArmMotor.getEncoder().getPosition() < 0) {
-			while (ArmMotor.getEncoder().getPosition() < 0) {
-					ArmMotor.set(0.3);
-			}
+		// if (armMotor.getEncoder().getPosition() < 0) {
+		// 	while (armMotor.getEncoder().getPosition() < 0) {
+		// 		armMotor.set(0.3);
+		// 	}
 			
-			ArmMotor.set(0);
-			this.rotateSetpoint = 0;
-		} else if (ArmMotor.getEncoder().getPosition() > 61) {
-			while (ArmMotor.getEncoder().getPosition() > 61) {
-				ArmMotor.set(-0.3);
-			}
+		// 	armMotor.set(0);
+		// 	this.rotateSetpoint = 0;
+		// } else if (armMotor.getEncoder().getPosition() > 61) {
+		// 	while (armMotor.getEncoder().getPosition() > 61) {
+		// 		armMotor.set(-0.3);
+		// 	}
 
-			ArmMotor.set(0);
-			this.rotateSetpoint = 61;
-		} else {
-			if(climbModeEnabled == false){
-				ArmMotor.set(rotatePIDController.calculate(EncoderValue, 40));
-			}
-		}
-	}
-	public Command teleOpMode(){
-	return this.run(()-> new InstantCommand(){{
-		climbModeEnabled = false;
-    }});
+		// 	armMotor.set(0);
+		// 	this.rotateSetpoint = 61;
+		// } else {
+			// if(climbModeEnabled == false) {
+				armMotor.set(rotatePIDController.calculate(encoderValue, this.rotateSetpoint));
+			// }
+		// }
 	}
 
-	public Command climbMode(){
-    return this.run(()-> new Command(){{
-		climbModeEnabled = true;
-		if(climbModeEnabled){
-      	ArmMotor.set(rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), 8));
-		// 	System.out.println("climb mode "+ rotatePIDController.calculate(ArmMotor.getEncoder().getPosition(), 0.1));
-		}
-    }});
+	public void toggleMode() {
+    armClimbMode = !armClimbMode;
   }
-  	public void getEncoder(){
-		System.out.println(encoder.getPosition());
-	}
+
+	/**
+	 * True is climb
+	 * @param mode
+	 */
+	public void setMode(boolean mode) {
+    armClimbMode = mode;
+  }
+	
 	/**
 	 * 
 	 * @param percent move armMotor at a percent(-1 to 1)
 	 * @return command to spin motor at percent
 	 */
 	public Command moveAtPercent(double percent) {
-		return this.run(() -> ArmMotor.set(percent));
+		return this.run(() -> armMotor.set(percent));
 	}
 	
 	/**
@@ -151,7 +135,7 @@ public class ArmSubsystem extends SubsystemBase {
     return this.runOnce(() -> this.rotateSetpoint += rotations);
   }
   
-    /**
+	/**
 	 * 
 	 * @param setpoint set armMotor to setPoint
 	 * @return command to move armMotor to setPoint
@@ -191,12 +175,15 @@ public class ArmSubsystem extends SubsystemBase {
 	 * set Setpoint variable to slightly above retracted intake
 	 */
 	public void rotateClimb() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_CLIMBER_SETPOINT;
-		
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_CLIMB_SETPOINT;
 	}
+
+	public void rotateTrap() {
+		this.rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_SETPOINT;
+	}
+
 	public static void toggleBrakeMode() {
         isBrakeMode = !isBrakeMode;
-        ArmMotor.setBrake(isBrakeMode);
-    }
-
+        armMotor.setBrake(isBrakeMode);
+	}
 }

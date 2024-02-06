@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
@@ -79,7 +80,6 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
-  
   public Command runShooter() {
     return this.runOnce(() -> shooterMotor1.set(shooterSpeed)).andThen(() -> shooterMotor2.set(shooterSpeed));
   }
@@ -89,9 +89,9 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public Command stopShooter() {
-    return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
-      setShooterSpeed(0),
-      runShooter());
+    return this.runOnce(() -> shooterIndexerMotor.set(0))
+    .andThen(setShooterSpeed(0))
+    .andThen(runShooter());
   }
   
   /**
@@ -122,9 +122,10 @@ public class ShooterSubsystem extends SubsystemBase {
    * Runs the Shooter Motor to Intake
    */
   public Command intakeShooter() {
-    return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
+    return this.runOnce(() -> new SequentialCommandGroup(
       setShooterSpeed(-0.3),
-      runShooter());
+      runShooter(),
+      new InstantCommand(() -> shooterIndexerMotor.set(-0.3))));
   }
 
   /**
