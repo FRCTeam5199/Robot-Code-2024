@@ -22,7 +22,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public VortexMotorController shooterIndexerMotor;
 
-  private double shooterSpeed;
+  public double shooterSpeed;
+  public double indexerSpeed;
+
+  public boolean ampAndClimbMode = false;
+  public boolean runShooter = false;
+  public boolean runIndexer = false;
+  public boolean intakeShooter = false;
+  public boolean shoot = false;
 
   public GenericHID genericHID = new GenericHID(0);
 
@@ -77,21 +84,52 @@ public class ShooterSubsystem extends SubsystemBase {
     } else {
       genericHID.setRumble(RumbleType.kBothRumble, 0);
     }
+
+    if (ampAndClimbMode) {
+      shooterSpeed = 0.2;
+      indexerSpeed = 0.5;
+    } else if (intakeShooter) {
+      shooterSpeed = -0.3;
+      indexerSpeed = -0.3;
+    } else {
+      shooterSpeed = 0.85;
+      indexerSpeed = 0.5;
+    }
+
+    if (runShooter) {
+      if (!ampAndClimbMode) shooterMotor1.set(shooterSpeed);
+      shooterMotor2.set(shooterSpeed);
+    } else {
+      shooterMotor1.set(0);
+      shooterMotor2.set(0);
+    }
+
+    if (runIndexer) {
+      shooterIndexerMotor.set(indexerSpeed);
+    } else {
+      shooterIndexerMotor.set(0);
+    }
+
   }
 
-  
-  public Command runShooter() {
-    return this.runOnce(() -> shooterMotor1.set(shooterSpeed)).andThen(() -> shooterMotor2.set(shooterSpeed));
-  }
-  
-  public Command runBottomShooter() {
-    return this.runOnce(() -> shooterMotor2.set(shooterSpeed));
+  public Command setRunShooter(boolean runShooter) {
+    return this.runOnce(() -> this.runShooter = runShooter);
   }
 
-  public Command stopShooter() {
-    return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
-      setShooterSpeed(0),
-      runShooter());
+  public Command setRunIndexer(boolean runIndexer) {
+    return this.runOnce(() -> this.runIndexer = runIndexer);
+  }
+
+  public Command setAmpandClimbMode(boolean ampAndClimbMode) {
+    return this.runOnce(() -> this.ampAndClimbMode = ampAndClimbMode);
+  }
+
+
+   /**
+   * Runs the Shooter Motor to Intake
+   */
+  public Command setintakeShooter(boolean intakeShooter) {
+    return this.runOnce(() ->  this.intakeShooter = intakeShooter);
   }
   
   /**
@@ -116,15 +154,6 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public Command setShooterVelocity(double velocity) {
     return this.runOnce(() -> shooterMotor1.setVelocity(velocity)).andThen(() -> shooterMotor2.setVelocity(velocity));
-  }
-
-  /**
-   * Runs the Shooter Motor to Intake
-   */
-  public Command intakeShooter() {
-    return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
-      setShooterSpeed(-0.3),
-      runShooter());
   }
 
   /**

@@ -116,21 +116,14 @@ public class RobotContainer {
                                                                                                                 // negative
                                                                                                                 // X
                                                                                                                 // (left)
-                        ));
-                        
-                        // reset the field-centric heading by pressing start button/hamburger menu button
-                        mainCommandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
+                        ));           
+                mainCommandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
-                        mainCommandXboxController.button(6).whileTrue(drivetrain.applyRequest(() -> brake));
-                        mainCommandXboxController.button(7).whileTrue(drivetrain
-                                        .applyRequest(() -> point
-                                                        .withModuleDirection(new Rotation2d(-mainCommandXboxController.getLeftY(),
-                                                                        -mainCommandXboxController.getLeftX()))));
+                mainCommandXboxController.button(6).whileTrue(drivetrain.applyRequest(() -> brake));
 
-
-                        operatorCommandXboxController.povUp().onTrue(new SequentialCommandGroup(climberSubsystem.teleOpMode(), arm.teleOpMode()));
+                        // operatorCommandXboxController.povUp().onTrue(new SequentialCommandGroup(climberSubsystem.teleOpMode(), arm.teleOpMode()));
                         // operatorCommandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
-                        operatorCommandXboxController.povDown().onTrue(new SequentialCommandGroup(climberSubsystem.climbMode(), arm.climbMode()));
+                        // operatorCommandXboxController.povDown().onTrue(new SequentialCommandGroup(climberSubsystem.climbMode(), arm.climbMode()));
                         // operatorCommandXboxController.povLeft().onTrue(new InstantCommand(() -> arm.rotateClimb()));
 
 
@@ -140,34 +133,60 @@ public class RobotContainer {
                         // operatorCommandXboxController.y().onTrue(arm.changeArmSetpoint(0.5));
                         // operatorCommandXboxController.a().onTrue(arm.changeArmSetpoint(-0.5));
 
-                        mainCommandXboxController.leftBumper().onTrue(shooterSubsystem.setShooterSpeed(0.2)).onFalse(shooterSubsystem.setShooterSpeed(0));
-                        mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setShooterSpeed(0.85)).onFalse(shooterSubsystem.setShooterSpeed(0));
-                        mainCommandXboxController.rightTrigger().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
+                SequentialCommandGroup speakerMode = new SequentialCommandGroup(
+                        climberSubsystem.teleOpMode(),
+                        shooterSubsystem.setAmpandClimbMode(false));
 
-                        mainCommandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(
-                                        intake.deployIntake(),
-                                        new WaitCommand(0.3),
-                                        new InstantCommand(() -> arm.rotateIntake()),
-                                        new WaitCommand(0.15),
-                                        intake.setIntakeSpeed(1),
-                                        shooterSubsystem.intakeShooter()))
-                                .onFalse(new SequentialCommandGroup(
-                                        intake.setIntakeSpeed(0),
-                                        new InstantCommand(() -> arm.rotateStable()),
-                                        new WaitCommand(0.2),
-                                        shooterSubsystem.stopShooter(),
-                                        intake.stowIntake()));
+                SequentialCommandGroup ampMode = new SequentialCommandGroup(
+                        climberSubsystem.teleOpMode(),
+                        shooterSubsystem.setAmpandClimbMode(true));
+
+                SequentialCommandGroup climbMode = new SequentialCommandGroup(
+                        climberSubsystem.climbMode(),
+                        shooterSubsystem.setAmpandClimbMode(true));
+
+                        
+                mainCommandXboxController.x().onTrue(speakerMode);
+                mainCommandXboxController.b().onTrue(ampMode);
+                mainCommandXboxController.a().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
+
+                //For Debugging
+                mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
+
+                mainCommandXboxController.povDown().onTrue(climbMode);
+
+                mainCommandXboxController.leftBumper().whileTrue(drivetrain
+                        .applyRequest(() -> point
+                                .withModuleDirection(new Rotation2d(-mainCommandXboxController.getLeftY(),
+                                        -mainCommandXboxController.getLeftX()))));
+                mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true))
+                        .onFalse(shooterSubsystem.setRunIndexer(false));
+
+                mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.setRunShooter(true))
+                        .onFalse(shooterSubsystem.setRunShooter(false));
+                mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
+                                intake.deployIntake(),
+                                new WaitCommand(0.3),
+                                new InstantCommand(() -> arm.rotateIntake()),
+                                new WaitCommand(0.15),
+                                intake.setIntakeSpeed(1),
+                                shooterSubsystem.setintakeShooter(true),
+                                shooterSubsystem.setRunShooter(true)))
+                        .onFalse(new SequentialCommandGroup(
+                                intake.setIntakeSpeed(0),
+                                new InstantCommand(() -> arm.rotateStable()),
+                                new WaitCommand(0.2),
+                                shooterSubsystem.setintakeShooter(false),
+                                shooterSubsystem.setRunShooter(false),
+                                intake.stowIntake()));
 
                         
                         
-                        operatorCommandXboxController.b().onTrue(switchB).onFalse(climberSubsystem.setClimberSpeed(0).andThen(shooterSubsystem.setShooterSpeed(0)));
-                        operatorCommandXboxController.x().onTrue(switchX).onFalse(climberSubsystem.setClimberSpeed(0).andThen(shooterSubsystem.setIndexerSpeed(0)));
-
-                        // operatorCommandXboxController.a().onTrue(()-> new InstantCommand(arm.getEncoder()));
-                        // operatorCommandXboxController.x().onTrue(climberSubsystem.setLeftClimberSpeed(0.5)).onFalse(climberSubsystem.setLeftClimberSpeed(0));
-                        // operatorCommandXboxController.b().onTrue(climberSubsystem.setRighttClimberSpeed(-0.5)).onFalse(climberSubsystem.setRighttClimberSpeed(0));
-                        // operatorCommandXboxController.a().onTrue(climberSubsystem.setLeftClimberSpeed(-0.5)).onFalse(climberSubsystem.setLeftClimberSpeed(0));
-                        // operatorCommandXboxController.y().onTrue(climberSubsystem.setRighttClimberSpeed(0.5)).onFalse(climberSubsystem.setRighttClimberSpeed(0));
+                // operatorCommandXboxController.a().onTrue(()-> new InstantCommand(arm.getEncoder()));
+                // operatorCommandXboxController.y().onTrue(climberSubsystem.setRighttClimberSpeed(0.5)).onFalse(climberSubsystem.setRighttClimberSpeed(0));
+                // operatorCommandXboxController.x().onTrue(climberSubsystem.setLeftClimberSpeed(0.5)).onFalse(climberSubsystem.setLeftClimberSpeed(0));
+                // operatorCommandXboxController.b().onTrue(climberSubsystem.setRighttClimberSpeed(-0.5)).onFalse(climberSubsystem.setRighttClimberSpeed(0));
+                // operatorCommandXboxController.a().onTrue(climberSubsystem.setLeftClimberSpeed(-0.5)).onFalse(climberSubsystem.setLeftClimberSpeed(0));
 
                 if (Utils.isSimulation()) {
                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

@@ -93,18 +93,13 @@ public class ClimberSubsystem extends SubsystemBase {
   public Command climbMode(){
     return this.runOnce(()-> new Command(){{
       climbModeEnabed = true;
-      climberMotor1.set(0.2);
-      climberMotor1.set(0.2);
-      new WaitCommand(2);
-      climberMotor1.set(0);
-      climberMotor1.set(0);
-     
+      // setClimberTarget(5); //Tune
     }});
   }
 
   public Command teleOpMode(){
     return this.runOnce(()-> new Command(){{
-      
+      climbModeEnabed = false;
     }});
   }
 
@@ -114,11 +109,10 @@ public class ClimberSubsystem extends SubsystemBase {
    * @return command to set climber speed
    */
   public Command setClimberSpeed(double percent) {
-    // return this.runOnce(() -> climberMotor1.set(percent)).andThen((() -> climberMotor2.set(percent)));
     return this.runOnce(()-> new Command(){{
-      if(climbModeEnabed){
-      climberMotor1.set(percent);
-      climberMotor2.set(percent);
+      if (climbModeEnabed) {
+        climberMotor1.set(percent);
+        climberMotor2.set(percent);
       }
     }});
   }
@@ -138,21 +132,5 @@ public class ClimberSubsystem extends SubsystemBase {
    */
   public Command setClimberTarget(double target) {
     return this.runOnce(() -> climberPIDController.setSetpoint(target));
-  }
-
-  public Command extendClimber() {
-    return this.runOnce(() -> setClimberSpeed(0.5));//new SequentialCommandGroup(
-      // new InstantCommand(() -> setClimberSpeed(0.5)),
-      // new WaitCommand(2),
-      // new InstantCommand(() -> setClimberSpeed(0))
-    // );
-  }
-
-  public Command retractClimber() {
-    return this.runOnce(() -> setClimberSpeed(0));//new SequentialCommandGroup(
-    //   new InstantCommand(() -> setClimberSpeed(-0.5)),
-    //   new WaitCommand(2),
-    //   new InstantCommand(() -> setClimberSpeed(0))
-    // );
   }
 }
