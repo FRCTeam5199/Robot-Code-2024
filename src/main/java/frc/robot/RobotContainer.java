@@ -30,7 +30,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-import frc.robot.utility.Superstructure.Superstructure;
+import frc.robot.utility.Superstructure;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
