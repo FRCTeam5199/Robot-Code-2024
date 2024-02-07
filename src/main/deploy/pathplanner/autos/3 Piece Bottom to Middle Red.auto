@@ -2,19 +2,61 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.800324439450591,
-      "y": 4.379852868122284
+      "x": 15.659794400897903,
+      "y": 4.508672070126443
     },
-    "rotation": -118.1237353833923
+    "rotation": -124.5
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom to Middle Red"
+            "pathName": "3 Piece Bottom to Middle Red p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Bottom to Middle Red p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
           }
         }
       ]
