@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.8305816611633238,
+        "x": 0.83,
         "y": 6.6207186260526365
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9305816611633239,
+        "x": 0.93,
         "y": 6.6207186260526365
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Top Blue Starting Pos"
     },
     {
       "anchor": {
@@ -85,7 +85,7 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 57.380756928807216,
+    "rotation": 57.38,
     "velocity": 0
   },
   "useDefaultConstraints": false
