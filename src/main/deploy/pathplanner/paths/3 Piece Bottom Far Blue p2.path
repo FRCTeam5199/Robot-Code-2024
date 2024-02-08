@@ -3,45 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.83,
-        "y": 4.46
+        "x": 5.5,
+        "y": 1.75
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9299999999999999,
-        "y": 4.46
-      },
-      "isLocked": false,
-      "linkedName": "Bottom Blue Starting Pos"
-    },
-    {
-      "anchor": {
-        "x": 2.0,
+        "x": 6.5,
         "y": 1.75
       },
-      "prevControl": {
-        "x": 1.1028187012992872,
-        "y": 2.1916624471943504
-      },
-      "nextControl": {
-        "x": 2.897181298700713,
-        "y": 1.3083375528056496
-      },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Bottom Blue Far Link"
     },
     {
       "anchor": {
         "x": 8.0,
-        "y": 0.75
+        "y": 2.45
       },
       "prevControl": {
         "x": 7.0,
-        "y": 0.75
+        "y": 2.45
       },
       "nextControl": {
-        "x": 8.48,
-        "y": 0.75
+        "x": 8.5,
+        "y": 2.45
       },
       "isLocked": false,
       "linkedName": null
@@ -52,8 +36,8 @@
         "y": 1.75
       },
       "prevControl": {
-        "x": 5.4,
-        "y": 1.75
+        "x": 6.5,
+        "y": 1.7499999999999998
       },
       "nextControl": null,
       "isLocked": false,
@@ -62,8 +46,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 2.0,
-      "rotationDegrees": 0.0,
+      "waypointRelativePos": 0.95,
+      "rotationDegrees": 0,
       "rotateFast": false
     }
   ],
@@ -71,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "Deploy Intake",
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 0.7,
       "command": {
         "type": "parallel",
         "data": {
@@ -88,7 +72,7 @@
     },
     {
       "name": "Retract Intake",
-      "waypointRelativePos": 2.4000000000000004,
+      "waypointRelativePos": 1.6,
       "command": {
         "type": "parallel",
         "data": {
