@@ -26,12 +26,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1 Piece Taxi Bottom Red"
+            "pathName": "1 Piece Bottom Red"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "1 Piece Autons",
   "choreoAuto": false
 }

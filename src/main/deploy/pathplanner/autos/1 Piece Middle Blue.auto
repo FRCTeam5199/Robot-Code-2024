@@ -10,9 +10,16 @@
   "command": {
     "type": "sequential",
     "data": {
-      "commands": []
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1 Piece Middle Blue"
+          }
+        }
+      ]
     }
   },
-  "folder": null,
+  "folder": "1 Piece Autons",
   "choreoAuto": false
 }

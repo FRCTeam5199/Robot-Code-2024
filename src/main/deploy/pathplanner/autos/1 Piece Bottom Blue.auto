@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.601240218172308,
-      "y": 6.710309340732804
+      "x": 1.2,
+      "y": 4.46
     },
-    "rotation": 124.74318015830373
+    "rotation": 126.0
   },
   "command": {
     "type": "sequential",
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot and Taxi Top Red"
+            "pathName": "1 Piece Bottom Blue"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "1 Piece Autons",
   "choreoAuto": false
 }
