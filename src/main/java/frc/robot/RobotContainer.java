@@ -30,11 +30,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-<<<<<<< Updated upstream
-import frc.robot.utility.Superstructure;
-=======
 import frc.robot.utility.superstructure.Superstructure;
->>>>>>> Stashed changes
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -164,12 +160,10 @@ public class RobotContainer {
                 SequentialCommandGroup DecreaseAngle = new SequentialCommandGroup(
                         arm.decreseAngle());
                         
-<<<<<<< Updated upstream
                 mainCommandXboxController.b().onTrue(speakerMode);
                 // mainCommandXboxController.b().onTrue(ampMode);
                 mainCommandXboxController.x().onTrue(arm.setArmSetpoint(120));
                 mainCommandXboxController.a().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
-=======
                 mainCommandXboxController.x().onTrue(SubMode);
                 mainCommandXboxController.b().onTrue(PodiumMode);
 
@@ -179,7 +173,6 @@ public class RobotContainer {
                 operatorCommandXboxController.a().onTrue(DecreaseAngle);
 
 
->>>>>>> Stashed changes
 
                 //For Debugging
                 mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
