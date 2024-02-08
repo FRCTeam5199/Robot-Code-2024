@@ -12,20 +12,20 @@
         "y": 5.55
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "middle shooting point"
     },
     {
       "anchor": {
-        "x": 13.259072909016002,
+        "x": 13.282494582107567,
         "y": 5.55
       },
       "prevControl": {
-        "x": 13.159072909016002,
-        "y": 5.55
+        "x": 12.954591158825684,
+        "y": 5.562647359246215
       },
       "nextControl": {
-        "x": 13.359072909016001,
-        "y": 5.55
+        "x": 13.382420281292793,
+        "y": 5.546145827930444
       },
       "isLocked": false,
       "linkedName": null
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "middle shooting point"
     }
   ],
   "rotationTargets": [],

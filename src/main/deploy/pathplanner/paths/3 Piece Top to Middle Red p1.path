@@ -12,7 +12,7 @@
         "y": 6.625881904510252
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "top starting point red"
     },
     {
       "anchor": {
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "middle shooting point"
     }
   ],
   "rotationTargets": [

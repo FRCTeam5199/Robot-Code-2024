@@ -12,7 +12,7 @@
         "y": 5.55
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "middle starting point red"
     },
     {
       "anchor": {
@@ -33,15 +33,15 @@
     {
       "anchor": {
         "x": 15.14,
-        "y": 5.545221859674489
+        "y": 5.55
       },
       "prevControl": {
         "x": 15.207453329183293,
-        "y": 5.524798273342843
+        "y": 5.529576413668354
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "middle starting point red"
     }
   ],
   "rotationTargets": [],

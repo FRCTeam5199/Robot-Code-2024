@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.659794400897903,
-        "y": 4.508672070126443
+        "x": 15.65,
+        "y": 4.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.86345751578476,
-        "y": 4.274455339210813
+        "x": 14.853663114886857,
+        "y": 4.16578326908437
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": " bottom start point red"
     },
     {
       "anchor": {
@@ -32,16 +32,16 @@
     },
     {
       "anchor": {
-        "x": 14.38,
-        "y": 5.515804013065829
+        "x": 14.25,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 14.333156653815298,
-        "y": 4.50867207012588
+        "x": 14.203156653815297,
+        "y": 4.542868057060051
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "middle shooting point"
     }
   ],
   "rotationTargets": [
