@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.2,
+      "y": 4.46
+    },
+    "rotation": 126.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1 Piece Bottom Blue"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "1 Piece Autons",
+  "choreoAuto": false
+}

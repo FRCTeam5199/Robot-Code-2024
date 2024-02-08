@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.65,
+      "y": 4.4
+    },
+    "rotation": -124.5
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1 Piece Bottom Red"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "1 Piece Autons",
+  "choreoAuto": false
+}

@@ -1,0 +1,109 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.5178288818115266,
+        "y": 4.144115980538995
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.5178288818115266,
+        "y": 4.144115980538995
+      },
+      "isLocked": false,
+      "linkedName": "Bottom Blue Far Link"
+    },
+    {
+      "anchor": {
+        "x": 8.0,
+        "y": 2.45
+      },
+      "prevControl": {
+        "x": 7.0,
+        "y": 2.45
+      },
+      "nextControl": {
+        "x": 8.5,
+        "y": 2.45
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.5178288818115266,
+        "y": 4.144115980538995
+      },
+      "prevControl": {
+        "x": 3.5178288818115266,
+        "y": 4.144115980538995
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Bottom Blue Far Link"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.95,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Deploy Intake",
+      "waypointRelativePos": 0.7,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "deployIntake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Retract Intake",
+      "waypointRelativePos": 1.6,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -37.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "3 Piece Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

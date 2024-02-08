@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Bottom to Middle Blue p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Bottom to Middle Blue p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "3 Piece Autons",
+  "choreoAuto": false
+}

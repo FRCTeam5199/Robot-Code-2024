@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -15,25 +16,35 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 public class Autos extends Command{
   SwerveDrive swerveDrive;
 
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 2, .004,0), 5, .21, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 0.85, .00,0.00), 5, .21, new ReplanningConfig());
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
   public SendableChooser<Boolean> side = new SendableChooser<>();
 
 
-    public Autos(SwerveDrive swerve){
+    public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm, ShooterSubsystem shooter){
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
         HashMap<String, Command> eventMap = new HashMap<>();
-      // NamedCommands.registerCommand();
+      NamedCommands.registerCommand("deployIntake", intake.deployAuton());
+      NamedCommands.registerCommand("retractIntake", intake.stowAuton());
+
+
+      NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(146), new WaitCommand(0.5), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(170), new WaitCommand(0.8), shooter.runAutonShooting(false), new WaitCommand(0.2)));
 
       Shuffleboard.getTab("Autons").add("Side", side);
       side.addOption("Red Side", true);
@@ -41,19 +52,28 @@ public class Autos extends Command{
 
     Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
     autonChooserRed.addOption("Do nothing", doNothing());
-    autonChooserRed.addOption("Shoot and Taxi Middle", shootTaxiMiddleRed());
 
     Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
   }
-  public Command getAuton(){
-    if(DriverStation.getAlliance().get().name() == "Red"){
+  public Command getAuton() {
+    if(DriverStation.getAlliance().get().name() == "Red") {
+      System.out.println("Automatically showing autons for Red");
+      return autonChooserRed.getSelected();
+    } else if (DriverStation.getAlliance().get().name() == "Blue") {
+      System.out.println("Automatically showing autons for Blue");
+      return autonChooserBlue.getSelected();
+    } else if (side.getSelected()) {
       return autonChooserRed.getSelected();
     } else {
       return autonChooserBlue.getSelected();
     }
   }
+
+  public Command onePieceTaxiTopRed(){
+    return new PathPlannerAuto("1 Piece Taxi Top Red");
+  }
   
-  //Autons that don't move
+    //Autons that don't move
   public Command doNothing(){
         return new WaitCommand(15);
   }
@@ -92,8 +112,8 @@ public class Autos extends Command{
   }
 
 
-  public Command shootTaxiMiddleRed(){
-    return new PathPlannerAuto("Shoot and Taxi Middle Red");
+  public Command onePieceMiddleRed(){
+    return new PathPlannerAuto("1 Piece Taxi Middle Red");
   }
   public Command shootTaxiBottomRed(){
     return new PathPlannerAuto("Shoot and Taxi Bottom Red");

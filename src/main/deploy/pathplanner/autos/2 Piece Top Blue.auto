@@ -2,24 +2,48 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.41,
-      "y": 6.99
+      "x": 0.8305816611633238,
+      "y": 6.6207186260526365
     },
-    "rotation": -138.0
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Blue 2 Piece Top Path"
+            "pathName": "2 Piece Top Blue"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "2 Piece Autons",
   "choreoAuto": false
 }

@@ -1,0 +1,73 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 15.5,
+        "y": 6.6
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 14.974252573612139,
+        "y": 7.181899456380939
+      },
+      "isLocked": false,
+      "linkedName": "top starting point red"
+    },
+    {
+      "anchor": {
+        "x": 13.08341036082928,
+        "y": 7.120188619835157
+      },
+      "prevControl": {
+        "x": 13.62210884193523,
+        "y": 7.131899456380938
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.35,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "deployIntake",
+      "waypointRelativePos": 0.3,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "deployIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 560.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 179.99999999935142,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "1 Piece Paths",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

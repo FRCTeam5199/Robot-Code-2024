@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
@@ -21,6 +22,16 @@ public class ShooterSubsystem extends SubsystemBase {
   public VortexMotorController shooterMotor2;
 
   public VortexMotorController shooterIndexerMotor;
+
+  public double shooterSpeed;
+  public double indexerSpeed;
+
+  public boolean ampAndClimbMode = false;
+  public boolean runShooter = false;
+  public boolean runIndexer = false;
+  public boolean intakeShooter = false;
+  public boolean shoot = false;
+  public boolean autonSide = false;
 
   public GenericHID genericHID = new GenericHID(0);
 
@@ -75,8 +86,81 @@ public class ShooterSubsystem extends SubsystemBase {
     } else {
       genericHID.setRumble(RumbleType.kBothRumble, 0);
     }
+
+    if (ampAndClimbMode) {
+      shooterSpeed = 0.2;
+      indexerSpeed = 0.5;
+    } else if (intakeShooter) {
+      shooterSpeed = -0.3;
+      indexerSpeed = -0.3;
+    }else if(autonSide){
+      shooterSpeed = 0.7;
+      indexerSpeed = 0.5;
+    } else{
+      shooterSpeed = 0.85;
+      indexerSpeed = 0.5;
+    }
+
+    if(intakeShooter){
+      shooterMotor1.set(-.3);
+      shooterMotor2.set(-.3);
+    }
+    else{
+    if (runShooter) {
+      if (ampAndClimbMode == false) {
+      shooterMotor1.set(shooterSpeed);
+    }
+      shooterMotor2.set(shooterSpeed);
+    } else {
+      shooterMotor1.set(0);
+      shooterMotor2.set(0);
+    }
+  }
+  if(intakeShooter){
+    shooterIndexerMotor.set(-.3);
+  }
+  else{
+
+    if (runIndexer) {
+      shooterIndexerMotor.set(indexerSpeed);
+    } else {
+      shooterIndexerMotor.set(0);
+    }
+  }
+  }
+//  public Command AutonShooting(double Shooter, double Indexer){
+//    return this.runOnce();
+//  }
+
+  public Command setRunShooter(boolean runShooter) {
+    return this.runOnce(() -> this.runShooter = runShooter);
   }
 
+  public Command setRunIndexer(boolean runIndexer) {
+    return this.runOnce(() -> this.runIndexer = runIndexer);
+  }
+
+  public Command setAmpandClimbMode(boolean ampAndClimbMode) {
+    return this.runOnce(() -> this.ampAndClimbMode = ampAndClimbMode);
+  }
+
+
+  public Command runAutonShooting(boolean side) {
+    return new SequentialCommandGroup(autonSpeed(side),setRunShooter(true), new WaitCommand(.5), setRunIndexer(true),
+    new WaitCommand(0.3), setRunShooter(false), setRunIndexer(false), autonSpeed(false));
+  }
+  
+  public Command autonSpeed(boolean side){
+    return this.runOnce(()-> this.autonSide = side);
+  }
+
+   /**
+   * Runs the Shooter Motor to Intake
+   */
+  public Command setintakeShooter(boolean intakeShooter) {
+    return this.runOnce(() ->  this.intakeShooter = intakeShooter);
+  }
+  
   /**
    * Sets the Indexer motor speed to a percent between -1 and 1
    * @param
@@ -90,11 +174,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * @param
    */
   public Command setShooterSpeed(double percent) {
-    return this.runOnce(() -> shooterMotor1.set(percent)).andThen(() -> shooterMotor2.set(percent));
-  }
-  
-  public Command setBottomShooterSpeed(double percent) {
-    return this.runOnce(() -> shooterMotor2.set(percent));
+    return this.runOnce(() -> shooterSpeed = percent);
   }
 
   /**
@@ -106,25 +186,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   /**
-   * Runs the Shooter Motor to Intake
-   */
-  public Command intakeShooter() {
-    return this.runOnce(() -> shooterIndexerMotor.set(-0.3)).alongWith(
-      new InstantCommand(() -> shooterMotor1.set(-0.3)),
-      new InstantCommand(() -> shooterMotor2.set(-0.3)));
-  }
-  public Command runIndexerTest(Double speed){
-    return this.runOnce(()-> shooterIndexerMotor.set(speed));
-  }
-
-  /**
    * Stops the Shooter Motor
    */
-  public Command stopShooter() {
-    return this.runOnce(() -> shooterIndexerMotor.set(0)).alongWith(
-      new InstantCommand(() -> shooterMotor1.set(0)),
-      new InstantCommand(() -> shooterMotor2.set(0)));
-  }
 
   /**
    * Checks for current spike inside of the indexer
@@ -132,11 +195,11 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   private boolean currentCheck(){
     new WaitCommand(0.4);
-    if (shooterIndexerMotor.getCurrent() < 55){
+    if (shooterIndexerMotor.getCurrent() < 65){
       return false;
     } 
     new WaitCommand(0.5);
-    if (shooterIndexerMotor.getCurrent() > 55){
+    if (shooterIndexerMotor.getCurrent() > 65){
       return true;
     } 
     return false;    
@@ -149,7 +212,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public boolean checkForGamePiece(){
     int piece = 0;
     int noPiece = 0;
-    if(shooterIndexerMotor.getCurrent()>55){
+    if(shooterIndexerMotor.getCurrent() > 65){
       for(int i = 0; i <=10; i++){
         if(currentCheck() == true){
           piece++;

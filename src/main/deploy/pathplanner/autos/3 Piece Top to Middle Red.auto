@@ -2,24 +2,60 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.402155996894018,
-      "y": 6.862550215827963
+      "x": 15.5,
+      "y": 6.6
     },
-    "rotation": 128.32011393677737
+    "rotation": 121.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Top to Middle Red"
+            "pathName": "3 Piece Top to Middle Red p1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Top to Middle Red p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "3 Piece Autons",
   "choreoAuto": false
 }

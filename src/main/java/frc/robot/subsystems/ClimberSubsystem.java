@@ -7,7 +7,9 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.constants.MainConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -18,6 +20,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public PIDController climberPIDController;
 
+  private boolean climbModeEnabed = false;
+  
   public ClimberSubsystem() {}
   
 	/** 
@@ -82,20 +86,42 @@ public class ClimberSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
+  public boolean getClimbMode(){
+    return climbModeEnabed;
+    }
+
+  public Command climbMode(){
+    return this.runOnce(()-> new Command(){{
+      climbModeEnabed = true;
+      // setClimberTarget(5); //Tune
+    }});
+  }
+
+  public Command teleOpMode(){
+    return this.runOnce(()-> new Command(){{
+      climbModeEnabed = false;
+    }});
+  }
+
   /**
    * 
    * @param percent sets climber speed 
    * @return command to set climber speed
    */
   public Command setClimberSpeed(double percent) {
-    return this.runOnce(() -> climberMotor1.set(percent)).andThen((() -> climberMotor2.set(percent)));
+    return this.runOnce(()-> new Command(){{
+      if (climbModeEnabed) {
+        climberMotor1.set(percent);
+        climberMotor2.set(percent);
+      }
+    }});
   }
   
-  public Command setLeftClimberSpeed(double percent) {
+  public Command setClimberMotor1Speed(double percent) {
     return this.runOnce(() -> climberMotor1.set(percent));
   }
 
-  public Command setRighttClimberSpeed(double percent) {
+  public Command setClimberMotor2Speed(double percent) {
     return this.runOnce(() -> climberMotor2.set(percent));
   }
 
@@ -106,21 +132,5 @@ public class ClimberSubsystem extends SubsystemBase {
    */
   public Command setClimberTarget(double target) {
     return this.runOnce(() -> climberPIDController.setSetpoint(target));
-  }
-
-  public Command extendClimber() {
-    return this.runOnce(() -> setClimberSpeed(0.5));//new SequentialCommandGroup(
-      // new InstantCommand(() -> setClimberSpeed(0.5)),
-      // new WaitCommand(2),
-      // new InstantCommand(() -> setClimberSpeed(0))
-    // );
-  }
-
-  public Command retractClimber() {
-    return this.runOnce(() -> setClimberSpeed(0));//new SequentialCommandGroup(
-    //   new InstantCommand(() -> setClimberSpeed(-0.5)),
-    //   new WaitCommand(2),
-    //   new InstantCommand(() -> setClimberSpeed(0))
-    // );
   }
 }
