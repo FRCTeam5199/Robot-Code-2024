@@ -1,22 +1,27 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.abstractMotorInterfaces.VortexMotorController;
+import frc.robot.abstractMotorInterfaces.TalonMotorController;
 import frc.robot.constants.MainConstants;
 
 
 public class ArmSubsystem extends SubsystemBase {
 	private static ArmSubsystem armSubsystem;
 
-	private static VortexMotorController armMotor;
+	private static TalonMotorController armMotor1;
+	private static TalonMotorController armMotor2;
 
 	private PIDController rotatePIDController;
 	private double rotateSetpoint = 120;
@@ -26,7 +31,7 @@ public class ArmSubsystem extends SubsystemBase {
 	private boolean armClimbMode = false;
 
 	private CANSparkMax encoderMotor;
-	private SparkAbsoluteEncoder encoder;
+	private DutyCycleEncoder encoder;
 
 	public double encoderValue;
 
@@ -63,13 +68,15 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public void motorInit() {
-		armMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
+		armMotor1 = new TalonMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID_1);
+		armMotor2 = new TalonMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID_2);
 
-		armMotor.setInvert(true);
-		armMotor.setBrake(true);
+		armMotor2.follow(armMotor1);
 
-		encoderMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_ENCODER_MOTOR, MotorType.kBrushed);
-		encoder = encoderMotor.getAbsoluteEncoder(Type.kDutyCycle);
+		armMotor1.setInvert(true);
+		armMotor1.setBrake(true);
+
+		encoder = new DutyCycleEncoder(new DigitalInput(0));
 		
 	}
 
@@ -79,8 +86,8 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		if(encoder.getPosition() < 175){
-			encoderValue = encoder.getPosition();
+		if(encoder.getAbsolutePosition() < 175){
+			encoderValue = encoder.getAbsolutePosition();
 		}
 
 		// if (armMotor.getEncoder().getPosition() < 0) {
@@ -99,7 +106,7 @@ public class ArmSubsystem extends SubsystemBase {
 		// 	this.rotateSetpoint = 61;
 		// } else {
 			// if(climbModeEnabled == false) {
-				armMotor.set(rotatePIDController.calculate(encoderValue, this.rotateSetpoint));
+				armMotor1.set(rotatePIDController.calculate(encoderValue, this.rotateSetpoint));
 			// }
 		// }
 	}
@@ -122,7 +129,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @return command to spin motor at percent
 	 */
 	public Command moveAtPercent(double percent) {
-		return this.run(() -> armMotor.set(percent));
+		return this.run(() -> armMotor1.set(percent));
 	}
 	
 	/**
@@ -204,6 +211,6 @@ public class ArmSubsystem extends SubsystemBase {
 
 	public static void toggleBrakeMode() {
         isBrakeMode = !isBrakeMode;
-        armMotor.setBrake(isBrakeMode);
+        armMotor1.setBrake(isBrakeMode);
 	}
 }

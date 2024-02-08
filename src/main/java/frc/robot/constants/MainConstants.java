@@ -127,7 +127,9 @@ public class MainConstants {
             public static final int CLIMBER_MOTOR_2_ID = 10;
 
             //Arm
-            public static final int ARM_MOTOR_ID = 5;
+            public static final int ARM_MOTOR_ID_1 = 5;
+            public static final int ARM_MOTOR_ID_2 = 5;
+
             public static final int ARM_ENCODER_MOTOR = 8;
 
             //Shooter
