@@ -59,7 +59,7 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "intake",
+      "name": "retract",
       "waypointRelativePos": 1.0,
       "command": {
         "type": "parallel",
@@ -84,7 +84,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 30.4,
+    "rotation": 32.92786265350188,
     "rotateFast": false
   },
   "reversed": false,
