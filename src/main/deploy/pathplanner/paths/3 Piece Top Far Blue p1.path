@@ -3,28 +3,28 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.5,
-        "y": 6.6
+        "x": 0.83,
+        "y": 6.6207186260526365
       },
       "prevControl": null,
       "nextControl": {
-        "x": 15.403407417371094,
-        "y": 6.625881904510252
+        "x": 0.9299999999999999,
+        "y": 6.6207186260526365
       },
       "isLocked": false,
-      "linkedName": "top starting point red"
+      "linkedName": "Top Blue Starting Pos"
     },
     {
       "anchor": {
-        "x": 14.5,
+        "x": 2.5,
         "y": 7.0
       },
       "prevControl": {
-        "x": 15.485446659731426,
+        "x": 2.4,
         "y": 7.0
       },
       "nextControl": {
-        "x": 13.514553340268574,
+        "x": 2.6,
         "y": 7.0
       },
       "isLocked": false,
@@ -32,43 +32,30 @@
     },
     {
       "anchor": {
-        "x": 14.25,
-        "y": 5.55
+        "x": 0.83,
+        "y": 6.62
       },
       "prevControl": {
-        "x": 14.25,
-        "y": 7.070690632574554
+        "x": 0.73,
+        "y": 6.62
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "3 Piece Top to Middle Red p1 END"
-
+      "linkedName": "Top Blue Starting Pos"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.1,
-      "rotationDegrees": -179.0,
+      "waypointRelativePos": 1.05,
+      "rotationDegrees": 0.0,
       "rotateFast": false
     }
   ],
-  "constraintZones": [
-    {
-      "name": "Intake",
-      "minWaypointRelativePos": 1.2,
-      "maxWaypointRelativePos": 1.65,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [
     {
       "name": "Deploy Intake",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.4,
       "command": {
         "type": "parallel",
         "data": {
@@ -85,7 +72,7 @@
     },
     {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.7,
+      "waypointRelativePos": 1.4,
       "command": {
         "type": "parallel",
         "data": {
@@ -109,11 +96,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 60.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "3 Piece Paths",
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }

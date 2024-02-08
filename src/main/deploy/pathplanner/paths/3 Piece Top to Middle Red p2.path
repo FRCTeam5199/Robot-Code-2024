@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 13.282494582107567,
+        "x": 13.75,
         "y": 5.55
       },
       "prevControl": {
-        "x": 12.954591158825684,
-        "y": 5.562647359246215
+        "x": 13.65,
+        "y": 5.55
       },
       "nextControl": {
-        "x": 13.382420281292793,
-        "y": 5.546145827930444
+        "x": 13.85,
+        "y": 5.55
       },
       "isLocked": false,
       "linkedName": null
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "middle shooting point"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -84,7 +84,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 1.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 0.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

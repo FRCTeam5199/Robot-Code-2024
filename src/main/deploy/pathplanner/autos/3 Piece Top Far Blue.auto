@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.6,
-      "y": 6.55
+      "x": 0.83,
+      "y": 6.62
     },
-    "rotation": 121.0
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
@@ -14,42 +14,36 @@
         {
           "type": "named",
           "data": {
-            "name": "SbackShot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.05
+            "name": "backShot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "2 Piece Taxi Top Red "
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "pathName": "3 Piece Top Far Blue p1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "retractIntake"
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Top Far Blue p2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "topBackShot"
+            "name": "LbackShot"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "3 Piece Autons",
   "choreoAuto": false
 }
