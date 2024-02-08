@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 0.83,
-        "y": 4.461828723942754
+        "y": 4.46
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9144611495762301,
-        "y": 4.461828723942754
+        "x": 0.9144611495762298,
+        "y": 4.46
       },
       "isLocked": false,
       "linkedName": "Bottom Blue Starting Pos"
