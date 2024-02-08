@@ -29,7 +29,7 @@ public class Autos extends Command{
   SwerveDrive swerveDrive;
 
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 2, .004,0), 5, .21, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 0.85, .00,0.00), 5, .21, new ReplanningConfig());
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
@@ -44,7 +44,8 @@ public class Autos extends Command{
       NamedCommands.registerCommand("retractIntake", intake.stowAuton());
 
 
-      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(146), new WaitCommand(1.5), shooter.runAutonShooting(), new WaitCommand(0.3), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("LbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(146), new WaitCommand(0.5), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
 
 
       Shuffleboard.getTab("Autons").add("Side", side);
@@ -69,8 +70,12 @@ public class Autos extends Command{
       return autonChooserBlue.getSelected();
     }
   }
+
+  public Command onePieceTaxiTopRed(){
+    return new PathPlannerAuto("1 Piece Taxi Top Red");
+  }
   
-  //Autons that don't move
+    //Autons that don't move
   public Command doNothing(){
         return new WaitCommand(15);
   }

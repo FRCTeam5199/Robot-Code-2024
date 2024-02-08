@@ -31,6 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public boolean runIndexer = false;
   public boolean intakeShooter = false;
   public boolean shoot = false;
+  public boolean autonSide = false;
 
   public GenericHID genericHID = new GenericHID(0);
 
@@ -92,25 +93,40 @@ public class ShooterSubsystem extends SubsystemBase {
     } else if (intakeShooter) {
       shooterSpeed = -0.3;
       indexerSpeed = -0.3;
-    } else {
+    }else if(autonSide){
+      shooterSpeed = 0.7;
+      indexerSpeed = 0.5;
+    } else{
       shooterSpeed = 0.85;
       indexerSpeed = 0.5;
     }
 
+    if(intakeShooter){
+      shooterMotor1.set(-.3);
+      shooterMotor2.set(-.3);
+    }
+    else{
     if (runShooter) {
-      if (!ampAndClimbMode) shooterMotor1.set(shooterSpeed);
+      if (ampAndClimbMode == false) {
+      shooterMotor1.set(shooterSpeed);
+    }
       shooterMotor2.set(shooterSpeed);
     } else {
       shooterMotor1.set(0);
       shooterMotor2.set(0);
     }
+  }
+  if(intakeShooter){
+    shooterIndexerMotor.set(-.3);
+  }
+  else{
 
     if (runIndexer) {
       shooterIndexerMotor.set(indexerSpeed);
     } else {
       shooterIndexerMotor.set(0);
     }
-
+  }
   }
 //  public Command AutonShooting(double Shooter, double Indexer){
 //    return this.runOnce();
@@ -129,12 +145,13 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
 
-  public Command runAutonShooting() {
-    return new SequentialCommandGroup(setRunShooter(true), new WaitCommand(.3), setRunIndexer(true),
-            new WaitCommand(0.3), setRunShooter(false), setRunIndexer(false));
+  public Command runAutonShooting(boolean side) {
+    return new SequentialCommandGroup(autonSpeed(side),setRunShooter(true), new WaitCommand(.5), setRunIndexer(true),
+    new WaitCommand(0.3), setRunShooter(false), setRunIndexer(false));
   }
-  private void forShootingBackShot(){
-
+  
+  public Command autonSpeed(boolean side){
+    return this.runOnce(()-> this.autonSide = side);
   }
 
    /**

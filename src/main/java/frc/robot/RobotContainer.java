@@ -146,8 +146,9 @@ public class RobotContainer {
                         shooterSubsystem.setAmpandClimbMode(true));
 
                         
-                mainCommandXboxController.x().onTrue(speakerMode);
-                mainCommandXboxController.b().onTrue(ampMode);
+                mainCommandXboxController.b().onTrue(speakerMode);
+                // mainCommandXboxController.b().onTrue(ampMode);
+                mainCommandXboxController.x().onTrue(arm.setArmSetpoint(120));
                 mainCommandXboxController.a().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
 
                 //For Debugging
@@ -213,6 +214,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return auton.twoPieceMiddleRed();
+        return auton.onePieceTaxiTopRed();//auton.twoPieceExtendedRed();
     }
 }
