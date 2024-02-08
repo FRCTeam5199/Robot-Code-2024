@@ -30,7 +30,11 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+<<<<<<< Updated upstream
 import frc.robot.utility.Superstructure;
+=======
+import frc.robot.utility.superstructure.Superstructure;
+>>>>>>> Stashed changes
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -145,11 +149,37 @@ public class RobotContainer {
                         climberSubsystem.climbMode(),
                         shooterSubsystem.setAmpandClimbMode(true));
 
+                SequentialCommandGroup SubMode = new SequentialCommandGroup(
+                        arm.rotateSubwoofer());
+
+                SequentialCommandGroup PodiumMode = new SequentialCommandGroup(
+                        arm.rotatePodium());
+
+                SequentialCommandGroup RedLineMode = new SequentialCommandGroup(
+                        arm.rotateRedLine());
+                
+                SequentialCommandGroup IncreaseAngle = new SequentialCommandGroup(
+                        arm.increseAngle());
+                
+                SequentialCommandGroup DecreaseAngle = new SequentialCommandGroup(
+                        arm.decreseAngle());
                         
+<<<<<<< Updated upstream
                 mainCommandXboxController.b().onTrue(speakerMode);
                 // mainCommandXboxController.b().onTrue(ampMode);
                 mainCommandXboxController.x().onTrue(arm.setArmSetpoint(120));
                 mainCommandXboxController.a().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
+=======
+                mainCommandXboxController.x().onTrue(SubMode);
+                mainCommandXboxController.b().onTrue(PodiumMode);
+
+                mainCommandXboxController.a().onTrue(RedLineMode);
+
+                operatorCommandXboxController.a().onTrue(IncreaseAngle);
+                operatorCommandXboxController.a().onTrue(DecreaseAngle);
+
+
+>>>>>>> Stashed changes
 
                 //For Debugging
                 mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));

@@ -158,6 +158,9 @@ public class MainConstants {
         public static final double ARM_INTAKE_SETPOINT = 5.5;
         public static final double ARM_CLIMB_SETPOINT = 40;
         public static final double ARM_TRAP_SETPOINT = 50;
+        public static final double ARM_SUBWOOFER_SETPOINT = 75.75;
+        public static final double ARM_PODIUM_SETPOINT = 62.21;
+        public static final double ARM_RED_LINE_SETPOINT = 48.66;
     }
 
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;

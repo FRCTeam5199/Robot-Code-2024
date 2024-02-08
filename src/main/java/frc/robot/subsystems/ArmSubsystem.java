@@ -182,6 +182,26 @@ public class ArmSubsystem extends SubsystemBase {
 		this.rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_SETPOINT;
 	}
 
+	public Command rotateSubwoofer() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_SUBWOOFER_SETPOINT);
+	}
+
+	public Command rotatePodium() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_PODIUM_SETPOINT);
+	}
+
+	public Command rotateRedLine() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_RED_LINE_SETPOINT);
+	}
+
+	public Command increseAngle() {
+		return this.runOnce(() -> rotateSetpoint += .5);
+	}
+
+	public Command decreseAngle() {
+		return this.runOnce(() -> rotateSetpoint -= .5);
+	}
+
 	public static void toggleBrakeMode() {
         isBrakeMode = !isBrakeMode;
         armMotor.setBrake(isBrakeMode);
