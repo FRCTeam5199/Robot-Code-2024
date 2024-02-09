@@ -27,7 +27,7 @@ public class Autos extends Command{
   SwerveDrive swerveDrive;
 
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 0.85, .00,0.00), 5, .21, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 1,1.5,0), 5, .21, new ReplanningConfig());
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
@@ -41,10 +41,10 @@ public class Autos extends Command{
       NamedCommands.registerCommand("deployIntake", intake.deployAuton());
       NamedCommands.registerCommand("retractIntake", intake.stowAuton());
 
-
+      NamedCommands.registerCommand("wait1", new WaitCommand(1));
       NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(146), new WaitCommand(0.5), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
-      NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(170), new WaitCommand(0.8), shooter.runAutonShooting(false), new WaitCommand(0.2)));
+      // NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(50), new WaitCommand(0.8), shooter.runAutonShooting(false), new WaitCommand(0.2)));
 
       Shuffleboard.getTab("Autons").add("Side", side);
       side.addOption("Red Side", true);
@@ -71,6 +71,10 @@ public class Autos extends Command{
 
   public Command onePieceTaxiTopRed(){
     return new PathPlannerAuto("1 Piece Taxi Top Red");
+  }
+  public Command twoPieceTaxiTopRed(){
+    return new AutoBuilder().buildAuto("2 Piece Taxi Top Red").withInterruptBehavior(getInterruptionBehavior());
+    // return new PathPlannerAuto("2 Piece Taxi Top Red");
   }
   
     //Autons that don't move

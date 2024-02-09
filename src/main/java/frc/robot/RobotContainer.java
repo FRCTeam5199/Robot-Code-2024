@@ -135,11 +135,13 @@ public class RobotContainer {
 
                 SequentialCommandGroup speakerMode = new SequentialCommandGroup(
                         climberSubsystem.teleOpMode(),
-                        shooterSubsystem.setAmpandClimbMode(false));
+                        shooterSubsystem.setAmpandClimbMode(false),
+                        new InstantCommand(()->arm.rotateStable()));
 
                 SequentialCommandGroup ampMode = new SequentialCommandGroup(
                         climberSubsystem.teleOpMode(),
-                        shooterSubsystem.setAmpandClimbMode(true));
+                        shooterSubsystem.setAmpandClimbMode(true),
+                        arm.setArmSetpoint(150));
 
                 SequentialCommandGroup climbMode = new SequentialCommandGroup(
                         climberSubsystem.climbMode(),
@@ -160,22 +162,31 @@ public class RobotContainer {
                 SequentialCommandGroup DecreaseAngle = new SequentialCommandGroup(
                         arm.decreseAngle());
                         
-                mainCommandXboxController.b().onTrue(speakerMode);
+                mainCommandXboxController.x().onTrue(speakerMode);
+                mainCommandXboxController.b().onTrue(ampMode);
+                // mainCommandXboxController.x().onTrue(intake.stowIntake());
+                // mainCommandXboxController.b().onTrue(intake.deployIntake());
+                // mainCommandXboxController.x().onTrue(arm.setArmSetpoint(120));
                 // mainCommandXboxController.b().onTrue(ampMode);
-                mainCommandXboxController.x().onTrue(arm.setArmSetpoint(120));
-                mainCommandXboxController.a().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
-                mainCommandXboxController.x().onTrue(SubMode);
-                mainCommandXboxController.b().onTrue(PodiumMode);
+                // mainCommandXboxController.x().onTrue(arm.setArmSetpoint(120));
+                // mainCommandXboxController.a().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
+                // mainCommandXboxController.x().onTrue(SubMode);
+                // mainCommandXboxController.b().onTrue(PodiumMode);
 
-                mainCommandXboxController.a().onTrue(RedLineMode);
+                // mainCommandXboxController.a().onTrue(RedLineMode);
 
-                operatorCommandXboxController.a().onTrue(IncreaseAngle);
+                operatorCommandXboxController.x().onTrue(IncreaseAngle);
                 operatorCommandXboxController.a().onTrue(DecreaseAngle);
+                operatorCommandXboxController.povUp().onTrue(climberSubsystem.setClimberMotor1Speed(0.4)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
+                operatorCommandXboxController.povDown().onTrue(climberSubsystem.setClimberMotor1Speed(-0.4)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
+                operatorCommandXboxController.povLeft().onTrue(climberSubsystem.setClimberMotor2Speed(0.4)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
+                operatorCommandXboxController.povRight().onTrue(climberSubsystem.setClimberMotor2Speed(-0.4)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
+                // operatorCommandXboxController.y().onTrue(shooterSubsystem.flippyDoSetpoint(5));
 
 
 
                 //For Debugging
-                mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
+                // mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
 
                 mainCommandXboxController.povDown().onTrue(climbMode);
 
@@ -237,6 +248,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return auton.onePieceTaxiTopRed();//auton.twoPieceExtendedRed();
+        return auton.twoPieceTaxiTopRed();//auton.twoPieceExtendedRed();
     }
 }

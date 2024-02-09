@@ -149,7 +149,7 @@ public class MainConstants {
     public static class Setpoints {
         //Intake Setpoints
         public static final double STOW_INTAKE = 0;
-        public static final double DEPLOY_INTAKE = 15;
+        public static final double DEPLOY_INTAKE = 12;
 
         //Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 50;

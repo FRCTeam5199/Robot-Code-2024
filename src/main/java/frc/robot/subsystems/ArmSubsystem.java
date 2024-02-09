@@ -195,11 +195,11 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public Command increseAngle() {
-		return this.runOnce(() -> rotateSetpoint += .5);
+		return this.runOnce(() -> rotateSetpoint += 1);
 	}
 
 	public Command decreseAngle() {
-		return this.runOnce(() -> rotateSetpoint -= .5);
+		return this.runOnce(() -> rotateSetpoint -= 1);
 	}
 
 	public static void toggleBrakeMode() {

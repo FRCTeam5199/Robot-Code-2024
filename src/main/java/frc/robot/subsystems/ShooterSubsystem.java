@@ -4,6 +4,15 @@
 
 package frc.robot.subsystems;
 
+import java.util.Set;
+
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -22,6 +31,9 @@ public class ShooterSubsystem extends SubsystemBase {
   public VortexMotorController shooterMotor2;
 
   public VortexMotorController shooterIndexerMotor;
+
+  public CANSparkMax flippyDo;
+  public SparkPIDController flippyDoPID;
 
   public double shooterSpeed;
   public double indexerSpeed;
@@ -75,6 +87,9 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor1.getEncoder().setPosition(0);
     shooterMotor2.getEncoder().setPosition(0);
 
+    flippyDo = new CANSparkMax(11, MotorType.kBrushless);
+    flippyDoPID = flippyDo.getPIDController();
+    flippyDoPID.setP(0.1);
   }
 
   @Override
@@ -93,12 +108,12 @@ public class ShooterSubsystem extends SubsystemBase {
     } else if (intakeShooter) {
       shooterSpeed = -0.3;
       indexerSpeed = -0.3;
-    }else if(autonSide){
-      shooterSpeed = 0.7;
-      indexerSpeed = 0.5;
     } else{
       shooterSpeed = 0.85;
       indexerSpeed = 0.5;
+    }
+    if(autonSide){
+      shooterSpeed = 0.5;
     }
 
     if(intakeShooter){
@@ -131,6 +146,9 @@ public class ShooterSubsystem extends SubsystemBase {
 //  public Command AutonShooting(double Shooter, double Indexer){
 //    return this.runOnce();
 //  }
+  public Command flippyDoSetpoint(double Setpoint){
+    return this.runOnce(()-> flippyDoPID.setReference(Setpoint, ControlType.kPosition));
+  }
 
   public Command setRunShooter(boolean runShooter) {
     return this.runOnce(() -> this.runShooter = runShooter);
