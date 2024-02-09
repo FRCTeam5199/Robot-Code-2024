@@ -18,6 +18,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "deployIntake"
@@ -26,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Top to Middle Blue p1"
+            "pathName": "4 Piece Top to Bottom Blue p1"
           }
         },
         {
@@ -50,7 +56,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Top to Middle Blue p2"
+            "pathName": "4 Piece Top to Bottom Blue p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Top to Bottom Blue p3"
           }
         },
         {
@@ -62,6 +92,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "4 Piece Autons",
   "choreoAuto": false
 }

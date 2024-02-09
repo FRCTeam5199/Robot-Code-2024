@@ -3,76 +3,65 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.72,
-        "y": 1.75
+        "x": 2.3,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.718048585650657,
-        "y": 1.8124421386622913
+        "x": 2.4,
+        "y": 5.55
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4 piece blue bot to top p1->p2"
     },
     {
       "anchor": {
-        "x": 7.942353117231199,
-        "y": 2.4007214918852084
+        "x": 2.75,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 8.066743300247028,
-        "y": 2.4202346602171745
+        "x": 2.65,
+        "y": 5.55
       },
       "nextControl": {
-        "x": 7.817962934215367,
-        "y": 2.3812083235532424
+        "x": 2.85,
+        "y": 5.55
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.72,
-        "y": 1.75
+        "x": 2.3,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 6.71999999999999,
-        "y": 1.75
+        "x": 2.1999999999999997,
+        "y": 5.55
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Bottom Blue Far Link"
+      "linkedName": "4 piece blue bot to top p2->p3"
     }
   ],
-  "rotationTargets": [
+  "rotationTargets": [],
+  "constraintZones": [
     {
-      "waypointRelativePos": 0.85,
-      "rotationDegrees": 0,
-      "rotateFast": false
+      "name": "intake",
+      "minWaypointRelativePos": 0.1,
+      "maxWaypointRelativePos": 0.6,
+      "constraints": {
+        "maxVelocity": 0.5,
+        "maxAcceleration": 0.1,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
     }
   ],
-  "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "deploy",
-      "waypointRelativePos": 1.6,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "deployIntake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Retract",
-      "waypointRelativePos": 1.25,
+      "name": "Retract Intake",
+      "waypointRelativePos": 1.4,
       "command": {
         "type": "parallel",
         "data": {
@@ -96,11 +85,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -35.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "4 Piece Paths",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

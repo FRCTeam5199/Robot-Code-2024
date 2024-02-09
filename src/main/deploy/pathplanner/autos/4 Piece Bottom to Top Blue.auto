@@ -3,9 +3,9 @@
   "startingPose": {
     "position": {
       "x": 0.83,
-      "y": 6.62
+      "y": 4.46
     },
-    "rotation": 60.0
+    "rotation": -60.0
   },
   "command": {
     "type": "sequential",
@@ -24,9 +24,15 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Top to Middle Blue p1"
+            "pathName": "4 Piece Bottom to Top Blue p1"
           }
         },
         {
@@ -36,9 +42,27 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Bottom to Top p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
           }
         },
         {
@@ -48,9 +72,15 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Top to Middle Blue p2"
+            "pathName": "4 Piece Bottom to Top p3"
           }
         },
         {
@@ -62,6 +92,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "4 Piece Autons",
   "choreoAuto": false
 }
