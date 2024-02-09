@@ -24,15 +24,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "4 Piece Bottom to Top Blue p1"
-          }
-        },
-        {
           "type": "wait",
           "data": {
             "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Bottom to Top Blue p1"
           }
         },
         {
@@ -45,6 +45,12 @@
           "type": "named",
           "data": {
             "name": "deployIntake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -54,12 +60,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "backShot"
@@ -72,15 +72,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "4 Piece Bottom to Top p3"
-          }
-        },
-        {
           "type": "wait",
           "data": {
             "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Bottom to Top p3"
           }
         },
         {
