@@ -24,7 +24,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
-public class ShooterSubsystem extends SubsystemBase {
+public class
+ShooterSubsystem extends SubsystemBase {
   private static ShooterSubsystem shooterSubsystem;
 
   public VortexMotorController shooterMotor1;
@@ -106,8 +107,8 @@ public class ShooterSubsystem extends SubsystemBase {
       shooterSpeed = 0.2;
       indexerSpeed = 0.5;
     } else if (intakeShooter) {
-      shooterSpeed = -0.3;
-      indexerSpeed = -0.3;
+      shooterSpeed = -0.5;
+      indexerSpeed = -0.5;
     } else{
       shooterSpeed = 0.85;
       indexerSpeed = 0.5;

@@ -145,6 +145,7 @@ public class RobotContainer {
 
                 SequentialCommandGroup climbMode = new SequentialCommandGroup(
                         climberSubsystem.climbMode(),
+
                         shooterSubsystem.setAmpandClimbMode(true));
 
                 SequentialCommandGroup SubMode = new SequentialCommandGroup(
@@ -248,6 +249,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return auton.twoPieceTaxiTopRed();//auton.twoPieceExtendedRed();
+        return auton.twoPieceBottomRed();//auton.twoPieceExtendedRed();
     }
 }
