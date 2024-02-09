@@ -1,0 +1,92 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.3,
+        "y": 5.55
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.4,
+        "y": 5.55
+      },
+      "isLocked": false,
+      "linkedName": "4 piece blue bot to top p2->p3"
+    },
+    {
+      "anchor": {
+        "x": 2.8998008477855355,
+        "y": 6.9983183998984755
+      },
+      "prevControl": {
+        "x": 2.641248785545763,
+        "y": 6.389207912382299
+      },
+      "nextControl": {
+        "x": 2.9526308897363354,
+        "y": 7.122778179214835
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.3,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 2.5113091308703495,
+        "y": 6.003153893518325
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "4 piece blue bot to top p2->p3"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.8,
+      "rotationDegrees": 70.0,
+      "rotateFast": true
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Retract Intake",
+      "waypointRelativePos": 1.5,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "4 Piece Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
