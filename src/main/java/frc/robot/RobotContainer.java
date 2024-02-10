@@ -80,11 +80,16 @@ public class RobotContainer {
          * Configures the bindings for commands
          */
         private void configureBindings() {
-                 new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
-                            if (DriverStation.isDisabled()) {
-                                ArmSubsystem.toggleBrakeMode();
-                            }
-                        }));
+                new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
+                        if (DriverStation.isDisabled()) {
+                            ArmSubsystem.toggleBrakeMode();
+                        }
+                    }));
+            new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
+                if (DriverStation.isDisabled()) {
+                    ArmSubsystem.toggleBrakeMode();
+                }
+            }));
 
 
                 ConditionalCommand switchB = 
