@@ -3,61 +3,67 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.25,
-        "y": 5.55
+        "x": 14.15,
+        "y": 4.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 12.906570831960188,
-        "y": 5.498860288210219
-      },
-      "isLocked": false,
-      "linkedName": "middle shooting point"
-    },
-    {
-      "anchor": {
-        "x": 13.048277851191935,
-        "y": 5.52
-      },
-      "prevControl": {
-        "x": 13.598683134397742,
-        "y": 5.524695474773686
-      },
-      "nextControl": {
-        "x": 12.556422716269113,
-        "y": 5.515804013063089
+        "x": 14.081885856079406,
+        "y": 4.578261464215237
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.25,
-        "y": 5.55
+        "x": 13.401066802133602,
+        "y": 5.30841523221508
       },
       "prevControl": {
-        "x": 13.73466839623196,
-        "y": 5.55
+        "x": 13.379823440807508,
+        "y": 5.234337774200467
+      },
+      "nextControl": {
+        "x": 13.415214630429261,
+        "y": 5.3577499462691245
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 13.9,
+        "y": 5.56
+      },
+      "prevControl": {
+        "x": 13.91414782829566,
+        "y": 5.347883003458315
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "middle shooting point"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6,
+      "rotationDegrees": 90.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "retractIntake",
-      "waypointRelativePos": 0.75,
+      "name": "deployIntake",
+      "waypointRelativePos": 0.2,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "retractIntake"
+                "name": "deployIntake"
               }
             }
           ]
@@ -66,14 +72,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 1.68,
     "rotateFast": false
   },
   "reversed": false,

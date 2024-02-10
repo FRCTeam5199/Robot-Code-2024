@@ -119,7 +119,7 @@ public class RobotContainer {
                         ));           
                 mainCommandXboxController.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
-                mainCommandXboxController.button(6).whileTrue(drivetrain.applyRequest(() -> brake));
+                mainCommandXboxController.button(7).whileTrue(drivetrain.applyRequest(() -> brake));
 
                         // operatorCommandXboxController.povUp().onTrue(new SequentialCommandGroup(climberSubsystem.teleOpMode(), arm.teleOpMode()));
                         // operatorCommandXboxController.povRight().onTrue(new InstantCommand(() -> arm.rotateFront()));
@@ -136,35 +136,21 @@ public class RobotContainer {
                 SequentialCommandGroup speakerMode = new SequentialCommandGroup(
                         climberSubsystem.teleOpMode(),
                         shooterSubsystem.setAmpandClimbMode(false),
-                        new InstantCommand(()->arm.rotateStable()));
+                        arm.rotateStable());
 
                 SequentialCommandGroup ampMode = new SequentialCommandGroup(
                         climberSubsystem.teleOpMode(),
                         shooterSubsystem.setAmpandClimbMode(true),
-                        arm.setArmSetpoint(150));
+                        arm.rotateAmp());
 
                 SequentialCommandGroup climbMode = new SequentialCommandGroup(
                         climberSubsystem.climbMode(),
-
                         shooterSubsystem.setAmpandClimbMode(true));
-
-                SequentialCommandGroup SubMode = new SequentialCommandGroup(
-                        arm.rotateSubwoofer());
-
-                SequentialCommandGroup PodiumMode = new SequentialCommandGroup(
-                        arm.rotatePodium());
-
-                SequentialCommandGroup RedLineMode = new SequentialCommandGroup(
-                        arm.rotateRedLine());
-                
-                SequentialCommandGroup IncreaseAngle = new SequentialCommandGroup(
-                        arm.increseAngle());
-                
-                SequentialCommandGroup DecreaseAngle = new SequentialCommandGroup(
-                        arm.decreseAngle());
                         
                 mainCommandXboxController.x().onTrue(speakerMode);
                 mainCommandXboxController.b().onTrue(ampMode);
+                mainCommandXboxController.y().onTrue(arm.rotateBottomPiece());
+                // mainCommandXboxController.y().onTrue(arm.rotateMiddlePiece());
                 // mainCommandXboxController.x().onTrue(intake.stowIntake());
                 // mainCommandXboxController.b().onTrue(intake.deployIntake());
                 // mainCommandXboxController.x().onTrue(arm.setArmSetpoint(120));
@@ -176,8 +162,8 @@ public class RobotContainer {
 
                 // mainCommandXboxController.a().onTrue(RedLineMode);
 
-                operatorCommandXboxController.x().onTrue(IncreaseAngle);
-                operatorCommandXboxController.a().onTrue(DecreaseAngle);
+                operatorCommandXboxController.x().onTrue(arm.increseAngle());
+                operatorCommandXboxController.a().onTrue(arm.decreseAngle());
                 operatorCommandXboxController.povUp().onTrue(climberSubsystem.setClimberMotor1Speed(0.4)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
                 operatorCommandXboxController.povDown().onTrue(climberSubsystem.setClimberMotor1Speed(-0.4)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
                 operatorCommandXboxController.povLeft().onTrue(climberSubsystem.setClimberMotor2Speed(0.4)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
@@ -203,7 +189,7 @@ public class RobotContainer {
                 mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
                                 intake.deployIntake(),
                                 new WaitCommand(0.3),
-                                new InstantCommand(() -> arm.rotateIntake()),
+                                arm.rotateIntake(),
                                 new WaitCommand(0.15),
                                 intake.setIntakeSpeed(1),
                                 shooterSubsystem.setintakeShooter(true),
@@ -211,7 +197,7 @@ public class RobotContainer {
                                 shooterSubsystem.setRunIndexer(true)))
                         .onFalse(new SequentialCommandGroup(
                                 intake.setIntakeSpeed(0),
-                                new InstantCommand(() -> arm.rotateStable()),
+                                arm.rotateStable(),
                                 new WaitCommand(0.2),
                                 shooterSubsystem.setintakeShooter(false),
                                 shooterSubsystem.setRunShooter(false),
@@ -249,6 +235,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return auton.twoPieceBottomRed();//auton.twoPieceExtendedRed();
+        return auton.threePieceBtMRed();//auton.twoPieceExtendedRed();
     }
 }

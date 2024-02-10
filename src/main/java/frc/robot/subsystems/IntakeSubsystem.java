@@ -127,7 +127,7 @@ public class IntakeSubsystem extends SubsystemBase {
         return new SequentialCommandGroup(
                                 deployIntake(),
                                 new WaitCommand(0.3),
-                                new InstantCommand(() -> arm.rotateIntake()),
+                                arm.rotateIntake(),
                                 new WaitCommand(0.15),
                                 setIntakeSpeed(1),
                                 shooter.setintakeShooter(true),
@@ -138,7 +138,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public Command stowAuton() {
         return new SequentialCommandGroup(
             setIntakeSpeed(0),
-            new InstantCommand(() -> arm.rotateStable()),
+            arm.rotateStable(),
             new WaitCommand(0.2),
             shooter.setintakeShooter(false),
             shooter.setRunShooter(false),

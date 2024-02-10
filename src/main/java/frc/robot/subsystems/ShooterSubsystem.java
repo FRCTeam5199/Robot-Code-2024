@@ -104,13 +104,13 @@ ShooterSubsystem extends SubsystemBase {
     }
 
     if (ampAndClimbMode) {
-      shooterSpeed = 0.2;
+      shooterSpeed = 0.3;
       indexerSpeed = 0.5;
     } else if (intakeShooter) {
-      shooterSpeed = -0.5;
+      shooterSpeed = -1;
       indexerSpeed = -0.5;
     } else{
-      shooterSpeed = 0.85;
+      shooterSpeed = 0.75;
       indexerSpeed = 0.5;
     }
     if(autonSide){
@@ -123,9 +123,9 @@ ShooterSubsystem extends SubsystemBase {
     }
     else{
     if (runShooter) {
-      if (ampAndClimbMode == false) {
+      // if (ampAndClimbMode == false) {
       shooterMotor1.set(shooterSpeed);
-    }
+      // }
       shooterMotor2.set(shooterSpeed);
     } else {
       shooterMotor1.set(0);

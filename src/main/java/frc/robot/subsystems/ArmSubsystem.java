@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Main;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -104,17 +105,17 @@ public class ArmSubsystem extends SubsystemBase {
 		// }
 	}
 
-	public void toggleMode() {
-    armClimbMode = !armClimbMode;
-  }
+	public Command toggleMode() {
+    	return this.runOnce(() -> armClimbMode = !armClimbMode);
+  	}
 
 	/**
 	 * True is climb
 	 * @param mode
 	 */
-	public void setMode(boolean mode) {
-    armClimbMode = mode;
-  }
+	public Command setMode(boolean mode) {
+    	return this.runOnce(() -> armClimbMode = mode);
+  	}
 	
 	/**
 	 * 
@@ -141,45 +142,61 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @return command to move armMotor to setPoint
 	 */
 	public Command setArmSetpoint(double setpoint) {
-    return this.runOnce(()-> rotateSetpoint = setpoint);
-  }
+    	return this.runOnce(()-> rotateSetpoint = setpoint);
+ 	 }	
   	/**
 	 * set Setpoint variable to Stable
 	 */
-	public void rotateStable() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT;
+	public Command rotateStable() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT);
+	}
+
+	public Command rotateAmp() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_AMP_SETPOINT);
 	}
 
 	/**
 	 * set Setpoint variable to back
 	 */
-	public void rotateBack() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT;
+	public Command rotateBack() {
+		return this.runOnce(()-> rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT);
 	}
 	
 	/**
 	 * set Setpoint variable to front
 	 */
-	public void rotateFront() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT;
+	public Command rotateFront() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT);
 	}
 
 	/**
 	 * set Setpoint variable to slightly above retracted intake
 	 */
-	public void rotateIntake() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_INTAKE_SETPOINT;
+	public Command rotateIntake() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_INTAKE_SETPOINT);
 	}
 
 	/**
 	 * set Setpoint variable to slightly above retracted intake
 	 */
-	public void rotateClimb() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_CLIMB_SETPOINT;
+	public Command rotateClimb() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_CLIMB_SETPOINT);
 	}
 
-	public void rotateTrap() {
-		this.rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_SETPOINT;
+	public Command rotateTopPiece() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_TOP_PIECE_SETPOINT);
+	}
+
+	public Command rotateBottomPiece() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_BOTTOM_PIECE_SETPOINT);
+	}
+
+	public Command rotateMiddlePiece() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_MIDDLE_PIECE_SETPOINT);
+	}
+
+	public Command rotateTrap() {
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_SETPOINT);
 	}
 
 	public Command rotateSubwoofer() {

@@ -42,8 +42,11 @@ public class Autos extends Command{
       NamedCommands.registerCommand("retractIntake", intake.stowAuton());
 
       NamedCommands.registerCommand("wait1", new WaitCommand(1));
-      NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
-      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(146), new WaitCommand(0.5), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.3), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(146), new WaitCommand(0.3), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("topPieceShot", new SequentialCommandGroup(arm.rotateTopPiece(), new WaitCommand(0.3), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("bottomPieceShot", new SequentialCommandGroup(arm.rotateTopPiece(), new WaitCommand(0.3), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("middlePieceShot", new SequentialCommandGroup(arm.rotateMiddlePiece(), new WaitCommand(0.3), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       // NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(50), new WaitCommand(0.8), shooter.runAutonShooting(false), new WaitCommand(0.2)));
 
       Shuffleboard.getTab("Autons").add("Side", side);
@@ -171,7 +174,7 @@ public class Autos extends Command{
     return new PathPlannerAuto("3 Piece Middle to Top Red");
   }
 
-  public Command threePieceMtBRed() {
+  public Command  threePieceMtBRed() {
     return new PathPlannerAuto("3 Piece Middle to Bottom Red");
   }
 

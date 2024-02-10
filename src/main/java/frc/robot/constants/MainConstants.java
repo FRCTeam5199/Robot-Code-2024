@@ -155,12 +155,16 @@ public class MainConstants {
         public static final double ARM_STABLE_SETPOINT = 50;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 60;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
-        public static final double ARM_INTAKE_SETPOINT = 5;
+        public static final double ARM_INTAKE_SETPOINT = 7;
         public static final double ARM_CLIMB_SETPOINT = 40;
         public static final double ARM_TRAP_SETPOINT = 50;
         public static final double ARM_SUBWOOFER_SETPOINT = 75.75;
         public static final double ARM_PODIUM_SETPOINT = 62.21;
         public static final double ARM_RED_LINE_SETPOINT = 48.66;
+        public static final double ARM_TOP_PIECE_SETPOINT = 69;
+        public static final double ARM_BOTTOM_PIECE_SETPOINT = 75;
+        public static final double ARM_MIDDLE_PIECE_SETPOINT = 70.7;
+        public static final double ARM_AMP_SETPOINT = 74.7;
     }
 
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
