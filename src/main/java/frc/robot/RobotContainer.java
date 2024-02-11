@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -77,10 +76,9 @@ public class RobotContainer {
                 climberSubsystem.setClimbMode(true),
                 shooterSubsystem.setAmpandClimbMode(true));
         
-
         public RobotContainer() {
                 shooterSubsystem.init();
-                // arm.init();
+                arm.init();
                 intake.init();
                 climberSubsystem.init();
 
@@ -128,9 +126,9 @@ public class RobotContainer {
                         ));  
 
                 // Brake drive
-                mainCommandXboxController.button(6).whileTrue(drivetrain.applyRequest(() -> brake));
+                mainCommandXboxController.button(7).whileTrue(drivetrain.applyRequest(() -> brake));
                 // Reorient drive
-                mainCommandXboxController.button(7).onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
+                mainCommandXboxController.button(8).onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
                 // mainCommandXboxController.a().onTrue(arm.);
                 mainCommandXboxController.x().onTrue(speakerMode);
@@ -153,7 +151,7 @@ public class RobotContainer {
                 mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
                                 intake.deployIntake(),
                                 new WaitCommand(0.3),
-                                // arm.rotateIntake(),
+                                arm.rotateIntake(),
                                 new WaitCommand(0.15),
                                 intake.setIntakeSpeed(1),
                                 shooterSubsystem.setIntakeShooter(true),
@@ -161,7 +159,7 @@ public class RobotContainer {
                                 shooterSubsystem.setRunIndexer(true)))
                         .onFalse(new SequentialCommandGroup(
                                 intake.setIntakeSpeed(0),
-                                // arm.rotateStable(),
+                                arm.rotateStable(),
                                 new WaitCommand(0.2),
                                 shooterSubsystem.setIntakeShooter(false),
                                 shooterSubsystem.setRunShooter(false),
