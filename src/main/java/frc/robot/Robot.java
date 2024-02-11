@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
@@ -19,8 +21,6 @@ import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.utility.superstructure.Superstructure;
-
-import java.util.Optional;
 
 
 /**
@@ -52,7 +52,7 @@ public class Robot extends LoggedRobot{
     
     userInterface.initalizeConfigTab();
     userInterface.initalizeTestTab();
-    // userInterface.initalizeGameTab();
+    userInterface.initalizeGameTab();
 
     m_robotContainer = new RobotContainer();
   }
@@ -97,6 +97,7 @@ public class Robot extends LoggedRobot{
     //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
     // }
     
+    // userInterface.updateTestTab();
     // userInterface.updateGameTab();
   }
 

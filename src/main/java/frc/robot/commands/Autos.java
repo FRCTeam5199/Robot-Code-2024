@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -38,8 +37,23 @@ public class Autos extends Command{
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
         HashMap<String, Command> eventMap = new HashMap<>();
-      NamedCommands.registerCommand("deployIntake", intake.deployAuton());
-      NamedCommands.registerCommand("retractIntake", intake.stowAuton());
+      NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
+                                                          intake.deployIntake(),
+                                                          new WaitCommand(0.3),
+                                                          arm.rotateIntake(),
+                                                          new WaitCommand(0.15),
+                                                          intake.setIntakeSpeed(1),
+                                                          shooter.setIntakeShooter(true),
+                                                          shooter.setRunShooter(true),
+                                                          shooter.setRunIndexer(true)));
+      NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(
+                                                          intake.setIntakeSpeed(0),
+                                                          arm.rotateStable(),
+                                                          new WaitCommand(0.2),
+                                                          shooter.setIntakeShooter(false),
+                                                          shooter.setRunShooter(false),
+                                                          shooter.setRunIndexer(false),
+                                                          intake.stowIntake()));
 
       NamedCommands.registerCommand("wait1", new WaitCommand(1));
       NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.3), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));

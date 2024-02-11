@@ -4,20 +4,14 @@
 
 package frc.robot.subsystems;
 
-import java.util.Set;
-
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -27,14 +21,16 @@ import frc.robot.constants.MainConstants;
 public class
 ShooterSubsystem extends SubsystemBase {
   private static ShooterSubsystem shooterSubsystem;
+  
+  private static boolean subsystemStatus = false;
 
   public VortexMotorController shooterMotor1;
   public VortexMotorController shooterMotor2;
 
   public VortexMotorController shooterIndexerMotor;
 
-  public CANSparkMax flippyDo;
-  public SparkPIDController flippyDoPID;
+  public CANSparkMax shooterFlippyDoMotor;
+  public SparkPIDController shooterFlippyDoPIDConroller;
 
   public double shooterSpeed;
   public double indexerSpeed;
@@ -51,7 +47,7 @@ ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {}
   
 	/** 
-	 * Gets the instnace of the Arm Subsystem.
+	 * Gets the instnace of the Shooter Subsystem.
 	 */
 	public static ShooterSubsystem getInstance() {
 		if (shooterSubsystem == null) {
@@ -67,8 +63,10 @@ ShooterSubsystem extends SubsystemBase {
             System.err.println("Exception Message:" + exception.getMessage());
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+  }
 
-      // Shuffleboard.getTab("Test").add("Shooter Subsystem Initalized", true).getEntry();      
+  public boolean getSubsystemStatus() {
+    return subsystemStatus;
   }
 
   /*
@@ -76,31 +74,74 @@ ShooterSubsystem extends SubsystemBase {
    */
   public void motorInit() {
     shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
-    shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
-    shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
-
+    shooterMotor1.getEncoder().setPosition(0);
     shooterMotor1.setInvert(true);
+
+    shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
+    shooterMotor2.getEncoder().setPosition(0);
     shooterMotor2.setInvert(false);
-    
+
+    shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);    
     shooterIndexerMotor.setInvert(true);
     shooterIndexerMotor.setBrake(true);
 
-    shooterMotor1.getEncoder().setPosition(0);
-    shooterMotor2.getEncoder().setPosition(0);
+    shooterFlippyDoMotor = new CANSparkMax(11, MotorType.kBrushless);
+  }
 
-    flippyDo = new CANSparkMax(11, MotorType.kBrushless);
-    flippyDoPID = flippyDo.getPIDController();
-    flippyDoPID.setP(0.1);
+  public void PIDInit() {
+    shooterFlippyDoPIDConroller = shooterFlippyDoMotor.getPIDController();
+    shooterFlippyDoPIDConroller.setP(0.1);
+  }
+
+  public RelativeEncoder getShooterMotor1Encoder() {
+		return shooterMotor1.getEncoder();
+	}
+
+  public RelativeEncoder getShooterMotor2Encoder() {
+		return shooterMotor2.getEncoder();
+	}
+
+  public RelativeEncoder getShooterIndexerMotorEncoder() {
+		return shooterIndexerMotor.getEncoder();
+	}
+
+  public RelativeEncoder getShooterFlippyDoMotorEncoder() {
+		return shooterFlippyDoMotor.getEncoder();
+	}
+  
+  public boolean checkMotors() {
+    if (shooterMotor1 != null && shooterMotor2 != null) {
+      return true;
+    } else {
+      subsystemStatus = false;
+      return false;
+    }
+  }
+
+  public boolean checkPID() {
+    if (shooterFlippyDoPIDConroller != null) {
+      return true;
+    } else {
+      subsystemStatus = false;
+      return false;
+    }
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (checkMotors()) { subsystemStatus = true; } else { subsystemStatus = false; }
 
+    if (subsystemStatus) {
+      subsystemPeriodic();
+    }
+  }
+  
+  private void subsystemPeriodic() {
     if (checkForGamePiece()) {
-      genericHID.setRumble(RumbleType.kBothRumble, 1);
+      genericHID.setRumble(GenericHID.RumbleType.kBothRumble, 1);
     } else {
-      genericHID.setRumble(RumbleType.kBothRumble, 0);
+      genericHID.setRumble(GenericHID.RumbleType.kBothRumble, 0);
     }
 
     if (ampAndClimbMode) {
@@ -109,10 +150,11 @@ ShooterSubsystem extends SubsystemBase {
     } else if (intakeShooter) {
       shooterSpeed = -1;
       indexerSpeed = -0.5;
-    } else{
+    } else {
       shooterSpeed = 0.75;
       indexerSpeed = 0.5;
     }
+    
     if(autonSide){
       shooterSpeed = 0.5;
     }
@@ -120,35 +162,30 @@ ShooterSubsystem extends SubsystemBase {
     if(intakeShooter){
       shooterMotor1.set(-.3);
       shooterMotor2.set(-.3);
-    }
-    else{
-    if (runShooter) {
-      // if (ampAndClimbMode == false) {
-      shooterMotor1.set(shooterSpeed);
-      // }
-      shooterMotor2.set(shooterSpeed);
     } else {
-      shooterMotor1.set(0);
-      shooterMotor2.set(0);
+      if (runShooter) {
+        // if (ampAndClimbMode == false) {
+        shooterMotor1.set(shooterSpeed);
+        // }
+        shooterMotor2.set(shooterSpeed);
+      } else {
+        shooterMotor1.set(0);
+        shooterMotor2.set(0);
+      }
+    }
+    if(intakeShooter) {
+      shooterIndexerMotor.set(-.3);
+    } else {
+      if (runIndexer) {
+        shooterIndexerMotor.set(indexerSpeed);
+      } else {
+        shooterIndexerMotor.set(0);
+      }
     }
   }
-  if(intakeShooter){
-    shooterIndexerMotor.set(-.3);
-  }
-  else{
 
-    if (runIndexer) {
-      shooterIndexerMotor.set(indexerSpeed);
-    } else {
-      shooterIndexerMotor.set(0);
-    }
-  }
-  }
-//  public Command AutonShooting(double Shooter, double Indexer){
-//    return this.runOnce();
-//  }
   public Command flippyDoSetpoint(double Setpoint){
-    return this.runOnce(()-> flippyDoPID.setReference(Setpoint, ControlType.kPosition));
+    return this.runOnce(()-> shooterFlippyDoPIDConroller.setReference(Setpoint, ControlType.kPosition));
   }
 
   public Command setRunShooter(boolean runShooter) {
@@ -163,20 +200,23 @@ ShooterSubsystem extends SubsystemBase {
     return this.runOnce(() -> this.ampAndClimbMode = ampAndClimbMode);
   }
 
-
   public Command runAutonShooting(boolean side) {
-    return new SequentialCommandGroup(autonSpeed(side),setRunShooter(true), new WaitCommand(.5), setRunIndexer(true),
-    new WaitCommand(0.3), setRunShooter(false), setRunIndexer(false), autonSpeed(false));
+    return new SequentialCommandGroup(
+      autonSide(side),
+      setRunShooter(true), new WaitCommand(.5), setRunIndexer(true),
+    new WaitCommand(0.3), setRunShooter(false), setRunIndexer(false), autonSide(false));
   }
-  
-  public Command autonSpeed(boolean side){
+
+  public Command autonSide(boolean side){
     return this.runOnce(()-> this.autonSide = side);
   }
 
    /**
-   * Runs the Shooter Motor to Intake
+   * Runs the Shooter Motor to Intake.
+   * True runs the Shooter to Intake.
+   * @param intakeShooter
    */
-  public Command setintakeShooter(boolean intakeShooter) {
+  public Command setIntakeShooter(boolean intakeShooter) {
     return this.runOnce(() ->  this.intakeShooter = intakeShooter);
   }
   
