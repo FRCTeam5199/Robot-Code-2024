@@ -14,7 +14,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-import frc.robot.utility.Superstructure;
+import frc.robot.utility.superstructure.Superstructure;
 
 import java.util.Optional;
 
