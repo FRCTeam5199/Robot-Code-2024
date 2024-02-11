@@ -74,8 +74,8 @@ public class AprilTagSubsystem implements Subsystem {
 
     AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
-    // PhotonPoseEstimator multiPoseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
-    // PhotonPoseEstimator singlePoseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Front"), Constants.cameraPositions[0]);
+    PhotonPoseEstimator multiPoseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
+    PhotonPoseEstimator singlePoseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Front"), Constants.cameraPositions[0]);
 
     // PhotonPoseEstimator multiPoseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Right"), Constants.cameraPositions[1]);
     // PhotonPoseEstimator singlePoseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Right"), Constants.cameraPositions[1]);
@@ -89,14 +89,14 @@ public class AprilTagSubsystem implements Subsystem {
     // PhotonPoseEstimator multiPoseEstimatorShooter = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Shooter"), Constants.cameraPositions[4]);
     // PhotonPoseEstimator singlePoseEstimatorShooter = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Shooter"), Constants.cameraPositions[4]);
 
-    // public static PhotonCamera frontCamera;
+    public static PhotonCamera frontCamera;
     // public static PhotonCamera leftCamera;
     // public static PhotonCamera rightCamera;
     // public static PhotonCamera backCamera;
     // public static PhotonCamera shooter;
 
     // 0 Front, 1 Back, 2 Left, 3 Rigggggggggggggggght
-    // public PhotonCamera[] allCameras = {frontCamera, rightCamera, leftCamera, backCamera, shooter};
+    public PhotonCamera[] allCameras = {frontCamera};
     public PhotonTrackedTarget[] bestTargetFromCameras;
     public MultiTargetPNPResult[] multiTargetPNPResults;
     PIDController aimControl;
@@ -104,7 +104,7 @@ public class AprilTagSubsystem implements Subsystem {
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 
     public AprilTagSubsystem() {
-        // allCameras[0] = new PhotonCamera("Front");
+        allCameras[0] = new PhotonCamera("Front");
 
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
@@ -135,19 +135,16 @@ public class AprilTagSubsystem implements Subsystem {
      */
 
     public Optional<EstimatedRobotPose> getVisionPoseFront() {
-        // var result = allCameras[0].getLatestResult();
-        // if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
-        //     // System.out.println("2 Tags Front");
+        var result = allCameras[0].getLatestResult();
+        if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
+          return multiPoseEstimatorFront.update();
+         }else if(result.hasTargets()){
+             return singlePoseEstimatorFront.update();
 
-        //     return multiPoseEstimatorFront.update();
-        // }else if(result.hasTargets()){
-        //     // System.out.println("1 Tag Front");
-        //     return singlePoseEstimatorFront.update();
-
-        // }else{
-        //     // System.out.println("O Tags on Front");
+         }else{
+            System.out.println("O Tags on Front");
             return Optional.empty();
-        // }
+         }
     }
 
     /**
@@ -209,9 +206,9 @@ public class AprilTagSubsystem implements Subsystem {
     //     else{
             return Optional.empty();
     //     }
-       
+
     }
-}
+
 
     // public void shooterAlign(double speedX, double speedY){
     //     PhotonCamera targetCam = null;
@@ -298,5 +295,5 @@ public class AprilTagSubsystem implements Subsystem {
     //     System.out.println("angle:   " + angleForShooter);
 
 //         return angleForShooter;
-//       }  
-// }
+//       }
+}

@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,17 +29,17 @@ import java.util.Optional;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot{
   public static final boolean SECOND_TRY = false;
-
   private Command m_autonomousCommand;
+  Pose3d poseA = new Pose3d();
+  Pose3d poseB = new Pose3d();
   SwerveDrive drive = TunerConstants.DriveTrain;
   AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
   UserInterface userInterface = new UserInterface();
 
-  private RobotContainer m_robotContainer;
-  
+  private RobotContainer m_robotContainer;  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -66,16 +70,19 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-
+    
+    Logger.recordOutput("MyPose", poseA);
+    Logger.recordOutput("MyPoseArray", poseA, poseB);
+    Logger.recordOutput("MyPoseArray", new Pose3d[] {poseA, poseB});
     CommandScheduler.getInstance().run();
-    // System.out.println(drive.getPose());
+    System.out.println(drive.getPose());
     Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
     // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
     if(estimatePose1.isPresent()){
        EstimatedRobotPose robotPose = estimatePose1.get();
-       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), VecBuilder.fill(0.05, 0.05, Math.toRadians(0)));
     }
     // if(estimatePose2.isPresent()){
     //   EstimatedRobotPose robotPose = estimatePose2.get();

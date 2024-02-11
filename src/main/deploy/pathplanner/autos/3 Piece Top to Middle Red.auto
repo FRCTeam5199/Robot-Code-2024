@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.7,
+      "x": 15.5,
       "y": 6.6
     },
-    "rotation": 120.38
+    "rotation": 121.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "SbackShot"
+            "name": "backShot"
           }
         },
         {
@@ -24,15 +24,21 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "topPieceShot"
+            "name": "backShot"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
           }
         },
         {
@@ -44,7 +50,7 @@
         {
           "type": "named",
           "data": {
-            "name": "middlePieceShot"
+            "name": "backShot"
           }
         }
       ]

@@ -72,6 +72,10 @@ public class Autos extends Command{
     }
   }
 
+  public Command test(){
+      return new PathPlannerAuto("test");
+  }
+
   public Command onePieceTaxiTopRed(){
     return new PathPlannerAuto("1 Piece Taxi Top Red");
   }
