@@ -42,7 +42,7 @@ public class Autos extends Command{
                                                           new WaitCommand(0.3),
                                                           arm.rotateIntake(),
                                                           new WaitCommand(0.15),
-                                                          intake.setIntakeSpeed(1),
+                                                          intake.setIntakeSpeed(0.7),
                                                           shooter.setIntakeShooter(true),
                                                           shooter.setRunShooter(true),
                                                           shooter.setRunIndexer(true)));
@@ -74,10 +74,10 @@ public class Autos extends Command{
   }
   public Command getAuton() {
     if(DriverStation.getAlliance().get().name() == "Red") {
-      System.out.println("Automatically showing autons for Red");
+      // System.out.println("Automatically showing autons for Red");
       return autonChooserRed.getSelected();
     } else if (DriverStation.getAlliance().get().name() == "Blue") {
-      System.out.println("Automatically showing autons for Blue");
+      // System.out.println("Automatically showing autons for Blue");
       return autonChooserBlue.getSelected();
     } else if (side.getSelected()) {
       return autonChooserRed.getSelected();

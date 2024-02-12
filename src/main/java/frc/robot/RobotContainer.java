@@ -155,7 +155,7 @@ public class RobotContainer {
                                 new WaitCommand(0.3),
                                 arm.rotateIntake(),
                                 new WaitCommand(0.15),
-                                intake.setIntakeSpeed(1),
+                                intake.setIntakeSpeed(0.8),
                                 shooterSubsystem.setIntakeShooter(true),
                                 shooterSubsystem.setRunShooter(true),
                                 shooterSubsystem.setRunIndexer(true)))
