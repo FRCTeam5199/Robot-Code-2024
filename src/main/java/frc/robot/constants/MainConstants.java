@@ -150,13 +150,13 @@ public class MainConstants {
     public static class Setpoints {
         //Intake Setpoints
         public static final double STOW_INTAKE = 0;
-        public static final double DEPLOY_INTAKE = 14;
+        public static final double DEPLOY_INTAKE = 22; //24
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 40;
+        public static final double ARM_STABLE_SETPOINT = 50;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 60;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
-        public static final double ARM_INTAKE_SETPOINT = 9;
+        public static final double ARM_INTAKE_SETPOINT = 7;
         public static final double ARM_CLIMB_SETPOINT = 40;
         public static final double ARM_TRAP_SETPOINT = 50;
         public static final double ARM_SUBWOOFER_SETPOINT = 75.75;

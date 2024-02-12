@@ -74,7 +74,7 @@ public class Robot extends LoggedRobot{
     Logger.recordOutput("MyPoseArray", poseA, poseB);
     Logger.recordOutput("MyPoseArray", new Pose3d[] {poseA, poseB});
     CommandScheduler.getInstance().run();
-    System.out.println(drive.getPose());
+    // System.out.println(drive.getPose());
     Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();

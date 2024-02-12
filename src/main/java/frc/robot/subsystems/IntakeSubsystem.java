@@ -30,7 +30,7 @@ public class IntakeSubsystem extends SubsystemBase {
 		if (intakeSubsystem == null) {
 			intakeSubsystem = new IntakeSubsystem();
 		}
-
+ 
 		return intakeSubsystem;
 	}
 

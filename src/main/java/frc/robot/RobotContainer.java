@@ -134,6 +134,8 @@ public class RobotContainer {
                 mainCommandXboxController.x().onTrue(speakerMode);
                 mainCommandXboxController.y().onTrue(arm.rotateBack());
                 mainCommandXboxController.b().onTrue(ampMode);
+                mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
+                mainCommandXboxController.povRight().onTrue(intake.deployIntake());
                 
                 //For Debugging
                 // mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));

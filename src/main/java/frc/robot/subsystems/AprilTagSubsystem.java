@@ -142,7 +142,7 @@ public class AprilTagSubsystem implements Subsystem {
              return singlePoseEstimatorFront.update();
 
          }else{
-            System.out.println("O Tags on Front");
+            // System.out.println("O Tags on Front");
             return Optional.empty();
          }
     }
