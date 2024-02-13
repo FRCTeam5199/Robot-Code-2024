@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.659794400897903,
-      "y": 4.508672070126443
+      "x": 15.65,
+      "y": 4.5
     },
     "rotation": -124.5
   },
@@ -32,7 +32,13 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "retractIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "bottomPieceShot"
           }
         },
         {
@@ -56,7 +62,13 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "retractIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "middlePieceShot"
           }
         }
       ]
