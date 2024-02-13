@@ -151,7 +151,7 @@ public class RobotContainer {
                 mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.setRunShooter(true)).onFalse(shooterSubsystem.setRunShooter(false));
                 // Intake
                 mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
-                                intake.deployIntake(),
+//                                intake.deployIntake(),
                                 new WaitCommand(0.3),
                                 arm.rotateIntake(),
                                 new WaitCommand(0.15),
@@ -165,8 +165,9 @@ public class RobotContainer {
                                 new WaitCommand(0.2),
                                 shooterSubsystem.setIntakeShooter(false),
                                 shooterSubsystem.setRunShooter(false),
-                                shooterSubsystem.setRunIndexer(false),
-                                intake.stowIntake()));
+                                shooterSubsystem.setRunIndexer(false)
+//                                intake.stowIntake()));
+                                ));
 //                mainCommandXboxController.rightTrigger().onTrue(intakeAction).onFalse(stopIntakeAction);
 
                 // mainCommandXboxController.rightTrigger().onTrue(intake.deployIntake());

@@ -101,7 +101,7 @@ public class AprilTagSubsystem implements Subsystem {
 
     public AprilTagSubsystem() {
         allCameras[0] = new PhotonCamera("Front");
-        poseEstimatorFront.setRobotToCameraTransform(new Transform3d(Units.inchesToMeters(0), 0, 0, new Rotation3d(0, Math.toRadians(47), 0)));
+        poseEstimatorFront.setRobotToCameraTransform(new Transform3d(Units.inchesToMeters(0.3), 0, 0.17, new Rotation3d(0, Math.toRadians(47), 0)));
         poseEstimatorFront.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
