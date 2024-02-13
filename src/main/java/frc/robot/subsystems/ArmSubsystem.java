@@ -113,16 +113,16 @@ public class ArmSubsystem extends SubsystemBase {
 			encoderValue = armEncoder.getPosition();
 		}
 
-		if (armMotor.getEncoder().getPosition() > 61) {
-			while (armMotor.getEncoder().getPosition() > 61) {
-				armMotor.set(-0.3);
-			}
+		// if (armMotor.getEncoder().getPosition() > 61) {
+		// 	while (armMotor.getEncoder().getPosition() > 61) {
+		// 		armMotor.set(-0.3);
+		// 	}
 
-			armMotor.set(0);
-			this.rotateSetpoint = 60;
-		} else {
+		// 	armMotor.set(0);
+		// 	this.rotateSetpoint = 60;
+		// } else {
 			armMotor.set(rotatePIDController.calculate(encoderValue, this.rotateSetpoint));
-		}
+		// }
 	}
 
 	public AbsoluteEncoder getArmEncoder() {
@@ -144,7 +144,7 @@ public class ArmSubsystem extends SubsystemBase {
 	 * @return command to move to setPoint
 	 */
 	public Command changeArmSetpoint(double rotations) {
-    System.out.println(rotateSetpoint + rotations);
+    // System.out.println(rotateSetpoint + rotations);
     return this.runOnce(() -> this.rotateSetpoint += rotations);
   }
 

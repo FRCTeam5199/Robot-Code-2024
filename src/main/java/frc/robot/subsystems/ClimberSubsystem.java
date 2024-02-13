@@ -22,7 +22,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public PIDController climberPIDController;
 
-  private boolean climbModeEnabled = false;
+  private boolean climbModeEnabled = true;
   
   public ClimberSubsystem() {}
   
