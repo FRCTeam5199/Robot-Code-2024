@@ -47,7 +47,7 @@ ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {}
   
 	/** 
-	 * Gets the instnace of the Shooter Subsystem.
+	 * Gets the instance of the Shooter Subsystem.
 	 */
 	public static ShooterSubsystem getInstance() {
 		if (shooterSubsystem == null) {
@@ -69,8 +69,8 @@ ShooterSubsystem extends SubsystemBase {
     return subsystemStatus;
   }
 
-  /*
-   * Initalizes the motor(s) for this subsystem
+  /**
+   *  Initalizes the motor(s) for this subsystem
    */
   public void motorInit() {
     shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
