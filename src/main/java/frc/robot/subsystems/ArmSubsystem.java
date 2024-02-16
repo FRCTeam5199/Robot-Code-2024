@@ -9,6 +9,7 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Main;
@@ -27,6 +28,7 @@ public class ArmSubsystem extends SubsystemBase {
 	private double rotateSetpoint = 120;
 
 	private static boolean isBrakeMode = false; 
+	private boolean isAiming = false;
 
 	private CANSparkMax armEncoderMotor;
 	private SparkAbsoluteEncoder armEncoder;
@@ -121,12 +123,20 @@ public class ArmSubsystem extends SubsystemBase {
 		// 	armMotor.set(0);
 		// 	this.rotateSetpoint = 60;
 		// } else {
+		// if(isAiming){
 			armMotor.set(rotatePIDController.calculate(encoderValue, this.rotateSetpoint));
 		// }
+		// else{
+		// 	armMotor.set(rotatePIDController.calculate(encoderValue, 45));
+		// }
+			// }
 	}
 
 	public AbsoluteEncoder getArmEncoder() {
 		return armEncoder;
+	}
+	public Command isAiming(boolean bool){
+		return this.runOnce(()-> isAiming = bool);
 	}
 
 	/**
@@ -161,14 +171,14 @@ public class ArmSubsystem extends SubsystemBase {
 	 * Sets the Arm setpoint to the Arm Stable setpoint
 	 */
 	public Command rotateStable() {
-		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT);
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT).alongWith(Commands.print("dddddddddddddddddd"));
 	}
 
 	/**
 	 * Sets the Arm setpoint to the Arm Amp setpoint
 	 */
 	public Command rotateAmp() {
-		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_AMP_SETPOINT);
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_AMP_SETPOINT).alongWith(Commands.print("eeeeeeeeeeeeeeeeeeeeeeeeee"));
 	}
 
 	/**
@@ -184,7 +194,6 @@ public class ArmSubsystem extends SubsystemBase {
 	public Command rotateFront() {
 		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT);
 	}
-
 	/**
 	 * Sets the Arm setpoint to slightly above retracted intake
 	 */

@@ -12,6 +12,7 @@ import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -81,10 +82,10 @@ public class Robot extends LoggedRobot{
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
     // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
-    if(estimatePose1.isPresent()){
-       EstimatedRobotPose robotPose = estimatePose1.get();
-       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), VecBuilder.fill(0.05, 0.05, Math.toRadians(0)));
-    }
+    // if(estimatePose1.isPresent()){
+    //    EstimatedRobotPose robotPose = estimatePose1.get();
+    //    drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), VecBuilder.fill(0.05, 0.05, Math.toRadians(0)));
+    // }
     // if(estimatePose2.isPresent()){
     //   EstimatedRobotPose robotPose = estimatePose2.get();
     //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
@@ -120,6 +121,7 @@ public class Robot extends LoggedRobot{
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    
   }
 
   /** This function is called periodically during autonomous. */

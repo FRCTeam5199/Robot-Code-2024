@@ -59,7 +59,7 @@ public class Autos extends Command{
       NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.3), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(146), new WaitCommand(0.3), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       NamedCommands.registerCommand("topPieceShot", new SequentialCommandGroup(arm.rotateTopPiece(), new WaitCommand(0.3), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
-      NamedCommands.registerCommand("bottomPieceShot", new SequentialCommandGroup(arm.rotateTopPiece(), new WaitCommand(0.3), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("bottomPieceShot", new SequentialCommandGroup(arm.rotateBottomPiece(), new WaitCommand(0.3), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       NamedCommands.registerCommand("middlePieceShot", new SequentialCommandGroup(arm.rotateMiddlePiece(), new WaitCommand(0.3), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       // NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(50), new WaitCommand(0.8), shooter.runAutonShooting(false), new WaitCommand(0.2)));
 
@@ -89,12 +89,8 @@ public class Autos extends Command{
   public Command test(){
       return new PathPlannerAuto("test");
   }
-
-  public Command onePieceTaxiTopRed(){
-    return new PathPlannerAuto("1 Piece Taxi Top Red");
-  }
   public Command twoPieceTaxiTopRed(){
-    return new AutoBuilder().buildAuto("2 Piece Taxi Top Red").withInterruptBehavior(getInterruptionBehavior());
+    return new PathPlannerAuto("2 Piece Taxi Top Red");
     // return new PathPlannerAuto("2 Piece Taxi Top Red");
   }
   
@@ -103,8 +99,8 @@ public class Autos extends Command{
         return new WaitCommand(15);
   }
 
-  public Command shootDontMove(){
-    return new WaitCommand(15);
+  public Command shootMiddleDontMove(){
+    return new SequentialCommandGroup();
   }
 
 
@@ -118,40 +114,19 @@ public class Autos extends Command{
     public Command taxiBottomRed(){
     return new PathPlannerAuto("Taxi Bottom Red");
   }
-    public Command taxiTopBlue(){
-    return new PathPlannerAuto("Taxi Top Blue");
-  }
-    public Command taxiMiddleBlue(){
-    return new PathPlannerAuto("Taxi Middle Blue");
-  }
-    public Command taxiBottomBlue(){
-    return new PathPlannerAuto("Taxi Bottom Blue");
-  }
+ 
 
   //One piece Autons
-  public Command shootTaxiTopRed(){
-    return new PathPlannerAuto("Shoot and Taxi Top Red");
+  public Command onePieceBottomRed(){
+    return new PathPlannerAuto(getName());
   }
-  public Command shootAndTaxiBottomBlue() {
-    return new PathPlannerAuto("Blue Shoot and Taxi Bottom");
-  }
-
 
   public Command onePieceMiddleRed(){
     return new PathPlannerAuto("1 Piece Taxi Middle Red");
   }
-  public Command shootTaxiBottomRed(){
-    return new PathPlannerAuto("Shoot and Taxi Bottom Red");
-  }
-
-  public Command shootTaxiTopBlue(){
-    return new PathPlannerAuto("Shoot and Taxi Top Blue");
-  }
-    public Command shootTaxiMiddleBlue(){
-    return new PathPlannerAuto("Shoot and Taxi Middle Blue");
-  }
-    public Command shootTaxiBottomBlue(){
-    return new PathPlannerAuto("Shoot and Taxi Bottom Blue");
+  
+  public Command onePieceTopRed(){
+    return new PathPlannerAuto("1 Piece Taxi Top Red");
   }
 
 

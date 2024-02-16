@@ -18,12 +18,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "deployIntake"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom to Middle Red p1"

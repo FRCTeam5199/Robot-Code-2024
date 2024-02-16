@@ -85,7 +85,7 @@ ShooterSubsystem extends SubsystemBase {
     shooterIndexerMotor.setInvert(true);
     shooterIndexerMotor.setBrake(true);
 
-    shooterFlippyDoMotor = new CANSparkMax(11, MotorType.kBrushless);
+    shooterFlippyDoMotor = new CANSparkMax(11, MotorType.kBrushed);
   }
 
   public void PIDInit() {
@@ -182,6 +182,9 @@ ShooterSubsystem extends SubsystemBase {
         shooterIndexerMotor.set(0);
       }
     }
+  }
+  public Command flippyDoPercent(double speed){
+    return this.runOnce(()-> shooterFlippyDoMotor.set(speed));
   }
 
   public Command flippyDoSetpoint(double Setpoint){
