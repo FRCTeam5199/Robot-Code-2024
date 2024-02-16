@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -31,7 +32,7 @@ public class ArmSubsystem extends SubsystemBase {
 	private boolean armClimbMode = false;
 
 	private CANSparkMax encoderMotor;
-	private DutyCycleEncoder encoder;
+	private AbsoluteEncoder encoder;
 
 	public double encoderValue;
 
@@ -68,15 +69,17 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public void motorInit() {
-		armMotor1 = new TalonMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID_1);
-		armMotor2 = new TalonMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID_2);
+		armMotor1 = new TalonMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
+		armMotor2 = new TalonMotorController(MainConstants.IDs.Motors.ARM_MOTOR2_ID);
 
 		armMotor2.follow(armMotor1);
 
-		armMotor1.setInvert(true);
+		armMotor1.setInvert(false);
 		armMotor1.setBrake(true);
+		armMotor2.setInvert(false);
 
-		encoder = new DutyCycleEncoder(new DigitalInput(0));
+
+		encoder = encoderMotor.getAbsoluteEncoder(Type.kDutyCycle);
 		
 	}
 
@@ -86,8 +89,8 @@ public class ArmSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		if(encoder.getAbsolutePosition() < 175){
-			encoderValue = encoder.getAbsolutePosition();
+		if(encoder.getPosition() < 175){
+			encoderValue = encoder.getPosition();
 		}
 
 		// if (armMotor.getEncoder().getPosition() < 0) {
