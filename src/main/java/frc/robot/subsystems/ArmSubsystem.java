@@ -24,16 +24,16 @@ public class ArmSubsystem extends SubsystemBase {
 
 	private static VortexMotorController armMotor;
 
+	private CANSparkMax armEncoderMotor;
+	private SparkAbsoluteEncoder armEncoder;
+
 	private PIDController rotatePIDController;
-	private double rotateSetpoint = 120;
 
 	private static boolean isBrakeMode = false; 
 	private boolean isAiming = false;
 
-	private CANSparkMax armEncoderMotor;
-	private SparkAbsoluteEncoder armEncoder;
-
 	public double encoderValue;
+	private double rotateSetpoint = 120;
 
 	public ArmSubsystem() {}
 
@@ -87,7 +87,6 @@ public class ArmSubsystem extends SubsystemBase {
 		if (armMotor != null && armEncoderMotor != null && armEncoder != null) {
 			return true;
 		} else {
-			subsystemStatus = false;
 			return false;
 		}
 	}
@@ -96,14 +95,13 @@ public class ArmSubsystem extends SubsystemBase {
 		if (rotatePIDController != null) {
 			return true;
 		} else {
-			subsystemStatus = false;
 			return false;
 		}
 	}
 
 	@Override
 	public void periodic() {
-    if (checkMotors() && checkPID()) { subsystemStatus = true; };
+    if (checkMotors() && checkPID()) { subsystemStatus = true; } else { subsystemStatus = false; }
 
 		if (subsystemStatus) {
 				subsystemPeriodic();
@@ -115,24 +113,20 @@ public class ArmSubsystem extends SubsystemBase {
 			encoderValue = armEncoder.getPosition();
 		}
 
-		// if (armMotor.getEncoder().getPosition() > 61) {
-		// 	while (armMotor.getEncoder().getPosition() > 61) {
-		// 		armMotor.set(-0.3);
-		// 	}
-
-		// 	armMotor.set(0);
-		// 	this.rotateSetpoint = 60;
-		// } else {
+		if (encoderValue > 170) {
+			if (armMotor.getEncoder().getPosition() > 170) { armMotor.set(-0.3); } else { armMotor.set(0); }
+		} else {
 		// if(isAiming){
 			armMotor.set(rotatePIDController.calculate(encoderValue, this.rotateSetpoint));
 		// }
 		// else{
 		// 	armMotor.set(rotatePIDController.calculate(encoderValue, 45));
 		// }
-			// }
+		}
 	}
 
 	public AbsoluteEncoder getArmEncoder() {
+		if (!subsystemStatus) return null;
 		return armEncoder;
 	}
 	public Command isAiming(boolean bool){

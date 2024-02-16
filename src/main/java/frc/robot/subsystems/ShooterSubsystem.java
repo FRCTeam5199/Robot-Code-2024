@@ -35,6 +35,8 @@ ShooterSubsystem extends SubsystemBase {
   public double shooterSpeed;
   public double indexerSpeed;
 
+  public double shooterTargetSpeed;
+
   public boolean ampAndClimbMode = false;
   public boolean runShooter = false;
   public boolean runIndexer = false;
@@ -94,26 +96,28 @@ ShooterSubsystem extends SubsystemBase {
   }
 
   public RelativeEncoder getShooterMotor1Encoder() {
-		return shooterMotor1.getEncoder();
+    if (!subsystemStatus) { return null; } else { return shooterMotor1.getEncoder(); }
 	}
 
   public RelativeEncoder getShooterMotor2Encoder() {
+    if (!subsystemStatus) return null;
 		return shooterMotor2.getEncoder();
 	}
 
   public RelativeEncoder getShooterIndexerMotorEncoder() {
+    if (!subsystemStatus) return null;
 		return shooterIndexerMotor.getEncoder();
 	}
 
   public RelativeEncoder getShooterFlippyDoMotorEncoder() {
+    if (!subsystemStatus) return null;
 		return shooterFlippyDoMotor.getEncoder();
 	}
   
   public boolean checkMotors() {
-    if (shooterMotor1 != null && shooterMotor2 != null) {
+    if ((shooterMotor1 != null && shooterMotor1.encoder != null) && (shooterMotor2 != null && shooterMotor1.encoder != null)) {
       return true;
     } else {
-      subsystemStatus = false;
       return false;
     }
   }
@@ -122,7 +126,6 @@ ShooterSubsystem extends SubsystemBase {
     if (shooterFlippyDoPIDConroller != null) {
       return true;
     } else {
-      subsystemStatus = false;
       return false;
     }
   }
@@ -130,7 +133,7 @@ ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (checkMotors()) { subsystemStatus = true; } else { subsystemStatus = false; }
+    if (checkMotors() && checkPID()) { subsystemStatus = true; } else { subsystemStatus = false; }
 
     if (subsystemStatus) {
       subsystemPeriodic();
@@ -237,6 +240,14 @@ ShooterSubsystem extends SubsystemBase {
    */
   public Command setShooterSpeed(double percent) {
     return this.runOnce(() -> shooterSpeed = percent);
+  }
+  
+  public Command setShooterTargetSpeed(double speed) {
+    return this.runOnce(() -> shooterTargetSpeed = speed);
+  }
+
+  public Command runShooterToTargetSpeed() {
+    return this.runOnce(() -> shooterSpeed = shooterTargetSpeed).andThen(() -> runShooter = true);
   }
 
   /**

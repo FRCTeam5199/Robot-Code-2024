@@ -35,7 +35,7 @@ public class Autos extends Command{
 
     public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm, ShooterSubsystem shooter){
     this.swerveDrive = swerve;
-        AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
+        // AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
         HashMap<String, Command> eventMap = new HashMap<>();
       NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
                                                           intake.deployIntake(),
@@ -63,7 +63,7 @@ public class Autos extends Command{
       NamedCommands.registerCommand("middlePieceShot", new SequentialCommandGroup(arm.rotateMiddlePiece(), new WaitCommand(0.3), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       // NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(50), new WaitCommand(0.8), shooter.runAutonShooting(false), new WaitCommand(0.2)));
 
-      Shuffleboard.getTab("Autons").add("Side", side);
+      // Shuffleboard.getTab("Autons").add("Side", side);
       side.addOption("Red Side", true);
       side.addOption("Blue Side", false);
 
@@ -84,6 +84,10 @@ public class Autos extends Command{
     } else {
       return autonChooserBlue.getSelected();
     }
+  }
+
+  public SendableChooser<Boolean> getAutonSide() {
+    return side;
   }
 
   public Command test(){

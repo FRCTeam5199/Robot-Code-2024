@@ -89,7 +89,7 @@ public class MainConstants {
         //Operator Constants
         public static int MAIN_CONTROLLER_PORT = 0;
         public static int OPERATOR_CONTROLLER_PORT = 1;
-        public static int BUTTON_PANEL_PORT = 0;
+        public static int BUTTON_PANEL_PORT = 2;
     }
 
     public static class IDs {

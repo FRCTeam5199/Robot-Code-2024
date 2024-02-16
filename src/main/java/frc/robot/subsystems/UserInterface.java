@@ -1,7 +1,4 @@
 package frc.robot.subsystems;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
-
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -29,6 +26,8 @@ public class UserInterface extends SubsystemBase {
     ArmSubsystem armSubsystem = new ArmSubsystem();
     IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+
+    // Autos autos = new Autos(swerveDrive, intakeSubsystem, armSubsystem, shooterSubsystem);
 
     public ShuffleboardTab shuffleboardTestTab;
     public ShuffleboardTab shuffleboardGameTab;// = Shuffleboard.getTab("Game");;
@@ -175,18 +174,21 @@ public class UserInterface extends SubsystemBase {
         shuffleboardShooterMotor2SpeedComponent.setInteger((long)shooterSubsystem.getShooterMotor1Encoder().getVelocity());
         shuffleboardShooterIndexerMotorSpeedComponent.setInteger((long)shooterSubsystem.getShooterIndexerMotorEncoder().getVelocity());
 
-        // shuffleboardIntakeMotorSpeedComponent.setInteger((long)intakeMotorSpeed);
+        shuffleboardIntakeMotorSpeedComponent.setInteger((long)intakeSubsystem.getIntakeMotorEncoder().getVelocity());
+        shuffleboardIntakeActuatorMotorEncoderComponent.setValue(intakeSubsystem.getIntakeActuatorMotorEncoder());
     }
 
     public void updateGameTab() {
-        // if (DriverStation.isFMSAttached()) {
+        if (DriverStation.isFMSAttached()) {
             shuffleboardEventNameComponent.setString(DriverStation.getEventName());
             shuffleboardMatchNumberComponent.setInteger(DriverStation.getMatchNumber());
             shuffleboardMatchTypeComponent.setString(DriverStation.getMatchType().toString());
             shuffleboardAllianceColorComponent.setString(DriverStation.getAlliance().get().toString());
             shuffleboardStationNumberComponent.setInteger(DriverStation.getLocation().getAsInt());
             shuffleboardGameMessageComponent.setString(DriverStation.getGameSpecificMessage());
-        // }
+        } else {
+            // shuffleboardAllianceColorComponent.setString(autos.getAutonSide().getSelected().toString());
+        }
 
         shuffleboardRobotEnabledComponent.setBoolean(DriverStation.isEnabled());
         shuffleboardEmergencyStoppedComponent.setBoolean(DriverStation.isEStopped());
@@ -194,7 +196,6 @@ public class UserInterface extends SubsystemBase {
         shuffleboardTeleopComponent.setBoolean(DriverStation.isTeleop());
         
         // shuffleboardCameraComponent.setValue(CameraServer.getVideo());
-        // shuffleboardFieldComponent.setValue();
         field.setRobotPose(swerveDrivePose);
     }
 

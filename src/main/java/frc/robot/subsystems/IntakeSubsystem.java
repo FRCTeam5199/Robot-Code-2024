@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -47,7 +48,6 @@ public class IntakeSubsystem extends SubsystemBase {
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
     }
-    
 
     public boolean getSubsystemStatus() {
         return subsystemStatus;
@@ -77,7 +77,6 @@ public class IntakeSubsystem extends SubsystemBase {
 		if (intakeMotor != null && intakeActuatorMotor != null) {
 			return true;
 		} else {
-            subsystemStatus = false;
 			return false;
 		}
 	}
@@ -90,9 +89,17 @@ public class IntakeSubsystem extends SubsystemBase {
 		}
 	}
 
+    public RelativeEncoder getIntakeMotorEncoder() {
+		return intakeMotor.getEncoder();
+	}
+
+    public RelativeEncoder getIntakeActuatorMotorEncoder() {
+        return intakeActuatorMotor.getEncoder();
+    }
+
     @Override
     public void periodic() {
-        if (checkMotors() && checkPID()) { subsystemStatus = true; } else { subsystemStatus = false; };
+        if (checkMotors() && checkPID()) { subsystemStatus = true; } else { subsystemStatus = false; }
 
         if (subsystemStatus) {
             subsystemPeriodic();

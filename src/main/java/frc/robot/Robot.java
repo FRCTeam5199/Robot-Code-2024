@@ -82,7 +82,7 @@ public class Robot extends LoggedRobot{
     CommandScheduler.getInstance().run();
 
     //Determines whether there is usable value from the getVisionPose command
-    Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
+    // Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
     // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
@@ -104,7 +104,7 @@ public class Robot extends LoggedRobot{
     // }
     
     // userInterface.updateTestTab();
-    // userInterface.updateGameTab();
+    userInterface.updateGameTab();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

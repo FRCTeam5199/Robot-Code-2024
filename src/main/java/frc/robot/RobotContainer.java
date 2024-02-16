@@ -83,7 +83,6 @@ public class RobotContainer {
                 arm.init();
                 intake.init();
                 climberSubsystem.init();
-
                 
 
                 auton = new Autos(drivetrain, intake, arm, shooterSubsystem);
@@ -105,16 +104,16 @@ public class RobotContainer {
                     ArmSubsystem.toggleBrakeMode();
                 }
             }));
-
+            
                 // Drive
                 drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                         drivetrain.applyRequest(() -> drive
-                                .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(1) // Drive
+                                .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(1.5) // Drive
                                                                                                 // forward
                                                                                                 // with
                                 // negative Y (forward)
                                 .withVelocityY(
-                                        -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(1) // Drive
+                                        -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(1.5) // Drive
                                                                                                 // left
                                                                                                 // with
                                                                                                 // negative
@@ -136,27 +135,30 @@ public class RobotContainer {
                 mainCommandXboxController.x().onTrue(new SequentialCommandGroup(
                         climberSubsystem.setClimbMode(false),
                         shooterSubsystem.setAmpandClimbMode(false),
-                        arm.rotateSubwoofer()));
-                mainCommandXboxController.y().onTrue(arm.rotateStable());
+                        arm.rotateSubwoofer(),
+                        shooterSubsystem.setShooterTargetSpeed(0.85)));
+                mainCommandXboxController.y().onTrue(arm.rotateBack().alongWith(shooterSubsystem.setShooterTargetSpeed(85)));
                 mainCommandXboxController.b().onTrue(new SequentialCommandGroup(
                         climberSubsystem.setClimbMode(false),
                         shooterSubsystem.setAmpandClimbMode(true),
-                        arm.rotateAmp()));
+                        arm.rotateAmp(),
+                        shooterSubsystem.setShooterTargetSpeed(0.3)));
                 mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
                 mainCommandXboxController.povRight().onTrue(intake.deployIntake());
                 
+
                 //For Debugging
                 // mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
 
                 mainCommandXboxController.povDown().onTrue(climbMode);
 
-                // Precision/robot oriented drive
+                // Precision/robot oriented drive       
                 mainCommandXboxController.leftBumper().whileTrue(drivetrain.applyRequest(() -> point.withModuleDirection(new Rotation2d(-mainCommandXboxController.getLeftY(), -mainCommandXboxController.getLeftX()))));
                 // Shoot
                 mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
 
                 // Speaker Tracking and Auto Shooting
-                mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.setRunShooter(true).alongWith(arm.isAiming(true))).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)));
+                mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.runShooterToTargetSpeed().alongWith(arm.isAiming(true))).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)));
                 // Intake
                 mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
                                 arm.setArmSetpoint(60),
