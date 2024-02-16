@@ -12,6 +12,7 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -141,11 +142,11 @@ ShooterSubsystem extends SubsystemBase {
   }
   
   private void subsystemPeriodic() {
-    if (checkForGamePiece()) {
-      genericHID.setRumble(GenericHID.RumbleType.kBothRumble, 1);
-    } else {
-      genericHID.setRumble(GenericHID.RumbleType.kBothRumble, 0);
-    }
+    // if (checkForGamePiece()) {
+    //   genericHID.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+    // } else {
+    //   genericHID.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+    // }
 
     if (ampAndClimbMode) {
       shooterSpeed = 0.3;
@@ -185,6 +186,9 @@ ShooterSubsystem extends SubsystemBase {
         shooterIndexerMotor.set(0);
       }
     }
+  }
+  public Command moveFlippyForTime(double s, double seconds){
+    return new SequentialCommandGroup(flippyDoPercent(s),new WaitCommand(seconds),flippyDoPercent(s));
   }
   public Command flippyDoPercent(double speed){
     return this.runOnce(()-> shooterFlippyDoMotor.set(speed));

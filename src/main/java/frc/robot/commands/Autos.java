@@ -138,14 +138,17 @@ public class Autos extends Command{
   public Command twoPieceTopRed(){
     return new PathPlannerAuto("2 Piece Top Red");
   }
-
+  
 
   public Command twoPieceBottomBlue() {
-    return AutoBuilder.buildAuto("2 Piece Bottom Blue");
+    return new PathPlannerAuto("2 Piece Bottom Blue");
+  }
+  public Command twoPieceMiddleBlue(){
+    return new PathPlannerAuto("2 Piece Middle Blue");
   }
 
   public Command twoPieceMiddleRed() {
-    return AutoBuilder.buildAuto("2 Piece Middle Red");
+    return new PathPlannerAuto("2 Piece Middle Red");
   }
 
   public Command twoPieceExtendedRed(){

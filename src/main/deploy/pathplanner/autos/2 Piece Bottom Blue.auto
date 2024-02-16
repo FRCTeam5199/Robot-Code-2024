@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.83,
-      "y": 4.461828723942754
+      "x": 0.8207147183525153,
+      "y": 4.420390379242297
     },
     "rotation": -60.0
   },
@@ -33,6 +33,12 @@
           "type": "path",
           "data": {
             "pathName": "2 Piece Bottom Blue"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "retractIntake"
           }
         },
         {
