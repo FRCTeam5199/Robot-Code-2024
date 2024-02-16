@@ -101,7 +101,8 @@ public class AprilTagSubsystem implements Subsystem {
 
     public AprilTagSubsystem() {
         allCameras[0] = new PhotonCamera("Front");
-        poseEstimatorFront.setRobotToCameraTransform(new Transform3d(Units.inchesToMeters(0.3), 0, 0.17, new Rotation3d(0, Math.toRadians(47), 0)));
+        //declared this after making the object because I don't trust how the position is set when the object is made.
+        poseEstimatorFront.setRobotToCameraTransform(new Transform3d(6, 0, 0.17, new Rotation3d(0, Math.toRadians(47), Math.toRadians(-184))));
         poseEstimatorFront.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
@@ -128,7 +129,7 @@ public class AprilTagSubsystem implements Subsystem {
     }
 
     /**
-     * estimated posistion from front
+     * estimated position from front
      */
 
     public Optional<EstimatedRobotPose> getVisionPoseFront() {
@@ -146,6 +147,7 @@ public class AprilTagSubsystem implements Subsystem {
 
     /**
      * estimated pose right
+     * @return the estimated vision pose from the right camera. If there is no position to give it returns an empty value
      */
     public Optional<EstimatedRobotPose> getVisionPoseRight() {
         // var result = allCameras[1].getLatestResult();
@@ -203,6 +205,31 @@ public class AprilTagSubsystem implements Subsystem {
     //     else{
             return Optional.empty();
     //     }
+
+    }
+
+    /**
+     * Sets the robots heading to align with the goal based on the position of the bot on the field.
+     *
+     * @param currentPose Pass the current position of the robot
+     * @param x pass the speed in the x direction
+     * @param y pass the speed in the y direction
+     *
+     */
+    public void globalAlignment(Pose2d currentPose, double x, double y){
+        SwerveRequest.FieldCentricFacingAngle driveHeading = new SwerveRequest.FieldCentricFacingAngle();
+        Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
+        Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
+        if(Objects.equals(getAllianceColor(), "Red")){
+            Translation2d targetDistance = currentPose.minus(stagePoseRed).getTranslation();
+            Rotation2d targetHeading = new Rotation2d(Math.atan(targetDistance.getY()/targetDistance.getX()));
+            drive.applyRequest(()-> driveHeading.withVelocityX(x).withVelocityY(y).withTargetDirection(targetHeading).withDeadband(1));
+        }
+        if(Objects.equals(getAllianceColor(), "Blue")){
+            Translation2d targetDistance = currentPose.minus(stagePoseBlue).getTranslation();
+            Rotation2d targetHeading = new Rotation2d(Math.atan(targetDistance.getY()/targetDistance.getX()));
+            drive.applyRequest(()-> driveHeading.withVelocityX(x).withVelocityY(y).withTargetDirection(targetHeading).withDeadband(1));
+        }
 
     }
 
