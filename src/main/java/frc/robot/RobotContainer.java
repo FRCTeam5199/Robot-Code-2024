@@ -7,12 +7,15 @@ package frc.robot;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.controls.ButtonPanelButtons;
+import frc.robot.utility.CommandXboxController;
+import frc.robot.utility.Superstructure;
 import frc.robot.utility.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
@@ -95,11 +98,11 @@ public class RobotContainer {
         //                     ArmSubsystem.toggleBrakeMode();
         //                 }
         //         }));
-        //     new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
-        //         if (DriverStation.isDisabled()) {
-        //             ArmSubsystem.toggleBrakeMode();
-        //         }
-        //     }));
+            new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
+            if (DriverStation.isDisabled()) {
+                ArmSubsystem.toggleBrakeMode();
+            }
+        }));
 
 
         new Trigger(() -> shooterSubsystem.checkForGamePiece()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
