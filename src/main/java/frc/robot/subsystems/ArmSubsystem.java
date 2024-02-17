@@ -1,18 +1,14 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Main;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -29,7 +25,7 @@ public class ArmSubsystem extends SubsystemBase {
 
 	private PIDController rotatePIDController;
 
-	private static boolean isBrakeMode = false; 
+	private static boolean isBrakeMode = false;
 	private boolean isAiming = false;
 
 	public double encoderValue;
@@ -52,13 +48,13 @@ public class ArmSubsystem extends SubsystemBase {
 	 * init for arm and pid controller
 	 */
 	public void init() {
-		try { motorInit(); } catch (Exception exception) {
+		 try { motorInit(); } catch (Exception exception) {
 			System.err.println("One or more issues occured while trying to initalize motors for Arm Subsystem");
 			System.err.println("Exception Message:" + exception.getMessage());
 			System.err.println("Exception Cause:" + exception.getCause());
 			System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
 
-	try { PIDInit(); } catch (Exception exception) {
+	 try { PIDInit(); } catch (Exception exception) {
 			System.err.println("One or more issues occured while trying to initalize PID for Arm Subsystem");
 			System.err.println("Exception Message:" + exception.getMessage());
 			System.err.println("Exception Cause:" + exception.getCause());
@@ -84,19 +80,13 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public boolean checkMotors() {
-		if (armMotor != null && armEncoderMotor != null && armEncoder != null) {
-			return true;
-		} else {
-			return false;
-		}
+		if (armMotor != null && armEncoderMotor != null && armEncoder != null) { return true;}
+ 		else { return false; }
 	}
 
 	public boolean checkPID() {
-		if (rotatePIDController != null) {
-			return true;
-		} else {
-			return false;
-		}
+		if (rotatePIDController != null) { return true;
+		} else { return false; }
 	}
 
 	@Override
@@ -109,19 +99,12 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	private void subsystemPeriodic() {
-		if(armEncoder.getPosition() < 175){
-			encoderValue = armEncoder.getPosition();
-		}
+		if(armEncoder.getPosition() < 175) { encoderValue = armEncoder.getPosition(); }
 
 		if (encoderValue > 170) {
-			if (armMotor.getEncoder().getPosition() > 170) { armMotor.set(-0.3); } else { armMotor.set(0); }
+			armMotor.set(-0.1);
 		} else {
-		// if(isAiming){
-			armMotor.set(rotatePIDController.calculate(encoderValue, this.rotateSetpoint));
-		// }
-		// else{
-		// 	armMotor.set(rotatePIDController.calculate(encoderValue, 45));
-		// }
+			armMotor.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
 		}
 	}
 
@@ -129,6 +112,7 @@ public class ArmSubsystem extends SubsystemBase {
 		if (!subsystemStatus) return null;
 		return armEncoder;
 	}
+	
 	public Command isAiming(boolean bool){
 		return this.runOnce(()-> isAiming = bool);
 	}
@@ -165,14 +149,14 @@ public class ArmSubsystem extends SubsystemBase {
 	 * Sets the Arm setpoint to the Arm Stable setpoint
 	 */
 	public Command rotateStable() {
-		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT).alongWith(Commands.print("dddddddddddddddddd"));
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT);
 	}
 
 	/**
 	 * Sets the Arm setpoint to the Arm Amp setpoint
 	 */
 	public Command rotateAmp() {
-		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_AMP_SETPOINT).alongWith(Commands.print("eeeeeeeeeeeeeeeeeeeeeeeeee"));
+		return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_AMP_SETPOINT);
 	}
 
 	/**

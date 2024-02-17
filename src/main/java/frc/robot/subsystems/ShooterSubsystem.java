@@ -66,6 +66,11 @@ ShooterSubsystem extends SubsystemBase {
             System.err.println("Exception Message:" + exception.getMessage());
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+        try { PIDInit(); } catch (Exception exception) {
+          System.err.println("One or more issues occured while trying to initalize PID for Arm Subsystem");
+          System.err.println("Exception Message:" + exception.getMessage());
+          System.err.println("Exception Cause:" + exception.getCause());
+          System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
   }
 
   public boolean getSubsystemStatus() {
@@ -116,7 +121,7 @@ ShooterSubsystem extends SubsystemBase {
 	}
   
   public boolean checkMotors() {
-    if ((shooterMotor1 != null && shooterMotor1.encoder != null) && (shooterMotor2 != null && shooterMotor1.encoder != null)) {
+    if ((shooterMotor1 != null && shooterMotor1.getEncoder() != null) && (shooterMotor2 != null && shooterMotor1.getEncoder() != null)) {
       return true;
     } else {
       return false;
@@ -128,7 +133,7 @@ ShooterSubsystem extends SubsystemBase {
       return true;
     } else {
       return false;
-    }
+    } 
   }
 
   @Override
@@ -148,25 +153,25 @@ ShooterSubsystem extends SubsystemBase {
     //   genericHID.setRumble(GenericHID.RumbleType.kBothRumble, 0);
     // }
 
-    if (ampAndClimbMode) {
-      shooterSpeed = 0.3;
-      indexerSpeed = 0.5;
-    } else if (intakeShooter) {
-      shooterSpeed = -1;
-      indexerSpeed = -0.5;
-    } else {
-      shooterSpeed = 0.75;
-      indexerSpeed = 0.5;
-    }
+    // if (ampAndClimbMode) {
+    //   shooterSpeed = 0.3;
+    //   indexerSpeed = 0.5;
+    // // } else if (intakeShooter) {
+    //   // shooterSpeed = -1;
+    //   // indexerSpeed = -0.5;
+    // } else {
+    //   shooterSpeed = 0.75;
+    //   indexerSpeed = 0.5;
+    // }
     
-    if(autonSide){
-      shooterSpeed = 0.5;
-    }
+    // if(autonSide){
+    //   shooterSpeed = 0.5;
+    // }
 
-    if(intakeShooter){
-      shooterMotor1.set(-.3);
-      shooterMotor2.set(-.3);
-    } else {
+    // if(intakeShooter){
+      // shooterMotor1.set(-.3);
+      // shooterMotor2.set(-.3);
+    // } else {
       if (runShooter) {
         // if (ampAndClimbMode == false) {
         shooterMotor1.set(shooterSpeed);
@@ -176,16 +181,16 @@ ShooterSubsystem extends SubsystemBase {
         shooterMotor1.set(0);
         shooterMotor2.set(0);
       }
-    }
-    if(intakeShooter) {
-      shooterIndexerMotor.set(-.3);
-    } else {
-      if (runIndexer) {
+    // }
+    // if(intakeShooter) {
+    //   shooterIndexerMotor.set(-.3);
+    // } else {
+      // if (runIndexer) {
         shooterIndexerMotor.set(indexerSpeed);
-      } else {
-        shooterIndexerMotor.set(0);
-      }
-    }
+      // } else {
+        // shooterIndexerMotor.set(0);
+      // }
+    // }
   }
   public Command moveFlippyForTime(double s, double seconds){
     return new SequentialCommandGroup(flippyDoPercent(s),new WaitCommand(seconds),flippyDoPercent(s));
@@ -244,14 +249,6 @@ ShooterSubsystem extends SubsystemBase {
    */
   public Command setShooterSpeed(double percent) {
     return this.runOnce(() -> shooterSpeed = percent);
-  }
-  
-  public Command setShooterTargetSpeed(double speed) {
-    return this.runOnce(() -> shooterTargetSpeed = speed);
-  }
-
-  public Command runShooterToTargetSpeed() {
-    return this.runOnce(() -> shooterSpeed = shooterTargetSpeed).andThen(() -> runShooter = true);
   }
 
   /**

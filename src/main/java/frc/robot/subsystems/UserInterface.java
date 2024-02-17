@@ -144,7 +144,7 @@ public class UserInterface extends SubsystemBase {
         shuffleboardAutonomousComponent = shuffleboardGameTab.add("Autonomous", false)
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withPosition(2, 1)
-        .withSize(1, 2).getEntry();
+        .withSize(1, 1).getEntry();
         shuffleboardTeleopComponent = shuffleboardGameTab.add("TeleOperated", false)
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withPosition(3, 1)
@@ -170,12 +170,12 @@ public class UserInterface extends SubsystemBase {
         shuffleboardIntakeSubsystemStatusComponent.setBoolean(intakeSubsystem.getSubsystemStatus());
         shuffleboardClimberSubsystemStatusComponent.setBoolean(climberSubsystem.getSubsystemStatus());
 
-        shuffleboardShooterMotor1SpeedComponent.setInteger((long)shooterSubsystem.getShooterMotor1Encoder().getVelocity());
-        shuffleboardShooterMotor2SpeedComponent.setInteger((long)shooterSubsystem.getShooterMotor1Encoder().getVelocity());
-        shuffleboardShooterIndexerMotorSpeedComponent.setInteger((long)shooterSubsystem.getShooterIndexerMotorEncoder().getVelocity());
+        // shuffleboardShooterMotor1SpeedComponent.setInteger((long)shooterSubsystem.getShooterMotor1Encoder().getVelocity());
+        // shuffleboardShooterMotor2SpeedComponent.setInteger((long)shooterSubsystem.getShooterMotor1Encoder().getVelocity());
+        // shuffleboardShooterIndexerMotorSpeedComponent.setInteger((long)shooterSubsystem.getShooterIndexerMotorEncoder().getVelocity());
 
-        shuffleboardIntakeMotorSpeedComponent.setInteger((long)intakeSubsystem.getIntakeMotorEncoder().getVelocity());
-        shuffleboardIntakeActuatorMotorEncoderComponent.setValue(intakeSubsystem.getIntakeActuatorMotorEncoder());
+        // shuffleboardIntakeMotorSpeedComponent.setInteger((long)intakeSubsystem.getIntakeMotorEncoder().getVelocity());
+        // shuffleboardIntakeActuatorMotorEncoderComponent.setValue(intakeSubsystem.getIntakeActuatorMotorEncoder());
     }
 
     public void updateGameTab() {
