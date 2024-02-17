@@ -102,9 +102,9 @@ public class ArmSubsystem extends SubsystemBase {
 		if(armEncoder.getPosition() < 175) { encoderValue = armEncoder.getPosition(); }
 
 		if (encoderValue > 170) {
-			armMotor.set(-0.1);
+			// armMotor.set(-0.1);
 		} else {
-			armMotor.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
+			// armMotor.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
 		}
 	}
 
