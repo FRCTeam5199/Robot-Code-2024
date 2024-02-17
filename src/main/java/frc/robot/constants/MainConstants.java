@@ -177,5 +177,9 @@ public class MainConstants {
         // Climber Setpoints
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
         public static final double CLIMBER_RETRACT_SETPOINT = 0;
+
+        //Flippy Do Setpoints
+        public static final double FLIPPY_DO_DOWN_SETPOINT = 2;
+        public static final double FLIPPY_DO_UP_SETPOINT = 0;
     }
 }

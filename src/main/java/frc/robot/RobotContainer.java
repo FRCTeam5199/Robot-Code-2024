@@ -228,6 +228,8 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor1Speed(-.2));
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor2Speed(.2));
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor2Speed(-.2));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(shooterSubsystem.flippyDoSetpoint(MainConstants.Setpoints.FLIPPY_DO_UP_SETPOINT));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(shooterSubsystem.flippyDoSetpoint(MainConstants.Setpoints.FLIPPY_DO_DOWN_SETPOINT));
     }
 
     /**
