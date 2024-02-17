@@ -222,57 +222,6 @@ public class RobotContainer {
                     (), Rotation2d.fromDegrees(90)));
         }
         drivetrain.registerTelemetry(logger::telemeterize);
-
-        buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_SETUP).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_SETUP).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.CLIMB_UP).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.CLIMB_DOWN).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_UP_SETPOINT).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_SETPOINT).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_UP).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_DOWN).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
-        buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(new InstantCommand(() ->
-                System.out.println("HELLO WORLD")));
     }
 
     /**
