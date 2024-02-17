@@ -155,20 +155,21 @@ public class MainConstants {
     public static class Setpoints {
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 40; // Tested
-        public static final double ARM_SPEAKER_BACK_SETPOINT = 170;
+        public static final double ARM_STABLE_SETPOINT = 40;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 10;
-        public static final double ARM_CLIMB_SETPOINT = 95;
-        public static final double ARM_TRAP_SETPOINT = 120;
-        public static final double ARM_SUBWOOFER_SETPOINT = 75.75; // Tested
-        public static final double ARM_PODIUM_SETPOINT = 62.21;
-        public static final double ARM_RED_LINE_SETPOINT = 48.66;
+        public static final double ARM_CLIMB_SETPOINT = 40;
+        public static final double ARM_TRAP_SETPOINT = 50;//Auton
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
+        //Control Panel
+        public static final double ARM_SUBWOOFER_SETPOINT = 75.75;
+        public static final double ARM_SPEAKER_BACK_SETPOINT = 60;
+        public static final double ARM_SAFE_SETPOINT = 62.21;
         public static final double ARM_AMP_SETPOINT = 74.7;
-
+        public static final double ARM_FAR_SHOT_SETPOINT = 65;
+        public static final double ARM_HP_STATION_SETPOINT = 100;
         //Intake Setpoints
         public static final double STOW_INTAKE = 0;
         public static final double DEPLOY_INTAKE = 8.5;

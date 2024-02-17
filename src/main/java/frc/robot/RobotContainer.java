@@ -221,6 +221,20 @@ public class RobotContainer {
         }
         drivetrain.registerTelemetry(logger::telemeterize);
 
+        buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.rotateSubwoofer());
+        buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.rotateBack());
+        buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(arm.rotateSafe());
+        buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(arm.rotateAmp());
+        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.rotateFarShot());
+        buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(arm.rotateHPStation());
+
+        buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_UP).onTrue(intake.increaseOffset());
+        buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_DOWN).onTrue(intake.decreaseOffset());
+        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(arm.increaseOffset());
+        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(arm.decreaseOffset());
+        buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
+        buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
+
         buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(climbingSequence);
         buttonPanel.button(ButtonPanelButtons.CLIMB_UP).onTrue(climberSubsystem.setClimberSpeed(.2));
         buttonPanel.button(ButtonPanelButtons.CLIMB_DOWN).onTrue(climberSubsystem.setClimberSpeed(-.2));

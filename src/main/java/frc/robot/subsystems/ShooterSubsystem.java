@@ -36,6 +36,7 @@ ShooterSubsystem extends SubsystemBase {
     public double shooterSpeed;
 
     public double shooterTargetSpeed;
+    public double shooterSpeedOffset;
 
     public boolean ampAndClimbMode = false;
     public boolean runShooter = false;
@@ -105,6 +106,14 @@ ShooterSubsystem extends SubsystemBase {
     public void PIDInit() {
         shooterFlippyDoPIDConroller = shooterFlippyDoMotor.getPIDController();
         shooterFlippyDoPIDConroller.setP(0.1);
+    }
+
+    public Command increaseShooterSpeed() {
+        return this.runOnce(() -> shooterSpeedOffset += 0.05);
+    }
+
+    public Command decreaseShooterSpeed() {
+        return this.runOnce(() -> shooterSpeedOffset -= 0.05);
     }
 
     public RelativeEncoder getShooterMotor1Encoder() {
@@ -188,9 +197,9 @@ ShooterSubsystem extends SubsystemBase {
         // } else {
         if (runShooter) {
             // if (ampAndClimbMode == false) {
-            shooterMotor1.set(shooterSpeed);
+            shooterMotor1.set(shooterSpeed + shooterSpeedOffset);
             // }
-            shooterMotor2.set(shooterSpeed);
+            shooterMotor2.set(shooterSpeed + shooterSpeedOffset);
         } else {
             shooterMotor1.set(0);
             shooterMotor2.set(0);
