@@ -271,6 +271,6 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command rotateHPStation() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_HP_STATION);
+        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_HP_STATION_SETPOINT);
     }
 }
