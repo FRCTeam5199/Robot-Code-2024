@@ -144,7 +144,7 @@ public class RobotContainer {
                         climberSubsystem.setClimbMode(false),
                         shooterSubsystem.setAmpandClimbMode(false),
                         arm.rotateSubwoofer()));
-                mainCommandXboxController.y().onTrue(arm.rotateStable());
+                mainCommandXboxController.y().onTrue(arm.setArmSetpoint(60));
                 // mainCommandXboxController.b().onTrue(new SequentialCommandGroup(
                 //         climberSubsystem.setClimbMode(false),
                 //         shooterSubsystem.setAmpandClimbMode(true),
@@ -170,7 +170,7 @@ public class RobotContainer {
                                 arm.isAiming(true),
                                 arm.setArmSetpoint(60),
                                 new WaitCommand(0.075),
-                               intake.deployIntake(),
+                                intake.deployIntake(),
                                 new WaitCommand(0.25),
                                 arm.rotateIntake(),
                                 intake.setIntakeSpeed(0.9),

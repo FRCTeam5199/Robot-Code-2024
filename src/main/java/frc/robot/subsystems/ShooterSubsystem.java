@@ -82,7 +82,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println(shooterMotor1.getSpeed());
+    System.out.println(checkForGamePiece());
+    // System.out.println(checkForGamePiece());
     // This method will be called once per scheduler run
 
     // if (checkForGamePiece()) {
@@ -199,11 +200,11 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   private boolean currentCheck(){
     new WaitCommand(0.4);
-    if (shooterIndexerMotor.getCurrent() < 65){
+    if (shooterIndexerMotor.getCurrent() < 39){
       return false;
     } 
     new WaitCommand(0.5);
-    if (shooterIndexerMotor.getCurrent() > 65){
+    if (shooterIndexerMotor.getCurrent() > 39){
       return true;
     } 
     return false;    
@@ -211,7 +212,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean reachedSpeed(){
     if(shooterSpeed > 0){
-      if (shooterMotor1.getSpeed() == shooterSpeed-0.1 && shooterMotor2.getSpeed() == shooterSpeed-0.1){
+      if (shooterMotor1.getSpeed()+0.01 > shooterSpeed){
         return true;
       }
     }
@@ -225,7 +226,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public boolean checkForGamePiece(){
     int piece = 0;
     int noPiece = 0;
-    if(shooterIndexerMotor.getCurrent() > 65){
+    if(shooterIndexerMotor.getCurrent() > 39){
       for(int i = 0; i <=10; i++){
         if(currentCheck() == true){
           piece++;
