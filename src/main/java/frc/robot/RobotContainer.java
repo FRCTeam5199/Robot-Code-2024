@@ -167,42 +167,40 @@ public class RobotContainer {
                 // Precision/robot oriented drive       
                 mainCommandXboxController.leftBumper().whileTrue(drivetrain.applyRequest(() -> point.withModuleDirection(new Rotation2d(-mainCommandXboxController.getLeftY(), -mainCommandXboxController.getLeftX()))));
                 // Shoot
-                mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
+                mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
 
                 // Speaker Tracking and Auto Shooting
-                mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.setRunShooter(true).alongWith(arm.isAiming(true))).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)));
+                mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.setRunShooter(true)).onFalse(shooterSubsystem.setRunShooter(false));
                 // Intake
                 mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
                                 arm.setArmSetpoint(60),
                                 new WaitCommand(0.3), //0.075
-                                intake.deployIntake(),
+                                // intake.deployIntake(),
                                 new WaitCommand(0.1),
                                 arm.rotateIntake(),
-                                intake.setIntakeSpeed(0.9),
-                                shooterSubsystem.setIntakeShooter(true),
-                                shooterSubsystem.setRunShooter(true),
-                                shooterSubsystem.setRunIndexer(true)))
+                                // intake.setIntakeSpeed(0.9),
+                                shooterSubsystem.setIndexerSpeed(-0.5),
+                                shooterSubsystem.setShooterSpeed(-0.5)))
                         .onFalse(new SequentialCommandGroup(
-                                intake.setIntakeSpeed(0),
+                                // intake.setIntakeSpeed(0),
                                 arm.setArmSetpoint(60),
                                 new WaitCommand(0.1),
-                                shooterSubsystem.setIntakeShooter(false),
-                                shooterSubsystem.setRunShooter(false),
-                                shooterSubsystem.setRunIndexer(false),
-                                intake.stowIntake(),
+                                shooterSubsystem.setShooterSpeed(-0.5),
+                                shooterSubsystem.setIndexerSpeed(0),
+                                // intake.stowIntake(),
                                 new WaitCommand(0.15),
                                 arm.rotateStable()));
-                                
+
                 operatorCommandXboxController.x().onTrue(arm.changeArmSetpoint(1));
                 operatorCommandXboxController.b().onTrue(arm.changeArmSetpoint(-1));
 
                 operatorCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(0.3)).onFalse(climberSubsystem.setClimberSpeed(0));
-                operatorCommandXboxController.a().onTrue(climberSubsystem.setClimberSpeed(-0.3))
-                        .onFalse(
-                                new SequentialCommandGroup(
-                                        climberSubsystem.setClimberSpeed(0)//,;
-                                        // climberSubsystem.getClimberMotor1Encoder();
-                                ));
+                operatorCommandXboxController.a().onTrue(climberSubsystem.setClimberSpeed(-0.3)).onFalse(climberSubsystem.setClimberSpeed(0));
+                        // .onFalse(
+                        //         new SequentialCommandGroup(
+                        //                 climberSubsystem.setClimberSpeed(0)//,;
+                        //                 // climberSubsystem.getClimberMotor1Encoder();
+                        //         ));
 
                 // operatorCommandXboxController.y().onTrue(climberSubsystem.setClimberSetpoint(115));
                 // operatorCommandXboxController.a().onTrue(climberSubsystem.setClimberSetpoint(0));

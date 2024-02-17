@@ -34,7 +34,6 @@ ShooterSubsystem extends SubsystemBase {
   public SparkPIDController shooterFlippyDoPIDConroller;
 
   public double shooterSpeed;
-  public double indexerSpeed;
 
   public double shooterTargetSpeed;
 
@@ -186,7 +185,6 @@ ShooterSubsystem extends SubsystemBase {
     //   shooterIndexerMotor.set(-.3);
     // } else {
       // if (runIndexer) {
-        shooterIndexerMotor.set(indexerSpeed);
       // } else {
         // shooterIndexerMotor.set(0);
       // }

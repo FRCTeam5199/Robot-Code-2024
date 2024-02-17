@@ -1,10 +1,8 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,7 +26,6 @@ public class ArmSubsystem extends SubsystemBase {
 	private static boolean isBrakeMode = false;
 	private boolean isAiming = false;
 
-	public double encoderValue;
 	private double rotateSetpoint = 120;
 
 	public ArmSubsystem() {}
@@ -71,8 +68,10 @@ public class ArmSubsystem extends SubsystemBase {
 		armMotor.setInvert(true);
 		armMotor.setBrake(true);
 
-		armEncoderMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_ENCODER_MOTOR, MotorType.kBrushed);
-		armEncoder = armEncoderMotor.getAbsoluteEncoder(Type.kDutyCycle);
+		armMotor.getEncoder().setPosition(0);
+
+		// armEncoderMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_ENCODER_MOTOR, MotorType.kBrushed);
+		// armEncoder = armEncoderMotor.getAbsoluteEncoder(Type.kDutyCycle);
 	}
 
 	public void PIDInit() {
@@ -80,13 +79,13 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	public boolean checkMotors() {
-		if (armMotor != null && armEncoderMotor != null && armEncoder != null) { return true;}
+		if (armMotor != null) { return true; }
  		else { return false; }
 	}
 
 	public boolean checkPID() {
-		if (rotatePIDController != null) { return true;
-		} else { return false; }
+		if (rotatePIDController != null) { return true; }
+		else { return false; }
 	}
 
 	@Override
@@ -99,20 +98,22 @@ public class ArmSubsystem extends SubsystemBase {
 	}
 
 	private void subsystemPeriodic() {
-		if(armEncoder.getPosition() < 175) { encoderValue = armEncoder.getPosition(); }
-
-		if (encoderValue > 170) {
+		if (armMotor.getEncoder().getPosition() < 3) {
+			// System.out.println(armMotor.getEncoder().getPosition());
+			armMotor.set(0.1);
+		} else if (armMotor.getEncoder().getPosition() > 40) {
+			// System.out.println(armMotor.getEncoder().getPosition());
 			armMotor.set(-0.1);
 		} else {
-			armMotor.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
+			armMotor.set(rotatePIDController.calculate(armMotor.getEncoder().getPosition(), rotateSetpoint));
 		}
 	}
 
-	public AbsoluteEncoder getArmEncoder() {
+	public RelativeEncoder getArmEncoder() {
 		if (!subsystemStatus) return null;
-		return armEncoder;
+		return armMotor.getEncoder();
 	}
-	
+
 	public Command isAiming(boolean bool){
 		return this.runOnce(()-> isAiming = bool);
 	}

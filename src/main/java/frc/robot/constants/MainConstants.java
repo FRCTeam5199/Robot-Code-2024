@@ -95,11 +95,7 @@ public class MainConstants {
     public static class IDs {
         // Pigeon
         public static int PIGEON2_ID = 22;
-
-        // Pneumatics
-        // public static final int PCM_ID = 0;
-        // public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = null;
-
+        
         public static class Motors {
             // Drive
             public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
@@ -138,12 +134,14 @@ public class MainConstants {
     }
 
     public static class PIDConstants {
+        // Intake
         public static final PID INTAKE_PID = new PID(0.06, 0, 0);
+
         // Climber
         public static final PID CLIMBER_PID = new PID(0.1, 0.01, 0);
 
         // Arm
-        public static final PID ARM_PID = new PID(0.01, 0.0, 0);
+        public static final PID ARM_PID = new PID(0.0001, 0.0, 0);// p:0.01
     }
 
     public static class Setpoints {
@@ -167,7 +165,7 @@ public class MainConstants {
         public static final double STOW_INTAKE = 0;
         public static final double DEPLOY_INTAKE = 8.5;
         //24
-        
+
         // Climber Setpoints
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
         public static final double CLIMBER_RETRACT_SETPOINT = 0;
