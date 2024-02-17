@@ -25,6 +25,7 @@ import frc.robot.utility.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
+import frc.robot.controls.CommandButtonPanel;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -62,6 +63,8 @@ public class RobotContainer {
         public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
         public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
         public final static IntakeSubsystem intake = new IntakeSubsystem();
+
+        public static final CommandButtonPanel buttonPanel = new CommandButtonPanel(MainConstants.OperatorConstants.TOP_BUTTON_PANEL_PORT, MainConstants.OperatorConstants.BOTTOM_BUTTON_PANEL_PORT);
         // public final static Akit log = new Akit();
         
         Autos auton;
