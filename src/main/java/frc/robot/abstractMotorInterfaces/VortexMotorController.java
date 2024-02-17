@@ -1,6 +1,7 @@
 package frc.robot.abstractMotorInterfaces;
 
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.fasterxml.jackson.databind.AnnotationIntrospector.ReferenceProperty.Type;
 import com.revrobotics.*;
 import com.revrobotics.CANSparkBase.IdleMode;
 
@@ -56,6 +57,9 @@ public class VortexMotorController extends AbstractMotorController {
             vortex.setIdleMode(IdleMode.kCoast);
         }
         return this;
+    }
+    public double getSpeed(){
+        return vortex.getAppliedOutput();
     }
 
     @Override
@@ -118,13 +122,12 @@ public class VortexMotorController extends AbstractMotorController {
 
     }
 
-    public AbstractMotorController follow(CANSparkBase leader, boolean invert) {
-        vortex.follow(leader);
+    public AbstractMotorController follow(AbstractMotorController leader,boolean invert){
         return this;
     }
 
-    @Override
-    public AbstractMotorController follow(AbstractMotorController leader, boolean invert) {
-        throw new UnsupportedOperationException("Unimplemented method 'follow'");
-    }
+    /**
+     * do not use throws error
+     */
+
 }

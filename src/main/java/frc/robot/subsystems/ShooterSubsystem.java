@@ -69,23 +69,27 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor1.setInvert(true);
     shooterMotor2.setInvert(false);
     
-    shooterIndexerMotor.setInvert(true);
+    shooterIndexerMotor.setInvert(false);
     shooterIndexerMotor.setBrake(true);
 
     shooterMotor1.getEncoder().setPosition(0);
     shooterMotor2.getEncoder().setPosition(0);
 
+    shooterMotor1.setCurrentLimit(40);
+    shooterMotor2.setCurrentLimit(40);
+    shooterIndexerMotor.setCurrentLimit(40);
   }
 
   @Override
   public void periodic() {
+    System.out.println(shooterMotor1.getSpeed());
     // This method will be called once per scheduler run
 
-    if (checkForGamePiece()) {
-      genericHID.setRumble(RumbleType.kBothRumble, 1);
-    } else {
-      genericHID.setRumble(RumbleType.kBothRumble, 0);
-    }
+    // if (checkForGamePiece()) {
+    //   genericHID.setRumble(RumbleType.kBothRumble, 1);
+    // } else {
+    //   genericHID.setRumble(RumbleType.kBothRumble, 0);
+    // }
 
     if (ampAndClimbMode) {
       shooterSpeed = 0.2;
@@ -203,6 +207,15 @@ public class ShooterSubsystem extends SubsystemBase {
       return true;
     } 
     return false;    
+  }
+
+  public boolean reachedSpeed(){
+    if(shooterSpeed > 0){
+      if (shooterMotor1.getSpeed() == shooterSpeed-0.1 && shooterMotor2.getSpeed() == shooterSpeed-0.1){
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

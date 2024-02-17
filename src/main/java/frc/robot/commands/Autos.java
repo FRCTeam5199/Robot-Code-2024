@@ -38,8 +38,8 @@ public class Autos extends Command{
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
         HashMap<String, Command> eventMap = new HashMap<>();
-      NamedCommands.registerCommand("deployIntake", intake.deployAuton());
-      NamedCommands.registerCommand("retractIntake", intake.stowAuton());
+      // NamedCommands.registerCommand("deployIntake", intake.deployAuton());
+      // NamedCommands.registerCommand("retractIntake", intake.stowAuton());
 
 
       NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));

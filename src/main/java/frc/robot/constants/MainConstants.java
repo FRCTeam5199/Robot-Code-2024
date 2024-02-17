@@ -116,7 +116,7 @@ public class MainConstants {
             
             //Intake
             public static final int INTAKE_ACTUATOR_MOTOR_ID = 9;
-            public static final int INTAKE_MOTOR_ID = 6;
+            public static final int INTAKE_MOTOR_ID = 10;
 
             //Climber
             public static final int CLIMBER_MOTOR_1_ID = 7;
@@ -125,7 +125,7 @@ public class MainConstants {
             //Arm
             public static final int ARM_MOTOR_ID = 5;
             public static final int ARM_MOTOR2_ID = 6;
-            public static final int ARM_ENCODER_MOTOR = 8;
+            public static final int ARM_ENCODER_MOTOR = 1;
 
             //Shooter
             public static final int SHOOTER_MOTOR_1_ID = 2;
@@ -140,14 +140,17 @@ public class MainConstants {
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 
         // Arm
-        public static final PID ARM_PID = new PID(0.01, 0.0, 0);
+        public static final PID ARM_PID = new PID(0.007, 0.0, 0);
     }
 
     public static class Setpoints {
         //Intake Setpoints
         public static final double STOW_INTAKE = 0;
-        public static final double DEPLOY_INTAKE = 8.5;
+        public static final double DEPLOY_INTAKE = 7.5;
         //24
+
+        public static final double CLIMBER_EXTENDED_SETPOINT = 115;
+        public static final double CLIMBER_RETRACT_SETPOINT = 0;
 
         //Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 40;
@@ -171,6 +174,5 @@ public class MainConstants {
     public static final double ARM_ORIGINAL_DEGREES = -32.8;
     // public static final double SPEAKER_Z = 2.340102;
     public static final double SPEAKER_Z = 1.4511020000000001 + 0.75;
-    public static final double ARM_GEAR_RATIO = 132.26; //132.26 : 1
-    public static final double ENCODER_GEAR_RATIO = 1.741029082774049; //1 rotation is this many degrees
+    public static final double ARM_GEAR_RATIO = 60; //60 : 1
 }
