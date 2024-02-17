@@ -16,44 +16,48 @@ import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private static ShooterSubsystem shooterSubsystem;
+    private static ShooterSubsystem shooterSubsystem;
 
-  public VortexMotorController shooterMotor1;
-  public VortexMotorController shooterMotor2;
+    public VortexMotorController shooterMotor1;
+    public VortexMotorController shooterMotor2;
 
-  public VortexMotorController shooterIndexerMotor;
+    public VortexMotorController shooterIndexerMotor;
 
-  public double shooterSpeed;
-  public double indexerSpeed;
+    public double shooterSpeed;
+    public double indexerSpeed;
+    public double shooterSpeedOffset;
 
-  public boolean ampAndClimbMode = false;
-  public boolean runShooter = false;
-  public boolean runIndexer = false;
-  public boolean intakeShooter = false;
-  public boolean shoot = false;
-  public boolean autonSide = false;
+    public boolean ampAndClimbMode = false;
+    public boolean runShooter = false;
+    public boolean runIndexer = false;
+    public boolean intakeShooter = false;
+    public boolean autonSide = false;
 
-  public GenericHID genericHID = new GenericHID(0);
+    public GenericHID genericHID = new GenericHID(0);
 
-  public ShooterSubsystem() {}
-  
-	/** 
-	 * Gets the instnace of the Arm Subsystem.
-	 */
-	public static ShooterSubsystem getInstance() {
-		if (shooterSubsystem == null) {
-			shooterSubsystem = new ShooterSubsystem();
-		}
+    public ShooterSubsystem() {
+    }
 
-		return shooterSubsystem;
-	}
-  
-  public void init() {
-        try { motorInit(); } catch (Exception exception) {
+    /**
+     * Gets the instnace of the Arm Subsystem.
+     */
+    public static ShooterSubsystem getInstance() {
+        if (shooterSubsystem == null) {
+            shooterSubsystem = new ShooterSubsystem();
+        }
+
+        return shooterSubsystem;
+    }
+
+    public void init() {
+        try {
+            motorInit();
+        } catch (Exception exception) {
             System.err.println("One or more issues occured while trying to initalize motors for Shooter Subsystem");
             System.err.println("Exception Message:" + exception.getMessage());
             System.err.println("Exception Cause:" + exception.getCause());
-            System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+            System.err.println("Exception Stack Trace:" + exception.getStackTrace());
+        }
 
       // Shuffleboard.getTab("Test").add("Shooter Subsystem Initalized", true).getEntry();      
   }
@@ -80,59 +84,56 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterIndexerMotor.setCurrentLimit(40);
   }
 
-  @Override
-  public void periodic() {
-    System.out.println(checkForGamePiece());
-    // System.out.println(checkForGamePiece());
-    // This method will be called once per scheduler run
+    @Override
+    public void periodic() {
+        System.out.println(shooterMotor1.getSpeed());
+        // This method will be called once per scheduler run
 
-    // if (checkForGamePiece()) {
-    //   genericHID.setRumble(RumbleType.kBothRumble, 1);
-    // } else {
-    //   genericHID.setRumble(RumbleType.kBothRumble, 0);
-    // }
+        // if (checkForGamePiece()) {
+        //   genericHID.setRumble(RumbleType.kBothRumble, 1);
+        // } else {
+        //   genericHID.setRumble(RumbleType.kBothRumble, 0);
+        // }
 
-    if (ampAndClimbMode) {
-      shooterSpeed = 0.2;
-      indexerSpeed = 0.5;
-    } else if (intakeShooter) {
-      shooterSpeed = -0.3;
-      indexerSpeed = -0.3;
-    }else if(autonSide){
-      shooterSpeed = 0.7;
-      indexerSpeed = 0.5;
-    } else{
-      shooterSpeed = 0.85;
-      indexerSpeed = 0.5;
-    }
+        if (ampAndClimbMode) {
+            shooterSpeed = 0.2;
+            indexerSpeed = 0.5;
+        } else if (intakeShooter) {
+            shooterSpeed = -0.3;
+            indexerSpeed = -0.3;
+        } else if (autonSide) {
+            shooterSpeed = 0.7;
+            indexerSpeed = 0.5;
+        } else {
+            shooterSpeed = 0.85;
+            indexerSpeed = 0.5;
+        }
 
-    if(intakeShooter){
-      shooterMotor1.set(-.3);
-      shooterMotor2.set(-.3);
-    }
-    else{
-    if (runShooter) {
-      if (ampAndClimbMode == false) {
-      shooterMotor1.set(shooterSpeed);
-    }
-      shooterMotor2.set(shooterSpeed);
-    } else {
-      shooterMotor1.set(0);
-      shooterMotor2.set(0);
-    }
-  }
-  if(intakeShooter){
-    shooterIndexerMotor.set(-.3);
-  }
-  else{
+        if (intakeShooter) {
+            shooterMotor1.set(-.3);
+            shooterMotor2.set(-.3);
+        } else {
+            if (runShooter) {
+                if (!ampAndClimbMode) {
+                    shooterMotor1.set(shooterSpeed + shooterSpeedOffset);
+                }
+                shooterMotor2.set(shooterSpeed + shooterSpeedOffset);
+            } else {
+                shooterMotor1.set(0);
+                shooterMotor2.set(0);
+            }
+        }
+        if (intakeShooter) {
+            shooterIndexerMotor.set(-.3);
+        } else {
 
-    if (runIndexer) {
-      shooterIndexerMotor.set(indexerSpeed);
-    } else {
-      shooterIndexerMotor.set(0);
+            if (runIndexer) {
+                shooterIndexerMotor.set(indexerSpeed);
+            } else {
+                shooterIndexerMotor.set(0);
+            }
+        }
     }
-  }
-  }
 //  public Command AutonShooting(double Shooter, double Indexer){
 //    return this.runOnce();
 //  }
@@ -231,14 +232,19 @@ public class ShooterSubsystem extends SubsystemBase {
         if(currentCheck() == true){
           piece++;
         }
-        else{
-          noPiece++;
-        }
       }
     }
-    if(piece > noPiece){
-      return true;
+        new WaitCommand(0.5);
+        if(piece > noPiece){
+          return true;
+      }
+      return false;
     }
     return false;     
   }
-}
+
+
+    
+
+
+   

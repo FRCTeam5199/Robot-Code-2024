@@ -18,33 +18,41 @@ public class IntakeSubsystem extends SubsystemBase {
     public VortexMotorController intakeActuatorMotor;
     public PIDController pidController;
     public double setpoint;
+    public double rotateOffset;
     public SparkPIDController sparkPIDController;
 
-    public IntakeSubsystem() {}
+    public IntakeSubsystem() {
+    }
 
-	/** 
-	 * Gets the instnace of the Arm Subsystem.
-	 */
-	public static IntakeSubsystem getInstance() {
-		if (intakeSubsystem == null) {
-			intakeSubsystem = new IntakeSubsystem();
-		}
- 
-		return intakeSubsystem;
-	}
+    /**
+     * Gets the instnace of the Arm Subsystem.
+     */
+    public static IntakeSubsystem getInstance() {
+        if (intakeSubsystem == null) {
+            intakeSubsystem = new IntakeSubsystem();
+        }
+
+        return intakeSubsystem;
+    }
 
     public void init() {
-        try { motorInit(); } catch (Exception exception) {
+        try {
+            motorInit();
+        } catch (Exception exception) {
             System.err.println("One or more issues occured while trying to initalize motors for Intake Subsystem");
             System.err.println("Exception Message:" + exception.getMessage());
             System.err.println("Exception Cause:" + exception.getCause());
-            System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+            System.err.println("Exception Stack Trace:" + exception.getStackTrace());
+        }
 
-        try { PIDInit(); } catch (Exception exception) {
+        try {
+            PIDInit();
+        } catch (Exception exception) {
             System.err.println("One or more issues occured while trying to initalize PID for Intake Subsystem");
             System.err.println("Exception Message:" + exception.getMessage());
             System.err.println("Exception Cause:" + exception.getCause());
-            System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+            System.err.println("Exception Stack Trace:" + exception.getStackTrace());
+        }
     }
 
     public boolean getSubsystemStatus() {
@@ -58,7 +66,7 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_MOTOR_ID);
         intakeMotor.getEncoder().setPosition(0);
         intakeMotor.setInvert(false);
-        
+
         intakeActuatorMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ACTUATOR_MOTOR_ID);
         intakeActuatorMotor.getEncoder().setPosition(0);
         intakeActuatorMotor.setInvert(true);
@@ -73,26 +81,26 @@ public class IntakeSubsystem extends SubsystemBase {
     public void PIDInit() {
         pidController = new PIDController(MainConstants.PIDConstants.INTAKE_PID.P, MainConstants.PIDConstants.INTAKE_PID.I, MainConstants.PIDConstants.INTAKE_PID.D);
     }
-    
-    public boolean checkMotors() {
-		if (intakeMotor != null && intakeActuatorMotor != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 
-	public boolean checkPID() {
-		if (pidController != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    public boolean checkMotors() {
+        if (intakeMotor != null && intakeActuatorMotor != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkPID() {
+        if (pidController != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public RelativeEncoder getIntakeMotorEncoder() {
-		return intakeMotor.getEncoder();
-	}
+        return intakeMotor.getEncoder();
+    }
 
     public RelativeEncoder getIntakeActuatorMotorEncoder() {
         return intakeActuatorMotor.getEncoder();
@@ -100,7 +108,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (checkMotors() && checkPID()) { subsystemStatus = true; } else { subsystemStatus = false; }
+        if (checkMotors() && checkPID()) {
+            subsystemStatus = true;
+        } else {
+            subsystemStatus = false;
+        }
 
         if (subsystemStatus) {
             subsystemPeriodic();
@@ -113,11 +125,18 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     private void subsystemPeriodic() {
-        intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint));
+        intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint + rotateOffset));
+    }
+
+    public Command increaseOffset() {
+        return this.runOnce(() -> rotateOffset += 2);
+    }
+
+    public Command decreaseOffset() {
+        return this.runOnce(() -> rotateOffset -= 2);
     }
 
     /**
-     * 
      * @param percent speed to set intake to
      * @return command to spin intake
      */
@@ -128,13 +147,14 @@ public class IntakeSubsystem extends SubsystemBase {
     public Command setIntakeActuatorSpeed(double percent) {
         return this.runOnce(() -> intakeActuatorMotor.set(percent));
     }
-    
+
     public Command setIntakeActuatorTarget(double target) {
         return this.runOnce(() -> setpoint = target);
     }
 
     /**
      * retract the intake
+     *
      * @return command to retract intake
      */
     public Command stowIntake() {
@@ -143,6 +163,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     /**
      * deploy intake
+     *
      * @return command to deploy the intake
      */
     public Command deployIntake() {
