@@ -10,6 +10,13 @@ import frc.robot.utility.PID;
 
 public class MainConstants {
 
+    public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
+    public static final double ARM_PIVOT_X_OFFSET = 0.1923542; //meters
+    public static final double ARM_PIVOT_Z = 0.5596128; //meters
+    public static final double ARM_ORIGINAL_DEGREES = -32.8;
+    // public static final double SPEAKER_Z = 2.340102;
+    public static final double SPEAKER_Z = 1.4511020000000001 + 0.75;
+    public static final double ARM_GEAR_RATIO = 60; //60 : 1
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 4;
@@ -66,20 +73,20 @@ public class MainConstants {
     // add how invisible setpoint to the target height
     public static double TARGET_HEIGHT_METERS = Units.inchesToMeters(10.5);
     public static double GOAL_RANGE_METERS = Units.feetToMeters(2);
+
+    // final double TARGET_HEIGHT_METERS = Units.feetToMeters(5);
     public static boolean ENABLE_OVERHEAT_DETECTION = false;
     public static int OVERHEAT_THRESHOLD = 80;
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
+    public static int BrakeButtonid = 0;
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
             new Transform3d(10, 0, 5, new Rotation3d(0, Math.toRadians(47), Math.toRadians(180))), //front
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //left
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //right
-            new Transform3d(0,0,0, new Rotation3d(0, 0, 0)),
-            new Transform3d(0,0,0, new Rotation3d(0, 0, 0))
+            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)),
+            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0))
     };
-    public static int BrakeButtonid = 0;
-
-    // final double TARGET_HEIGHT_METERS = Units.feetToMeters(5);
 
     public static class OperatorConstants {
         //Operator Constants
@@ -114,7 +121,7 @@ public class MainConstants {
             public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 5;
             public static final int BACK_RIGHT_STEER_MOTOR_ID = 1;
             public static final int BACK_RIGHT_ENCODER = 13;
-            
+
             //Intake
             public static final int INTAKE_ACTUATOR_MOTOR_ID = 9;
             public static final int INTAKE_MOTOR_ID = 10;
@@ -155,25 +162,20 @@ public class MainConstants {
 
         //Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 40;
-        public static final double ARM_SPEAKER_BACK_SETPOINT = 60;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 10;
         public static final double ARM_CLIMB_SETPOINT = 40;
-        public static final double ARM_TRAP_SETPOINT = 50;
-        public static final double ARM_SUBWOOFER_SETPOINT = 75.75;
-        public static final double ARM_PODIUM_SETPOINT = 62.21;
-        public static final double ARM_RED_LINE_SETPOINT = 48.66;
+        public static final double ARM_TRAP_SETPOINT = 50;//Auton
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
+        //Control Panel
+        public static final double ARM_SUBWOOFER_SETPOINT = 75.75;
+        public static final double ARM_SPEAKER_BACK_SETPOINT = 60;
+        public static final double ARM_SAFE_SETPOINT = 62.21;
         public static final double ARM_AMP_SETPOINT = 74.7;
-    }
+        public static final double ARM_FAR_SHOT_SETPOINT = 65;
+        public static final double ARM_HP_STATION = 100;
 
-    public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
-    public static final double ARM_PIVOT_X_OFFSET = 0.1923542; //meters
-    public static final double ARM_PIVOT_Z = 0.5596128; //meters
-    public static final double ARM_ORIGINAL_DEGREES = -32.8;
-    // public static final double SPEAKER_Z = 2.340102;
-    public static final double SPEAKER_Z = 1.4511020000000001 + 0.75;
-    public static final double ARM_GEAR_RATIO = 60; //60 : 1
+    }
 }

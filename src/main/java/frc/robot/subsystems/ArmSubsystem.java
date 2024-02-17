@@ -9,7 +9,6 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Main;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -256,18 +255,22 @@ public class ArmSubsystem extends SubsystemBase {
     /**
      * Sets the Arm setpoint to the Arm Subwoofer setpoint
      */
-    public Command rotateSubwoofer() {
+    public Command rotateSub() {
         return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_SUBWOOFER_SETPOINT);
     }
 
     /**
      * Sets the Arm setpoint to the Arm Podium setpoint
      */
-    public Command rotatePodium() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_PODIUM_SETPOINT);
+    public Command rotateSafe() {
+        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_SAFE_SETPOINT);
     }
 
-    public Command rotateRedLine() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_RED_LINE_SETPOINT);
+    public Command rotateFarShot() {
+        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_FAR_SHOT_SETPOINT);
+    }
+
+    public Command rotateHPStation() {
+        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_HP_STATION);
     }
 }
