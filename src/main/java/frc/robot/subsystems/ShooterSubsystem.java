@@ -24,6 +24,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public double indexerSpeed;
     public double shooterSpeedOffset;
 
+    public double setSpeed = 0;
+
     public boolean ampAndClimbMode = false;
     public boolean runShooter = false;
     public boolean runIndexer = false;
@@ -83,7 +85,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-      System.out.println(checkForGamePiece());
+    
+      // System.out.println(checkForGamePiece());
         // This method will be called once per scheduler run
 
         // if (checkForGamePiece()) {
@@ -97,12 +100,12 @@ public class ShooterSubsystem extends SubsystemBase {
             indexerSpeed = 0.5;
         } else if (intakeShooter) {
             shooterSpeed = -0.3;
-            indexerSpeed = -0.3;
+            indexerSpeed = -0.4;
         } else if (autonSide) {
             shooterSpeed = 0.7;
             indexerSpeed = 0.5;
         } else {
-            shooterSpeed = 0.85;
+            shooterSpeed = setSpeed;
             indexerSpeed = 0.5;
         }
 
@@ -112,9 +115,11 @@ public class ShooterSubsystem extends SubsystemBase {
         } else {
             if (runShooter) {
                 if (!ampAndClimbMode) {
-                    shooterMotor1.set(shooterSpeed + shooterSpeedOffset);
+                    shooterMotor1.set((shooterSpeed + shooterSpeedOffset) -0.05);
                 }
-                shooterMotor2.set(shooterSpeed + shooterSpeedOffset);
+                shooterMotor2.set((shooterSpeed + shooterSpeedOffset));
+                System.out.println("velocity of bottom " +shooterMotor1.getVelocity());
+                System.out.println("velocity of top " +shooterMotor2.getVelocity());
             } else {
                 shooterMotor1.set(0);
                 shooterMotor2.set(0);
@@ -171,6 +176,9 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command setintakeShooter(boolean intakeShooter) {
         return this.runOnce(() -> this.intakeShooter = intakeShooter);
     }
+    public Command setSpeedOfShooter(double sp){
+      return this.runOnce(()-> this.setSpeed = sp);
+    }
 
     /**
      * Sets the Indexer motor speed to a percent between -1 and 1
@@ -187,7 +195,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @param
      */
     public Command setShooterSpeed(double percent) {
-        return this.runOnce(() -> shooterSpeed = percent);
+        return this.runOnce(() -> setSpeed = percent);
     }
 
     /**
@@ -219,11 +227,9 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean reachedSpeed(){
-    if(intakeShooter == false){
       if (shooterMotor1.getSpeed()+0.01 > shooterSpeed){
         return true;
       }
-    }
     return false;
   }
 

@@ -84,7 +84,7 @@ public class RobotContainer {
         climberSubsystem.init();
 
 
-        // auton = new Autos(drivetrain, intake, arm, shooterSubsystem);
+        auton = new Autos(drivetrain, intake, arm, shooterSubsystem);
         // SmartDashboard.putData("Field", drivetrain.m_field);
         configureBindings();
     }
@@ -93,6 +93,7 @@ public class RobotContainer {
      * Configures the bindings for commands
      */
     private void configureBindings() {
+        // new Trigger(()-> shooterSubsystem.checkForGamePiece()).onTrue(shooterSubsystem.setSpeedOfShooter(0.05).andThen(shooterSubsystem.setRunShooter(true)));
         //         new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
         //                 if (DriverStation.isDisabled()) {
         //                     ArmSubsystem.toggleBrakeMode();
@@ -105,8 +106,8 @@ public class RobotContainer {
         }));
 
 
-        new Trigger(() -> shooterSubsystem.checkForGamePiece()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-        new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
+        new Trigger(() -> shooterSubsystem.checkForGamePiece()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1)).onlyIf(()-> shooterSubsystem.intakeShooter == true)).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
+        new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1)).onlyIf(()-> shooterSubsystem.intakeShooter == false)).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
         //         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
@@ -137,13 +138,13 @@ public class RobotContainer {
         mainCommandXboxController.x().onTrue(new SequentialCommandGroup(
                 climberSubsystem.setClimbMode(false),
                 shooterSubsystem.setAmpandClimbMode(false),
-                arm.rotateSub()));
-        mainCommandXboxController.y().onTrue(arm.rotateStable());
+                arm.rotateSub()).andThen(shooterSubsystem.setShooterSpeed(0.80)));
+        mainCommandXboxController.y().onTrue(arm.setArmSetpoint(59.25).andThen(shooterSubsystem.setShooterSpeed(1)));
         // mainCommandXboxController.b().onTrue(new SequentialCommandGroup(
         //         climberSubsystem.setClimbMode(false),
         //         shooterSubsystem.setAmpandClimbMode(true),
         //         arm.rotateAmp()));
-        mainCommandXboxController.b().onTrue(arm.setArmSetpoint(67.75));
+        mainCommandXboxController.b().onTrue(arm.setArmSetpoint(67.75).andThen(shooterSubsystem.setShooterSpeed(0.85)));
         mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
         mainCommandXboxController.povRight().onTrue(intake.deployIntake());
 
@@ -158,10 +159,10 @@ public class RobotContainer {
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
 
 //                 // Speaker Tracking and Auto Shooting
-        mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.setRunShooter(true).alongWith(arm.isAiming(true))).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)));
+        mainCommandXboxController.leftTrigger().onTrue((shooterSubsystem.setRunShooter(true).alongWith(arm.isAiming(true))).onlyIf(()->shooterSubsystem.intakeShooter == false)).onFalse((shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false))).onlyIf(()->shooterSubsystem.intakeShooter == false));
 //                 // Intake
-                mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
-                                arm.isAiming(true),
+                mainCommandXboxController.rightTrigger().whileTrue(arm.isAiming(true));
+                mainCommandXboxController.rightTrigger().whileTrue(new SequentialCommandGroup(
                                 arm.setArmSetpoint(60),
                                 new WaitCommand(0.075),
                                 intake.deployIntake(),
@@ -177,10 +178,11 @@ public class RobotContainer {
                                 new WaitCommand(0.1),
                                 shooterSubsystem.setintakeShooter(false),
                                 shooterSubsystem.setRunShooter(false),
-                                shooterSubsystem.setRunIndexer(false),
                                 intake.stowIntake(),
                                 new WaitCommand(0.15),
-                                arm.rotateStable()));
+                                arm.isAiming(false),
+                                new WaitCommand(0.2),
+                                shooterSubsystem.setRunIndexer(false)));
                                 
 //                 mainCommandXboxController.b().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
 //                 mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
@@ -254,6 +256,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
-        return null;
+        return new SequentialCommandGroup(arm.isAiming(true),auton.threePieceTtMRed(),new WaitCommand(2), arm.isAiming(false));
     }
 }

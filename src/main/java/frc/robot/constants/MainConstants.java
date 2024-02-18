@@ -163,7 +163,7 @@ public class MainConstants {
         //Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 40;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
-        public static final double ARM_INTAKE_SETPOINT = 10.7;
+        public static final double ARM_INTAKE_SETPOINT = 11;
         public static final double ARM_CLIMB_SETPOINT = 40;
         public static final double ARM_TRAP_SETPOINT = 50;//Auton
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
