@@ -43,14 +43,14 @@ public class Autos extends Command{
                                                           arm.rotateIntake(),
                                                           new WaitCommand(0.15),
                                                           intake.setIntakeSpeed(0.7),
-                                                          shooter.setIntakeShooter(true),
+                                                          shooter.setIndexerSpeed(-0.3),
                                                           shooter.setRunShooter(true),
                                                           shooter.setRunIndexer(true)));
       NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(
                                                           intake.setIntakeSpeed(0),
                                                           arm.rotateStable(),
                                                           new WaitCommand(0.2),
-                                                          shooter.setIntakeShooter(false),
+                                                          shooter.setIndexerSpeed(0),
                                                           shooter.setRunShooter(false),
                                                           shooter.setRunIndexer(false),
                                                           intake.stowIntake()));

@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -12,7 +13,6 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -33,9 +33,10 @@ ShooterSubsystem extends SubsystemBase {
     public CANSparkMax shooterFlippyDoMotor;
     public SparkPIDController shooterFlippyDoPIDConroller;
 
-    public double shooterSpeed;
+    public double combinedShooterSpeed;
+    public double shooterMotor1Speed;
+    public double shooterMotor2Speed;
 
-    public double shooterTargetSpeed;
     public double shooterSpeedOffset;
 
     public boolean ampAndClimbMode = false;
@@ -47,8 +48,7 @@ ShooterSubsystem extends SubsystemBase {
 
     public GenericHID genericHID = new GenericHID(0);
 
-    public ShooterSubsystem() {
-    }
+    public ShooterSubsystem() {}
 
     /**
      * Gets the instance of the Shooter Subsystem.
@@ -101,6 +101,7 @@ ShooterSubsystem extends SubsystemBase {
         shooterIndexerMotor.setBrake(true);
 
         shooterFlippyDoMotor = new CANSparkMax(11, MotorType.kBrushed);
+        shooterFlippyDoMotor.setIdleMode(IdleMode.kBrake);
     }
 
     public void PIDInit() {
@@ -134,18 +135,18 @@ ShooterSubsystem extends SubsystemBase {
         return shooterIndexerMotor.getEncoder();
     }
 
-    public RelativeEncoder getShooterFlippyDoMotorEncoder() {
-        if (!subsystemStatus) return null;
-        return shooterFlippyDoMotor.getEncoder();
-    }
+  public RelativeEncoder getShooterFlippyDoMotorEncoder() {
+    if (!subsystemStatus) return null;
+		return shooterFlippyDoMotor.getEncoder();
+	}
 
-    public boolean checkMotors() {
-        if ((shooterMotor1 != null && shooterMotor1.getEncoder() != null) && (shooterMotor2 != null && shooterMotor1.getEncoder() != null)) {
-            return true;
-        } else {
-            return false;
-        }
+  public boolean checkMotors() {
+    if ((shooterMotor1 != null && shooterMotor1.getEncoder() != null) && (shooterMotor2 != null && shooterMotor1.getEncoder() != null)) {
+      return true;
+    } else {
+      return false;
     }
+  }
 
     public boolean checkPID() {
         if (shooterFlippyDoPIDConroller != null) {
@@ -196,10 +197,13 @@ ShooterSubsystem extends SubsystemBase {
         // shooterMotor2.set(-.3);
         // } else {
         if (runShooter) {
-            // if (ampAndClimbMode == false) {
-            shooterMotor1.set(shooterSpeed + shooterSpeedOffset);
-            // }
-            shooterMotor2.set(shooterSpeed + shooterSpeedOffset);
+          if (shooterMotor1Speed == 0 && shooterMotor2Speed == 0) {
+            shooterMotor1.set(combinedShooterSpeed + shooterSpeedOffset);
+            shooterMotor2.set(combinedShooterSpeed + shooterSpeedOffset);
+          } else {
+            shooterMotor1.set(shooterMotor1Speed);
+            shooterMotor2.set(shooterMotor2Speed);
+          }
         } else {
             shooterMotor1.set(0);
             shooterMotor2.set(0);
@@ -274,8 +278,16 @@ ShooterSubsystem extends SubsystemBase {
      *
      * @param
      */
-    public Command setShooterSpeed(double percent) {
-        return this.runOnce(() -> shooterSpeed = percent);
+    public Command setCombinedShooterSpeed(double percent) {
+        return this.runOnce(() -> combinedShooterSpeed = percent);
+    }
+
+    public Command setShooterMotor1Speed(double percent) {
+        return this.runOnce(() -> shooterMotor1Speed = percent);
+    }
+
+    public Command setShooterMotor2Speed(double percent) {
+        return this.runOnce(() -> shooterMotor2Speed = percent);
     }
 
     /**

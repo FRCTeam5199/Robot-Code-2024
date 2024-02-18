@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder;
@@ -16,18 +17,23 @@ public class ArmSubsystem extends SubsystemBase {
 
     private static boolean subsystemStatus = false;
 
-    private static VortexMotorController armMotor;
-    private static boolean isBrakeMode = false;
-    private CANSparkMax armEncoderMotor;
-    private SparkAbsoluteEncoder armEncoder;
-    private PIDController rotatePIDController;
-    private boolean isAiming = false;
+	private static VortexMotorController armMotor;
+	
+	private CANSparkMax armEncoderMotor;
+	private SparkAbsoluteEncoder armEncoder;
+
+	private PIDController rotatePIDController;
+
+	private static boolean manualMode = false;
+	private static boolean isBrakeMode = false;
+	private boolean isAiming = false;
+
+	private double encoderValue;
 
     private double rotateSetpoint = 120;
     private double rotateOffset;
 
-    public ArmSubsystem() {
-    }
+    public ArmSubsystem() {}
 
     /**
      * Gets the instnace of the Arm Subsystem.
@@ -73,16 +79,16 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void motorInit() {
-        armMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
+			armMotor = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
 
-        armMotor.setInvert(true);
-        armMotor.setBrake(true);
+			armMotor.setInvert(true);
+			armMotor.setBrake(true);
 
-        armMotor.getEncoder().setPosition(0);
+			armMotor.getEncoder().setPosition(0);
 
-        // armEncoderMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_ENCODER_MOTOR, MotorType.kBrushed);
-        // armEncoder = armEncoderMotor.getAbsoluteEncoder(Type.kDutyCycle);
-    }
+			armEncoderMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_ENCODER_MOTOR, MotorType.kBrushed);
+			armEncoder = armEncoderMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
+	}
 
     public void PIDInit() {
         rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I, MainConstants.PIDConstants.ARM_PID.D);
@@ -117,25 +123,24 @@ public class ArmSubsystem extends SubsystemBase {
         }
     }
 
-    private void subsystemPeriodic() {
-        if (armMotor.getEncoder().getPosition() < 3) {
-            // System.out.println(armMotor.getEncoder().getPosition());
-            armMotor.set(0.1);
-        } else if (armMotor.getEncoder().getPosition() > 40) {
-            // System.out.println(armMotor.getEncoder().getPosition());
-            armMotor.set(-0.1);
-        } else {
-            armMotor.set(rotatePIDController.calculate(armMotor.getEncoder().getPosition() + rotateOffset, rotateSetpoint));
-        }
-    }
+	private void subsystemPeriodic() {
+		if(armEncoder.getPosition() < 175){
+			encoderValue = armEncoder.getPosition();
+		}
 
-    public Command increaseOffset() {
-        return this.runOnce(() -> rotateOffset += 5);
-    }
-
-    public Command decreaseOffset() {
-        return this.runOnce(() -> rotateOffset -= 5);
-    }
+		// if (armMotor.getEncoder().getPosition() < 3) {
+		// 	// System.out.println(armMotor.getEncoder().getPosition());
+		// 	armMotor.set(0.1);
+		// } else if (armMotor.getEncoder().getPosition() > 40) {
+		// 	// System.out.println(armMotor.getEncoder().getPosition());
+		// 	armMotor.set(-0.1);
+		// } else {
+			// System.out.println("PID" + rotatePIDController.calculate(encoderValue));
+			// System.out.println("Setpoint" + rotateSetpoint);
+			// System.out.println("Encoder" + encoderValue);
+			armMotor.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
+			// }
+	}
 
     public RelativeEncoder getArmEncoder() {
         if (!subsystemStatus) return null;
@@ -150,7 +155,7 @@ public class ArmSubsystem extends SubsystemBase {
      * @param percent move armMotor at a percent(-1 to 1)
      * @return command to spin motor at percent
      */
-    public Command moveAtPercent(double percent) {
+    public Command setArmSpeed(double percent) {
         return this.run(() -> armMotor.set(percent));
     }
 

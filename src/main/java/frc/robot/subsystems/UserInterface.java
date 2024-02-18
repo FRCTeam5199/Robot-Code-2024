@@ -49,6 +49,9 @@ public class UserInterface extends SubsystemBase {
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withPosition(0, 0)
         .withSize(2, 1);
+
+        // Removes annoying warning that joystick port is disconnected
+        DriverStation.silenceJoystickConnectionWarning(true);
     }
 
     public void initalizeTestTab() {
@@ -106,7 +109,7 @@ public class UserInterface extends SubsystemBase {
     public void initalizeGameTab() {
         shuffleboardGameTab = Shuffleboard.getTab("Game");
         
-        // if (DriverStation.isFMSAttached()) {
+        if (DriverStation.isFMSAttached()) {
             shuffleboardEventNameComponent = shuffleboardGameTab.add("Event Name", "")
             .withWidget(BuiltInWidgets.kTextView)
             .withPosition(0, 0)
@@ -131,7 +134,7 @@ public class UserInterface extends SubsystemBase {
             .withWidget(BuiltInWidgets.kTextView)
             .withPosition(6, 0)
             .withSize(5, 1).getEntry();
-        // }
+        }
 
         shuffleboardRobotEnabledComponent = shuffleboardGameTab.add("Robot Enabled", false)
         .withWidget(BuiltInWidgets.kBooleanBox)
@@ -153,13 +156,12 @@ public class UserInterface extends SubsystemBase {
         shuffleboardCameraComponent = shuffleboardGameTab.add("Camera", "")
         .withWidget(BuiltInWidgets.kCameraStream)
         .withPosition(0, 2)
-        .withSize(4, 3).getEntry();
+        .withSize(3, 2).getEntry();
 
         shuffleboardGameTab.add("Game Field", field)
         .withWidget(BuiltInWidgets.kField)
-        // .withPosition(6, 2)
-        .withPosition(5,1)
-        .withSize(5, 4);
+        .withPosition(6,2)
+        .withSize(4, 2);
 
         field.setRobotPose(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
     }

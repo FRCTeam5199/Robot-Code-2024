@@ -96,6 +96,7 @@ public class MainConstants {
     public static class OperatorConstants {
         //Operator Constants
         public static int MAIN_CONTROLLER_PORT = 0;
+        public static final int OPERATOR_CONTROLLER_PORT = 3;
         public static int TOP_BUTTON_PANEL_PORT = 1;
         public static int BOTTOM_BUTTON_PANEL_PORT = 2;
     }
@@ -149,28 +150,27 @@ public class MainConstants {
         public static final PID CLIMBER_PID = new PID(0.1, 0.01, 0);
 
         // Arm
-        public static final PID ARM_PID = new PID(0.0001, 0.0, 0);// p:0.01
+        public static final PID ARM_PID = new PID(0.005, 0.0, 0);// p:0.01
     }
 
     public static class Setpoints {
-
-        //Arm Setpoints
+        // Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 40;
-        public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
+        public static final double ARM_SPEAKER_FRONT_SETPOINT = 60;
         public static final double ARM_INTAKE_SETPOINT = 10;
         public static final double ARM_CLIMB_SETPOINT = 40;
         public static final double ARM_TRAP_SETPOINT = 50;//Auton
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
-        //Control Panel
+        // Control Panel
         public static final double ARM_SUBWOOFER_SETPOINT = 75.75;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 60;
         public static final double ARM_SAFE_SETPOINT = 62.21;
         public static final double ARM_AMP_SETPOINT = 74.7;
         public static final double ARM_FAR_SHOT_SETPOINT = 65;
         public static final double ARM_HP_STATION_SETPOINT = 100;
-        //Intake Setpoints
+        // Intake Setpoints
         public static final double STOW_INTAKE = 0;
         public static final double DEPLOY_INTAKE = 8.5;
         //24
@@ -179,7 +179,7 @@ public class MainConstants {
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
         public static final double CLIMBER_RETRACT_SETPOINT = 0;
 
-        //Flippy Do Setpoints
+        // Flippy Do Setpoints
         public static final double FLIPPY_DO_DOWN_SETPOINT = 2;
         public static final double FLIPPY_DO_UP_SETPOINT = 0;
     }
