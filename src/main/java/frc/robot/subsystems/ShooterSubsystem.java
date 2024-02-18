@@ -83,7 +83,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println(shooterMotor1.getSpeed());
+      System.out.println(checkForGamePiece());
         // This method will be called once per scheduler run
 
         // if (checkForGamePiece()) {
@@ -203,52 +203,56 @@ public class ShooterSubsystem extends SubsystemBase {
      * Stops the Shooter Motor
      */
 
-    /**
-     * Checks for current spike inside of the indexer
-     *
-     * @return True if a game piece is in the Indexer
-     */
-    private boolean currentCheck() {
-        new WaitCommand(0.4);
-        if (shooterIndexerMotor.getCurrent() < 65) {
-            return false;
+  /**
+   * Checks for current spike inside of the indexer
+   * @return True if a game piece is in the Indexer
+   */
+  private boolean currentCheck(){
+    new WaitCommand(0.4);
+    if (shooterIndexerMotor.getCurrent() < 39.8){
+      return false;
+    } 
+    if (shooterIndexerMotor.getCurrent() > 39.8){
+      return true;
+    } 
+    return false;    
+  }
+
+  public boolean reachedSpeed(){
+    if(intakeShooter == false){
+      if (shooterMotor1.getSpeed()+0.01 > shooterSpeed){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * decides if a game piece is truly inside of 
+   * @return true if game piece false if not
+   */
+  public boolean checkForGamePiece(){
+    int piece = 0;
+    int noPiece = 0;
+    if(intakeShooter){
+      if(shooterIndexerMotor.getCurrent() > 39.8){
+        for(int i = 0; i <=10; i++){
+          if(currentCheck() == true){
+            piece++;
+          }
         }
+      }
+    }
         new WaitCommand(0.5);
-        if (shooterIndexerMotor.getCurrent() > 65) {
-            return true;
-        }
-        return false;
+        if(piece > noPiece){
+          return true;
+      }
+      return false;
     }
+  }
 
-    public boolean reachedSpeed() {
-        if (shooterSpeed > 0) {
-            if (shooterMotor1.getSpeed() == shooterSpeed - 0.1 && shooterMotor2.getSpeed() == shooterSpeed - 0.1) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    /**
-     * decides if a game piece is truly inside of
-     *
-     * @return true if game piece false if not
-     */
-    public boolean checkForGamePiece() {
-        int piece = 0;
-        int noPiece = 0;
-        if (shooterIndexerMotor.getCurrent() > 65) {
-            for (int i = 0; i <= 10; i++) {
-                if (currentCheck() == true) {
-                    piece++;
-                } else {
-                    noPiece++;
-                }
-            }
-        }
-        if (piece > noPiece) {
-            return true;
-        }
-        return false;
-    }
-}
+    
+
+
+   
