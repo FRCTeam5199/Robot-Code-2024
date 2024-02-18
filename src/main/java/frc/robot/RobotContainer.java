@@ -7,12 +7,14 @@ package frc.robot;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.controls.ButtonPanelButtons;
+import frc.robot.utility.CommandXboxController;
 import frc.robot.utility.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
@@ -24,6 +26,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.utility.superstructure.*;
 // import frc.robot.utility.Akit;
 
 
@@ -95,11 +98,11 @@ public class RobotContainer {
         //                     ArmSubsystem.toggleBrakeMode();
         //                 }
         //         }));
-        //     new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
-        //         if (DriverStation.isDisabled()) {
-        //             ArmSubsystem.toggleBrakeMode();
-        //         }
-        //     }));
+            new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
+            if (DriverStation.isDisabled()) {
+                ArmSubsystem.toggleBrakeMode();
+            }
+        }));
 
 
         new Trigger(() -> shooterSubsystem.checkForGamePiece()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
@@ -157,28 +160,28 @@ public class RobotContainer {
 //                 // Speaker Tracking and Auto Shooting
         mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.setRunShooter(true).alongWith(arm.isAiming(true))).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)));
 //                 // Intake
-        mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
-                        arm.isAiming(true),
-                        arm.setArmSetpoint(60),
-                        new WaitCommand(0.075),
-                        intake.deployIntake(),
-                        new WaitCommand(0.25),
-                        arm.rotateIntake(),
-                        intake.setIntakeSpeed(0.9),
-                        shooterSubsystem.setintakeShooter(true),
-                        shooterSubsystem.setRunShooter(true),
-                        shooterSubsystem.setRunIndexer(true)))
-                .onFalse(new SequentialCommandGroup(
-                        intake.setIntakeSpeed(0),
-                        arm.setArmSetpoint(60),
-                        new WaitCommand(0.1),
-                        shooterSubsystem.setintakeShooter(false),
-                        shooterSubsystem.setRunShooter(false),
-                        shooterSubsystem.setRunIndexer(false),
-                        intake.stowIntake(),
-                        new WaitCommand(0.15),
-                        arm.rotateStable()));
-
+                mainCommandXboxController.rightTrigger().onTrue(new SequentialCommandGroup(
+                                arm.isAiming(true),
+                                arm.setArmSetpoint(60),
+                                new WaitCommand(0.075),
+                                intake.deployIntake(),
+                                new WaitCommand(0.15),
+                                arm.rotateIntake(),
+                                intake.setIntakeSpeed(0.9),
+                                shooterSubsystem.setintakeShooter(true),
+                                shooterSubsystem.setRunShooter(true),
+                                shooterSubsystem.setRunIndexer(true)))
+                        .onFalse(new SequentialCommandGroup(
+                                intake.setIntakeSpeed(0),
+                                arm.setArmSetpoint(65),
+                                new WaitCommand(0.1),
+                                shooterSubsystem.setintakeShooter(false),
+                                shooterSubsystem.setRunShooter(false),
+                                shooterSubsystem.setRunIndexer(false),
+                                intake.stowIntake(),
+                                new WaitCommand(0.15),
+                                arm.rotateStable()));
+                                
 //                 mainCommandXboxController.b().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
 //                 mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
 // //                mainCommandXboxController.rightTrigger().onTrue(intakeAction).onFalse(stopIntakeAction);
