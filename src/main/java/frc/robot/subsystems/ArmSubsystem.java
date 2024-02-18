@@ -47,7 +47,6 @@ public class ArmSubsystem extends SubsystemBase {
     public static void toggleBrakeMode() {
         isBrakeMode = !isBrakeMode;
         armMotorL.setBrake(isBrakeMode);
-		armMotorR.setBrake(isBrakeMode);
     }
 
     /**
@@ -114,10 +113,10 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (armEncoder.getPosition() < 170) {
+        if (armEncoder.getPosition() < 175) {
             encoderValue = armEncoder.getPosition();
-        } else if(armEncoder.getPosition() >170){
-            encoderValue = 170;
+        } else {
+            encoderValue = 160;
         }
         if (inAuton) {
             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
@@ -136,9 +135,6 @@ public class ArmSubsystem extends SubsystemBase {
         if (armEncoder.getPosition() < 175) {
             encoderValue = armEncoder.getPosition();
         }
-		else if (armEncoder.getPosition()>170){
-			encoderValue = 170;
-		}
 
         // if (encoderValue > 170) {
         // 	rotateSetpoint = 160;
