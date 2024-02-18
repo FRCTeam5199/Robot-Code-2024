@@ -62,6 +62,10 @@ public class VortexMotorController extends AbstractMotorController {
         return vortex.getAppliedOutput();
     }
 
+
+    /**
+     *@returns RPM of Vortex
+     */
     @Override
     public double getVelocity() {
         return encoder.getVelocity();

@@ -38,12 +38,29 @@ public class Autos extends Command{
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
         HashMap<String, Command> eventMap = new HashMap<>();
-      // NamedCommands.registerCommand("deployIntake", intake.deployAuton());
-      // NamedCommands.registerCommand("retractIntake", intake.stowAuton());
+      NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
+        arm.setArmSetpoint(60),
+        new WaitCommand(0.075),
+        intake.deployIntake(),
+        new WaitCommand(0.15),
+        arm.rotateIntake(),
+        intake.setIntakeSpeed(0.9),
+        shooter.setintakeShooter(true),
+        shooter.setRunShooter(true),
+        shooter.setRunIndexer(true)));
+      NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(0),
+      arm.setArmSetpoint(65),
+      new WaitCommand(0.1),
+      shooter.setintakeShooter(false),
+      shooter.setRunShooter(false),
+      shooter.setRunIndexer(false),
+      intake.stowIntake(),
+      new WaitCommand(0.15),
+      arm.rotateStable()));
 
 
       NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
-      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(146), new WaitCommand(0.5), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(160), new WaitCommand(0.5), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(170), new WaitCommand(0.8), shooter.runAutonShooting(false), new WaitCommand(0.2)));
 
       Shuffleboard.getTab("Autons").add("Side", side);
@@ -88,7 +105,7 @@ public class Autos extends Command{
     return new PathPlannerAuto("Taxi Top Red");
   }
     public Command taxiMiddleRed(){
-    return new PathPlannerAuto("Taxi Middle Red");
+    return new PathPlannerAuto("1 Piece Taxi Middle Red");
   }
     public Command taxiBottomRed(){
     return new PathPlannerAuto("Taxi Bottom Red");

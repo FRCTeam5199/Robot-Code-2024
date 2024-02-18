@@ -165,6 +165,9 @@ public class ArmSubsystem extends SubsystemBase {
         if (!subsystemStatus) return null;
         return armEncoder;
     }
+	public boolean getIsAiming(){
+		return isAiming;
+	}
 
     public Command isAiming(boolean bool) {
         return this.runOnce(() -> isAiming = bool);
@@ -199,7 +202,7 @@ public class ArmSubsystem extends SubsystemBase {
      * Sets the Arm setpoint to the Arm Stable setpoint
      */
     public Command rotateStable() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT).andThen(isAiming(false));
+        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT);
     }
 
     /**
