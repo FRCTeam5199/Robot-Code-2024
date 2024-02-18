@@ -140,11 +140,11 @@ public class ArmSubsystem extends SubsystemBase {
         // 	rotateSetpoint = 160;
         // } else {
         if (isAiming) {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
+            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
         } else {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
+            armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT + rotateOffset));
+            armMotorR.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT + rotateOffset));
         }
         // }
     }
