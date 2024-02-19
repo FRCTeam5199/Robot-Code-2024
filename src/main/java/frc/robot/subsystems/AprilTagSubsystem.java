@@ -10,11 +10,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
@@ -65,8 +61,8 @@ public class AprilTagSubsystem implements Subsystem {
     public MainConstants Constants = new MainConstants();
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
     SwerveDrive drive = TunerConstants.DriveTrain;
+    private final CommandXboxController mainCommandXboxController = new CommandXboxController(MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT);
 
-    CommandXboxController mainCommandXboxController = new CommandXboxController(MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT);
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = limelight.getEntry("tx");
@@ -78,8 +74,7 @@ public class AprilTagSubsystem implements Subsystem {
 
     AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
-    // PhotonPoseEstimator multiPoseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
-    // PhotonPoseEstimator singlePoseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Front"), Constants.cameraPositions[0]);
+    PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
 
     // PhotonPoseEstimator multiPoseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Right"), Constants.cameraPositions[1]);
     // PhotonPoseEstimator singlePoseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Right"), Constants.cameraPositions[1]);
@@ -93,14 +88,14 @@ public class AprilTagSubsystem implements Subsystem {
     // PhotonPoseEstimator multiPoseEstimatorShooter = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Shooter"), Constants.cameraPositions[4]);
     // PhotonPoseEstimator singlePoseEstimatorShooter = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Shooter"), Constants.cameraPositions[4]);
 
-    // public static PhotonCamera frontCamera;
+    public static PhotonCamera frontCamera;
     // public static PhotonCamera leftCamera;
     // public static PhotonCamera rightCamera;
     // public static PhotonCamera backCamera;
     // public static PhotonCamera shooter;
 
     // 0 Front, 1 Back, 2 Left, 3 Rigggggggggggggggght
-    // public PhotonCamera[] allCameras = {frontCamera, rightCamera, leftCamera, backCamera, shooter};
+    public PhotonCamera[] allCameras = {frontCamera};
     public PhotonTrackedTarget[] bestTargetFromCameras;
     public MultiTargetPNPResult[] multiTargetPNPResults;
     PIDController aimControl;
@@ -108,11 +103,11 @@ public class AprilTagSubsystem implements Subsystem {
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 
     public AprilTagSubsystem() {
-        // allCameras[0] = new PhotonCamera("Front");
-
+        allCameras[0] = new PhotonCamera("Front");
+        poseEstimatorFront.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
-        aimControl = new PIDController(1, .01, 0);
+        aimControl = new PIDController(1, .1, 0);
     }
 
     /**
@@ -135,27 +130,25 @@ public class AprilTagSubsystem implements Subsystem {
     }
 
     /**
-     * estimated posistion from front
+     * estimated position from front
      */
 
     public Optional<EstimatedRobotPose> getVisionPoseFront() {
-        // var result = allCameras[0].getLatestResult();
-        // if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
-        //     // System.out.println("2 Tags Front");
+        poseEstimatorFront.setReferencePose(drive.getPose());
 
-        //     return multiPoseEstimatorFront.update();
-        // }else if(result.hasTargets()){
-        //     // System.out.println("1 Tag Front");
-        //     return singlePoseEstimatorFront.update();
+        var result = allCameras[0].getLatestResult();
 
-        // }else{
-        //     // System.out.println("O Tags on Front");
+        if(result.hasTargets()){
+          return poseEstimatorFront.update();
+         }else{
+            // System.out.println("O Tags on Front");
             return Optional.empty();
-        // }
+         }
     }
 
     /**
      * estimated pose right
+     * @return the estimated vision pose from the right camera. If there is no position to give it returns an empty value
      */
     public Optional<EstimatedRobotPose> getVisionPoseRight() {
         // var result = allCameras[1].getLatestResult();
@@ -213,9 +206,17 @@ public class AprilTagSubsystem implements Subsystem {
     //     else{
             return Optional.empty();
     //     }
-       
+
     }
 
+    /**
+     * Sets the robots heading to align with the goal based on the position of the bot on the field.
+     *
+     *
+     * @param x pass the speed in the x direction
+     * @param y pass the speed in the y direction
+     *
+     */
     public Command globalAlignment(double x, double y){
         PIDController aim = new PIDController(.1, 0, 0);
         SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
@@ -224,6 +225,16 @@ public class AprilTagSubsystem implements Subsystem {
         Translation2d target = stagePoseRed.getTranslation().minus(drive.getPose().getTranslation());
         double targetHeading = Units.radiansToDegrees(Math.atan((5.54787 - drive.getPose().getY())/(16.58 - drive.getPose().getX())));
         return drive.applyRequest(()-> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.54 - drive.getPose().getY())/(16.58 - drive.getPose().getX()))))));
+
+    }
+
+    public double targetHeading(){
+        Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
+        Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
+
+        double distanceX = stagePoseRed.getX() - drive.getPose().getX();
+        double distanceY = stagePoseRed.getY() - drive.getPose().getY();
+        return Units.radiansToDegrees(Math.atan(distanceY/distanceX));
 
     }
 
@@ -313,5 +324,5 @@ public class AprilTagSubsystem implements Subsystem {
     //     System.out.println("angle:   " + angleForShooter);
 
 //         return angleForShooter;
-//       }  
- }
+//       }
+}
