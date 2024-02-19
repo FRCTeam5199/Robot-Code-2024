@@ -109,11 +109,13 @@ public class ArmSubsystem extends SubsystemBase {
             return true;
         } else {
             return false;
-        }
+       }
+       
     }
 
     @Override
     public void periodic() {
+        // System.out.println(armEncoder.getPosition());
         if (armEncoder.getPosition() < 170) {
             encoderValue = armEncoder.getPosition();
         } else if(armEncoder.getPosition() >170){
@@ -146,10 +148,12 @@ public class ArmSubsystem extends SubsystemBase {
         if (isAiming) {
             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
             armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
-        } else {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT + rotateOffset));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT + rotateOffset));
+            
         }
+        // } else {
+        //     armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT + rotateOffset));
+        //     armMotorR.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT + rotateOffset));
+        // }
         // }
     }
 

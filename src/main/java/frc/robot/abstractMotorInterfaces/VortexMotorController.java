@@ -8,14 +8,36 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkFlex;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.AbstractMotorController;
 
 public class VortexMotorController extends AbstractMotorController {
     public CANSparkBase vortex;
     public RelativeEncoder encoder;
+    public SparkPIDController sparkPIDController;
+    private double speed = 0;
     public VortexMotorController(int ID){
         super();
         vortex = new CANSparkFlex(ID, CANSparkLowLevel.MotorType.kBrushless);
+        encoder = vortex.getEncoder();
+    }
+    /**
+     * used when using spark Pid controller
+     * @param ID
+     * @param kP
+     */
+    public VortexMotorController(int ID, double kP, double kI, double IZone){
+        super();
+        vortex = new CANSparkFlex(ID, CANSparkLowLevel.MotorType.kBrushless);
+        sparkPIDController = vortex.getPIDController();
+        sparkPIDController.setP(kP);
+        sparkPIDController.setI(kI);
+        sparkPIDController.setD(0);
+        sparkPIDController.setIZone(IZone);
+        sparkPIDController.setFF(0.0001478);
+        sparkPIDController.setOutputRange(-1,1);
+        vortex.burnFlash();
+
         encoder = vortex.getEncoder();
     }
 
@@ -42,6 +64,9 @@ public class VortexMotorController extends AbstractMotorController {
     @Override
     public void setPosition(double Position) {
         vortex.getEncoder().setPosition(Position);
+    }
+    public SparkPIDController getPIDController(){
+        return vortex.getPIDController();
     }
 
     @Override
@@ -73,14 +98,17 @@ public class VortexMotorController extends AbstractMotorController {
 
     @Override
     public void setVelocity(double Velocity) {
-        double speed = 0;
-        vortex.set(0);
-        while (vortex.getEncoder().getVelocity() <= Velocity) {
-            speed++;
-            vortex.set(speed);
-        }
-    }
+        sparkPIDController.setReference(Velocity, CANSparkBase.ControlType.kVelocity);
+        // double deadBand = Velocity * 0.10;
+        //     if(Velocity - encoder.getVelocity() > deadBand){
+        //         speed+=0.01 * deadBand;
+        //     }
+        //     else if(encoder.getVelocity() - Velocity > deadBand){
+        //         speed-=0.01 *deadBand;
+        //     }   
 
+        // vortex.set(speed);
+    }
     @Override
     public double getAngularVelocity() {
         return 0;

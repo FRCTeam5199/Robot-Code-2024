@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -18,8 +19,8 @@ public class ClimberSubsystem extends SubsystemBase {
   
   private static boolean subsystemStatus = false;
 
-  public CANSparkMax climberMotor1;
-  public CANSparkMax climberMotor2;
+  public VortexMotorController climberMotor1;
+  public VortexMotorController climberMotor2;
 
   public PIDController climberPIDController;
 
@@ -66,17 +67,17 @@ public class ClimberSubsystem extends SubsystemBase {
    * init for motor climbers 
    */
   public void motorInit() {
-    climberMotor1 = new CANSparkMax(MainConstants.IDs.Motors.CLIMBER_MOTOR_1_ID, MotorType.kBrushless);
+    climberMotor1 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_MOTOR_1_ID);
+    climberMotor2 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_MOTOR_2_ID);
 
     climberMotor1.getEncoder().setPosition(0);
-    climberMotor1.setInverted(false);
-    climberMotor1.setIdleMode(IdleMode.kBrake);
+    climberMotor1.setInvert(false);
+    climberMotor1.setBrake(true);
 
-    climberMotor2 = new CANSparkMax(MainConstants.IDs.Motors.CLIMBER_MOTOR_2_ID, MotorType.kBrushless);
 
     climberMotor2.getEncoder().setPosition(0);
-    climberMotor2.setInverted(true);
-    climberMotor2.setIdleMode(IdleMode.kBrake);
+    climberMotor1.setInvert(true);
+    climberMotor2.setBrake(true);
   }
 
   private void PIDInit() {
