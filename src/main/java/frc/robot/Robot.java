@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.security.AllPermission;
 import java.util.Optional;
 
 import org.littletonrobotics.junction.LoggedRobot;
@@ -72,24 +73,27 @@ public class Robot extends LoggedRobot{
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-
     //Records the position of the robot and applies it to advantage scope.
+
+
     Logger.recordOutput("MyPose", poseA);
     Logger.recordOutput("MyPoseArray", poseA, poseB);
     Logger.recordOutput("MyPoseArray", new Pose3d[] {poseA, poseB});
 
+    System.out.println(aprilTagSubsystem.targetHeading());
+    System.out.println(drive.getPose().getRotation().getDegrees());
 
     CommandScheduler.getInstance().run();
 
     //Determines whether there is usable value from the getVisionPose command
-    // Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
+    Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
     // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
     // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
     // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
-    // if(estimatePose1.isPresent()){
-    //    EstimatedRobotPose robotPose = estimatePose1.get();
-    //    drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), VecBuilder.fill(0.05, 0.05, Math.toRadians(0)));
-    // }
+    if(estimatePose1.isPresent()){
+        EstimatedRobotPose robotPose = estimatePose1.get();
+        drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), VecBuilder.fill(0.05, 0.05, Math.toRadians(0)));
+    }
     // if(estimatePose2.isPresent()){
     //   EstimatedRobotPose robotPose = estimatePose2.get();
     //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());

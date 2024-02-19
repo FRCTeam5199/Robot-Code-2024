@@ -101,12 +101,10 @@ public class AprilTagSubsystem implements Subsystem {
 
     public AprilTagSubsystem() {
         allCameras[0] = new PhotonCamera("Front");
-        //declared this after making the object because I don't trust how the position is set when the object is made.
-        poseEstimatorFront.setRobotToCameraTransform(new Transform3d(6, 0, 0.17, new Rotation3d(0, Math.toRadians(47), Math.toRadians(-184))));
         poseEstimatorFront.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
-        aimControl = new PIDController(1, .01, 0);
+        aimControl = new PIDController(1, 0, 0);
     }
 
     /**
@@ -216,20 +214,23 @@ public class AprilTagSubsystem implements Subsystem {
      * @param y pass the speed in the y direction
      *
      */
-    public void globalAlignment(Pose2d currentPose, double x, double y){
-        SwerveRequest.FieldCentricFacingAngle driveHeading = new SwerveRequest.FieldCentricFacingAngle();
+    public Command globalAlignment(Pose2d currentPose, double x, double y){
+        SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
         Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
-        if(Objects.equals(getAllianceColor(), "Red")){
-            Translation2d targetDistance = currentPose.minus(stagePoseRed).getTranslation();
-            Rotation2d targetHeading = new Rotation2d(Math.atan(targetDistance.getY()/targetDistance.getX()));
-            drive.applyRequest(()-> driveHeading.withVelocityX(x).withVelocityY(y).withTargetDirection(targetHeading).withDeadband(1));
-        }
-        if(Objects.equals(getAllianceColor(), "Blue")){
-            Translation2d targetDistance = currentPose.minus(stagePoseBlue).getTranslation();
-            Rotation2d targetHeading = new Rotation2d(Math.atan(targetDistance.getY()/targetDistance.getX()));
-            drive.applyRequest(()-> driveHeading.withVelocityX(x).withVelocityY(y).withTargetDirection(targetHeading).withDeadband(1));
-        }
+        Translation2d target = stagePoseRed.getTranslation().minus(drive.getPose().getTranslation());
+        double targetHeading = targetHeading();
+
+        return drive.applyRequest(()-> driveHeading.withVelocityX(x).withVelocityY(y).withRotationalRate(aimControl.calculate(targetHeading, drive.getPose().getRotation().getDegrees())*.01));
+
+    }
+
+    public double targetHeading(){
+        Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
+        Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
+        double distanceX = stagePoseRed.getX() - drive.getPose().getX();
+        double distanceY = stagePoseRed.getY() - drive.getPose().getY();
+        return Units.radiansToDegrees(Math.atan(distanceY/distanceX));
 
     }
 
