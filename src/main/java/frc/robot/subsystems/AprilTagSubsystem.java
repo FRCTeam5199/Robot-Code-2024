@@ -217,7 +217,7 @@ public class AprilTagSubsystem implements Subsystem {
      * @param y pass the speed in the y direction
      *
      */
-    public Command globalAlignment(double x, double y){
+    public Command speakerAlignment(double x, double y){
         PIDController aim = new PIDController(.1, 0, 0);
         SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));

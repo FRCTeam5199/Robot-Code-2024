@@ -162,7 +162,7 @@ public class RobotContainer {
         mainCommandXboxController.povDown().onTrue(climbMode);
 
         // Precision/robot oriented drive
-        mainCommandXboxController.leftBumper().whileTrue(aprilTagSubsystem.globalAlignment( -mainCommandXboxController.getLeftY(), -mainCommandXboxController.getLeftX()));
+        mainCommandXboxController.leftBumper().whileTrue(aprilTagSubsystem.speakerAlignment( -mainCommandXboxController.getLeftY(), -mainCommandXboxController.getLeftX()));
         // Shoot
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
 
