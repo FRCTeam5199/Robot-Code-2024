@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
+import frc.robot.utility.CommandXboxController;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -60,6 +61,8 @@ public class AprilTagSubsystem implements Subsystem {
     public MainConstants Constants = new MainConstants();
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
     SwerveDrive drive = TunerConstants.DriveTrain;
+    private final CommandXboxController mainCommandXboxController = new CommandXboxController(MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT);
+
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = limelight.getEntry("tx");
@@ -104,7 +107,7 @@ public class AprilTagSubsystem implements Subsystem {
         poseEstimatorFront.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
-        aimControl = new PIDController(1, 0, 0);
+        aimControl = new PIDController(1, .1, 0);
     }
 
     /**
@@ -209,25 +212,26 @@ public class AprilTagSubsystem implements Subsystem {
     /**
      * Sets the robots heading to align with the goal based on the position of the bot on the field.
      *
-     * @param currentPose Pass the current position of the robot
+     *
      * @param x pass the speed in the x direction
      * @param y pass the speed in the y direction
      *
      */
-    public Command globalAlignment(Pose2d currentPose, double x, double y){
+    public Command globalAlignment(double x, double y){
+        PIDController aim = new PIDController(.1, 0, 0);
         SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
         Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
         Translation2d target = stagePoseRed.getTranslation().minus(drive.getPose().getTranslation());
-        double targetHeading = targetHeading();
-
-        return drive.applyRequest(()-> driveHeading.withVelocityX(x).withVelocityY(y).withRotationalRate(aimControl.calculate(targetHeading, drive.getPose().getRotation().getDegrees())*.01));
+        double targetHeading = Units.radiansToDegrees(Math.atan((5.54787 - drive.getPose().getY())/(16.58 - drive.getPose().getX())));
+        return drive.applyRequest(()-> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.54 - drive.getPose().getY())/(16.58 - drive.getPose().getX()))))));
 
     }
 
     public double targetHeading(){
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
         Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
+
         double distanceX = stagePoseRed.getX() - drive.getPose().getX();
         double distanceY = stagePoseRed.getY() - drive.getPose().getY();
         return Units.radiansToDegrees(Math.atan(distanceY/distanceX));

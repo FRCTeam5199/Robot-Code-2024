@@ -7,6 +7,7 @@ package frc.robot;
 import java.security.AllPermission;
 import java.util.Optional;
 
+import edu.wpi.first.math.util.Units;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
@@ -80,8 +81,6 @@ public class Robot extends LoggedRobot{
     Logger.recordOutput("MyPoseArray", poseA, poseB);
     Logger.recordOutput("MyPoseArray", new Pose3d[] {poseA, poseB});
 
-    System.out.println(aprilTagSubsystem.targetHeading());
-    System.out.println(drive.getPose().getRotation().getDegrees());
 
     CommandScheduler.getInstance().run();
 

@@ -23,10 +23,7 @@ import frc.robot.constants.MainConstants;
 import frc.robot.controls.ButtonPanelButtons;
 import frc.robot.controls.CommandButtonPanel;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.utility.Akit;
 // import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -45,12 +42,13 @@ public class RobotContainer {
     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
     public final static IntakeSubsystem intake = new IntakeSubsystem();
     public final static Akit log = new Akit();
+    AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
     
     private final CommandXboxController mainCommandXboxController = new CommandXboxController(MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT);
     private final CommandXboxController operatorCommandXboxController = new CommandXboxController(MainConstants.OperatorConstants.OPERATOR_CONTROLLER_PORT);
     private final CommandButtonPanel buttonPanel = new CommandButtonPanel(MainConstants.OperatorConstants.TOP_BUTTON_PANEL_PORT, MainConstants.OperatorConstants.BOTTOM_BUTTON_PANEL_PORT);
     
-    private final double MaxSpeed = 6; // 6 meters per second desired top speed
+    private final double MaxSpeed = 4; // 6 meters per second desired top speed
     private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
@@ -111,12 +109,12 @@ public class RobotContainer {
         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
-                                .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(1.5) // Drive
+                                .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(.5) // Drive
                                 // forward
                                 // with
                                 // negative Y (forward)
                                 .withVelocityY(
-                                        -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(1.5) // Drive
+                                        -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(.5) // Drive
                                 // left
                                 // with
                                 // negative
@@ -164,7 +162,7 @@ public class RobotContainer {
         mainCommandXboxController.povDown().onTrue(climbMode);
 
         // Precision/robot oriented drive
-        mainCommandXboxController.leftBumper().whileTrue(drivetrain.applyRequest(() -> point.withModuleDirection(new Rotation2d(-mainCommandXboxController.getLeftY(), -mainCommandXboxController.getLeftX()))));
+        mainCommandXboxController.leftBumper().whileTrue(aprilTagSubsystem.globalAlignment( -mainCommandXboxController.getLeftY(), -mainCommandXboxController.getLeftX()));
         // Shoot
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setIndexerSpeed(0.5)).onFalse(shooterSubsystem.setIndexerSpeed(0));
 
