@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -32,6 +33,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
+import frc.robot.utility.CommandXboxController;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -63,6 +65,8 @@ public class AprilTagSubsystem implements Subsystem {
     public MainConstants Constants = new MainConstants();
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
     SwerveDrive drive = TunerConstants.DriveTrain;
+
+    CommandXboxController mainCommandXboxController = new CommandXboxController(MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT);
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = limelight.getEntry("tx");
@@ -211,7 +215,18 @@ public class AprilTagSubsystem implements Subsystem {
     //     }
        
     }
-}
+
+    public Command globalAlignment(double x, double y){
+        PIDController aim = new PIDController(.1, 0, 0);
+        SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
+        Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
+        Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
+        Translation2d target = stagePoseRed.getTranslation().minus(drive.getPose().getTranslation());
+        double targetHeading = Units.radiansToDegrees(Math.atan((5.54787 - drive.getPose().getY())/(16.58 - drive.getPose().getX())));
+        return drive.applyRequest(()-> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.54 - drive.getPose().getY())/(16.58 - drive.getPose().getX()))))));
+
+    }
+
 
     // public void shooterAlign(double speedX, double speedY){
     //     PhotonCamera targetCam = null;
@@ -299,4 +314,4 @@ public class AprilTagSubsystem implements Subsystem {
 
 //         return angleForShooter;
 //       }  
-// }
+ }
