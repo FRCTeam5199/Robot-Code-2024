@@ -11,9 +11,9 @@ import frc.robot.utility.PID;
 public class MainConstants {
 
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
-    public static final double ARM_PIVOT_X_OFFSET = 0.1923542; //meters
-    public static final double ARM_PIVOT_Z = 0.5596128; //meters
-    public static final double ARM_ORIGINAL_DEGREES = -32.8;
+    public static final double ARM_PIVOT_X_OFFSET = 0.2032; //meters
+    public static final double ARM_PIVOT_Z = 0.5715; //meters
+    public static final double ARM_ORIGINAL_DEGREES = 21;
     // public static final double SPEAKER_Z = 2.340102;
     public static final double SPEAKER_Z = 1.4511020000000001 + 0.75;
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
@@ -81,7 +81,7 @@ public class MainConstants {
     public static int BrakeButtonid = 0;
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
-            new Transform3d(10, 0, 5, new Rotation3d(0, Math.toRadians(47), Math.toRadians(180))), //front
+            new Transform3d(0.2921, 0, 0.123835, new Rotation3d(Math.toRadians(55), 0, Math.toRadians(180))), //front
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //left
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //right
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)),

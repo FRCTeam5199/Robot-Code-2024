@@ -299,30 +299,22 @@ public class AprilTagSubsystem implements Subsystem {
     //         }
     //     }
 
+    public double speakersAligning(){
+    double angleForArm = 0;
+    double speakerHeight = MainConstants.SPEAKER_Z - MainConstants.ARM_PIVOT_Z;
+    // slightly in front of april tag so it doesnt aim out of field
+    double distanceFromRobot = 0;
+        if (getAllianceColor().equals("Blue")){
+            distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
+        }
+        else if (getAllianceColor().equals("Red")){
+            distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
+        }
 
-    // }
-    // public Command alignSpeaker(){
-    //     return run(()-> speakersAligning());
-    // }
+        distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
+        angleForArm = Math.toDegrees(Math.atan(speakerHeight/distanceFromRobot));
+        System.out.println("angle:   " + angleForArm);
 
-    // public double speakersAligning(){
-    // double angleForShooter = 0;
-    // double speakerHeight = MainConstants.SPEAKER_Z - MainConstants.ARM_PIVOT_Z;
-    // // slightly in front of april tag so it doesnt aim out of field
-    // double distanceFromRobot = 0;
-    //     if (getAllianceColor().equals("Blue")){
-    //     //   distanceFromRobot = poseEstimation.getPoseEstimator().getEstimatedPosition().getTranslation().getDistance(new Translation2d(2, 218.42));
-    //         distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
-    //     }
-    //     else if (getAllianceColor().equals("Red")){
-    //     // distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.5478679999999999));
-    //     distanceFromRobot = new Translation2d(14.700 - 1.1049, 5.54).getDistance(new Translation2d(16.579342, 5.54));
-    //     }
-
-    //     distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
-    //     angleForShooter = Math.toDegrees(Math.atan(speakerHeight/distanceFromRobot));
-    //     System.out.println("angle:   " + angleForShooter);
-
-//         return angleForShooter;
-//       }
+        return angleForArm + MainConstants.ARM_ORIGINAL_DEGREES;
+      }
 }

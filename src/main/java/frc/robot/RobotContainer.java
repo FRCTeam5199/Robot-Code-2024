@@ -21,6 +21,7 @@ import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.controls.CommandButtonPanel;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -41,8 +42,9 @@ public class RobotContainer {
     public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
     public final static IntakeSubsystem intake = new IntakeSubsystem();
+    public  final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
+
     public static final CommandButtonPanel buttonPanel = new CommandButtonPanel(MainConstants.OperatorConstants.TOP_BUTTON_PANEL_PORT, MainConstants.OperatorConstants.BOTTOM_BUTTON_PANEL_PORT);
-    private final XboxController driveXboxController = new XboxController(0);
     private final double MaxSpeed = 6; // 6 meters per second desired top speed
     private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
     /* Setting up bindings for necessary control of the swerve drive platform */
@@ -148,6 +150,7 @@ public class RobotContainer {
         mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
         mainCommandXboxController.povRight().onTrue(intake.deployIntake());
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
+        mainCommandXboxController.leftBumper().onTrue(arm.changeArmSetpoint(aprilTags.speakersAligning()));
 
 //                 //For Debugging
 //                 // mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
