@@ -150,7 +150,7 @@ public class RobotContainer {
         mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
         mainCommandXboxController.povRight().onTrue(intake.deployIntake());
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
-        mainCommandXboxController.leftBumper().onTrue(arm.changeArmSetpoint(aprilTags.speakersAligning()));
+        mainCommandXboxController.leftBumper().onTrue(arm.changeArmSetpoint(aprilTags.speakersAligning()).andThen(aprilTags.speakerAlignment(1,1)));
 
 //                 //For Debugging
 //                 // mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
@@ -158,7 +158,6 @@ public class RobotContainer {
 //                 mainCommandXboxController.povDown().onTrue(climbMode);
 
 //                 // Precision/robot oriented drive
-//                 mainCommandXboxController.leftBumper().whileTrue(drivetrain.applyRequest(() -> point.withModuleDirection(new Rotation2d(-mainCommandXboxController.getLeftY(), -mainCommandXboxController.getLeftX()))));
 //                 // Shoot
 
 //                 // Speaker Tracking and Auto Shooting
