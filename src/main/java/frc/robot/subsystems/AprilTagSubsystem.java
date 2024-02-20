@@ -299,7 +299,7 @@ public class AprilTagSubsystem implements Subsystem {
     //         }
     //     }
 
-    public double speakersAligning(){
+    public double armSpeakersAligning(){
     double angleForArm = 0;
     double speakerHeight = MainConstants.SPEAKER_Z - MainConstants.ARM_PIVOT_Z;
     // slightly in front of april tag so it doesnt aim out of field

@@ -121,13 +121,13 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void subsystemPeriodic() {
-			if (climberMotorPower == previousPIDControllerCalculation) {
-				climberMotorPower = climberPIDController.calculate(climberMotor1.getEncoder().getPosition());
-				previousPIDControllerCalculation = climberMotorPower;
-			}
+			// if (climberMotorPower == previousPIDControllerCalculation) {
+			// 	climberMotorPower = climberPIDController.calculate(climberMotor1.getEncoder().getPosition());
+			// 	previousPIDControllerCalculation = climberMotorPower;
+			// }
 
-      climberMotor1.set(climberMotorPower);
-      climberMotor2.set(climberMotorPower);
+      // climberMotor1.set(climberMotorPower);
+      // climberMotor2.set(climberMotorPower);
   }
 
   /*
@@ -145,7 +145,7 @@ public class ClimberSubsystem extends SubsystemBase {
    * @return command to set climber speed
    */
   public Command setClimberSpeed(double percent) {
-    return this.runOnce(() -> climberMotorPower = percent);//new ParallelCommandGroup(new InstantCommand(() -> climberMotor1.set(percent)), new InstantCommand(() -> climberMotor2.set(percent)));
+    return this.runOnce(() -> climberMotor1.set(percent)).andThen(()-> climberMotor2.set(percent));
   }
 
   public Command setClimberMotor1Speed(double percent) {

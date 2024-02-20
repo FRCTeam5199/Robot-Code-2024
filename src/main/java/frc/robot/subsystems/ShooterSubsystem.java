@@ -105,10 +105,9 @@ public class ShooterSubsystem extends SubsystemBase {
           shooterMotor2.set(-0.4);
         }
         else{
-        shooterMotor1.setVelocity(setRPM);
-        shooterMotor2.setVelocity(setRPM);
-        System.out.println("shooting motor 1 " +shooterMotor1.getVelocity());
-        System.out.println("shooting motor 2 " +shooterMotor2.getVelocity());
+        shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
+        shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
+     
         }
       }
       else{
@@ -175,11 +174,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command increaseShooterSpeed() {
-        return this.runOnce(() -> shooterSpeedOffset += 0.05);
+        return this.runOnce(() -> shooterSpeedOffset += 100);
     }
 
     public Command decreaseShooterSpeed() {
-        return this.runOnce(() -> shooterSpeedOffset -= 0.05);
+        return this.runOnce(() -> shooterSpeedOffset -= 100);
     }
 
     public Command setRunShooter(boolean runShooter) {

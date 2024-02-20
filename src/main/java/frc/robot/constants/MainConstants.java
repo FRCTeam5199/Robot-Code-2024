@@ -174,7 +174,7 @@ public class MainConstants {
         public static final double ARM_SPEAKER_BACK_SETPOINT = 160;
         public static final double ARM_SAFE_SETPOINT = 62.21;
         public static final double ARM_AMP_SETPOINT = 74.7;
-        public static final double ARM_FAR_SHOT_SETPOINT = 65;
+        public static final double ARM_FAR_SHOT_SETPOINT = 45.5;
         public static final double ARM_HP_STATION_SETPOINT = 150;
 
     }

@@ -115,7 +115,16 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // System.out.println(armEncoder.getPosition());
+        if (checkMotors() && checkPID()) { subsystemStatus = true; } else { subsystemStatus = false; }
+        
+        if(subsystemStatus){
+            subsystemPeriodic();
+        }
+    }
+
+    private void subsystemPeriodic() {
+        
+
         if (armEncoder.getPosition() < 170) {
             encoderValue = armEncoder.getPosition();
         } else if(armEncoder.getPosition() >170){
@@ -132,29 +141,6 @@ public class ArmSubsystem extends SubsystemBase {
             armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
             armMotorR.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
         }
-    }
-
-    private void subsystemPeriodic() {
-        if (armEncoder.getPosition() < 175) {
-            encoderValue = armEncoder.getPosition();
-        }
-		else if (armEncoder.getPosition()>170){
-			encoderValue = 170;
-		}
-
-        // if (encoderValue > 170) {
-        // 	rotateSetpoint = 160;
-        // } else {
-        if (isAiming) {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
-            
-        }
-        // } else {
-        //     armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT + rotateOffset));
-        //     armMotorR.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT + rotateOffset));
-        // }
-        // }
     }
 
     public Command increaseOffset() {

@@ -129,11 +129,11 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public Command increaseOffset() {
-        return this.runOnce(() -> rotateOffset += 2);
+        return this.runOnce(() -> rotateOffset += 1);
     }
 
     public Command decreaseOffset() {
-        return this.runOnce(() -> rotateOffset -= 2);
+        return this.runOnce(() -> rotateOffset -= 1);
     }
 
     /**
