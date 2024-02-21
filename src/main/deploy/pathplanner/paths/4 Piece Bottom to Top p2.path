@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.3797057579843757,
+        "x": 2.38,
         "y": 4.46
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.479705757984373,
+        "x": 2.4799999999999973,
         "y": 4.46
       },
       "isLocked": false,
-      "linkedName": "4 piece blue bot to top p1->p2"
+      "linkedName": null
     },
     {
       "anchor": {
