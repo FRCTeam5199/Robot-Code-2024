@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.83,
-        "y": 6.6207186260526365
+        "x": 0.8,
+        "y": 6.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9299999999999997,
-        "y": 6.6207186260526365
+        "x": 0.8999999999999997,
+        "y": 6.6
       },
       "isLocked": false,
-      "linkedName": "Top Blue Starting Pos"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 0.8305816611633238,
-        "y": 6.6207186260526365
+        "x": 0.8,
+        "y": 6.6
       },
       "prevControl": {
-        "x": 0.7306202190980838,
-        "y": 6.61794191932746
+        "x": 0.7000385579347601,
+        "y": 6.597223293274823
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,14 +48,14 @@
     {
       "waypointRelativePos": 1.0,
       "rotationDegrees": 0,
-      "rotateFast": true
+      "rotateFast": false
     }
   ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.25,
+      "waypointRelativePos": 1.35,
       "command": {
         "type": "parallel",
         "data": {
@@ -79,7 +79,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 58.29857033049429,
+    "rotation": 59.0,
     "rotateFast": false
   },
   "reversed": false,

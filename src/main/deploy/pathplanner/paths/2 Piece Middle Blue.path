@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4428388343160021,
-        "y": 5.5190052971079435
+        "x": 1.4,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.274390695656799,
-        "y": 5.5190052971079435
-      },
-      "isLocked": false,
-      "linkedName": "Middle Blue Starting Pos"
-    },
-    {
-      "anchor": {
-        "x": 2.517828881811611,
-        "y": 5.535354916863679
-      },
-      "prevControl": {
-        "x": 1.873732871793628,
-        "y": 5.547065753409461
-      },
-      "nextControl": {
-        "x": 3.4535661568132374,
-        "y": 5.518341511863649
+        "x": 2.5180339887498953,
+        "y": 5.55
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.383130458568611,
-        "y": 5.495887145620446
+        "x": 2.695898344721082,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 1.9920939589492497,
-        "y": 5.504396698124157
+        "x": 2.1297211280962873,
+        "y": 5.55
+      },
+      "nextControl": {
+        "x": 3.118873037976833,
+        "y": 5.55
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.4,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 1.1072275884735283,
+        "y": 5.55
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,8 +48,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "retractIntake",
-      "waypointRelativePos": 1.55,
+      "name": "Retract Intake",
+      "waypointRelativePos": 1.35,
       "command": {
         "type": "parallel",
         "data": {
@@ -67,7 +67,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

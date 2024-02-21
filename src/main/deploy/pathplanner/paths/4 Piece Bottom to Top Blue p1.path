@@ -8,45 +8,45 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7959258262890683,
-        "y": 4.201180954897479
+        "x": 1.5013930170513679,
+        "y": 4.344720358484939
       },
       "isLocked": false,
       "linkedName": "Bottom Blue Starting Pos"
     },
     {
       "anchor": {
-        "x": 2.5,
-        "y": 4.1
+        "x": 2.3797057579843757,
+        "y": 4.110503627566595
       },
       "prevControl": {
-        "x": 2.000685232622713,
-        "y": 4.073832021878528
+        "x": 1.8797057579843783,
+        "y": 4.110503627566595
       },
       "nextControl": {
-        "x": 2.5998629534754576,
-        "y": 4.105233595624294
+        "x": 2.73103085435782,
+        "y": 4.110503627566595
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.3,
-        "y": 5.55
+        "x": 2.35,
+        "y": 4.4
       },
       "prevControl": {
-        "x": 2.3,
-        "y": 4.55
+        "x": 2.7598275102890755,
+        "y": 4.422554172580307
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "4 piece blue bot to top p1->p2"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.85,
+      "waypointRelativePos": 1.0,
       "rotationDegrees": 0.0,
       "rotateFast": false
     }
@@ -72,14 +72,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 130.58,
     "rotateFast": false
   },
   "reversed": false,
@@ -88,5 +88,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

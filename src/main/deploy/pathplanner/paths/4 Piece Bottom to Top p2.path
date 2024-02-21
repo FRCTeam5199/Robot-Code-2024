@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.3,
-        "y": 5.55
+        "x": 2.3797057579843757,
+        "y": 4.46
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4,
-        "y": 5.55
+        "x": 2.479705757984373,
+        "y": 4.46
       },
       "isLocked": false,
       "linkedName": "4 piece blue bot to top p1->p2"
@@ -32,32 +32,26 @@
     },
     {
       "anchor": {
-        "x": 2.3,
-        "y": 5.55
+        "x": 2.54,
+        "y": 5.66
       },
       "prevControl": {
-        "x": 2.1999999999999997,
-        "y": 5.55
+        "x": 2.639804858565066,
+        "y": 5.6662442138662295
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "4 piece blue bot to top p2->p3"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
-  "constraintZones": [
+  "rotationTargets": [
     {
-      "name": "intake",
-      "minWaypointRelativePos": 0.1,
-      "maxWaypointRelativePos": 0.6,
-      "constraints": {
-        "maxVelocity": 0.5,
-        "maxAcceleration": 0.1,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0
-      }
+      "waypointRelativePos": 0.6,
+      "rotationDegrees": 50.78968765535299,
+      "rotateFast": false
     }
   ],
+  "constraintZones": [],
   "eventMarkers": [
     {
       "name": "Retract Intake",
@@ -78,14 +72,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0,
+    "velocity": 0.0,
+    "rotation": 172.15,
     "rotateFast": false
   },
   "reversed": false,
@@ -94,5 +88,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

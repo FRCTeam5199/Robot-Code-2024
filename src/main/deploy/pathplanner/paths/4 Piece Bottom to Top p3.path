@@ -3,51 +3,51 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.3,
+        "x": 2.54,
         "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4,
+        "x": 2.64,
         "y": 5.55
-      },
-      "isLocked": false,
-      "linkedName": "4 piece blue bot to top p2->p3"
-    },
-    {
-      "anchor": {
-        "x": 2.8998008477855355,
-        "y": 6.9983183998984755
-      },
-      "prevControl": {
-        "x": 2.641248785545763,
-        "y": 6.389207912382299
-      },
-      "nextControl": {
-        "x": 2.9526308897363354,
-        "y": 7.122778179214835
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.3,
-        "y": 5.55
+        "x": 2.7193200178126444,
+        "y": 6.9983183998984755
       },
       "prevControl": {
-        "x": 2.5113091308703495,
-        "y": 6.003153893518325
+        "x": 1.8058747672416866,
+        "y": 6.9679477447399965
+      },
+      "nextControl": {
+        "x": 2.8544535188914013,
+        "y": 7.0028113817811395
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.5,
+        "y": 6.9983183998984755
+      },
+      "prevControl": {
+        "x": 3.000000000000001,
+        "y": 6.9983183998984755
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "4 piece blue bot to top p2->p3"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.8,
-      "rotationDegrees": 70.0,
+      "waypointRelativePos": 0.9,
+      "rotationDegrees": 0.0,
       "rotateFast": true
     }
   ],
@@ -79,7 +79,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -138.0,
     "rotateFast": false
   },
   "reversed": false,

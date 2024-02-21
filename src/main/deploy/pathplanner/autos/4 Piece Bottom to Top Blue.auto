@@ -14,19 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "deployIntake"
+            "name": "SbackShot"
           }
         },
         {
           "type": "wait",
           "data": {
             "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
           }
         },
         {
@@ -38,19 +38,19 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "deployIntake"
+            "name": "bottomPieceShot"
           }
         },
         {
           "type": "wait",
           "data": {
             "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
           }
         },
         {
@@ -62,19 +62,19 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "deployIntake"
+            "name": "middlePieceShot"
           }
         },
         {
           "type": "wait",
           "data": {
             "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
           }
         },
         {
@@ -86,7 +86,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "topPieceShot"
           }
         }
       ]
