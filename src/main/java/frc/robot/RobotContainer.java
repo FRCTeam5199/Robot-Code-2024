@@ -141,15 +141,9 @@ public class RobotContainer {
                 shooterSubsystem.setAmpandClimbMode(false),
                 arm.rotateSub()).andThen(shooterSubsystem.setShooterSpeed(0.80)));
         mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
-        // mainCommandXboxController.povRight().onTrue(intake.deployIntake());
+        mainCommandXboxController.povRight().onTrue(intake.deployIntake());
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
-        mainCommandXboxController.leftBumper().onTrue(new InstantCommand(()->arm.setAutoAimingSetpoint(aprilTags.armSpeakersAligning())aprilTags.speakerAlignment(1,1).andThen(shooterSubsystem.setRPMShooter(5000)).andThen(()-> System.out.println(drivetrain.getPose().getTranslation()))).onFalse(drivetrain.getDefaultCommand());
-
-
-        // mainCommandXboxController.povUp().onTrue(arm.isAiming(true).andThen(arm.setArmSetpoint(aprilTags.armSpeakersAligning())));
-        mainCommandXboxController.povUp().onTrue(new InstantCommand(()->arm.setAutoAimingSetpoint(aprilTags.armSpeakersAligning())).andThen(()-> System.out.println(aprilTags.armSpeakersAligning())));
-        mainCommandXboxController.povRight().onTrue(new InstantCommand(()->System.out.println(drivetrain.getPose().getTranslation())));
-        mainCommandXboxController.povLeft().onTrue(arm.setArmSetpoint(40).andThen(()-> System.out.println("40")));
+        mainCommandXboxController.leftBumper().whileTrue(new InstantCommand(()->arm.setAutoAimingSetpoint(aprilTags.armSpeakersAligning())).andThen(aprilTags.speakerAlignment(1,1)).andThen(shooterSubsystem.setRPMShooter(5000)));
 
         // mainCommandXboxController.leftTrigger().onTrue((shooterSubsystem.setIndexerSpeed(-0.4).andThen(shooterSubsystem.setRunShooter(true).alongWith(arm.isAiming(true)).alongWith())).onlyIf(()->shooterSubsystem.intakeShooter == false)).onFalse((shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false))).onlyIf(()->shooterSubsystem.intakeShooter == false));
         

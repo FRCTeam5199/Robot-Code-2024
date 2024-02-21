@@ -3,75 +3,53 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.83,
-        "y": 4.46
+        "x": 14.25,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9299999999999999,
-        "y": 4.46
+        "x": 14.35,
+        "y": 5.55
       },
       "isLocked": false,
-      "linkedName": "Bottom Blue Starting Pos"
+      "linkedName": "3 Piece Top to Middle Red p1 END"
     },
     {
       "anchor": {
-        "x": 2.0,
-        "y": 1.75
+        "x": 13.75,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 1.1028187012992872,
-        "y": 2.1916624471943504
+        "x": 13.65,
+        "y": 5.55
       },
       "nextControl": {
-        "x": 2.897181298700713,
-        "y": 1.3083375528056496
+        "x": 13.85,
+        "y": 5.55
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.0,
-        "y": 0.75
+        "x": 14.25,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 7.0,
-        "y": 0.75
-      },
-      "nextControl": {
-        "x": 8.48,
-        "y": 0.75
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 5.08490900006051,
-        "y": 1.8503121742334787
-      },
-      "prevControl": {
-        "x": 4.984909000060511,
-        "y": 1.8503121742334787
+        "x": 14.15,
+        "y": 5.55
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Bottom Blue Far Link"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 2.0,
-      "rotationDegrees": 0.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "Deploy Intake",
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
         "data": {
@@ -88,7 +66,7 @@
     },
     {
       "name": "Retract Intake",
-      "waypointRelativePos": 2.4000000000000004,
+      "waypointRelativePos": 1.5,
       "command": {
         "type": "parallel",
         "data": {
@@ -112,14 +90,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 148.39249775375137,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
-  "previewStartingState": {
-    "rotation": 0,
-    "velocity": 0
-  },
-  "useDefaultConstraints": true
+  "folder": "4 Piece Paths",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
 }

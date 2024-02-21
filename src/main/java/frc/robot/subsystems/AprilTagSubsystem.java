@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.commands.PathfindHolonomic;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -70,10 +71,11 @@ public class AprilTagSubsystem implements Subsystem {
     double y = ty.getDouble(0);
     double z = tz.getDouble(0);
 
-    AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+
+
+    public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
     PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
-
     // PhotonPoseEstimator multiPoseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Right"), Constants.cameraPositions[1]);
     // PhotonPoseEstimator singlePoseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Right"), Constants.cameraPositions[1]);
 
@@ -125,6 +127,15 @@ public class AprilTagSubsystem implements Subsystem {
         }
         return null;
 
+    }
+
+    /**
+     *
+     * @param ID
+     * @return angle in radions of specified april tag(not active tracking)
+     */
+    public Rotation2d getAngleOfTag(int ID){
+        return AprilTagFields.k2024Crescendo.loadAprilTagLayoutField().getTagPose(ID).get().getRotation().toRotation2d();
     }
 
     /**
@@ -210,6 +221,27 @@ public class AprilTagSubsystem implements Subsystem {
             return Optional.empty();
     //     }
 
+    }
+
+    public boolean checkForID(int ID){
+        for(PhotonCamera camera : allCameras){
+            for (PhotonTrackedTarget target : camera.getLatestResult().getTargets()){
+                if(target.getFiducialId() == ID){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public Optional<PhotonTrackedTarget> returnSpecificTag(int ID){
+        for(PhotonCamera camera : allCameras){
+            for (PhotonTrackedTarget target : camera.getLatestResult().getTargets()){
+                if(target.getFiducialId() == ID){
+                    return Optional.of(target);
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     /**

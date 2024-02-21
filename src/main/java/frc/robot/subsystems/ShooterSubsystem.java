@@ -74,8 +74,8 @@ public class ShooterSubsystem extends SubsystemBase {
      * Initalizes the motor(s) for this subsystem
      */
     public void motorInit() {
-        shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID, 0.0004242300, 0.000001, 40);
-        shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID, 0.000448973, 0.000001, 40);
+        shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID, 0.0004242300, 0.000001, 40,0.0001478);
+        shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID, 0.000448973, 0.000001, 40,0.0001478);
         shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
 
         shooterMotor1.setInvert(true);

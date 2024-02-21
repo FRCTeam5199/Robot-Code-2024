@@ -100,7 +100,8 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void PIDInit() {
-        rotatePIDController = new PIDController(MainConstants.PIDConstants.ARM_PID.P, MainConstants.PIDConstants.ARM_PID.I, MainConstants.PIDConstants.ARM_PID.D);
+        rotatePIDController = new PIDController(0.0075, 0.00001, 0);
+        rotatePIDController.setIZone(1);
     }
 
     public boolean checkMotors() {
@@ -144,8 +145,9 @@ public class ArmSubsystem extends SubsystemBase {
             armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
         }
         if (isAiming) {
-             System.out.println("pos "+ armEncoder.getPosition());
+            System.out.println("pos "+ armEncoder.getPosition());
             System.out.println("desired " + rotateSetpoint);
+
             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
             armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
         } else {

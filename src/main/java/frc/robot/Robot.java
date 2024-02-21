@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose3d;
+// import org.littletonrobotics.junction.Logger;
+// import org.littletonrobotics.junction.LoggedRobot;
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -27,6 +30,8 @@ import java.util.Optional;
 public class Robot extends TimedRobot {
   public static final boolean SECOND_TRY = false;
 
+  Pose3d poseA = new Pose3d();
+  Pose3d poseB = new Pose3d();
   private Command m_autonomousCommand;
   SwerveDrive drive = TunerConstants.DriveTrain;
   AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
@@ -65,6 +70,10 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+
+    // Logger.recordOutput("MyPose", poseA);
+    // Logger.recordOutput("MyPoseArray", poseA, poseB);
+    // Logger.recordOutput("MyPoseArray", new Pose3d[] {poseA, poseB});
 
     CommandScheduler.getInstance().run();
     // System.out.println(drive.getPose());

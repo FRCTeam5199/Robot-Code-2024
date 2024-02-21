@@ -12,7 +12,8 @@
   "autoFolders": [
     "1 Piece Autons",
     "2 Piece Autons",
-    "3 Piece Autons"
+    "3 Piece Autons",
+    "4 Piece Autons"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
