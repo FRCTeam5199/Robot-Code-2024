@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.5178288818115266,
-        "y": 4.144115980538995
+        "x": 5.08490900006051,
+        "y": 1.8503121742334787
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5178288818115266,
-        "y": 4.144115980538995
+        "x": 6.08490900006051,
+        "y": 1.8503121742334787
       },
       "isLocked": false,
       "linkedName": "Bottom Blue Far Link"
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 2.5178288818115266,
-        "y": 4.144115980538995
+        "x": 5.08490900006051,
+        "y": 1.8503121742334787
       },
       "prevControl": {
-        "x": 3.5178288818115266,
-        "y": 4.144115980538995
+        "x": 6.08490900006051,
+        "y": 1.8503121742334787
       },
       "nextControl": null,
       "isLocked": false,
@@ -96,13 +96,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -37.0,
+    "rotation": 143.9239884436315,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "3 Piece Paths",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 143.130102354156,
     "velocity": 0
   },
   "useDefaultConstraints": true
