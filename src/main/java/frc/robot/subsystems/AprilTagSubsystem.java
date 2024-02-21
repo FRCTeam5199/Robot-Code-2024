@@ -107,7 +107,6 @@ public class AprilTagSubsystem implements Subsystem {
         poseEstimatorFront.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
-        aimControl = new PIDController(1, .1, 0);
     }
 
     /**
