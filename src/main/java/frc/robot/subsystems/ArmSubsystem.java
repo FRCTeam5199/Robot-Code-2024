@@ -7,10 +7,14 @@ import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 
 public class ArmSubsystem extends SubsystemBase {
@@ -27,8 +31,11 @@ public class ArmSubsystem extends SubsystemBase {
     private SparkAbsoluteEncoder armEncoder;
     private PIDController rotatePIDController;
     private boolean isAiming = false;
+    public  boolean autoAlign = false;
     private double rotateSetpoint = 120;
     private double rotateOffset;
+
+    SwerveDrive drive = TunerConstants.DriveTrain;
 
     public ArmSubsystem() {
     }
@@ -123,18 +130,22 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private void subsystemPeriodic() {
-        
-
         if (armEncoder.getPosition() < 170) {
             encoderValue = armEncoder.getPosition();
-        } else if(armEncoder.getPosition() >170){
+        } else if(armEncoder.getPosition() >170 && armEncoder.getPosition() < 200){
             encoderValue = 170;
+        }
+        else if(armEncoder.getPosition() > 200){
+             armMotorL.set(rotatePIDController.calculate(encoderValue, 0));
+            armMotorR.set(rotatePIDController.calculate(encoderValue, 0));
         }
         if (inAuton) {
             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
             armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
         }
         if (isAiming) {
+             System.out.println("pos "+ armEncoder.getPosition());
+            System.out.println("desired " + rotateSetpoint);
             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
             armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
         } else {
@@ -144,11 +155,11 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public Command increaseOffset() {
-        return this.runOnce(() -> rotateOffset += 5);
+        return this.runOnce(() -> rotateOffset += .5);
     }
 
     public Command decreaseOffset() {
-        return this.runOnce(() -> rotateOffset -= 5);
+        return this.runOnce(() -> rotateOffset -= 0.5);
     }
 
     public AbsoluteEncoder getArmEncoder() {
@@ -171,21 +182,18 @@ public class ArmSubsystem extends SubsystemBase {
         return this.run(() -> armMotorL.set(percent));
     }
 
-    /**
-     * @param rotations adds this to setPoint variable(setpoint)
-     * @return command to move to setPoint
-     */
-    public Command changeArmSetpoint(double rotations) {
-        // System.out.println(rotateSetpoint + rotations);
-        return this.runOnce(() -> this.rotateSetpoint += rotations);
-    }
 
     /**
      * @param setpoint set armMotor to setPoint
      * @return command to move armMotor to setPoint
      */
     public Command setArmSetpoint(double setpoint) {
-        return this.runOnce(() -> rotateSetpoint = setpoint);
+        return this.runOnce(()-> System.out.println("changed to " + setpoint)).andThen(() -> rotateSetpoint = setpoint);
+    }
+
+    public void setAutoAimingSetpoint(double setpoint){
+        System.out.println("changed to " + setpoint);
+        rotateSetpoint = setpoint;
     }
 
     /**

@@ -13,7 +13,7 @@ public class MainConstants {
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
     public static final double ARM_PIVOT_X_OFFSET = 0.2032; //meters
     public static final double ARM_PIVOT_Z = 0.5715; //meters
-    public static final double ARM_ORIGINAL_DEGREES = 21;
+    public static final double ARM_ORIGINAL_DEGREES = 22;
     // public static final double SPEAKER_Z = 2.340102;
     public static final double SPEAKER_Z = 1.4511020000000001 + 0.75;
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
@@ -154,14 +154,14 @@ public class MainConstants {
     public static class Setpoints {
         //Intake Setpoints
         public static final double STOW_INTAKE = 0;
-        public static final double DEPLOY_INTAKE = 7;
+        public static final double DEPLOY_INTAKE = 7.5;
         //24
 
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
         public static final double CLIMBER_RETRACT_SETPOINT = 0;
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 30;
+        public static final double ARM_STABLE_SETPOINT = 28.5;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 2;
         public static final double ARM_CLIMB_SETPOINT = 40;
@@ -170,10 +170,10 @@ public class MainConstants {
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
         //Control Panel
-        public static final double ARM_SUBWOOFER_SETPOINT = 82;
+        public static final double ARM_SUBWOOFER_SETPOINT = 60;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 160;
-        public static final double ARM_SAFE_SETPOINT = 62.21;
-        public static final double ARM_AMP_SETPOINT = 74.7;
+        public static final double ARM_SAFE_SETPOINT = 56.5;
+        public static final double ARM_AMP_SETPOINT = 57.5;
         public static final double ARM_FAR_SHOT_SETPOINT = 45.5;
         public static final double ARM_HP_STATION_SETPOINT = 150;
 

@@ -60,7 +60,7 @@ public class RobotContainer {
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final Telemetry logger = new Telemetry(MaxSpeed);
-    // public final static Akit log = new Akit();
+//     public final static Akit log = new Akit();
     Autos auton;
     // SequentialCommandGroup climbingSequence = new SequentialCommandGroup(arm.setArmSetpoint(80), new WaitCommand(0.2),intake.deployIntake(), shooterSubsystem.moveFlippyForTime(0.2, 2), climberSubsystem.setClimberTarget(80));
     // SequentialCommandGroup reverseclimbingSequence = new SequentialCommandGroup(climberSubsystem.setClimberTarget(0),new WaitCommand(1),shooterSubsystem.moveFlippyForTime(-.2,2), intake.stowIntake(), new WaitCommand(0.2), arm.rotateStable());
@@ -141,19 +141,23 @@ public class RobotContainer {
                 shooterSubsystem.setAmpandClimbMode(false),
                 arm.rotateSub()).andThen(shooterSubsystem.setShooterSpeed(0.80)));
         mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
-        mainCommandXboxController.povRight().onTrue(intake.deployIntake());
+        // mainCommandXboxController.povRight().onTrue(intake.deployIntake());
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
-        mainCommandXboxController.leftBumper().onTrue(arm.changeArmSetpoint(aprilTags.armSpeakersAligning()).andThen(aprilTags.speakerAlignment(1,1)));
+        mainCommandXboxController.leftBumper().onTrue(new InstantCommand(()->arm.setAutoAimingSetpoint(aprilTags.armSpeakersAligning())aprilTags.speakerAlignment(1,1).andThen(shooterSubsystem.setRPMShooter(5000)).andThen(()-> System.out.println(drivetrain.getPose().getTranslation()))).onFalse(drivetrain.getDefaultCommand());
 
 
-//                 // Precision/robot oriented drive
-//                 // Shoot
+        // mainCommandXboxController.povUp().onTrue(arm.isAiming(true).andThen(arm.setArmSetpoint(aprilTags.armSpeakersAligning())));
+        mainCommandXboxController.povUp().onTrue(new InstantCommand(()->arm.setAutoAimingSetpoint(aprilTags.armSpeakersAligning())).andThen(()-> System.out.println(aprilTags.armSpeakersAligning())));
+        mainCommandXboxController.povRight().onTrue(new InstantCommand(()->System.out.println(drivetrain.getPose().getTranslation())));
+        mainCommandXboxController.povLeft().onTrue(arm.setArmSetpoint(40).andThen(()-> System.out.println("40")));
 
-//                 // Speaker Tracking and Auto Shooting
-        mainCommandXboxController.leftTrigger().onTrue((shooterSubsystem.setIndexerSpeed(-0.4).andThen(shooterSubsystem.setRunShooter(true).alongWith(arm.isAiming(true)).alongWith())).onlyIf(()->shooterSubsystem.intakeShooter == false)).onFalse((shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false))).onlyIf(()->shooterSubsystem.intakeShooter == false));
+        // mainCommandXboxController.leftTrigger().onTrue((shooterSubsystem.setIndexerSpeed(-0.4).andThen(shooterSubsystem.setRunShooter(true).alongWith(arm.isAiming(true)).alongWith())).onlyIf(()->shooterSubsystem.intakeShooter == false)).onFalse((shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false))).onlyIf(()->shooterSubsystem.intakeShooter == false));
+        
+        mainCommandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(shooterSubsystem.setIndexerSpeed(-0.4), arm.isAiming(true), new WaitCommand(0.2),shooterSubsystem.setRunShooter(true)).onlyIf(()->shooterSubsystem.intakeShooter == false)).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)).onlyIf(()->shooterSubsystem.intakeShooter == false));
+        //climb practice
         // mainCommandXboxController.leftTrigger().onTrue(shooterSubsystem.setIndexerSpeed(-0.4).andThen(shooterSubsystem.setRunShooter(true))).onFalse(shooterSubsystem.setRunShooter(false));
 //                 // Intake
-                mainCommandXboxController.rightTrigger().whileTrue(arm.isAiming(true));
+                // mainCommandXboxController.rightTrigger().whileTrue(arm.isAiming(true));
                 mainCommandXboxController.rightTrigger().whileTrue(new SequentialCommandGroup(
                                 arm.setArmSetpoint(50),
                                 new WaitCommand(0.1),
@@ -201,8 +205,6 @@ public class RobotContainer {
 //                 // operatorCommandXboxController.a().onTrue(climberSubsystem.setClimberMotor2Speed(0.5)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
 //                 // operatorCommandXboxController.y().onTrue(climberSubsystem.setClimberMotor2Speed(-0.5)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
 
-//                 operatorCommandXboxController.x().onTrue(arm.changeArmSetpoint(1));
-//                 operatorCommandXboxController.a().onTrue(arm.changeArmSetpoint(-1));
 //                 // operatorCommandXboxController.y().onTrue(new SequentialCommandGroup(shooterSubsystem.flippyDoPercent(0.2), new WaitCommand(2), shooterSubsystem.flippyDoPercent(0)));
 //                 // operatorCommandXboxController.b().onTrue(new SequentialCommandGroup(shooterSubsystem.flippyDoPercent(-0.2), new WaitCommand(2), shooterSubsystem.flippyDoPercent(0)));
 
@@ -220,11 +222,11 @@ public class RobotContainer {
 //                 drivetrain.registerTelemetry(logger::telemeterize);
 
         //Untested
-        buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.rotateSub().andThen(shooterSubsystem.setRPMShooter(5000)));
-        buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.rotateBack().andThen(shooterSubsystem.setRPMShooter(5000)));
-        buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(arm.rotateSafe().andThen(shooterSubsystem.setRPMShooter(5000)));
-        buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(arm.rotateAmp().andThen(shooterSubsystem.setRPMShooter(5000)));
-        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.rotateFarShot());
+        buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.rotateSub().andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
+        buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.rotateBack().andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
+        buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(arm.rotateSafe().andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
+        buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(arm.rotateAmp().andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(shooterSubsystem.setRPMShooter(2000)));
+        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.rotateFarShot().andThen(shooterSubsystem.setRPMShooter(5000)));
         buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(arm.rotateHPStation());
 
         buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_UP).onTrue(intake.increaseOffset());
@@ -234,8 +236,8 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
         buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
 
-        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(arm.isAiming(true));
-        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(arm.isAiming(false));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(arm.isAiming(true).andThen(climberSubsystem.setClimbMode(true)).andThen(shooterSubsystem.setAmpandClimbMode(true)));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(arm.isAiming(false).andThen(climberSubsystem.setClimbMode(false)).andThen(shooterSubsystem.setAmpandClimbMode(true)));
         buttonPanel.button(ButtonPanelButtons.CLIMB_UP).whileTrue(climberSubsystem.setClimberSpeed(.2)).onFalse(climberSubsystem.setClimberSpeed(0));
         buttonPanel.button(ButtonPanelButtons.CLIMB_DOWN).whileTrue(climberSubsystem.setClimberSpeed(-.2)).onFalse(climberSubsystem.setClimberSpeed(0));
         buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor1Speed(.2)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
@@ -243,7 +245,7 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor2Speed(.2)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor2Speed(-.2)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
 
-        mainCommandXboxController.povUp().onTrue(shooterSubsystem.setRunShooter(true)).onFalse(shooterSubsystem.setRunShooter(false));
+      
     }
 
     /**

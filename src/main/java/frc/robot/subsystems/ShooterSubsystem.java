@@ -36,6 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public PIDController topWheelPIDController;
     public PIDController bottomWheelPIDController;
 
+
     public boolean ampAndClimbMode = false;
     public boolean runShooter = false;
     public boolean runIndexer = false;
@@ -106,7 +107,9 @@ public class ShooterSubsystem extends SubsystemBase {
         }
         else{
         shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
-        shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
+        if(ampAndClimbMode == false){
+          shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
+        }
      
         }
       }
@@ -122,7 +125,7 @@ public class ShooterSubsystem extends SubsystemBase {
         else{
           // System.out.println("shooter 1 " + shooterMotor1.getVelocity());
           // System.out.println("shooter 2 " + shooterMotor2.getVelocity());
-        shooterIndexerMotor.set(0.4);
+        shooterIndexerMotor.set(0.6);
         } 
       }
       else{

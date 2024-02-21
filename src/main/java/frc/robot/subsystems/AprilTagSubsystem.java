@@ -42,8 +42,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -144,6 +142,11 @@ public class AprilTagSubsystem implements Subsystem {
             // System.out.println("O Tags on Front");
             return Optional.empty();
          }
+    }
+
+    @Override
+    public void periodic() {
+        System.out.println("ddddddddd");
     }
 
     /**
@@ -298,23 +301,22 @@ public class AprilTagSubsystem implements Subsystem {
     //             drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(0, 0, aimControl.calculate(targetCam.getLatestResult().getBestTarget().getYaw(), 0)* .06)));
     //         }
     //     }
-
     public double armSpeakersAligning(){
-    double angleForArm = 0;
-    double speakerHeight = MainConstants.SPEAKER_Z - MainConstants.ARM_PIVOT_Z;
-    // slightly in front of april tag so it doesnt aim out of field
-    double distanceFromRobot = 0;
-        if (getAllianceColor().equals("Blue")){
-            distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
-        }
-        else if (getAllianceColor().equals("Red")){
-            distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
-        }
+        double angleForArm = 0;
+        double speakerHeight = MainConstants.SPEAKER_Z - MainConstants.ARM_PIVOT_Z;
+        // slightly in front of april tag so it doesnt aim out of field
+        double distanceFromRobot = 0;
+            if (getAllianceColor().equals("Blue")){
+                distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
+            }
+            else if (getAllianceColor().equals("Red")){
+                distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
+            }
 
-        distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
-        angleForArm = Math.toDegrees(Math.atan(speakerHeight/distanceFromRobot));
-        System.out.println("angle:   " + angleForArm);
+            distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
+            angleForArm = Math.toDegrees(Math.atan(speakerHeight/distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;
+            // System.out.println("angle:   " + angleForArm);
 
-        return angleForArm + MainConstants.ARM_ORIGINAL_DEGREES;
+            return angleForArm;
       }
 }

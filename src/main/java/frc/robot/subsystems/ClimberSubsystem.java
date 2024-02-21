@@ -27,7 +27,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	private double climberMotorPower;
 	private double previousPIDControllerCalculation;
 
-  private boolean climbModeEnabled = false;
+  public boolean climbModeEnabled = false;
   
   public ClimberSubsystem() {}
   
@@ -134,10 +134,7 @@ public class ClimberSubsystem extends SubsystemBase {
    * Sets the climb mode of the Arm. False is TeleOp mode.
    */
   public Command setClimbMode(boolean mode){
-    return this.runOnce(()-> new Command() {{
-      climbModeEnabled = mode;
-      // setClimberTarget(5); //Tune
-    }});
+    return this.runOnce(()-> climbModeEnabled = mode);
   }
 
   /**
