@@ -142,7 +142,6 @@ public class RobotContainer {
         mainCommandXboxController.button(8).onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
         mainCommandXboxController.x().onTrue(new SequentialCommandGroup(
-                climberSubsystem.setClimbMode(false),
                 shooterSubsystem.setAmpandClimbMode(false),
                 arm.rotateSub()).andThen(shooterSubsystem.setShooterSpeed(0.80)));
         mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
@@ -221,31 +220,36 @@ public class RobotContainer {
 //                 }
 //                 drivetrain.registerTelemetry(logger::telemeterize);
 
-        //Untested
         buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.rotateSub().andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.rotateBack().andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(arm.rotateSafe().andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(arm.rotateAmp().andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)));
         buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.rotateFarShot().andThen(shooterSubsystem.setRPMShooter(5000)));
         buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(arm.rotateHPStation());
+        buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_SETPOINT).onTrue(arm.rotateTrap());
+        buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_UP_SETPOINT).onTrue(arm.rotateClimb());
+        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(arm.increaseOffset());
+        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(arm.decreaseOffset());
 
         buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_UP).onTrue(intake.increaseOffset());
         buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_DOWN).onTrue(intake.decreaseOffset());
-        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(arm.increaseOffset());
-        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(arm.decreaseOffset());
+
         buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
         buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
 
-        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(climberSubsystem.setClimbMode(true).andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(true)));
-        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(climberSubsystem.setClimbMode(false).andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(false)));
-        buttonPanel.button(ButtonPanelButtons.CLIMB_UP).whileTrue(climberSubsystem.setClimberSpeed(.2)).onFalse(climberSubsystem.setClimberSpeed(0));
-        buttonPanel.button(ButtonPanelButtons.CLIMB_DOWN).whileTrue(climberSubsystem.setClimberSpeed(-.2)).onFalse(climberSubsystem.setClimberSpeed(0));
-        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor1Speed(.2)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
-        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor1Speed(-.2)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
-        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor2Speed(.2)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
-        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor2Speed(-.2)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue((shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(true)));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue((shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(false)));
 
-      
+        // buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(climberSubsystem.centerClimber());
+
+        buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(climberSubsystem.extendClimber());
+        buttonPanel.button(ButtonPanelButtons.AUX_RIGHT_BOTTOM).onTrue(climberSubsystem.retractClimber());
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(climberSubsystem.offsetClimberSetpoint(2));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(climberSubsystem.offsetClimberSetpoint(-2));
+        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor1Speed(0.8));
+        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor1Speed(-0.8));
+        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor1Speed(0.8));
+        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor1Speed(-0.8));
     }
 
     /**

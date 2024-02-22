@@ -66,66 +66,52 @@ public class ShooterSubsystem extends SubsystemBase {
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace());
         }
-
-        // Shuffleboard.getTab("Test").add("Shooter Subsystem Initalized", true).getEntry();
     }
 
     /*
      * Initalizes the motor(s) for this subsystem
      */
     public void motorInit() {
-        shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID, 0.0004242300, 0.000001, 40,0.0001478);
-        shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID, 0.000448973, 0.000001, 40,0.0001478);
-        shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
+      shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID, 0.0004242300, 0.000001, 40,0.0001478);
+      shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID, 0.000448973, 0.000001, 40,0.0001478);
+      shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
 
-        shooterMotor1.setInvert(true);
-        shooterMotor2.setInvert(false);
+      shooterMotor1.setInvert(true);
+      shooterMotor2.setInvert(false);
 
-        // topWheelPIDController = new PIDController(0.005, 0.1, 0);
-        // bottomWheelPIDController = new PIDController(0.001, 0.1,0);
+      shooterIndexerMotor.setInvert(false);
+      shooterIndexerMotor.setBrake(true);
 
-        // shooterMotor1PidController = shooterMotor1.getPIDController();
+      shooterMotor1.getEncoder().setPosition(0);
+      shooterMotor2.getEncoder().setPosition(0);
 
-        shooterIndexerMotor.setInvert(false);
-        shooterIndexerMotor.setBrake(true);
-
-        shooterMotor1.getEncoder().setPosition(0);
-        shooterMotor2.getEncoder().setPosition(0);
-
-        shooterMotor1.setCurrentLimit(30);
-        shooterMotor2.setCurrentLimit(30);
-        shooterIndexerMotor.setCurrentLimit(40);
+      shooterMotor1.setCurrentLimit(30);
+      shooterMotor2.setCurrentLimit(30);
+      shooterIndexerMotor.setCurrentLimit(40);
     }
 
     @Override
     public void periodic() {
-
-      if(runShooter){
-        if(intakeShooter){
+      if (runShooter) {
+        if (intakeShooter) {
           shooterMotor1.set(-0.4);
           shooterMotor2.set(-0.4);
+        } else {
+          shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
+          if (ampAndClimbMode == false) {
+            shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
+          }
         }
-        else{
-        shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
-        if(ampAndClimbMode == false){
-          shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
-        }
-     
-        }
-      }
-      else{
+      } else {
         shooterMotor2.set(0);
         shooterMotor1.set(0);
       }
 
       if(runIndexer){
-          if(intakeShooter){
-        shooterIndexerMotor.set(-.4);
-        }
-        else{
-          // System.out.println("shooter 1 " + shooterMotor1.getVelocity());
-          // System.out.println("shooter 2 " + shooterMotor2.getVelocity());
-        shooterIndexerMotor.set(0.6);
+        if (intakeShooter) {
+          shooterIndexerMotor.set(-.4);
+        } else {
+          shooterIndexerMotor.set(0.6);
         } 
       }
       else{

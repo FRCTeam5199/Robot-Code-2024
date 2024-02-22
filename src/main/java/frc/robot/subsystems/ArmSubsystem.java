@@ -7,8 +7,6 @@ import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -40,8 +38,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     SwerveDrive drive = TunerConstants.DriveTrain;
 
-    public ArmSubsystem() {
-            }
+    public ArmSubsystem() {}
 
     /**
      * Gets the instnace of the Arm Subsystem.
@@ -137,13 +134,11 @@ public class ArmSubsystem extends SubsystemBase {
     private void subsystemPeriodic() {
         if (armEncoder.getPosition() < 170) {
             encoderValue = armEncoder.getPosition();
-        } else if(armEncoder.getPosition() >170 && armEncoder.getPosition() < 200){
+        } else if (armEncoder.getPosition() >170 && armEncoder.getPosition() < 200){
             encoderValue = 170;
-        }
-        else if (armEncoder.getPosition() >200 && armEncoder.getPosition() < 361){
+        } else if (armEncoder.getPosition() >200 && armEncoder.getPosition() < 361){
             encoderValue = 0;
-        }
-        else if(armEncoder.getPosition() > 200){
+        } else if (armEncoder.getPosition() > 200){
              armMotorL.set(rotatePIDController.calculate(encoderValue, 0));
             armMotorR.set(rotatePIDController.calculate(encoderValue, 0));
         }
@@ -154,8 +149,7 @@ public class ArmSubsystem extends SubsystemBase {
                 // System.out.println("encoder value " + encoderValue);
                 // System.out.println("rotate setPoint " + rotateSetpoint);
                 goToSetpoint(rotateSetpoint, rotateOffset);
-            }   
-            else{
+            } else {
                 goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
             }
         }

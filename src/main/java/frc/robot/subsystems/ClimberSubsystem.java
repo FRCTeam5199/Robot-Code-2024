@@ -1,16 +1,13 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -24,10 +21,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public PIDController climberPIDController;
 
-	private double climberMotorPower;
-	private double previousPIDControllerCalculation;
-
-  public boolean climbModeEnabled = false;
+  public boolean PIDControlMode = false;
   
   public ClimberSubsystem() {}
   
@@ -74,26 +68,24 @@ public class ClimberSubsystem extends SubsystemBase {
     climberMotor1.setInvert(false);
     climberMotor1.setBrake(true);
 
-
     climberMotor2.getEncoder().setPosition(0);
     climberMotor1.setInvert(true);
     climberMotor2.setBrake(true);
   }
 
   private void PIDInit() {
-    climberPIDController = new PIDController(MainConstants.PIDConstants.CLIMBER_PID.P, MainConstants.PIDConstants.CLIMBER_PID.I, MainConstants.PIDConstants.CLIMBER_PID.D);
+    // climberPIDController = new PIDController(MainConstants.PIDConstants.CLIMBER_PID.P, MainConstants.PIDConstants.CLIMBER_PID.I, MainConstants.PIDConstants.CLIMBER_PID.D);
+    climberMotor1.getPIDController().setP(MainConstants.PIDConstants.CLIMBER_PID.P);
+    climberMotor1.getPIDController().setP(MainConstants.PIDConstants.CLIMBER_PID.I);
+    climberMotor1.getPIDController().setP(MainConstants.PIDConstants.CLIMBER_PID.D);
+
+    climberMotor2.getPIDController().setP(MainConstants.PIDConstants.CLIMBER_PID.P);
+    climberMotor2.getPIDController().setP(MainConstants.PIDConstants.CLIMBER_PID.I);
+    climberMotor2.getPIDController().setP(MainConstants.PIDConstants.CLIMBER_PID.D);
   }
 
   public boolean checkMotors() {
 		if (climberMotor1 != null && climberMotor2 != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean checkPID() {
-		if (climberPIDController != null) {
 			return true;
 		} else {
 			return false;
@@ -105,11 +97,16 @@ public class ClimberSubsystem extends SubsystemBase {
 		return climberMotor1.getEncoder();
 	}
 
+  public RelativeEncoder getClimberMotor2Encoder() {
+		if (!subsystemStatus) return null;
+		return climberMotor1.getEncoder();
+	}
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (checkMotors() && checkPID()) { subsystemStatus = true; } else { subsystemStatus = false; }
-    
+    if (checkMotors()) { subsystemStatus = true; } else { subsystemStatus = false; }
+
 		if (subsystemStatus) {
       subsystemPeriodic();
     }
@@ -121,20 +118,11 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void subsystemPeriodic() {
-			// if (climberMotorPower == previousPIDControllerCalculation) {
-			// 	climberMotorPower = climberPIDController.calculate(climberMotor1.getEncoder().getPosition());
-			// 	previousPIDControllerCalculation = climberMotorPower;
-			// }
-
-      // climberMotor1.set(climberMotorPower);
-      // climberMotor2.set(climberMotorPower);
-  }
-
-  /*
-   * Sets the climb mode of the Arm. False is TeleOp mode.
-   */
-  public Command setClimbMode(boolean mode){
-    return this.runOnce(()-> climbModeEnabled = mode);
+    if (climberMotor1.getSpeed() == 0 && climberMotor2.getSpeed() == 0) {
+      PIDControlMode = true;
+    } else {
+      PIDControlMode = false;
+    }
   }
 
   /**
@@ -159,15 +147,35 @@ public class ClimberSubsystem extends SubsystemBase {
    * @return command that makes motor go to a setPositions 
    */
   public Command setClimberSetpoint(double setpoint) {
-    return this.runOnce(() -> climberPIDController.setSetpoint(setpoint));
+    return this.runOnce(() -> climberMotor1.setReference(setpoint)).andThen(() -> climberMotor2.setReference(setpoint));
   }
 
-  public Command 
-  extendClimber() {
-    return this.runOnce(() -> climberPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_EXTENDED_SETPOINT));
+  public Command offsetClimberSetpoint(double offset) {
+    return this.runOnce(() -> climberMotor1.setReference(climberMotor1.getEncoder().getPosition() + offset)).andThen(() -> climberMotor2.setReference(climberMotor1.getEncoder().getPosition() + offset));
+  }
+
+  public Command offsetClimberMotor1Setpoint(double offset) {
+    return this.runOnce(() -> climberMotor1.setReference(climberMotor1.getEncoder().getPosition() + offset));
+  }
+
+  public Command offsetClimberMotor2Setpoint(double offset) {
+    return this.runOnce(() -> climberMotor1.setReference(climberMotor2.getEncoder().getPosition() + offset));
+  }
+
+  public Command extendClimber() {
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> PIDControlMode = false),
+      new InstantCommand(() -> climberMotor1.setBrake(false)),
+      new InstantCommand(() -> climberMotor2.setBrake(false)),
+      new WaitCommand(1),
+      new InstantCommand(() -> climberMotor1.setBrake(true)),
+      new InstantCommand(() -> climberMotor2.setBrake(true)),
+      new InstantCommand(() -> PIDControlMode = true)
+    );
   }
 
   public Command retractClimber() {
-    return this.runOnce(() -> climberPIDController.setSetpoint(MainConstants.Setpoints.CLIMBER_RETRACT_SETPOINT));
+    PIDControlMode = true;
+    return this.runOnce(() -> climberMotor1.setReference(MainConstants.Setpoints.CLIMBER_RETRACTED_SETPOINT)).andThen(() -> climberMotor2.setReference(MainConstants.Setpoints.CLIMBER_RETRACTED_SETPOINT));
   }
 }
