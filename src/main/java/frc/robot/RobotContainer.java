@@ -148,7 +148,7 @@ public class RobotContainer {
         mainCommandXboxController.povRight().onTrue(intake.deployIntake());
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
         
-        // mainCommandXboxController.leftBumper().whileTrue(arm.isAutoAiming(true).andThen(aprilTags.speakerAlignment(1, 1).andThen(arm.autoAlignSpeaker(aprilTags.armSpeakersAligning())))).onFalse(arm.isAutoAiming(false));
+        // mainCommandXboxController.leftBumper().whileTrue(arm.isAutoAiming(true).andThen(aprilTags.speakerAlignment().andThen(arm.autoAlignSpeaker(aprilTags.armSpeakersAligning())))).onFalse(arm.isAutoAiming(false));
 
         mainCommandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(shooterSubsystem.setIndexerSpeed(-0.4), arm.isAiming(true), new WaitCommand(0.2),shooterSubsystem.setRunShooter(true)).onlyIf(()->shooterSubsystem.intakeShooter == false)).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)).onlyIf(()->shooterSubsystem.intakeShooter == false));
         // mainCommandXboxController.leftTrigger().onTrue(armIsAimingSpeakerAutoAim).onFalse(new SequentialCommandGroup(shooterSubsystem.setRunShooter(false),arm.rotateStable(), new WaitCommand(0.3), arm.isAiming(false)).onlyIf(()->shooterSubsystem.intakeShooter == false));
