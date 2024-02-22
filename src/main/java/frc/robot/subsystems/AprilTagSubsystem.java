@@ -1,4 +1,3 @@
-
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -65,16 +64,16 @@ public class AprilTagSubsystem extends SubsystemBase {
     public static PhotonCamera frontCamera;
     private final CommandXboxController mainCommandXboxController = new CommandXboxController(MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT);
     public MainConstants Constants = new MainConstants();
-    public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     // 0 Front, 1 Back, 2 Left, 3 Rigggggggggggggggght
     public PhotonCamera[] allCameras = {frontCamera};
     public PhotonTrackedTarget[] bestTargetFromCameras;
     public MultiTargetPNPResult[] multiTargetPNPResults;
+    public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
     SwerveDrive drive = TunerConstants.DriveTrain;
 
+    //    double z = tz.getDouble(0);
   
-
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
     PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
     //PhotonPoseEstimator poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[1]);
@@ -85,7 +84,13 @@ public class AprilTagSubsystem extends SubsystemBase {
     // public static PhotonCamera rightCamera;
     // public static PhotonCamera backCamera;
     // public static PhotonCamera shooter;
+
         PIDController aimControl;
+
+    //    PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+//    PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
+   
+
 
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 
