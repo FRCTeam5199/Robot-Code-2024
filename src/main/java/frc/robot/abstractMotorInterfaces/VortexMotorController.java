@@ -37,7 +37,8 @@ public class VortexMotorController extends AbstractMotorController {
         sparkPIDController.setFF(FF);
         sparkPIDController.setOutputRange(-1,1);
         vortex.burnFlash();
-
+        
+        
         encoder = vortex.getEncoder();
 
     }
@@ -75,6 +76,11 @@ public class VortexMotorController extends AbstractMotorController {
     public void setPosition(double Position, boolean FOC, double feed, int PidSlot, boolean brake, boolean forwardlimit, boolean backwardlimit, double Velocity) {
 
     }
+    
+    public void setReferencePercent(double percent){
+        sparkPIDController.setReference(percent, CANSparkBase.ControlType.kDutyCycle);
+    }
+
 
     @Override
     public AbstractMotorController setBrake(boolean brake) {

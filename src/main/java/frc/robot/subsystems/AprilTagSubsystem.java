@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.constants.MainConstants;
 
@@ -55,7 +56,7 @@ import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
-public class AprilTagSubsystem implements Subsystem {
+public class AprilTagSubsystem extends SubsystemBase {
 
     public MainConstants Constants = new MainConstants();
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
@@ -118,12 +119,16 @@ public class AprilTagSubsystem implements Subsystem {
         Optional<Alliance> ally = DriverStation.getAlliance();
         if (ally.isPresent()) {
             if (ally.get() == Alliance.Red) {
+                System.out.println("red ");
                 return "Red";
             }
             if (ally.get() == Alliance.Blue) {
+                System.out.println("blue ");
                 return "Blue";
             }
+            System.out.println("noo");
         }
+        System.out.println("null");
         return null;
 
     }
@@ -152,11 +157,6 @@ public class AprilTagSubsystem implements Subsystem {
             // System.out.println("O Tags on Front");
             return Optional.empty();
          }
-    }
-
-    @Override
-    public void periodic() {
-        System.out.println("ddddddddd");
     }
 
     /**

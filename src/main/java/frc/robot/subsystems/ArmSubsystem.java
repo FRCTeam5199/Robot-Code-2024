@@ -1,14 +1,20 @@
 package frc.robot.subsystems;
 
+import java.rmi.server.ExportException;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -100,12 +106,15 @@ public class ArmSubsystem extends SubsystemBase {
 
         armEncoderMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_ENCODER_MOTOR, MotorType.kBrushed);
         armEncoder = armEncoderMotor.getAbsoluteEncoder(Type.kDutyCycle);
+        
     }
 
     public void PIDInit() {
-        //0.0075
-        rotatePIDController = new PIDController(0.0075, 0.0000, 0);
-        rotatePIDController.setIZone(0);
+        
+        rotatePIDController = new PIDController(0.0083262, 0.00569673212, 0.003);
+        rotatePIDController.setIZone(3);
+        
+        rotatePIDController.setTolerance(encoderValue);
     }
 
     public boolean checkMotors() {
@@ -151,8 +160,8 @@ public class ArmSubsystem extends SubsystemBase {
             goToSetpoint(rotateSetpoint, rotateOffset);
         }
             if(isAiming){   
-                // System.out.println("encoder value " + encoderValue);
-                // System.out.println("rotate setPoint " + rotateSetpoint);
+                System.out.println("encoder value " + encoderValue);
+                System.out.println("rotate setPoint " + rotateSetpoint);
                 goToSetpoint(rotateSetpoint, rotateOffset);
             }   
             else{
@@ -160,9 +169,11 @@ public class ArmSubsystem extends SubsystemBase {
             }
         }
     private void goToSetpoint(double rotateSetpoint, double rotateOffset){
-        System.out.println(rotateOffset);
+        // System.out.println();
         armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
         armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+    
+      
     }
 
     public Command isAutoAiming(boolean bool){
@@ -173,12 +184,12 @@ public class ArmSubsystem extends SubsystemBase {
         return this.runOnce(()-> isAiming = bool);
     }
 
-    public Command increaseOffset() {
-        return this.runOnce(() -> rotateOffset += 1);
+    public Command increaseOffset(double amount) {
+        return this.runOnce(() -> rotateOffset += amount);
     }
 
-    public Command decreaseOffset() {
-        return this.runOnce(() -> rotateOffset -= 1);
+    public Command decreaseOffset(double amount) {
+        return this.runOnce(() -> rotateOffset -= amount);
     }
 
     public AbsoluteEncoder getArmEncoder() {
