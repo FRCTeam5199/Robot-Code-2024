@@ -158,14 +158,14 @@ public class MainConstants {
         //24
 
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
-        public static final double CLIMBER_RETRACT_SETPOINT = 0;
+        public static final double CLIMBER_RETRACTED_SETPOINT = 0;
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 22;
+        public static final double ARM_STABLE_SETPOINT = 23; //Maybe make it 22.5 for chain
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 2;
-        public static final double ARM_CLIMB_SETPOINT = 40;
-        public static final double ARM_TRAP_SETPOINT = 50;//Auton
+        public static final double ARM_CLIMB_SETPOINT = 135;
+        public static final double ARM_TRAP_SETPOINT = 70;
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
