@@ -10,6 +10,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
@@ -30,15 +32,16 @@ public class ArmSubsystem extends SubsystemBase {
     private CANSparkMax armEncoderMotor;
     private SparkAbsoluteEncoder armEncoder;
     private PIDController rotatePIDController;
-    private boolean isAiming = false;
-    public  boolean autoAlign = false;
+    public  boolean isAiming = false;
+    public boolean autoAiming = false;
+
     private double rotateSetpoint = 120;
     private double rotateOffset;
 
     SwerveDrive drive = TunerConstants.DriveTrain;
 
     public ArmSubsystem() {
-    }
+            }
 
     /**
      * Gets the instnace of the Arm Subsystem.
@@ -100,8 +103,9 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void PIDInit() {
-        rotatePIDController = new PIDController(0.0075, 0.00001, 0);
-        rotatePIDController.setIZone(1);
+        //0.0075
+        rotatePIDController = new PIDController(0.0075, 0.0000, 0);
+        rotatePIDController.setIZone(0);
     }
 
     public boolean checkMotors() {
@@ -136,44 +140,56 @@ public class ArmSubsystem extends SubsystemBase {
         } else if(armEncoder.getPosition() >170 && armEncoder.getPosition() < 200){
             encoderValue = 170;
         }
+        else if (armEncoder.getPosition() >200 && armEncoder.getPosition() < 361){
+            encoderValue = 0;
+        }
         else if(armEncoder.getPosition() > 200){
              armMotorL.set(rotatePIDController.calculate(encoderValue, 0));
             armMotorR.set(rotatePIDController.calculate(encoderValue, 0));
         }
         if (inAuton) {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint));
+            goToSetpoint(rotateSetpoint, rotateOffset);
         }
-        if (isAiming) {
-            System.out.println("pos "+ armEncoder.getPosition());
-            System.out.println("desired " + rotateSetpoint);
+            if(isAiming){   
+                // System.out.println("encoder value " + encoderValue);
+                // System.out.println("rotate setPoint " + rotateSetpoint);
+                goToSetpoint(rotateSetpoint, rotateOffset);
+            }   
+            else{
+                goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
+            }
+        }
+    private void goToSetpoint(double rotateSetpoint, double rotateOffset){
+        System.out.println(rotateOffset);
+        armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+        armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+    }
 
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
-        } else {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
-        }
+    public Command isAutoAiming(boolean bool){
+        return this.runOnce(()-> autoAiming = bool);
+    }
+
+    public Command isAiming(boolean bool){
+        return this.runOnce(()-> isAiming = bool);
     }
 
     public Command increaseOffset() {
-        return this.runOnce(() -> rotateOffset += .5);
+        return this.runOnce(() -> rotateOffset += 1);
     }
 
     public Command decreaseOffset() {
-        return this.runOnce(() -> rotateOffset -= 0.5);
+        return this.runOnce(() -> rotateOffset -= 1);
     }
 
     public AbsoluteEncoder getArmEncoder() {
         if (!subsystemStatus) return null;
         return armEncoder;
     }
-	public boolean getIsAiming(){
-		return isAiming;
-	}
 
-    public Command isAiming(boolean bool) {
-        return this.runOnce(() -> isAiming = bool);
+
+
+    public Command autoAlignSpeaker(double setPoint){
+        return new SequentialCommandGroup(new InstantCommand(()-> isAiming = false),new InstantCommand(()-> goToSetpoint(setPoint, 0)));
     }
 
     /**

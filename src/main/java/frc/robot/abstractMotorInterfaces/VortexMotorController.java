@@ -39,6 +39,7 @@ public class VortexMotorController extends AbstractMotorController {
         vortex.burnFlash();
 
         encoder = vortex.getEncoder();
+
     }
 
     @Override
@@ -102,6 +103,8 @@ public class VortexMotorController extends AbstractMotorController {
         sparkPIDController.setReference(Velocity, CANSparkBase.ControlType.kVelocity);
     }
 
+    public void setPositon(double SETPOINT){
+    }
 
     @Override
     public double getAngularVelocity() {

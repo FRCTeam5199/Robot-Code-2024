@@ -161,7 +161,7 @@ public class MainConstants {
         public static final double CLIMBER_RETRACT_SETPOINT = 0;
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 28.5;
+        public static final double ARM_STABLE_SETPOINT = 22;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 2;
         public static final double ARM_CLIMB_SETPOINT = 40;
@@ -170,10 +170,10 @@ public class MainConstants {
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
         //Control Panel
-        public static final double ARM_SUBWOOFER_SETPOINT = 60;
+        public static final double ARM_SUBWOOFER_SETPOINT = 67;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 160;
-        public static final double ARM_SAFE_SETPOINT = 56.5;
-        public static final double ARM_AMP_SETPOINT = 57.5;
+        public static final double ARM_SAFE_SETPOINT = 53;
+        public static final double ARM_AMP_SETPOINT = 60.5;
         public static final double ARM_FAR_SHOT_SETPOINT = 45.5;
         public static final double ARM_HP_STATION_SETPOINT = 150;
 
