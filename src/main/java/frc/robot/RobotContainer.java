@@ -237,8 +237,8 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
         buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
 
-//        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue((shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(true)));
-//        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue((shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(false)));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue((shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(true)));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue((shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(false)));
 
         // buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(climberSubsystem.centerClimber());
 

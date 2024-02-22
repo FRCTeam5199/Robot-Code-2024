@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -52,6 +53,13 @@ public class AprilTagSubsystem implements Subsystem {
     double x = tx.getDouble(0);
     NetworkTableEntry ty = limelight.getEntry("ty");
     double y = ty.getDouble(0);
+    double z = tz.getDouble(0);
+
+
+
+    public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+    PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
     //PhotonPoseEstimator poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[1]);
     //PhotonPoseEstimator poseEstimatorLeft = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Left"), Constants.cameraPositions[2]);
     //PhotonPoseEstimator poseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Right"), Constants.cameraPositions[3]);
@@ -69,9 +77,9 @@ public class AprilTagSubsystem implements Subsystem {
 
     public AprilTagSubsystem() {
         allCameras[0] = new PhotonCamera("Front");
-       /* allCameras[1] = new PhotonCamera("Back");
+        allCameras[1] = new PhotonCamera("Back");
         allCameras[2] = new PhotonCamera("Left");
-        allCameras[3] = new PhotonCamera("Right");*/
+        allCameras[3] = new PhotonCamera("Right");
         poseEstimatorFront.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
 //        poseEstimatorBack.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
 //        poseEstimatorLeft.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
