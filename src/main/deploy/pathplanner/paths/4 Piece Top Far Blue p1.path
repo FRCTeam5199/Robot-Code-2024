@@ -16,15 +16,15 @@
     },
     {
       "anchor": {
-        "x": 3.503946066380006,
+        "x": 3.0003800949114017,
         "y": 7.120188619835157
       },
       "prevControl": {
-        "x": 3.24361416438401,
+        "x": 2.7400481929154057,
         "y": 7.303952315361742
       },
       "nextControl": {
-        "x": 3.7030302876582923,
+        "x": 3.199464316189688,
         "y": 6.979658581285779
       },
       "isLocked": false,
@@ -55,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.15,
+      "waypointRelativePos": 1.85,
       "command": {
         "type": "parallel",
         "data": {

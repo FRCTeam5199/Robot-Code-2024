@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 11.34,
-        "y": 1.83
+        "x": 14.0,
+        "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 10.26337898829644,
-        "y": 2.141126589945488
+        "x": 12.685241918272709,
+        "y": 6.8157068696448375
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.526797053594109,
-        "y": 2.4272679314589416
+        "x": 8.129726501963702,
+        "y": 7.412959533479694
       },
       "prevControl": {
-        "x": 8.860671442616585,
-        "y": 2.4272679314589416
+        "x": 8.668424983069654,
+        "y": 7.869682158765173
       },
       "nextControl": {
-        "x": 8.081785264854414,
-        "y": 2.4272679314589416
+        "x": 7.752998398739791,
+        "y": 7.093559619876815
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 11.338495715513847,
-        "y": 1.8268905011355192
+        "x": 11.27994153277893,
+        "y": 6.476092609817173
       },
       "prevControl": {
-        "x": 11.171616294734958,
-        "y": 1.8312820648417858
+        "x": 10.167412060929687,
+        "y": 6.581490138729206
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "Deploy Intake",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.7,
       "command": {
         "type": "parallel",
         "data": {
@@ -72,7 +72,7 @@
     },
     {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.35,
+      "waypointRelativePos": 1.6,
       "command": {
         "type": "parallel",
         "data": {
@@ -96,14 +96,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 36.15818544113174,
+    "rotation": -10.329027003102992,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
-  "previewStartingState": {
-    "rotation": 33.49518467426018,
-    "velocity": 0
-  },
-  "useDefaultConstraints": true
+  "folder": "4 Piece Paths",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
 }

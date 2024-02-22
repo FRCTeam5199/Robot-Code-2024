@@ -8,27 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9299999999999999,
-        "y": 4.46
+        "x": 1.7778081710009588,
+        "y": 1.7464488775131404
       },
       "isLocked": false,
       "linkedName": "Bottom Blue Starting Pos"
-    },
-    {
-      "anchor": {
-        "x": 2.0,
-        "y": 1.75
-      },
-      "prevControl": {
-        "x": 1.1028187012992872,
-        "y": 2.1916624471943504
-      },
-      "nextControl": {
-        "x": 2.897181298700713,
-        "y": 1.3083375528056496
-      },
-      "isLocked": false,
-      "linkedName": null
     },
     {
       "anchor": {
@@ -62,7 +46,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 2.0,
+      "waypointRelativePos": 1.0,
       "rotationDegrees": 0.0,
       "rotateFast": false
     }
@@ -71,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "Deploy Intake",
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 0.8,
       "command": {
         "type": "parallel",
         "data": {
@@ -88,7 +72,7 @@
     },
     {
       "name": "Retract Intake",
-      "waypointRelativePos": 2.4000000000000004,
+      "waypointRelativePos": 1.4000000000000004,
       "command": {
         "type": "parallel",
         "data": {

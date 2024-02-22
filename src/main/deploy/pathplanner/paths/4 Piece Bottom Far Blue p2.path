@@ -3,50 +3,50 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.72,
-        "y": 1.75
+        "x": 5.33,
+        "y": 2.06
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.718048585650657,
-        "y": 1.8124421386622913
+        "x": 6.443366039371165,
+        "y": 1.5224087509515962
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.942353117231199,
-        "y": 2.4007214918852084
+        "x": 8.223413194329954,
+        "y": 2.48269734770568
       },
       "prevControl": {
-        "x": 8.066743300247028,
-        "y": 2.4202346602171745
+        "x": 8.347803377345784,
+        "y": 2.502210516037646
       },
       "nextControl": {
-        "x": 7.817962934215367,
-        "y": 2.3812083235532424
+        "x": 8.099023011314122,
+        "y": 2.463184179373714
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.72,
-        "y": 1.75
+        "x": 5.33,
+        "y": 2.06
       },
       "prevControl": {
-        "x": 6.71999999999999,
-        "y": 1.75
+        "x": 6.455076875916947,
+        "y": 1.5809629336805036
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Bottom Blue Far Link"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.85,
+      "waypointRelativePos": 0.55,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -89,8 +89,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -105,5 +105,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

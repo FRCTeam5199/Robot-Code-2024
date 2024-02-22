@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8,
+      "x": 15.7,
       "y": 6.6
     },
-    "rotation": 59.0
+    "rotation": 121.0
   },
   "command": {
     "type": "sequential",
@@ -24,39 +24,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "deployIntake"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "4 Piece Top Far Blue p1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "topPieceShot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "4 Piece Top Far Blue p2"
+            "pathName": "4 Piece Top Far Red p1"
           }
         },
         {
@@ -66,9 +36,33 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "4 Piece Top Far Blue p3"
+            "pathName": "4 Piece Top Far Red p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LbackShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Top Far Red p3"
           }
         },
         {

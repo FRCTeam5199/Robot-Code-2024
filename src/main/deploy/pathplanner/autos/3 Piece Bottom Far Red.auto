@@ -5,7 +5,7 @@
       "x": 15.65,
       "y": 4.5
     },
-    "rotation": 58.81502534219311
+    "rotation": -124.5
   },
   "command": {
     "type": "sequential",
@@ -14,19 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "SbackShot"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "deployIntake"
+            "waitTime": 0.5
           }
         },
         {
@@ -51,6 +45,12 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom Far Red p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LbackShot"
           }
         }
       ]
