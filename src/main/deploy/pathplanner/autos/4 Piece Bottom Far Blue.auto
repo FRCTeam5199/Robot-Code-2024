@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.83,
-      "y": 4.46
+      "x": 0.85,
+      "y": 4.5
     },
-    "rotation": -60.0
+    "rotation": -55.5
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom Far Blue p1"
+            "pathName": "4 Piece Bottom Far Blue p1"
           }
         },
         {
@@ -30,15 +30,21 @@
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 1.0
+            "pathName": "4 Piece Bottom Far Blue p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LbackShot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom Far Blue p2"
+            "pathName": "4 Piece Bottom Far Blue p3"
           }
         },
         {
@@ -50,6 +56,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "4 Piece Autons",
   "choreoAuto": false
 }

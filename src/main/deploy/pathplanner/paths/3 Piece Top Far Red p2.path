@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.5,
+        "x": 14.0,
         "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5,
-        "y": 7.0
+        "x": 12.685241918272709,
+        "y": 6.8157068696448375
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.0,
-        "y": 7.5
+        "x": 8.129726501963702,
+        "y": 7.412959533479694
       },
       "prevControl": {
-        "x": 7.7075,
-        "y": 7.655179656513159
+        "x": 8.668424983069654,
+        "y": 7.869682158765173
       },
       "nextControl": {
-        "x": 8.2925,
-        "y": 7.344820343486841
+        "x": 7.752998398739791,
+        "y": 7.093559619876815
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.5,
-        "y": 6.25
+        "x": 11.27994153277893,
+        "y": 6.476092609817173
       },
       "prevControl": {
-        "x": 6.5,
-        "y": 6.25
+        "x": 10.167412060929687,
+        "y": 6.581490138729206
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,8 +46,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9,
-      "rotationDegrees": 0,
+      "waypointRelativePos": 0.8,
+      "rotationDegrees": 180.0,
       "rotateFast": false
     }
   ],
@@ -55,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "Deploy Intake",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.7,
       "command": {
         "type": "parallel",
         "data": {
@@ -72,7 +72,7 @@
     },
     {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.5,
+      "waypointRelativePos": 1.6,
       "command": {
         "type": "parallel",
         "data": {
@@ -96,14 +96,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -172.93503863285218,
+    "rotation": -10.329027003102992,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "3 Piece Paths",
-  "previewStartingState": {
-    "rotation": 0,
-    "velocity": 0
-  },
-  "useDefaultConstraints": true
+  "previewStartingState": null,
+  "useDefaultConstraints": false
 }

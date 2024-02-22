@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.5,
-        "y": 7.0
+        "x": 5.72,
+        "y": 1.75
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5,
-        "y": 7.0
+        "x": 6.6658719337410135,
+        "y": 2.096239741694889
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.0,
-        "y": 7.5
+        "x": 7.918931444139636,
+        "y": 2.3772998187936465
       },
       "prevControl": {
-        "x": 7.7075,
-        "y": 7.655179656513159
+        "x": 7.049072343057606,
+        "y": 2.094595610941987
       },
       "nextControl": {
-        "x": 8.2925,
-        "y": 7.344820343486841
+        "x": 8.387364905970893,
+        "y": 2.529540693888806
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.5,
-        "y": 6.25
+        "x": 5.72,
+        "y": 1.75
       },
       "prevControl": {
-        "x": 6.5,
-        "y": 6.25
+        "x": 7.181148741755401,
+        "y": 2.318745636064738
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,8 +46,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9,
-      "rotationDegrees": 0,
+      "waypointRelativePos": 0.95,
+      "rotationDegrees": 0.0,
       "rotateFast": false
     }
   ],
@@ -55,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "Deploy Intake",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.75,
       "command": {
         "type": "parallel",
         "data": {
@@ -72,7 +72,7 @@
     },
     {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.5,
+      "waypointRelativePos": 1.65,
       "command": {
         "type": "parallel",
         "data": {
@@ -96,14 +96,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -172.93503863285218,
+    "rotation": 139.4150216464999,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
-  "previewStartingState": {
-    "rotation": 0,
-    "velocity": 0
-  },
-  "useDefaultConstraints": true
+  "folder": "4 Piece Paths",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
 }

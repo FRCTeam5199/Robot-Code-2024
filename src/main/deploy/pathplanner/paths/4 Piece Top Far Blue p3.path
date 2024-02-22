@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.5,
-        "y": 7.0
+        "x": 5.5,
+        "y": 6.25
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5,
-        "y": 7.0
+        "x": 7.34510045339634,
+        "y": 6.593200975274989
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.0,
-        "y": 7.5
+        "x": 8.246834867421518,
+        "y": 5.773442417070284
       },
       "prevControl": {
-        "x": 7.7075,
-        "y": 7.655179656513159
+        "x": 8.363943232879333,
+        "y": 5.9842374748943525
       },
       "nextControl": {
-        "x": 8.2925,
-        "y": 7.344820343486841
+        "x": 8.068250496403024,
+        "y": 5.451990549236993
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 6.25
       },
       "prevControl": {
-        "x": 6.5,
-        "y": 6.25
+        "x": 6.712715279924141,
+        "y": 6.45267093672561
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,8 +46,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9,
-      "rotationDegrees": 0,
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": -34.717004055694176,
       "rotateFast": false
     }
   ],
@@ -55,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "Deploy Intake",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "parallel",
         "data": {
@@ -72,7 +72,7 @@
     },
     {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.5,
+      "waypointRelativePos": 1.4,
       "command": {
         "type": "parallel",
         "data": {
@@ -96,14 +96,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -172.93503863285218,
+    "rotation": -173.1818827534657,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
-  "previewStartingState": {
-    "rotation": 0,
-    "velocity": 0
-  },
-  "useDefaultConstraints": true
+  "folder": "4 Piece Paths",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
 }

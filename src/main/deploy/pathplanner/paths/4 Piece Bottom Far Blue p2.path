@@ -3,50 +3,50 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.5,
-        "y": 7.0
+        "x": 5.72,
+        "y": 1.75
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5,
-        "y": 7.0
+        "x": 6.718048585650657,
+        "y": 1.8124421386622913
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.0,
-        "y": 7.5
+        "x": 7.942353117231199,
+        "y": 2.4007214918852084
       },
       "prevControl": {
-        "x": 7.7075,
-        "y": 7.655179656513159
+        "x": 8.066743300247028,
+        "y": 2.4202346602171745
       },
       "nextControl": {
-        "x": 8.2925,
-        "y": 7.344820343486841
+        "x": 7.817962934215367,
+        "y": 2.3812083235532424
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.5,
-        "y": 6.25
+        "x": 5.72,
+        "y": 1.75
       },
       "prevControl": {
-        "x": 6.5,
-        "y": 6.25
+        "x": 6.71999999999999,
+        "y": 1.75
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Bottom Blue Far Link"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 0.85,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -54,8 +54,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Deploy Intake",
-      "waypointRelativePos": 0.6,
+      "name": "deploy",
+      "waypointRelativePos": 1.6,
       "command": {
         "type": "parallel",
         "data": {
@@ -71,8 +71,8 @@
       }
     },
     {
-      "name": "Retract Intake",
-      "waypointRelativePos": 1.5,
+      "name": "Retract",
+      "waypointRelativePos": 1.25,
       "command": {
         "type": "parallel",
         "data": {
@@ -96,11 +96,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -172.93503863285218,
+    "rotation": 141.74599429129412,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "4 Piece Paths",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

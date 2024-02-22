@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.83,
-      "y": 4.46
+      "x": 0.8,
+      "y": 6.6
     },
-    "rotation": -60.0
+    "rotation": 59.0
   },
   "command": {
     "type": "sequential",
@@ -18,9 +18,39 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom Far Blue p1"
+            "pathName": "4 Piece Top Far p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "topPieceShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Top Far Blue p2"
           }
         },
         {
@@ -30,15 +60,9 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom Far Blue p2"
+            "pathName": "4 Piece Top Far Blue p3"
           }
         },
         {
@@ -50,6 +74,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "4 Piece Autons",
   "choreoAuto": false
 }
