@@ -7,10 +7,14 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.commands.PathfindHolonomic;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -28,6 +32,7 @@ public class Autos extends Command{
 
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
   HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 0.85, .00,0.00), 5, .21, new ReplanningConfig());
+  PathConstraints pathConstraints = new PathConstraints(1, 1, 1, 1);
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
@@ -213,5 +218,72 @@ public class Autos extends Command{
   public Command sixPieceBtT(){
     return new PathPlannerAuto("6 Piece Bottom to Top Red");
   }
+
+  public Command goToClimb11(){
+      return new PathfindHolonomic(
+              new Pose2d(11.9047, 3.713, new Rotation2d(60)),
+              pathConstraints,
+              1,
+              swerveDrive::getPose,
+              swerveDrive::getCurrentRobotChassisSpeeds,
+              (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+              pathFollowerConfig);
+  }
+
+  public Command goToClimb12(){
+    return new PathfindHolonomic(
+            new Pose2d(11.9047, 4.5, new Rotation2d(60)),
+            pathConstraints,
+            1,
+            swerveDrive::getPose,
+            swerveDrive::getCurrentRobotChassisSpeeds,
+            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+            pathFollowerConfig);
+  }
+
+  public Command goToClimb13(){
+    return new PathfindHolonomic(
+            new Pose2d(11.22, 4.11, new Rotation2d(60)),
+            pathConstraints,
+            1,
+            swerveDrive::getPose,
+            swerveDrive::getCurrentRobotChassisSpeeds,
+            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+            pathFollowerConfig);
+  }
+
+  public Command goToClimb14(){
+    return new PathfindHolonomic(
+            new Pose2d(5.32, 4.11, new Rotation2d(60)),
+            pathConstraints,
+            1,
+            swerveDrive::getPose,
+            swerveDrive::getCurrentRobotChassisSpeeds,
+            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+            pathFollowerConfig);
+  }
+
+  public Command goToClimb15(){
+    return new PathfindHolonomic(
+            new Pose2d(4.64, 4.5, new Rotation2d(60)),
+            pathConstraints,
+            1,
+            swerveDrive::getPose,
+            swerveDrive::getCurrentRobotChassisSpeeds,
+            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+            pathFollowerConfig);
+  }
+
+  public Command goToClimb16(){
+    return new PathfindHolonomic(
+            new Pose2d(4.64, 3.713, new Rotation2d(60)),
+            pathConstraints,
+            1,
+            swerveDrive::getPose,
+            swerveDrive::getCurrentRobotChassisSpeeds,
+            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+            pathFollowerConfig);
+  }
+
 
 }
