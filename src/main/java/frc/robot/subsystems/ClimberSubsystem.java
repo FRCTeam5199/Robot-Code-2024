@@ -24,6 +24,7 @@ public class ClimberSubsystem extends SubsystemBase {
     //  public boolean PIDControlMode = false;
     public double rotateSetpoint = 0;
     public boolean useSetpoints = false;
+    public boolean climbModeEnabled = false;
 
     public ClimberSubsystem() {
     }
@@ -145,6 +146,9 @@ public class ClimberSubsystem extends SubsystemBase {
             climberMotor1.set(climberPIDController.calculate(climberMotor1.getEncoder().getPosition(), rotateSetpoint));
             climberMotor2.set(climberPIDController.calculate(climberMotor2.getEncoder().getPosition(), rotateSetpoint));
         }
+    }
+    public Command setClimbMode(boolean bool){
+        return this.runOnce(()-> climbModeEnabled = bool);
     }
 
     /**

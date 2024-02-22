@@ -72,30 +72,20 @@ public class AprilTagSubsystem extends SubsystemBase {
     public MultiTargetPNPResult[] multiTargetPNPResults;
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
     SwerveDrive drive = TunerConstants.DriveTrain;
-    NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = limelight.getEntry("tx");
-    double x = tx.getDouble(0);
-    NetworkTableEntry ty = limelight.getEntry("ty");
-    double y = ty.getDouble(0);
-    double z = tz.getDouble(0);
 
+  
 
-
-    public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
     PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
     //PhotonPoseEstimator poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[1]);
     //PhotonPoseEstimator poseEstimatorLeft = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Left"), Constants.cameraPositions[2]);
     //PhotonPoseEstimator poseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Right"), Constants.cameraPositions[3]);
-    NetworkTableEntry tz = limelight.getEntry("tz");
+
     // public static PhotonCamera leftCamera;
     // public static PhotonCamera rightCamera;
     // public static PhotonCamera backCamera;
     // public static PhotonCamera shooter;
-    double z = tz.getDouble(0);
-    PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
-    PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
-    PIDController aimControl;
+        PIDController aimControl;
 
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
 

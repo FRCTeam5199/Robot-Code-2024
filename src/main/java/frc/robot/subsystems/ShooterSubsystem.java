@@ -101,13 +101,9 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
         if(ampAndClimbMode == false){
           shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
-          }
-        } else {
-          shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
-          if (ampAndClimbMode == false) {
-            shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
-          }
-        }
+            }
+        } 
+        
       } else {
         shooterMotor2.set(0);
         shooterMotor1.set(0);
