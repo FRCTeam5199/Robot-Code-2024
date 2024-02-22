@@ -76,17 +76,10 @@ public class AprilTagSubsystem implements Subsystem {
     public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
     PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
-    // PhotonPoseEstimator multiPoseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Right"), Constants.cameraPositions[1]);
-    // PhotonPoseEstimator singlePoseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Right"), Constants.cameraPositions[1]);
+    //PhotonPoseEstimator poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[1]);
+    //PhotonPoseEstimator poseEstimatorLeft = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Left"), Constants.cameraPositions[2]);
+    //PhotonPoseEstimator poseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Right"), Constants.cameraPositions[3]);
 
-    // PhotonPoseEstimator multiPoseEstimatorLeft = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Left"), Constants.cameraPositions[3]);
-    // PhotonPoseEstimator singlePoseEstimatorLeft = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Left"), Constants.cameraPositions[3]);
-
-    // PhotonPoseEstimator multiPoseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[3]);
-    // PhotonPoseEstimator singlePoseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Back"), Constants.cameraPositions[3]);
-
-    // PhotonPoseEstimator multiPoseEstimatorShooter = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Shooter"), Constants.cameraPositions[4]);
-    // PhotonPoseEstimator singlePoseEstimatorShooter = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("Shooter"), Constants.cameraPositions[4]);
 
     public static PhotonCamera frontCamera;
     // public static PhotonCamera leftCamera;
@@ -104,7 +97,16 @@ public class AprilTagSubsystem implements Subsystem {
 
     public AprilTagSubsystem() {
         allCameras[0] = new PhotonCamera("Front");
+        allCameras[1] = new PhotonCamera("Back");
+        allCameras[2] = new PhotonCamera("Left");
+        allCameras[3] = new PhotonCamera("Right");
         poseEstimatorFront.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+//        poseEstimatorBack.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+//        poseEstimatorLeft.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+//        poseEstimatorRight.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+
+
+
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
     }
@@ -163,64 +165,56 @@ public class AprilTagSubsystem implements Subsystem {
      * estimated pose right
      * @return the estimated vision pose from the right camera. If there is no position to give it returns an empty value
      */
-    public Optional<EstimatedRobotPose> getVisionPoseRight() {
-        // var result = allCameras[1].getLatestResult();
-        // if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
-        //     return multiPoseEstimatorRight.update();
-        // }else if(result.hasTargets()){
-        //     return singlePoseEstimatorRight.update();
-
-        // }else{
-            // System.out.println("O Tags On Right");
-            return Optional.empty();
-        // }
-    }
+//    public Optional<EstimatedRobotPose> getVisionPoseRight() {
+//        poseEstimatorRight.setReferencePose(drive.getPose());
+//
+//        var result = allCameras[3].getLatestResult();
+//
+//        if(result.hasTargets()){
+//            return poseEstimatorRight.update();
+//        }else{
+//            // System.out.println("O Tags on Front");
+//            return Optional.empty();
+//        }
+//
+//    }
 
     /**
      * estimated pose left
      */
-    public Optional<EstimatedRobotPose> getVisionPoseLeft() {
-        // var result = allCameras[2].getLatestResult();
-        // if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
-            // return multiPoseEstimatorLeft.update();
-        // }else if(result.hasTargets()){
-            // return singlePoseEstimatorLeft.update();
-
-        // }else{
-            // System.out.println("O Tags On Left");
-            return Optional.empty();
-        // }
-    }
+//    public Optional<EstimatedRobotPose> getVisionPoseLeft() {
+//        poseEstimatorLeft.setReferencePose(drive.getPose());
+//
+//        var result = allCameras[2].getLatestResult();
+//
+//        if(result.hasTargets()){
+//            return poseEstimatorLeft.update();
+//        }else{
+//            // System.out.println("O Tags on Front");
+//            return Optional.empty();
+//        }
+//    }
 
     /**
      * estimated pose back
      */
-    public Optional<EstimatedRobotPose> getVisionPoseBack() {
-        // var result = allCameras[3].getLatestResult();
-        // if(result.getMultiTagResult().estimatedPose.isPresent && result.getMultiTagResult().estimatedPose.ambiguity < .2){
-        //     // System.out.println("2 Tags Back");
-        //     return multiPoseEstimatorBack.update();
-        // }else if(result.hasTargets()){
-        //     // System.out.println("1 Tag Back");
-        //     return singlePoseEstimatorBack.update();
-        // }else{
-            // System.out.println("O Tags Back");
-            return Optional.empty();
-        // }
-    }
+//    public Optional<EstimatedRobotPose> getVisionPoseBack() {
+//        poseEstimatorBack.setReferencePose(drive.getPose());
+//
+//        var result = allCameras[1].getLatestResult();
+//
+//        if(result.hasTargets()){
+//            return poseEstimatorBack.update();
+//        }else{
+//            // System.out.println("O Tags on Front");
+//            return Optional.empty();
+//        }
+//    }
 
     /**
      * shooter gamera pose estimation
      */
-    public Optional<Pose3d> getShooterVision(){
-    //    PhotonPipelineResult result = allCameras[4].getLatestResult();
-    //    if(singlePoseEstimatorShooter.update().isPresent())
-    //        return Optional.ofNullable(singlePoseEstimatorShooter.update().get().estimatedPose);
-    //     else{
-            return Optional.empty();
-    //     }
 
-    }
 
     public boolean checkForID(int ID){
         for(PhotonCamera camera : allCameras){

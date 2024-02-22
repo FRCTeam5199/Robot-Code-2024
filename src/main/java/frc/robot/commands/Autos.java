@@ -37,7 +37,7 @@ public class Autos extends Command{
     public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm, ShooterSubsystem shooter){
     this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
-        HashMap<String, Command> eventMap = new HashMap<>();
+
       NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
         arm.setArmSetpoint(60),
         new WaitCommand(0.075),
@@ -48,6 +48,7 @@ public class Autos extends Command{
         shooter.setintakeShooter(true),
         shooter.setRunShooter(true),
         shooter.setRunIndexer(true)));
+
       NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(0),
       arm.setArmSetpoint(65),
       new WaitCommand(0.1),
