@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "2 Piece Bottom Red"
           }
         },
         {
@@ -44,6 +44,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "2 Piece Autons",
   "choreoAuto": false
 }

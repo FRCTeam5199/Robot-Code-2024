@@ -32,13 +32,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "3 Piece Bottom Far Red p1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "LbackShot"
           }
         },
         {
@@ -56,6 +56,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "3 Piece Autons",
   "choreoAuto": false
 }
