@@ -27,18 +27,17 @@ public class ArmSubsystem extends SubsystemBase {
     private static boolean isBrakeMode = false;
     public boolean inAuton = false;
     public double encoderValue;
+    public boolean isAiming = false;
+    public boolean autoAiming = false;
+    SwerveDrive drive = TunerConstants.DriveTrain;
     private CANSparkMax armEncoderMotor;
     private SparkAbsoluteEncoder armEncoder;
     private PIDController rotatePIDController;
-    public  boolean isAiming = false;
-    public boolean autoAiming = false;
-
     private double rotateSetpoint = 120;
     private double rotateOffset;
 
-    SwerveDrive drive = TunerConstants.DriveTrain;
-
-    public ArmSubsystem() {}
+    public ArmSubsystem() {
+    }
 
     /**
      * Gets the instnace of the Arm Subsystem.
@@ -54,7 +53,7 @@ public class ArmSubsystem extends SubsystemBase {
     public static void toggleBrakeMode() {
         isBrakeMode = !isBrakeMode;
         armMotorL.setBrake(isBrakeMode);
-		armMotorR.setBrake(isBrakeMode);
+        armMotorR.setBrake(isBrakeMode);
     }
 
     /**
@@ -101,8 +100,9 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void PIDInit() {
         //0.0075
-        rotatePIDController = new PIDController(0.0075, 0.0000, 0);
-        rotatePIDController.setIZone(0);
+        rotatePIDController = new PIDController(0.0083262, 0.00569673212, 0.003);
+        rotatePIDController.setIZone(3);
+        rotatePIDController.setTolerance(encoderValue);
     }
 
     public boolean checkMotors() {
@@ -118,15 +118,19 @@ public class ArmSubsystem extends SubsystemBase {
             return true;
         } else {
             return false;
-       }
-       
+        }
+
     }
 
     @Override
     public void periodic() {
-        if (checkMotors() && checkPID()) { subsystemStatus = true; } else { subsystemStatus = false; }
-        
-        if(subsystemStatus){
+        if (checkMotors() && checkPID()) {
+            subsystemStatus = true;
+        } else {
+            subsystemStatus = false;
+        }
+
+        if (subsystemStatus) {
             subsystemPeriodic();
         }
     }
@@ -134,37 +138,39 @@ public class ArmSubsystem extends SubsystemBase {
     private void subsystemPeriodic() {
         if (armEncoder.getPosition() < 170) {
             encoderValue = armEncoder.getPosition();
-        } else if (armEncoder.getPosition() >170 && armEncoder.getPosition() < 200){
+        } else if (armEncoder.getPosition() > 170 && armEncoder.getPosition() < 200) {
             encoderValue = 170;
-        } else if (armEncoder.getPosition() >200 && armEncoder.getPosition() < 361){
+        } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 361) {
             encoderValue = 0;
-        } else if (armEncoder.getPosition() > 200){
-             armMotorL.set(rotatePIDController.calculate(encoderValue, 0));
+        } else if (armEncoder.getPosition() > 200) {
+            armMotorL.set(rotatePIDController.calculate(encoderValue, 0));
             armMotorR.set(rotatePIDController.calculate(encoderValue, 0));
         }
         if (inAuton) {
             goToSetpoint(rotateSetpoint, rotateOffset);
         }
-            if(isAiming){   
-                // System.out.println("encoder value " + encoderValue);
-                // System.out.println("rotate setPoint " + rotateSetpoint);
-                goToSetpoint(rotateSetpoint, rotateOffset);
-            } else {
-                goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
-            }
+        if (isAiming) {
+            // System.out.println("encoder value " + encoderValue);
+            // System.out.println("rotate setPoint " + rotateSetpoint);
+
+            goToSetpoint(rotateSetpoint, rotateOffset);
+        } else {
+            goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
         }
-    private void goToSetpoint(double rotateSetpoint, double rotateOffset){
+    }
+
+    private void goToSetpoint(double rotateSetpoint, double rotateOffset) {
         System.out.println(rotateOffset);
         armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
         armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
     }
 
-    public Command isAutoAiming(boolean bool){
-        return this.runOnce(()-> autoAiming = bool);
+    public Command isAutoAiming(boolean bool) {
+        return this.runOnce(() -> autoAiming = bool);
     }
 
-    public Command isAiming(boolean bool){
-        return this.runOnce(()-> isAiming = bool);
+    public Command isAiming(boolean bool) {
+        return this.runOnce(() -> isAiming = bool);
     }
 
     public Command increaseOffset() {
@@ -181,9 +187,8 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
 
-
-    public Command autoAlignSpeaker(double setPoint){
-        return new SequentialCommandGroup(new InstantCommand(()-> isAiming = false),new InstantCommand(()-> goToSetpoint(setPoint, 0)));
+    public Command autoAlignSpeaker(double setPoint) {
+        return new SequentialCommandGroup(new InstantCommand(() -> isAiming = false), new InstantCommand(() -> goToSetpoint(setPoint, 0)));
     }
 
     /**
@@ -200,10 +205,10 @@ public class ArmSubsystem extends SubsystemBase {
      * @return command to move armMotor to setPoint
      */
     public Command setArmSetpoint(double setpoint) {
-        return this.runOnce(()-> System.out.println("changed to " + setpoint)).andThen(() -> rotateSetpoint = setpoint);
+        return this.runOnce(() -> System.out.println("changed to " + setpoint)).andThen(() -> rotateSetpoint = setpoint);
     }
 
-    public void setAutoAimingSetpoint(double setpoint){
+    public void setAutoAimingSetpoint(double setpoint) {
         System.out.println("changed to " + setpoint);
         rotateSetpoint = setpoint;
     }

@@ -40,7 +40,7 @@ import frc.robot.utility.superstructure.*;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
+    //    public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
     public final static ArmSubsystem arm = new ArmSubsystem();
     public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
@@ -144,8 +144,6 @@ public class RobotContainer {
         mainCommandXboxController.x().onTrue(new SequentialCommandGroup(
                 shooterSubsystem.setAmpandClimbMode(false),
                 arm.rotateSub()).andThen(shooterSubsystem.setShooterSpeed(0.80)));
-        mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
-        mainCommandXboxController.povRight().onTrue(intake.deployIntake());
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
 
         // mainCommandXboxController.leftBumper().whileTrue(arm.isAutoAiming(true).andThen(aprilTags.speakerAlignment(1, 1).andThen(arm.autoAlignSpeaker(aprilTags.armSpeakersAligning())))).onFalse(arm.isAutoAiming(false));
@@ -246,12 +244,18 @@ public class RobotContainer {
 //        buttonPanel.button(ButtonPanelButtons.AUX_RIGHT_BOTTOM).onTrue(climberSubsystem.retractClimber());
 //        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(new SequentialCommandGroup(climberSubsystem.setClimberSpeed(0.8)));
 //        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(climberSubsystem.setClimberSpeed(-0.8));
-        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor2Speed(0.8));
-        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor2Speed(-0.8));
-        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor1Speed(0.8));
-        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor1Speed(-0.8));
+        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor1Speed(0.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
+        buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor1Speed(-0.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
+        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor2Speed(0.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
+        buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor2Speed(-0.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
         buttonPanel.button(ButtonPanelButtons.CLIMB_UP).onTrue(climberSubsystem.setClimberSpeed(0.8)).onFalse(climberSubsystem.setClimberSpeed(0));
         buttonPanel.button(ButtonPanelButtons.CLIMB_DOWN).onTrue(climberSubsystem.setClimberSpeed(-0.8)).onFalse(climberSubsystem.setClimberSpeed(0));
+
+        buttonPanel.button(ButtonPanelButtons.AUX_RIGHT_TOP).onTrue(intake.deployIntake());
+        buttonPanel.button(ButtonPanelButtons.AUX_RIGHT_BOTTOM).onTrue(intake.stowIntake());
+
+        buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(arm.isAiming(true));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(arm.isAiming(false));
     }
 
     /**
