@@ -285,5 +285,27 @@ public class Autos extends Command{
             pathFollowerConfig);
   }
 
+  public Command goToAmpRed(){
+   return new PathfindHolonomic(
+          new Pose2d(14.700757999999999, 8.2042, new Rotation2d(90)),
+          pathConstraints,
+          1,
+          swerveDrive::getPose,
+          swerveDrive::getCurrentRobotChassisSpeeds,
+          (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+          pathFollowerConfig);
+  }
+
+   public Command goToAmpBlue(){
+    return new PathfindHolonomic(
+            new Pose2d(1.8415, 8.2042, new Rotation2d(90)),
+            pathConstraints,
+            1,
+            swerveDrive::getPose,
+            swerveDrive::getCurrentRobotChassisSpeeds,
+            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+            pathFollowerConfig);
+  }
+
 
 }
