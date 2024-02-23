@@ -167,7 +167,7 @@ public class ArmSubsystem extends SubsystemBase {
                 }
             }
             else{
-                goToSetpoint(aprilTagSubsystem.armSpeakersAligning(),0);
+                goToSetpoint(aprilTagSubsystem.armSpeakersAligning(), 0);
             }
         }
     private void goToSetpoint(double rotateSetpoint, double rotateOffset){

@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -165,7 +167,7 @@ public class ShooterSubsystem extends SubsystemBase {
         //         shooterIndexerMotor.set(0);
         //     }
         // }
-        autoSpeed(drive.getPose().getTranslation().getDistance(16.579342, 5.547867999), 1, 14, 3000, 6500);
+        autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 0.5, 7, 3000, 6500);
     }
     public double autoSpeed(double x, double in_min, double in_max, double out_min, double out_max){
         return (x- in_min) * (out_max - out_min) / (in_max -in_min) + out_min;

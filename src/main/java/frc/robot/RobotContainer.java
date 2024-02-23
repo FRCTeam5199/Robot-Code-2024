@@ -89,7 +89,6 @@ public class RobotContainer {
         intake.init();
         climberSubsystem.init();
 
-
         auton = new Autos(drivetrain, intake, arm, shooterSubsystem);
         // SmartDashboard.putData("Field", drivetrain.m_field);
         configureBindings();
@@ -160,7 +159,7 @@ public class RobotContainer {
         //climb practice
         mainCommandXboxController.leftTrigger().onTrue(new ConditionalCommand(
                 shooterSubsystem.setIndexerSpeed(-0.4).andThen(shooterSubsystem.setRunShooter(true)),
-                new ConditionalCommand(shooterSubsystem.setRPMShooter(5000).andThen(shooterSubsystem.setRunShooter(true).andThen(()->System.out.println("autoaiming"))), new SequentialCommandGroup(shooterSubsystem.setIndexerSpeed(-0.4),new InstantCommand(()->arm.isAiming = true),new WaitCommand(0.2),shooterSubsystem.setRunShooter(true), new InstantCommand(()->System.out.println("normal aiming"))).onlyIf(()->shooterSubsystem.intakeShooter == false) , ()->arm.autoAiming == true),
+                new ConditionalCommand(new InstantCommand(()->shooterSubsystem.autoTargeting = true).andThen(shooterSubsystem.setRPMShooter(5000).andThen(()->System.out.println("autoaiming"))), new SequentialCommandGroup(shooterSubsystem.setIndexerSpeed(-0.4),new InstantCommand(()->arm.isAiming = true),new WaitCommand(0.2),shooterSubsystem.setRunShooter(true), new InstantCommand(()->System.out.println("normal aiming"))).onlyIf(()->shooterSubsystem.intakeShooter == false) , ()->arm.autoAiming == true),
                 ()->climberSubsystem.climbModeEnabled)).onFalse(shooterSubsystem.setRunShooter(false).andThen(new InstantCommand(()->arm.isAiming = false)));
 //                 // Intake
 
