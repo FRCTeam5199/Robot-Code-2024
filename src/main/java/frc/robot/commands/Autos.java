@@ -32,7 +32,7 @@ public class Autos extends Command{
 
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
   HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 0.85, .00,0.00), 5, .21, new ReplanningConfig());
-  PathConstraints pathConstraints = new PathConstraints(1, 1, 1, 1);
+  PathConstraints pathConstraints = new PathConstraints(.3, .3, .3, .3);
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
@@ -287,7 +287,7 @@ public class Autos extends Command{
 
   public Command goToAmpRed(){
    return new PathfindHolonomic(
-          new Pose2d(14.700757999999999, 8.2042, new Rotation2d(90)),
+          new Pose2d(14.700757999999999, 7.8742, new Rotation2d(90)),
           pathConstraints,
           1,
           swerveDrive::getPose,

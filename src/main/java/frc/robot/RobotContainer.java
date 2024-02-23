@@ -142,19 +142,25 @@ public class RobotContainer {
 //        mainCommandXboxController.povRight().onTrue(intake.deployIntake());
         mainCommandXboxController.povLeft().onTrue(arm.increaseOffset(4));
         mainCommandXboxController.povRight().onTrue(arm.decreaseOffset(4));
-        mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
+        mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setIndexerSpeed(.4)).onFalse(shooterSubsystem.setIndexerSpeed(0));
 
         mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), aprilTags.speakerAlignment(), arm.isAiming(false))).onFalse(arm.isAutoAiming(false));
 
 
         // mainCommandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(shooterSubsystem.setRunShooter(true), arm.isAiming(true), new WaitCommand(0.2)).onlyIf(() -> shooterSubsystem.intakeShooter == false)).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)).onlyIf(() -> shooterSubsystem.intakeShooter == false));
         // mainCommandXboxController.leftTrigger().onTrue(armIsAimingSpeakerAutoAim).onFalse(new SequentialCommandGroup(shooterSubsystem.setRunShooter(false),arm.rotateStable(), new WaitCommand(0.3), arm.isAiming(false)).onlyIf(()->shooterSubsystem.intakeShooter == false));
-
+        mainCommandXboxController.povUp().onTrue(arm.isAiming(true).andThen(arm.rotateAmp()).andThen(auton.goToAmpRed())).onFalse(arm.isAiming(false));
+        mainCommandXboxController.povDown().onTrue(shooterSubsystem.setIndexerSpeed(-.1));
         //climb practice
-        mainCommandXboxController.leftTrigger().onTrue(new ConditionalCommand(
-                shooterSubsystem.setIndexerSpeed(-0.4).andThen(shooterSubsystem.setRunShooter(true)),
-                new ConditionalCommand(shooterSubsystem.setRPMShooter(5000).andThen(shooterSubsystem.setRunShooter(true).andThen(()->System.out.println("autoaiming"))), new SequentialCommandGroup(shooterSubsystem.setIndexerSpeed(-0.4),new InstantCommand(()->arm.isAiming = true),new WaitCommand(0.2),shooterSubsystem.setRunShooter(true), new InstantCommand(()->System.out.println("normal aiming"))).onlyIf(()->shooterSubsystem.intakeShooter == false) , ()->arm.autoAiming == true),
-                ()->climberSubsystem.climbModeEnabled)).onFalse(shooterSubsystem.setRunShooter(false).andThen(new InstantCommand(()->arm.isAiming = false)));
+        mainCommandXboxController.leftTrigger().whileTrue(shooterSubsystem.setIndexerSpeed(-.1).andThen(
+                new ConditionalCommand(
+                        new SequentialCommandGroup(shooterSubsystem.setRPMShooter(1500),shooterSubsystem.setRunShooter(true)),
+                        new ConditionalCommand(
+                                new InstantCommand(()-> shooterSubsystem.autoTargeting = true).andThen(()->System.out.println("autoaiming")).onlyIf(()->shooterSubsystem.intakeShooter == false),         
+                                new SequentialCommandGroup(new InstantCommand(()->arm.isAiming = true), new WaitCommand(0.2),shooterSubsystem.setRunShooter(true), new InstantCommand(()->System.out.println("normal aiming"))).onlyIf(()->shooterSubsystem.intakeShooter == false), 
+                                ()->arm.autoAiming == true),
+
+                        ()->climberSubsystem.climbModeEnabled))).onFalse(shooterSubsystem.setRunShooter(false).andThen(new InstantCommand(()->arm.isAiming = false).andThen(new InstantCommand(()-> shooterSubsystem.autoTargeting = false).andThen(shooterSubsystem.setintakeShooter(false)))));
 //                 // Intake
 
         mainCommandXboxController.rightTrigger().whileTrue(new SequentialCommandGroup(
@@ -163,20 +169,19 @@ public class RobotContainer {
                         new WaitCommand(0.1),
                         intake.deployIntake(),
                         new WaitCommand(0.2),
+                        shooterSubsystem.setIndexerSpeed(-.4),
                         arm.rotateIntake(),
                         intake.setIntakeSpeed(0.9),
                         shooterSubsystem.setintakeShooter(true),
-                        shooterSubsystem.setRunShooter(true),
-                        shooterSubsystem.setRunIndexer(true)))
+                        shooterSubsystem.setRunShooter(true)))
                 .onFalse(new SequentialCommandGroup(
                         intake.setIntakeSpeed(0),
                         arm.setArmSetpoint(50),
                         new WaitCommand(0.2),
                         shooterSubsystem.setintakeShooter(false),
                         shooterSubsystem.setRunShooter(false),
-                        shooterSubsystem.setRunIndexer(false),
                         intake.stowIntake(),
-                        shooterSubsystem.setIndexerSpeed(0.3),
+                        shooterSubsystem.setIndexerSpeed(-0.1),
                         new WaitCommand(0.3),
                         arm.rotateStable(),
                         new WaitCommand(0.5),
