@@ -75,55 +75,53 @@ public class ShooterSubsystem extends SubsystemBase {
      * Initalizes the motor(s) for this subsystem
      */
     public void motorInit() {
-      shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID, 0.0004242300, 0.000001, 40,0.0001478);
-      shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID, 0.000448973, 0.000001, 40,0.0001478);
-      shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
+        shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID, 0.0004242300, 0.000001, 40, 0.0001478);
+        shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID, 0.000448973, 0.000001, 40, 0.0001478);
+        shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
 
-      shooterMotor1.setInvert(true);
-      shooterMotor2.setInvert(false);
+        shooterMotor1.setInvert(true);
+        shooterMotor2.setInvert(false);
 
-      shooterIndexerMotor.setInvert(false);
-      shooterIndexerMotor.setBrake(true);
+        shooterIndexerMotor.setInvert(false);
+        shooterIndexerMotor.setBrake(true);
 
-      shooterMotor1.getEncoder().setPosition(0);
-      shooterMotor2.getEncoder().setPosition(0);
+        shooterMotor1.getEncoder().setPosition(0);
+        shooterMotor2.getEncoder().setPosition(0);
 
-      shooterMotor1.setCurrentLimit(30);
-      shooterMotor2.setCurrentLimit(30);
-      shooterIndexerMotor.setCurrentLimit(40);
+        shooterMotor1.setCurrentLimit(30);
+        shooterMotor2.setCurrentLimit(30);
+        shooterIndexerMotor.setCurrentLimit(40);
     }
 
     @Override
     public void periodic() {
-      if (runShooter) {
-        if (intakeShooter) {
-          shooterMotor1.set(-0.4);
-          shooterMotor2.set(-0.4);
-        }
-        else{
-        shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
-        if(ampAndClimbMode == false){
-          shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
+        if (runShooter) {
+            if (intakeShooter) {
+                shooterMotor1.set(-0.4);
+                shooterMotor2.set(-0.4);
+            } else {
+                shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
+                if (ampAndClimbMode == false) {
+                    shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
+                }
             }
-        } 
-        
-      } else {
-        shooterMotor2.set(0);
-        shooterMotor1.set(0);
-      }
 
-      if(runIndexer){
-        if (intakeShooter) {
-          shooterIndexerMotor.set(-.4);
         } else {
-          shooterIndexerMotor.set(0.6);
-        } 
-      }
-      else{
-        shooterIndexerMotor.set(0);
-      }
-      // if(shooterMotor1.getVelocity() == 3000 && shooterMotor2.getVelocity()  == 3000){
-      // }
+            shooterMotor2.set(0);
+            shooterMotor1.set(0);
+        }
+
+        if (runIndexer) {
+            if (intakeShooter) {
+                shooterIndexerMotor.set(-.4);
+            } else {
+                shooterIndexerMotor.set(0.6);
+            }
+        } else {
+            shooterIndexerMotor.set(0);
+        }
+        // if(shooterMotor1.getVelocity() == 3000 && shooterMotor2.getVelocity()  == 3000){
+        // }
 
         // if (ampAndClimbMode) {
         //     shooterSpeed = 0.2;
@@ -165,11 +163,12 @@ public class ShooterSubsystem extends SubsystemBase {
         //         shooterIndexerMotor.set(0);
         //     }
         // }
-        autoSpeed(drive.getPose().getTranslation().getDistance(16.579342, 5.547867999), 1, 14, 3000, 6500);
+//        autoSpeed(drive.getPose().getTranslation().getDistance(16.579342, 5.547867999, 1, 14, 3000, 6500);
     }
-    public double autoSpeed(double x, double in_min, double in_max, double out_min, double out_max){
-        return (x- in_min) * (out_max - out_min) / (in_max -in_min) + out_min;
-    } 
+
+    public double autoSpeed(double x, double in_min, double in_max, double out_min, double out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
 
     public Command increaseShooterSpeed() {
         return this.runOnce(() -> shooterSpeedOffset += 100);
@@ -207,8 +206,9 @@ public class ShooterSubsystem extends SubsystemBase {
     public Command setintakeShooter(boolean intakeShooter) {
         return this.runOnce(() -> this.intakeShooter = intakeShooter);
     }
-    public Command setRPMShooter(double sp){
-      return this.runOnce(()-> this.setRPM = sp);
+
+    public Command setRPMShooter(double sp) {
+        return this.runOnce(() -> this.setRPM = sp);
     }
 
     /**
@@ -242,51 +242,53 @@ public class ShooterSubsystem extends SubsystemBase {
      * Stops the Shooter Motor
      */
 
-  /**
-   * Checks for current spike inside of the indexer
-   * @return True if a game piece is in the Indexer
-   */
-  private boolean currentCheck(){
-    new WaitCommand(0.4);
-    if (shooterIndexerMotor.getCurrent() < 39.8){
-      return false;
-    } 
-    if (shooterIndexerMotor.getCurrent() > 39.8){
-      return true;
-    } 
-    return false;    
-  }
-
-  public boolean reachedSpeed(){
-      if (shooterMotor1.getVelocity() >= setRPM && shooterMotor2.getVelocity() >= setRPM){
-        return true;
-      }
-    return false;
-  }
-
-  /**
-   * decides if a game piece is truly inside of 
-   * @return true if game piece false if not
-   */
-  public boolean checkForGamePiece(){
-    int piece = 0;
-    int noPiece = 0;
-    if(intakeShooter){
-      if(shooterIndexerMotor.getCurrent() > 39.8){
-        for(int i = 0; i <=10; i++){
-          if(currentCheck() == true){
-            piece++;
-          }
+    /**
+     * Checks for current spike inside of the indexer
+     *
+     * @return True if a game piece is in the Indexer
+     */
+    private boolean currentCheck() {
+        new WaitCommand(0.4);
+        if (shooterIndexerMotor.getCurrent() < 39.8) {
+            return false;
         }
-      }
+        if (shooterIndexerMotor.getCurrent() > 39.8) {
+            return true;
+        }
+        return false;
     }
+
+    public boolean reachedSpeed() {
+        if (shooterMotor1.getVelocity() >= setRPM && shooterMotor2.getVelocity() >= setRPM) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * decides if a game piece is truly inside of
+     *
+     * @return true if game piece false if not
+     */
+    public boolean checkForGamePiece() {
+        int piece = 0;
+        int noPiece = 0;
+        if (intakeShooter) {
+            if (shooterIndexerMotor.getCurrent() > 39.8) {
+                for (int i = 0; i <= 10; i++) {
+                    if (currentCheck() == true) {
+                        piece++;
+                    }
+                }
+            }
+        }
         new WaitCommand(0.5);
-        if(piece > noPiece){
-          return true;
-      }
-      return false;
+        if (piece > noPiece) {
+            return true;
+        }
+        return false;
     }
-  }
+}
 
 
     

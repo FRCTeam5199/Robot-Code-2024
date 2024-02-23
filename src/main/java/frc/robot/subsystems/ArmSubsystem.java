@@ -1,20 +1,13 @@
 package frc.robot.subsystems;
 
-import java.rmi.server.ExportException;
-
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.SparkPIDController;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
@@ -32,6 +25,7 @@ public class ArmSubsystem extends SubsystemBase {
     private static VortexMotorController armMotorR;
     private static boolean isBrakeMode = false;
     public boolean inAuton = false;
+    public boolean climbMode = false;
     public double encoderValue;
     public boolean isAiming = false;
     public boolean autoAiming = false;
@@ -102,14 +96,14 @@ public class ArmSubsystem extends SubsystemBase {
 
         armEncoderMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_ENCODER_MOTOR, MotorType.kBrushed);
         armEncoder = armEncoderMotor.getAbsoluteEncoder(Type.kDutyCycle);
-        
+
     }
 
     public void PIDInit() {
 
         rotatePIDController = new PIDController(0.0083262, 0.00569673212, 0.003);
         rotatePIDController.setIZone(3);
-       
+
 
         rotatePIDController.setTolerance(encoderValue);
     }
@@ -158,30 +152,38 @@ public class ArmSubsystem extends SubsystemBase {
         if (inAuton) {
             goToSetpoint(rotateSetpoint, rotateOffset);
         }
-            if(autoAiming == false){
-                if(isAiming){   
-                    goToSetpoint(rotateSetpoint, rotateOffset);
-                }   
-                else{
-                    goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
-                }
+        if (autoAiming == false) {
+            if (isAiming) {
+                goToSetpoint(rotateSetpoint, rotateOffset);
+            } else {
+                goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
             }
-            else{
-                goToSetpoint(aprilTagSubsystem.armSpeakersAligning(),0);
-            }
+        } else {
+            goToSetpoint(aprilTagSubsystem.armSpeakersAligning(), 0);
         }
-    private void goToSetpoint(double rotateSetpoint, double rotateOffset){
-             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint+ rotateOffset));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint+ rotateOffset));
     }
-    
- 
+
+    private void goToSetpoint(double rotateSetpoint, double rotateOffset) {
+        if (climbMode) {
+            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
+            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
+        } else {
+            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+        }
+    }
+
 
     public Command switchAiming() {
-        return this.runOnce(() -> autoAiming = !autoAiming).andThen(()-> System.out.println(autoAiming));
+        return this.runOnce(() -> autoAiming = !autoAiming).andThen(() -> System.out.println(autoAiming));
     }
+
     public Command isAutoAiming(boolean bool) {
         return this.runOnce(() -> autoAiming = bool);
+    }
+
+    public Command setClimbMode(boolean bool) {
+        return this.runOnce(() -> climbMode = bool);
     }
 
     public Command isAiming(boolean bool) {
@@ -257,8 +259,12 @@ public class ArmSubsystem extends SubsystemBase {
     /**
      * Sets the Arm setpoint to the Arm climb setpoint
      */
-    public Command rotateClimb() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_CLIMB_SETPOINT);
+    public Command rotateTrap() {
+        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_SETPOINT);
+    }
+
+    public Command rotatePrepClimbP2() {
+        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_PREP2_SETPOINT);
     }
 
     public Command rotateTopPiece() {
@@ -276,8 +282,8 @@ public class ArmSubsystem extends SubsystemBase {
     /**
      * Sets the Arm setpoint to the Arm Trap setpoint
      */
-    public Command rotateTrap() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_SETPOINT);
+    public Command rotateTrapPrep() {
+        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_PREP_SETPOINT);
     }
 
     /**
