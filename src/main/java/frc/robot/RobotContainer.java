@@ -151,7 +151,7 @@ public class RobotContainer {
         // mainCommandXboxController.povRight().onTrue(arm.decreaseOffset(4));
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
         
-        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), aprilTags.speakerAlignment(1,1), arm.isAiming(false))).onFalse(arm.isAutoAiming(false));
+        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), aprilTags.speakerAlignment(), arm.isAiming(false))).onFalse(arm.isAutoAiming(false));
 
         
         // mainCommandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(shooterSubsystem.setRunShooter(true), arm.isAiming(true), new WaitCommand(0.2)).onlyIf(() -> shooterSubsystem.intakeShooter == false)).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)).onlyIf(() -> shooterSubsystem.intakeShooter == false));
