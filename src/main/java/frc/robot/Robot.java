@@ -34,7 +34,7 @@ public class Robot extends LoggedRobot {
     Pose3d poseB = new Pose3d();
     SwerveDrive drive = TunerConstants.DriveTrain;
     UserInterface userInterface = new UserInterface();
-//  AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+    AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
 
@@ -75,14 +75,14 @@ public class Robot extends LoggedRobot {
 
         CommandScheduler.getInstance().run();
         // System.out.println(drive.getPose());
-//    Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
+        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
         // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
         // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
-//    if(estimatePose1.isPresent()){
-//       EstimatedRobotPose robotPose = estimatePose1.get();
-//       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-//    }
+   if(estimatePose1.isPresent()){
+      EstimatedRobotPose robotPose = estimatePose1.get();
+      drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+   }
         // if(estimatePose2.isPresent()){
         //   EstimatedRobotPose robotPose = estimatePose2.get();
         //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());

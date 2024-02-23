@@ -14,10 +14,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.utility.PID;
 
 public class ShooterSubsystem extends SubsystemBase {
     private static ShooterSubsystem shooterSubsystem;
+    public SwerveDrive drive = TunerConstants.DriveTrain;
 
     public VortexMotorController shooterMotor1;
     public VortexMotorController shooterMotor2;
@@ -162,7 +165,11 @@ public class ShooterSubsystem extends SubsystemBase {
         //         shooterIndexerMotor.set(0);
         //     }
         // }
+        autoSpeed(drive.getPose().getTranslation().getDistance(16.579342, 5.547867999), 1, 14, 3000, 6500);
     }
+    public double autoSpeed(double x, double in_min, double in_max, double out_min, double out_max){
+        return (x- in_min) * (out_max - out_min) / (in_max -in_min) + out_min;
+    } 
 
     public Command increaseShooterSpeed() {
         return this.runOnce(() -> shooterSpeedOffset += 100);

@@ -321,16 +321,17 @@ public class AprilTagSubsystem extends SubsystemBase {
     //             drive.setControl(new SwerveRequest.ApplyChassisSpeeds().withSpeeds(new ChassisSpeeds(0, 0, aimControl.calculate(targetCam.getLatestResult().getBestTarget().getYaw(), 0)* .06)));
     //         }
     //     }
+
     public double armSpeakersAligning() {
         double angleForArm = 0;
         double speakerHeight = MainConstants.SPEAKER_Z - MainConstants.ARM_PIVOT_Z;
         // slightly in front of april tag so it doesnt aim out of field
         double distanceFromRobot = 0;
-        if (getAllianceColor().equals("Blue")) {
-            distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
-        } else if (getAllianceColor().equals("Red")) {
+        // if (getAllianceColor().equals("Blue")) {
+            // distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
+        // } else if (getAllianceColor().equals("Red")) {
             distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
-        }
+        // }
 
         distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
         angleForArm = Math.toDegrees(Math.atan(speakerHeight / distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;

@@ -24,6 +24,7 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 public class ArmSubsystem extends SubsystemBase {
     private static ArmSubsystem armSubsystem;
+    private static AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
 
     private static boolean subsystemStatus = false;
 
@@ -34,7 +35,7 @@ public class ArmSubsystem extends SubsystemBase {
     public double encoderValue;
     public boolean isAiming = false;
     public boolean autoAiming = false;
-    SwerveDrive drive = TunerConstants.DriveTrain;
+    public SwerveDrive drive = TunerConstants.DriveTrain;
     private CANSparkMax armEncoderMotor;
     private SparkAbsoluteEncoder armEncoder;
     private PIDController rotatePIDController;
@@ -109,9 +110,6 @@ public class ArmSubsystem extends SubsystemBase {
         rotatePIDController = new PIDController(0.0083262, 0.00569673212, 0.003);
         rotatePIDController.setIZone(3);
        
-        //0.0075
-        rotatePIDController = new PIDController(0.0083262, 0.00569673212, 0.003);
-        rotatePIDController.setIZone(3);
 
         rotatePIDController.setTolerance(encoderValue);
     }
@@ -160,28 +158,28 @@ public class ArmSubsystem extends SubsystemBase {
         if (inAuton) {
             goToSetpoint(rotateSetpoint, rotateOffset);
         }
-
-            if(isAiming){   
-                System.out.println("encoder value " + encoderValue);
-                System.out.println("rotate setPoint " + rotateSetpoint);
-                goToSetpoint(rotateSetpoint, rotateOffset);
-            }   
+            if(autoAiming == false){
+                if(isAiming){   
+                    goToSetpoint(rotateSetpoint, rotateOffset);
+                }   
+                else{
+                    goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
+                }
+            }
             else{
-                goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
+                goToSetpoint(aprilTagSubsystem.armSpeakersAligning(),0);
             }
         }
     private void goToSetpoint(double rotateSetpoint, double rotateOffset){
-        if (isAiming) {
-            // System.out.println("encoder value " + encoderValue);
-            // System.out.println("rotate setPoint " + rotateSetpoint);
-            goToSetpoint(rotateSetpoint, rotateOffset);
-        } else {
-            goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
-        }
+             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint+ rotateOffset));
+            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint+ rotateOffset));
     }
-
     
+ 
 
+    public Command switchAiming() {
+        return this.runOnce(() -> autoAiming = !autoAiming).andThen(()-> System.out.println(autoAiming));
+    }
     public Command isAutoAiming(boolean bool) {
         return this.runOnce(() -> autoAiming = bool);
     }
@@ -203,11 +201,6 @@ public class ArmSubsystem extends SubsystemBase {
         return armEncoder;
     }
 
-
-    public Command autoAlignSpeaker(double setPoint) {
-        return new SequentialCommandGroup(new InstantCommand(() -> isAiming = false), new InstantCommand(() -> goToSetpoint(setPoint, 0)));
-    }
-
     /**
      * @param percent move armMotor at a percent(-1 to 1)
      * @return command to spin motor at percent
@@ -225,10 +218,6 @@ public class ArmSubsystem extends SubsystemBase {
         return this.runOnce(() -> System.out.println("changed to " + setpoint)).andThen(() -> rotateSetpoint = setpoint);
     }
 
-    public void setAutoAimingSetpoint(double setpoint) {
-        System.out.println("changed to " + setpoint);
-        rotateSetpoint = setpoint;
-    }
 
     /**
      * Sets the Arm setpoint to the Arm Stable setpoint

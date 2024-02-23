@@ -72,7 +72,7 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeActuatorMotor.setInvert(true);
 
         intakeMotor.setCurrentLimit(40);
-        intakeActuatorMotor.setCurrentLimit(20);
+        intakeActuatorMotor.setCurrentLimit(60);
     }
 
     /**
