@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.7,
+      "y": 6.6
+    },
+    "rotation": -57.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Top Extended Red p1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Top Extended Red p2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Top Extended Red p3"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "4 Piece Autons",
+  "choreoAuto": false
+}
