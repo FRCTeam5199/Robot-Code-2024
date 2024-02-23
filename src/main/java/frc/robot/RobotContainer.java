@@ -145,22 +145,23 @@ public class RobotContainer {
                 climberSubsystem.setClimbMode(false),
                 shooterSubsystem.setAmpandClimbMode(false),
                 arm.rotateSub()).andThen(shooterSubsystem.setShooterSpeed(0.80)));
-        // mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
-        // mainCommandXboxController.povRight().onTrue(intake.deployIntake());
-        mainCommandXboxController.povLeft().onTrue(arm.increaseOffset(4));
-        mainCommandXboxController.povRight().onTrue(arm.decreaseOffset(4));
+        mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
+        mainCommandXboxController.povRight().onTrue(intake.deployIntake());
+        // mainCommandXboxController.povLeft().onTrue(arm.increaseOffset(4));
+        // mainCommandXboxController.povRight().onTrue(arm.decreaseOffset(4));
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setRunIndexer(true)).onFalse(shooterSubsystem.setRunIndexer(false));
         
-        // mainCommandXboxController.leftBumper().whileTrue(arm.isAutoAiming(true).andThen(aprilTags.speakerAlignment(1, 1).andThen(arm.autoAlignSpeaker(aprilTags.armSpeakersAligning())))).onFalse(arm.isAutoAiming(false));
+        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), aprilTags.speakerAlignment(), arm.isAiming(false))).onFalse(arm.isAutoAiming(false));
 
-        mainCommandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(shooterSubsystem.setRunShooter(true), arm.isAiming(true), new WaitCommand(0.2)).onlyIf(() -> shooterSubsystem.intakeShooter == false)).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)).onlyIf(() -> shooterSubsystem.intakeShooter == false));
+        
+        // mainCommandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(shooterSubsystem.setRunShooter(true), arm.isAiming(true), new WaitCommand(0.2)).onlyIf(() -> shooterSubsystem.intakeShooter == false)).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)).onlyIf(() -> shooterSubsystem.intakeShooter == false));
         // mainCommandXboxController.leftTrigger().onTrue(armIsAimingSpeakerAutoAim).onFalse(new SequentialCommandGroup(shooterSubsystem.setRunShooter(false),arm.rotateStable(), new WaitCommand(0.3), arm.isAiming(false)).onlyIf(()->shooterSubsystem.intakeShooter == false));
        
         //climb practice
         mainCommandXboxController.leftTrigger().onTrue(new ConditionalCommand(
                 shooterSubsystem.setIndexerSpeed(-0.4).andThen(shooterSubsystem.setRunShooter(true)),
-                new SequentialCommandGroup(shooterSubsystem.setIndexerSpeed(-0.4), arm.isAiming(true), new WaitCommand(0.2),shooterSubsystem.setRunShooter(true)).onlyIf(()->shooterSubsystem.intakeShooter == false),
-                ()->climberSubsystem.climbModeEnabled)).onFalse(shooterSubsystem.setRunShooter(false));
+                new ConditionalCommand(shooterSubsystem.setRPMShooter(5000).andThen(shooterSubsystem.setRunShooter(true).andThen(()->System.out.println("autoaiming"))), new SequentialCommandGroup(shooterSubsystem.setIndexerSpeed(-0.4),new InstantCommand(()->arm.isAiming = true),new WaitCommand(0.2),shooterSubsystem.setRunShooter(true), new InstantCommand(()->System.out.println("normal aiming"))).onlyIf(()->shooterSubsystem.intakeShooter == false) , ()->arm.autoAiming == true),
+                ()->climberSubsystem.climbModeEnabled)).onFalse(shooterSubsystem.setRunShooter(false).andThen(new InstantCommand(()->arm.isAiming = false)));
 //                 // Intake
 
                 mainCommandXboxController.rightTrigger().whileTrue(new SequentialCommandGroup(
