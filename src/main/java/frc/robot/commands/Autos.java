@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -15,6 +16,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -22,13 +24,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
+import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
+
 public class Autos extends Command{
   SwerveDrive swerveDrive;
+  AprilTagSubsystem aprilTags = new AprilTagSubsystem();
 
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
   HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 0.85, .00,0.00), 5, .21, new ReplanningConfig());
@@ -37,6 +43,8 @@ public class Autos extends Command{
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
   public SendableChooser<Boolean> side = new SendableChooser<>();
+
+  BooleanSupplier autoAim;
 
 
     public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm, ShooterSubsystem shooter){
@@ -68,6 +76,9 @@ public class Autos extends Command{
       NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(160), new WaitCommand(0.5), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(170), new WaitCommand(0.8), shooter.runAutonShooting(false), new WaitCommand(0.2)));
+      NamedCommands.registerCommand("autoAim", runOnce(this::autonAim));
+      NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), shooter.setRPMShooter(3000), arm.isAiming(false)));
+      NamedCommands.registerCommand("autoAimOff", runOnce(this::autonAimOff));
 
       Shuffleboard.getTab("Autons").add("Side", side);
       side.addOption("Red Side", true);
@@ -305,6 +316,16 @@ public class Autos extends Command{
             swerveDrive::getCurrentRobotChassisSpeeds,
             (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
             pathFollowerConfig);
+  }
+
+  public void autonAim(){
+      AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(new ChassisSpeeds(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, aprilTags.autonSpeakerAlignment()))), pathFollowerConfig, ()-> false, swerveDrive);
+
+  }
+
+  public void autonAimOff(){
+    AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
+
   }
 
 
