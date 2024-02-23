@@ -9,6 +9,8 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.commands.PathfindHolonomic;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.hal.DriverStationJNI;
+import edu.wpi.first.hal.simulation.DriverStationDataJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -71,6 +74,7 @@ public class AprilTagSubsystem extends SubsystemBase {
     public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
     SwerveDrive drive = TunerConstants.DriveTrain;
+    String ally;
 
     //    double z = tz.getDouble(0);
   
@@ -108,26 +112,32 @@ public class AprilTagSubsystem extends SubsystemBase {
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
     }
+    
+    @Override
+    public void periodic() {
+        // ally = getAllianceColor();
+        // System.out.println(ally);
+    }
 
     /**
      * get alliance
      *
      * @return "Red" or "Blue"
      */
-    public String getAllianceColor() {
+    public static String getAllianceColor() {
+        new WaitCommand(1);
+        if(DriverStation.isDSAttached()){
         Optional<Alliance> ally = DriverStation.getAlliance();
+    
         if (ally.isPresent()) {
             if (ally.get() == Alliance.Red) {
-                System.out.println("red ");
                 return "Red";
             }
             if (ally.get() == Alliance.Blue) {
-                System.out.println("blue ");
                 return "Blue";
             }
-            System.out.println("noo");
         }
-        System.out.println("null");
+        }
         return null;
 
     }
@@ -237,17 +247,23 @@ public class AprilTagSubsystem extends SubsystemBase {
     /**
      * Sets the robots heading to align with the goal based on the position of the bot on the field.
      */
-    public Command speakerAlignment() {
+    public Command speakerAlignment(){
         PIDController aim = new PIDController(.13, 0, .01);
         SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
         Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
-        if(getAllianceColor() == "Red"){
-            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
-        }else{
-            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
+        System.out.println(ally);
+        // if(ally.equals("Red")){
+            // System.out.println("red");
+        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
+        // } else {
+            // return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
         }
-    }
+            
+      
+    
+    
+    
 
     public double targetHeading() {
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
