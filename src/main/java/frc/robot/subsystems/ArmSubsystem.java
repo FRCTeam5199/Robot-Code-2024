@@ -163,6 +163,11 @@ public class ArmSubsystem extends SubsystemBase {
         }
     }
 
+    public static void setBrakeTrue(){
+        armMotorL.setBrake(true);
+        armMotorR.setBrake(true);
+    }
+
     private void goToSetpoint(double rotateSetpoint, double rotateOffset) {
         if (climbMode) {
             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
