@@ -169,13 +169,7 @@ public class UserInterface extends SubsystemBase {
             shuffleboardStationNumberComponent.setInteger(DriverStation.getLocation().getAsInt());
             shuffleboardGameMessageComponent.setString(DriverStation.getGameSpecificMessage());
         }
-        
-        shuffleboardRobotEnabledComponent.setBoolean(DriverStation.isEnabled());
-        shuffleboardEmergencyStoppedComponent.setBoolean(DriverStation.isEStopped());
-        shuffleboardAutonomousComponent.setBoolean(DriverStation.isAutonomous());
-        shuffleboardTeleopComponent.setBoolean(DriverStation.isTeleop());
-        
-        shuffleboardCameraComponent.setValue(CameraServer.getVideo());
+
         // shuffleboardFieldComponent.setValue();
         // field.setRobotPose(new Pose2d(swerveDrivePose.getTranslation(), swerveDrivePose.getRotation()));
     }

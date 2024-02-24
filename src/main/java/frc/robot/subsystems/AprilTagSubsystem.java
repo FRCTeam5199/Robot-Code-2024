@@ -62,6 +62,8 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.utility.CommandXboxController;
 
+import javax.swing.text.html.Option;
+
 public class AprilTagSubsystem extends SubsystemBase {
 
     public static PhotonCamera frontCamera;
@@ -269,6 +271,17 @@ public class AprilTagSubsystem extends SubsystemBase {
         // if(ally.equals("Red")){
         // System.out.println("red");
         return aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))));
+        // } else {
+        // return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
+    }
+
+    public Rotation2d autonAim(){
+        Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
+        Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
+        System.out.println(ally);
+        // if(ally.equals("Red")){
+        // System.out.println("red");
+        return new Rotation2d(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX())));
         // } else {
         // return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
     }
