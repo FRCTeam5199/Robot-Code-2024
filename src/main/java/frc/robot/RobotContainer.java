@@ -224,7 +224,7 @@ public class RobotContainer {
 //                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d
 //                         (), Rotation2d.fromDegrees(90)));
 //                 }
-//                 drivetrain.registerTelemetry(logger::telemeterize);
+                  drivetrain.registerTelemetry(logger::telemeterize);
 
         buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateSub()).andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateBack()).andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
