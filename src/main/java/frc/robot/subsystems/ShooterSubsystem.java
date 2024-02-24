@@ -100,9 +100,13 @@ public class ShooterSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
       if (autoTargeting){
-        System.out.println(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
-        shooterMotor1.setVelocity(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
-        shooterMotor2.setVelocity(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
+        // System.out.println(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
+        autoSpeed();
+        System.out.println(setRPM);
+        shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
+         shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
+        // shooterMotor1.setVelocity(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
+        // shooterMotor2.setVelocity(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
 
       }
       else if (runShooter) {
@@ -175,9 +179,12 @@ public class ShooterSubsystem extends SubsystemBase {
         //         shooterIndexerMotor.set(0);
         //     }
         // }
+
     }
-    public double autoSpeed(double x, double in_min, double in_max, double out_min, double out_max){
-        return (x- in_min) * (out_max - out_min) / (in_max -in_min) + out_min;
+    public void autoSpeed(){
+        setRPM = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (6800 - 3000) / (5.7912 -1.27) + 3000;
+        //double x, double in_min, double in_max, double out_min, double out_max
+        // return (x- in_min) * (out_max - out_min) / (in_max -in_min) + out_min;
     } 
 
     public Command intakeIndexerForShooting(double speed, double s){
@@ -272,7 +279,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean reachedSpeed(){
-      if (shooterMotor1.getVelocity() >= setRPM && shooterMotor2.getVelocity() >= setRPM){
+      if (shooterMotor1.getVelocity() >= setRPM -1 && shooterMotor2.getVelocity() >= setRPM-1){
         return true;
       }
     return false;

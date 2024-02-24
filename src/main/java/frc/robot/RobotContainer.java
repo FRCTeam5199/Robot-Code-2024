@@ -92,13 +92,41 @@ public class RobotContainer {
      * Configures the bindings for commands
      */
     private void configureBindings() {
-        ConditionalCommand armIsAimingSpeakerAutoAim = new ConditionalCommand(new SequentialCommandGroup(shooterSubsystem.setRunShooter(true)), new SequentialCommandGroup(shooterSubsystem.setIndexerSpeed(-0.4), arm.isAiming(true), new WaitCommand(0.2), shooterSubsystem.setRunShooter(true)).onlyIf(() -> shooterSubsystem.intakeShooter == false), () -> arm.autoAiming);
-        // new Trigger(()-> shooterSubsystem.checkForGamePiece()).onTrue(shooterSubsystem.setSpeedOfShooter(0.05).andThen(shooterSubsystem.setRunShooter(true)));
-        //         new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
-        //                 if (DriverStation.isDisabled()) {
-        //                     ArmSubsystem.toggleBrakeMode();
-        //                 }
-        //         }));
+        Command intakeAction = new SequentialCommandGroup(
+                        arm.isAiming(true),
+                        arm.setArmSetpoint(50),
+                        new WaitCommand(0.1),
+                        intake.deployIntake(),
+                        new WaitCommand(0.2),
+                        shooterSubsystem.setIndexerSpeed(-.4),
+                        arm.rotateIntake(),
+                        intake.setIntakeSpeed(0.9).onlyIf(()-> arm.getArmEncoder().getPosition()> 1 || arm.getArmEncoder().getPosition() <3),
+                        shooterSubsystem.setintakeShooter(true),
+                        shooterSubsystem.setRunShooter(true));
+
+        Command stopIntakeAction = new SequentialCommandGroup(
+                        intake.setIntakeSpeed(-.9),
+                        arm.setArmSetpoint(50),
+                        new WaitCommand(0.2),
+                        shooterSubsystem.setintakeShooter(false),
+                        shooterSubsystem.setRunShooter(false),
+                        intake.stowIntake(),
+                        shooterSubsystem.setIndexerSpeed(-0.1),
+                        new WaitCommand(0.3),
+                        arm.rotateStable(),
+                        new WaitCommand(0.5),
+                        arm.isAiming(false),
+                        shooterSubsystem.setIndexerSpeed(0),
+                        intake.setIntakeSpeed(0));
+
+
+                new Trigger(()-> shooterSubsystem.checkForGamePiece()).and(()-> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(()->mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(()->mainCommandXboxController.setRumble(0)));
+                new Trigger(()-> shooterSubsystem.reachedSpeed()).and(()-> shooterSubsystem.intakeShooter == false).onTrue(new InstantCommand(()->mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(()->mainCommandXboxController.setRumble(0)));
+                // new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
+                //         if (DriverStation.isDisabled()) {
+                //             ArmSubsystem.toggleBrakeMode();
+                //         }
+                // }));
         new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
             if (DriverStation.isDisabled()) {
                 ArmSubsystem.toggleBrakeMode();
@@ -155,38 +183,15 @@ public class RobotContainer {
         mainCommandXboxController.leftTrigger().whileTrue(shooterSubsystem.setIndexerSpeed(-.1).andThen(
                 new ConditionalCommand(
                         new SequentialCommandGroup(shooterSubsystem.setRPMShooter(1500),shooterSubsystem.setRunShooter(true)),
-                        new ConditionalCommand(
-                                new InstantCommand(()-> shooterSubsystem.autoTargeting = true).andThen(()->System.out.println("autoaiming")).onlyIf(()->shooterSubsystem.intakeShooter == false),         
+                        new ConditionalCommand(      
+                                new InstantCommand(()-> shooterSubsystem.autoTargeting = true).andThen(()->System.out.println("autoaiming")),         
                                 new SequentialCommandGroup(new InstantCommand(()->arm.isAiming = true), new WaitCommand(0.2),shooterSubsystem.setRunShooter(true), new InstantCommand(()->System.out.println("normal aiming"))).onlyIf(()->shooterSubsystem.intakeShooter == false), 
                                 ()->arm.autoAiming == true),
 
                         ()->climberSubsystem.climbModeEnabled))).onFalse(shooterSubsystem.setRunShooter(false).andThen(new InstantCommand(()->arm.isAiming = false).andThen(new InstantCommand(()-> shooterSubsystem.autoTargeting = false).andThen(shooterSubsystem.setintakeShooter(false)))));
 //                 // Intake
 
-        mainCommandXboxController.rightTrigger().whileTrue(new SequentialCommandGroup(
-                        arm.isAiming(true),
-                        arm.setArmSetpoint(50),
-                        new WaitCommand(0.1),
-                        intake.deployIntake(),
-                        new WaitCommand(0.2),
-                        shooterSubsystem.setIndexerSpeed(-.4),
-                        arm.rotateIntake(),
-                        intake.setIntakeSpeed(0.9),
-                        shooterSubsystem.setintakeShooter(true),
-                        shooterSubsystem.setRunShooter(true)))
-                .onFalse(new SequentialCommandGroup(
-                        intake.setIntakeSpeed(0),
-                        arm.setArmSetpoint(50),
-                        new WaitCommand(0.2),
-                        shooterSubsystem.setintakeShooter(false),
-                        shooterSubsystem.setRunShooter(false),
-                        intake.stowIntake(),
-                        shooterSubsystem.setIndexerSpeed(-0.1),
-                        new WaitCommand(0.3),
-                        arm.rotateStable(),
-                        new WaitCommand(0.5),
-                        arm.isAiming(false),
-                        shooterSubsystem.setIndexerSpeed(0)));
+        mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
 
 //                 mainCommandXboxController.b().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
 //                 mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));

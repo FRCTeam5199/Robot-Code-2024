@@ -125,20 +125,26 @@ public class AprilTagSubsystem extends SubsystemBase {
      * @return "Red" or "Blue"
      */
     public static String getAllianceColor() {
-        new WaitCommand(1);
         if(DriverStation.isDSAttached()){
-        Optional<Alliance> ally = DriverStation.getAlliance();
-    
-        if (ally.isPresent()) {
-            if (ally.get() == Alliance.Red) {
-                return "Red";
+            Optional<Alliance> ally = DriverStation.getAlliance();
+                if (ally.isPresent()) {
+                if (ally.get() == Alliance.Red) {
+                    return "Red";
+                }
+                if (ally.get() == Alliance.Blue) {
+                    return "Blue";
+                }
             }
-            if (ally.get() == Alliance.Blue) {
-                return "Blue";
-            }
-        }
         }
         return null;
+    }
+
+    public boolean isRed(){
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
 
     }
 
