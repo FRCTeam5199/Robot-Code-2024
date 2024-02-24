@@ -2,24 +2,30 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.097674246703699,
-      "y": 6.850839379282182
+      "x": 0.85,
+      "y": 4.5
     },
-    "rotation": 0
+    "rotation": -55.5
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "test"
+            "pathName": "3 Piece Bottom Far Blue AUTOAIM"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "3 Piece Autons",
   "choreoAuto": false
 }
