@@ -56,6 +56,9 @@ public class RobotContainer {
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final Telemetry logger = new Telemetry(MaxSpeed);
+
+    public Command intakeAction;
+    public Command stopIntakeAction;
     //     public final static Akit log = new Akit();
     Autos auton;
 
@@ -92,7 +95,7 @@ public class RobotContainer {
      * Configures the bindings for commands
      */
     private void configureBindings() {
-        Command intakeAction = new SequentialCommandGroup(
+        intakeAction = new SequentialCommandGroup(
                         arm.isAiming(true),
                         arm.setArmSetpoint(50),
                         new WaitCommand(0.1),
@@ -103,8 +106,9 @@ public class RobotContainer {
                         intake.setIntakeSpeed(0.9).onlyIf(()-> arm.getArmEncoder().getPosition()> 1 || arm.getArmEncoder().getPosition() <3),
                         shooterSubsystem.setintakeShooter(true),
                         shooterSubsystem.setRunShooter(true));
+        
 
-        Command stopIntakeAction = new SequentialCommandGroup(
+        stopIntakeAction = new SequentialCommandGroup(
                         intake.setIntakeSpeed(-.9),
                         arm.setArmSetpoint(50),
                         new WaitCommand(0.2),
@@ -162,10 +166,6 @@ public class RobotContainer {
         // Reorient drive
         mainCommandXboxController.button(8).onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
-        mainCommandXboxController.x().onTrue(new SequentialCommandGroup(
-                climberSubsystem.setClimbMode(false),
-                shooterSubsystem.setAmpandClimbMode(false),
-                arm.rotateSub()).andThen(shooterSubsystem.setShooterSpeed(0.80)));
 //        mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
 //        mainCommandXboxController.povRight().onTrue(intake.deployIntake());
         mainCommandXboxController.povLeft().onTrue(arm.increaseOffset(4));

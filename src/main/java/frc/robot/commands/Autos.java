@@ -46,7 +46,7 @@ public class Autos extends Command{
   PathConstraints pathConstraints = new PathConstraints(.3, .3, .3, .3);
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
-  RobotContainer robotContainer = new RobotContainer();
+  // RobotContainer robotContainer = new RobotContainer();
 
   public SendableChooser<Boolean> side = new SendableChooser<>();
 
@@ -57,8 +57,8 @@ public class Autos extends Command{
       AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
     
 
-      NamedCommands.registerCommand("deployIntake", robotContainer.intakeAction);
-      NamedCommands.registerCommand("retractIntake",robotContainer.stopIntakeAction);
+      // NamedCommands.registerCommand("deployIntake");
+      // NamedCommands.registerCommand("retractIntake");
 
 
       NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
@@ -290,7 +290,7 @@ public class Autos extends Command{
 
   public Command goToAmpRed(){
    return new PathfindHolonomic(
-          new Pose2d(14.700757999999999, 7.8742, Rotation2d.fromDegrees(90)),
+          new Pose2d(14.700757999999999, 7.8742,new Rotation2d(Math.toRadians(90))),
           pathConstraints,
           0.01,
           swerveDrive::getPose,

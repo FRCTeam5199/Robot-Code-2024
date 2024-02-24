@@ -105,6 +105,7 @@ public class VortexMotorController extends AbstractMotorController {
 
     public void setReference(double setpoint){
         sparkPIDController.setReference(setpoint, CANSparkBase.ControlType.kPosition);
+
     }
 
     @Override

@@ -104,8 +104,6 @@ public class ArmSubsystem extends SubsystemBase {
         rotatePIDController = new PIDController(0.0083262, 0.00569673212, 0.003);
         rotatePIDController.setIZone(3);
 
-
-        rotatePIDController.setTolerance(encoderValue);
     }
 
     public boolean checkMotors() {
