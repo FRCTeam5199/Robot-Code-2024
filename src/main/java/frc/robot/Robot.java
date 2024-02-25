@@ -51,6 +51,7 @@ public class Robot extends LoggedRobot{
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
 
+        System.out.println(aprilTagSubsystem.getAllianceColor());
         userInterface.initalizeConfigTab();
         userInterface.initalizeTestTab();
         // userInterface.initalizeGameTab();
@@ -129,7 +130,7 @@ public class Robot extends LoggedRobot{
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
-        m_robotContainer.arm.setBrakeTrue();
+        //m_robotContainer.arm.setBrakeTrue();
     }
 
     /**
@@ -148,7 +149,7 @@ public class Robot extends LoggedRobot{
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        m_robotContainer.arm.setBrakeTrue();
+      //  m_robotContainer.arm.setBrakeTrue();
     }
 
     /**

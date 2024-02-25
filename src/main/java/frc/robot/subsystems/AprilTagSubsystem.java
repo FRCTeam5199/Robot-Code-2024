@@ -125,7 +125,7 @@ public class AprilTagSubsystem extends SubsystemBase {
      *
      * @return "Red" or "Blue"
      */
-    public static Alliance getAllianceColor() {
+    public Alliance getAllianceColor() {
         if (DriverStation.getAlliance().isPresent()) {
             return DriverStation.getAlliance().get();
         }else{
