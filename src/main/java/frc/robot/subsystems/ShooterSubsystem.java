@@ -49,6 +49,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public boolean runIndexer = false;
     public boolean intakeShooter = false;
     public boolean autonSide = false;
+    public boolean idleShooting = false;
 
     public ShooterSubsystem() {
     }
@@ -79,8 +80,9 @@ public class ShooterSubsystem extends SubsystemBase {
      * Initalizes the motor(s) for this subsystem
      */
     public void motorInit() {
-      shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID, 0.0004242300, 0.000002, 50,0.0001489);
-      shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID, 0.000448973, 0.000002, 50,0.0001489);
+      shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID, 0.0008443300, 0.000001, 200,0.0001929);
+      shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID, 0.000812973, 0.000001, 200,0.0001892);
+
       shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
 
       shooterMotor1.setInvert(true);
@@ -99,13 +101,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+      System.out.println("amongus " + setRPM + "runShooterAmongus " + runShooter);
       if (autoTargeting){
         // System.out.println(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
         autoSpeed();
         shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
         shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
-        System.out.println("auto shooter 1 " +shooterMotor1.getVelocity());
-        System.out.println("auto shooter 2 " +shooterMotor2.getVelocity());
+        // System.out.println("auto shooter 1 " +shooterMotor1.getVelocity());
+        // System.out.println("auto shooter 2 " +shooterMotor2.getVelocity());
         // shooterMotor1.setVelocity(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
         // shooterMotor2.setVelocity(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
 
@@ -120,8 +123,8 @@ public class ShooterSubsystem extends SubsystemBase {
         if(ampAndClimbMode == false){
           shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
             }
-        System.out.println("shooter 1 " +shooterMotor1.getVelocity());
-        System.out.println("shooter 2 " +shooterMotor2.getVelocity());
+        // System.out.println("shooter 1 " +shooterMotor1.getVelocity());
+        // System.out.println("shooter 2 " +shooterMotor2.getVelocity());
         } 
         
       } else {
@@ -182,14 +185,26 @@ public class ShooterSubsystem extends SubsystemBase {
         //         shooterIndexerMotor.set(0);
         //     }
         // }
+        if(idleShooting & intakeShooter == false){
+          runShooter = true;
+        }
+        else if (idleShooting == false){
+          runShooter = false;
+        }
 
     }
     public void autoSpeed(){
-        setRPM = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (6800 - 3000) / (5.7912 -1.27) + 3000;
-        //double x, double in_min, double in_max, double out_min, double out_max
-        // return (x- in_min) * (out_max - out_min) / (in_max -in_min) + out_min;
+        setRPM = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (6800 - 3500) / (5.7912 -1.27) + 3500;
     } 
 
+    public void IdleRevUp(){
+      System.out.println("amongus ");
+        setRPM = 2000;
+        runShooter = true;
+      }
+    
+  
+    
     public Command intakeIndexerForShooting(double speed, double s){
       return this.runOnce(()-> shooterIndexerMotor.set(speed)).andThen( new WaitCommand(s)).andThen( setIndexerSpeed(0));
     }
@@ -259,7 +274,11 @@ public class ShooterSubsystem extends SubsystemBase {
      * @param
      */
     public Command setShooterVelocity(double velocity) {
-        return this.runOnce(() -> shooterMotor1.setVelocity(velocity)).andThen(() -> shooterMotor2.setVelocity(velocity));
+        return this.runOnce(() -> runShooting(velocity));
+    }
+    private void runShooting(double v){
+        shooterMotor1.setVelocity(v);
+        shooterMotor2.setVelocity(v);
     }
 
     /**
@@ -282,9 +301,11 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean reachedSpeed(){
+    if(setRPM > 0){
       if (shooterMotor1.getVelocity() >= setRPM -1 && shooterMotor2.getVelocity() >= setRPM-1){
         return true;
       }
+    }
     return false;
   }
 
@@ -306,6 +327,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
         new WaitCommand(0.5);
         if(piece > noPiece){
+          idleShooting = true;
           return true;
       }
       return false;

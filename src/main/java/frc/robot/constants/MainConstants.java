@@ -11,11 +11,11 @@ import frc.robot.utility.PID;
 public class MainConstants {
 
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
-    public static final double ARM_PIVOT_X_OFFSET = 0.2032; //meters
-    public static final double ARM_PIVOT_Z = 0.5715; //meters
-    public static final double ARM_ORIGINAL_DEGREES = 22;
+    public static final double ARM_PIVOT_X_OFFSET = 0.18415; //0.2032; //meters //7.25 inch
+    public static final double ARM_PIVOT_Z = 0.5588; //0.5715; //meters //22 inch
+    public static final double ARM_ORIGINAL_DEGREES = 25;
     // public static final double SPEAKER_Z = 2.340102;
-    public static final double SPEAKER_Z = 1.4511020000000001 + 0.75;
+    public static final double SPEAKER_Z =  1.4511020000000001 + 0.762; //1.4511020000000001 + 0.635; 
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
     //Mechanical Constants
     public static String CAN_BUS = "";
@@ -81,7 +81,7 @@ public class MainConstants {
     public static int BrakeButtonid = 0;
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
-            new Transform3d(0.3, 0, 0.123835, new Rotation3d(Math.toRadians(55), 0, Math.toRadians(0))), //front
+            new Transform3d(0.3, 0, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(0))), //front
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //left
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //right
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)),
@@ -133,7 +133,6 @@ public class MainConstants {
             //Arm
             public static final int ARM_MOTOR_ID = 5;
             public static final int ARM_MOTOR2_ID = 6;
-            public static final int ARM_ENCODER_MOTOR = 1;
 
             //Shooter
             public static final int SHOOTER_MOTOR_1_ID = 2;
@@ -154,7 +153,7 @@ public class MainConstants {
     public static class Setpoints {
         //Intake Setpoints
         public static final double STOW_INTAKE = 0;
-        public static final double DEPLOY_INTAKE = 7.5;
+        public static final double DEPLOY_INTAKE = 8.25;
         //24
 
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
@@ -163,7 +162,7 @@ public class MainConstants {
         //Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 23; //Maybe make it 22.5 for chain
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
-        public static final double ARM_INTAKE_SETPOINT = 2;
+        public static final double ARM_INTAKE_SETPOINT = 1;
         public static final double ARM_TRAP_SETPOINT = 118;
         public static final double ARM_TRAP_PREP_SETPOINT = 82;
         public static final double ARM_TRAP_PREP2_SETPOINT = 72;
@@ -174,7 +173,7 @@ public class MainConstants {
         public static final double ARM_SUBWOOFER_SETPOINT = 67;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 160;
         public static final double ARM_SAFE_SETPOINT = 53;
-        public static final double ARM_AMP_SETPOINT = 60.5;
+        public static final double ARM_AMP_SETPOINT = 48.5;
         public static final double ARM_FAR_SHOT_SETPOINT = 45.5;
         public static final double ARM_HP_STATION_SETPOINT = 150;
 

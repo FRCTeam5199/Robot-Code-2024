@@ -30,7 +30,6 @@ public class ArmSubsystem extends SubsystemBase {
     public boolean isAiming = false;
     public boolean autoAiming = false;
     public SwerveDrive drive = TunerConstants.DriveTrain;
-    private CANSparkMax armEncoderMotor;
     private SparkAbsoluteEncoder armEncoder;
     private PIDController rotatePIDController;
     private double rotateSetpoint = 120;
@@ -94,8 +93,7 @@ public class ArmSubsystem extends SubsystemBase {
         armMotorL.setCurrentLimit(40);
         armMotorR.setCurrentLimit(40);
 
-        armEncoderMotor = new CANSparkMax(MainConstants.IDs.Motors.ARM_ENCODER_MOTOR, MotorType.kBrushed);
-        armEncoder = armEncoderMotor.getAbsoluteEncoder(Type.kDutyCycle);
+        armEncoder = armMotorL.getAbsoluteEncoder(Type.kDutyCycle);
 
     }
 
@@ -107,7 +105,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public boolean checkMotors() {
-        if (armMotorL != null && armEncoderMotor != null && armEncoder != null) {
+        if (armMotorL != null && armEncoder != null) {
             return true;
         } else {
             return false;
@@ -152,12 +150,34 @@ public class ArmSubsystem extends SubsystemBase {
         }
         if (autoAiming == false) {
             if (isAiming) {
+                if(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset)  > 0){
+                    rotatePIDController.setPID(0.0081262, 0.00472673212, 0.00);
+                    rotatePIDController.setIZone(3);
+                }
+                if (rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset)  < 0){
+                    rotatePIDController = new PIDController(0.0072262, 0.00219673212, 0.00);
+                    rotatePIDController.setIZone(3);
+                }
                 goToSetpoint(rotateSetpoint, rotateOffset);
+                //   System.out.println("rotateSetpoint"  + rotateSetpoint);
+                // System.out.println("encoder value" + encoderValue);
+
             } else {
                 goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
             }
         } else {
-            goToSetpoint(aprilTagSubsystem.armSpeakersAligning(), 0);
+            if(rotatePIDController.calculate(encoderValue, aprilTagSubsystem.armSpeakersAligning())  > 0){
+                    rotatePIDController.setIZone(1.5);
+                    rotatePIDController.setPID(0.0091262, 0.0079673212, 0.00);
+                }
+                if (rotatePIDController.calculate(encoderValue, aprilTagSubsystem.armSpeakersAligning())  < 0){
+                    rotatePIDController = new PIDController(0.00019262, 0.000309673212, 0.00);
+                    rotatePIDController.setIZone(3);
+                }
+                goToSetpoint(aprilTagSubsystem.armSpeakersAligning(), 0);
+            
+            // System.out.println("april tag value arm "  + aprilTagSubsystem.armSpeakersAligning());
+            // System.out.println("encoder value     " + encoderValue);
         }
     }
 
