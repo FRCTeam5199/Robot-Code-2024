@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 15.65,
-      "y": 4.5
+      "y": 4.4
     },
     "rotation": -124.5
   },
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "SbackShot"
+            "name": "backShot"
           }
         },
         {
@@ -24,27 +24,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom to Middle Red p1"
+            "pathName": "2 Piece Bottom Red"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "retractIntake"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "bottomPieceShot"
+            "name": "backShot"
           }
         }
       ]

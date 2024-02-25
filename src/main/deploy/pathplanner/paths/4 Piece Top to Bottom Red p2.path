@@ -3,6 +3,7 @@
   "waypoints": [
     {
       "anchor": {
+<<<<<<< HEAD
         "x": 14.0,
         "y": 7.0
       },
@@ -26,24 +27,81 @@
       "nextControl": {
         "x": 13.223461831539046,
         "y": 5.2985482894042715
+=======
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/4 Piece Bottom to Top Blue p2.path
+        "x": 2.38,
+        "y": 4.46
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.4799999999999973,
+        "y": 4.46
+      },
+      "isLocked": false,
+      "linkedName": null
+========
+        "x": 14.25,
+        "y": 5.55
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 14.35,
+        "y": 5.55
+      },
+      "isLocked": false,
+      "linkedName": "3 Piece Top to Middle Red p1 END"
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/paths/4 Piece Top to Bottom Red p2.path
+    },
+    {
+      "anchor": {
+        "x": 13.75,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 13.65,
+        "y": 5.55
+      },
+      "nextControl": {
+        "x": 13.85,
+        "y": 5.55
+>>>>>>> Auton-dev
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
+<<<<<<< HEAD
         "x": 13.9,
         "y": 5.555088802485298
       },
       "prevControl": {
         "x": 13.8,
         "y": 5.555088802485298
+=======
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/4 Piece Bottom to Top Blue p2.path
+        "x": 2.54,
+        "y": 5.66
+      },
+      "prevControl": {
+        "x": 2.639804858565066,
+        "y": 5.6662442138662295
+========
+        "x": 14.25,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 14.15,
+        "y": 5.55
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/paths/4 Piece Top to Bottom Red p2.path
+>>>>>>> Auton-dev
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
+<<<<<<< HEAD
   "rotationTargets": [
     {
       "waypointRelativePos": 0.75,
@@ -51,6 +109,19 @@
       "rotateFast": false
     }
   ],
+=======
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/4 Piece Bottom to Top Blue p2.path
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6,
+      "rotationDegrees": 50.78968765535299,
+      "rotateFast": false
+    }
+  ],
+========
+  "rotationTargets": [],
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/paths/4 Piece Top to Bottom Red p2.path
+>>>>>>> Auton-dev
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -89,18 +160,44 @@
     }
   ],
   "globalConstraints": {
+<<<<<<< HEAD
     "maxVelocity": 1.0,
     "maxAcceleration": 1.0,
+=======
+    "maxVelocity": 2.0,
+    "maxAcceleration": 3.0,
+>>>>>>> Auton-dev
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
+<<<<<<< HEAD
     "velocity": 0,
     "rotation": 0.0,
+=======
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/4 Piece Bottom to Top Blue p2.path
+    "velocity": 0.0,
+    "rotation": 172.15,
+========
+    "velocity": 0,
+    "rotation": 180.0,
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/paths/4 Piece Top to Bottom Red p2.path
+>>>>>>> Auton-dev
     "rotateFast": false
   },
   "reversed": false,
   "folder": "4 Piece Paths",
+<<<<<<< HEAD
   "previewStartingState": null,
+=======
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/4 Piece Bottom to Top Blue p2.path
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+========
+  "previewStartingState": null,
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/paths/4 Piece Top to Bottom Red p2.path
+>>>>>>> Auton-dev
   "useDefaultConstraints": false
 }

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.65,
-      "y": 4.5
+      "x": 15.659794400897903,
+      "y": 4.508672070126443
     },
     "rotation": -124.5
   },
@@ -18,6 +18,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom to Middle Red p1"
@@ -26,13 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "retractIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "bottomPieceShot"
+            "name": "backShot"
           }
         },
         {
@@ -56,13 +56,7 @@
         {
           "type": "named",
           "data": {
-            "name": "retractIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "middlePieceShot"
+            "name": "backShot"
           }
         }
       ]

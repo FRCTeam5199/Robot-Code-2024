@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.85,
+      "y": 4.5
+    },
+    "rotation": -55.5
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Bottom Far Blue AUTOAIM"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "3 Piece Autons",
+  "choreoAuto": false
+}

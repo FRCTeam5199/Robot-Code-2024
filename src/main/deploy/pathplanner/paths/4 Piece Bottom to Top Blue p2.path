@@ -3,6 +3,7 @@
   "waypoints": [
     {
       "anchor": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/4 Piece Bottom to Top Blue p2.path
         "x": 2.38,
         "y": 4.46
       },
@@ -13,18 +14,30 @@
       },
       "isLocked": false,
       "linkedName": null
+========
+        "x": 14.25,
+        "y": 5.55
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 14.35,
+        "y": 5.55
+      },
+      "isLocked": false,
+      "linkedName": "3 Piece Top to Middle Red p1 END"
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/paths/4 Piece Top to Bottom Red p2.path
     },
     {
       "anchor": {
-        "x": 2.75,
+        "x": 13.75,
         "y": 5.55
       },
       "prevControl": {
-        "x": 2.65,
+        "x": 13.65,
         "y": 5.55
       },
       "nextControl": {
-        "x": 2.85,
+        "x": 13.85,
         "y": 5.55
       },
       "isLocked": false,
@@ -32,18 +45,28 @@
     },
     {
       "anchor": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/4 Piece Bottom to Top Blue p2.path
         "x": 2.54,
         "y": 5.66
       },
       "prevControl": {
         "x": 2.639804858565066,
         "y": 5.6662442138662295
+========
+        "x": 14.25,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 14.15,
+        "y": 5.55
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/paths/4 Piece Top to Bottom Red p2.path
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/4 Piece Bottom to Top Blue p2.path
   "rotationTargets": [
     {
       "waypointRelativePos": 0.6,
@@ -51,11 +74,31 @@
       "rotateFast": false
     }
   ],
+========
+  "rotationTargets": [],
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/paths/4 Piece Top to Bottom Red p2.path
   "constraintZones": [],
   "eventMarkers": [
     {
+      "name": "Deploy Intake",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "deployIntake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.4,
+      "waypointRelativePos": 1.5,
       "command": {
         "type": "parallel",
         "data": {
@@ -78,15 +121,24 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/4 Piece Bottom to Top Blue p2.path
     "velocity": 0.0,
     "rotation": 172.15,
+========
+    "velocity": 0,
+    "rotation": 180.0,
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/paths/4 Piece Top to Bottom Red p2.path
     "rotateFast": false
   },
   "reversed": false,
   "folder": "4 Piece Paths",
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/4 Piece Bottom to Top Blue p2.path
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
   },
+========
+  "previewStartingState": null,
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/paths/4 Piece Top to Bottom Red p2.path
   "useDefaultConstraints": false
 }

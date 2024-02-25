@@ -70,6 +70,9 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeActuatorMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ACTUATOR_MOTOR_ID);
         intakeActuatorMotor.getEncoder().setPosition(0);
         intakeActuatorMotor.setInvert(true);
+
+        intakeMotor.setCurrentLimit(40);
+        intakeActuatorMotor.setCurrentLimit(60);
     }
 
     /**
@@ -126,11 +129,11 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public Command increaseOffset() {
-        return this.runOnce(() -> rotateOffset += 2);
+        return this.runOnce(() -> rotateOffset += 1);
     }
 
     public Command decreaseOffset() {
-        return this.runOnce(() -> rotateOffset -= 2);
+        return this.runOnce(() -> rotateOffset -= 1);
     }
 
     /**

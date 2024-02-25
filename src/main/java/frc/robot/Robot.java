@@ -4,17 +4,14 @@
 
 package frc.robot;
 
-import java.security.AllPermission;
-import java.util.Optional;
-
-import edu.wpi.first.math.util.Units;
-import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.Logger;
+import edu.wpi.first.math.geometry.Pose3d;
 import org.photonvision.EstimatedRobotPose;
 
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.wpilibj.RobotBase;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.LoggedRobot;
+
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -22,7 +19,6 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-import frc.robot.utility.superstructure.Superstructure;
 
 import java.util.Optional;
 
@@ -34,137 +30,158 @@ import java.util.Optional;
  * project.
  */
 public class Robot extends LoggedRobot{
-  public static final boolean SECOND_TRY = false;
-  private Command m_autonomousCommand;
-  Pose3d poseA = new Pose3d();
-  Pose3d poseB = new Pose3d();
-  SwerveDrive drive = TunerConstants.DriveTrain;
-  AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+    public static final boolean SECOND_TRY = false;
 
-  UserInterface userInterface = new UserInterface();
+    Pose3d poseA = new Pose3d();
+    Pose3d poseB = new Pose3d();
 
-  private RobotContainer m_robotContainer;  
-
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-  @Override
-  public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    
-    userInterface.initalizeConfigTab();
-    userInterface.initalizeTestTab();
-    userInterface.initalizeGameTab();
-
-    m_robotContainer = new RobotContainer();
-  }
-
-  /**
-   * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
-   * that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
-    //Records the position of the robot and applies it to advantage scope.
+    SwerveDrive drive = TunerConstants.DriveTrain;
+    UserInterface userInterface = new UserInterface();
+    AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+    private Command m_autonomousCommand;
+    private RobotContainer m_robotContainer;
 
 
-    Logger.recordOutput("MyPose", poseA);
-    Logger.recordOutput("MyPoseArray", poseA, poseB);
-    Logger.recordOutput("MyPoseArray", new Pose3d[] {poseA, poseB});
+    /**
+     * This function is run when the robot is first started up and should be used for any
+     * initialization code.
+     */
+    @Override
+    public void robotInit() {
+        // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+        // autonomous chooser on the dashboard.
 
+        userInterface.initalizeConfigTab();
+        userInterface.initalizeTestTab();
+        // userInterface.initalizeGameTab();
 
-    CommandScheduler.getInstance().run();
-
-    //Determines whether there is usable value from the getVisionPose command
-    Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
-    // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
-    // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
-    // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
-    if(estimatePose1.isPresent()){
-        EstimatedRobotPose robotPose = estimatePose1.get();
-        drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), VecBuilder.fill(0.05, 0.05, Math.toRadians(0)));
+        m_robotContainer = new RobotContainer();
+        Logger.start();
     }
-    // if(estimatePose2.isPresent()){
-    //   EstimatedRobotPose robotPose = estimatePose2.get();
-    //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    // }
-    // if(estimatePose3.isPresent()){
-    //   EstimatedRobotPose robotPose = estimatePose3.get();
-    //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    // }
-    // if(estimatePose4.isPresent()){
-    //   EstimatedRobotPose robotPose = estimatePose4.get();
-    //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    // }
-    
-    // userInterface.updateTestTab();
-    userInterface.updateGameTab();
-  }
 
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {}
+    /**
+     * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
+     * that you want ran during disabled, autonomous, teleoperated and test.
+     *
+     * <p>This runs after the mode specific periodic functions, but before LiveWindow and
+     * SmartDashboard integrated updating.
+     */
+    @Override
+    public void robotPeriodic() {
+        // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+        // commands, running already-scheduled commands, removing finished or interrupted commands,
+        // and running subsystem periodic() methods.  This must be called from the robot's periodic
+        // block in order for anything in the Command-based framework to work.
 
-  @Override
-  public void disabledPeriodic() {
-    Superstructure.update();
-  }
+        Logger.recordOutput("Drive/Pose", drive.getPose());
 
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  @Override
-  public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+        Logger.recordOutput("MyPose3d", poseA);
+        Logger.recordOutput("MyPose3dArray", poseA, poseB);
+        Logger.recordOutput("MyPose3dArray", new Pose3d[] { poseA, poseB });
+
+
+        CommandScheduler.getInstance().run();
+        // System.out.println(drive.getPose());
+        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
+        // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
+        // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
+        // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
+   if(estimatePose1.isPresent()){
+      EstimatedRobotPose robotPose = estimatePose1.get();
+      drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+   }
+        // if(estimatePose2.isPresent()){
+        //   EstimatedRobotPose robotPose = estimatePose2.get();
+        //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+        // }
+        // if(estimatePose3.isPresent()){
+        //   EstimatedRobotPose robotPose = estimatePose3.get();
+        //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+        // }
+        // if(estimatePose4.isPresent()){
+        //   EstimatedRobotPose robotPose = estimatePose4.get();
+        //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+        // }
+
+        // userInterface.updateGameTab();
     }
-    
-  }
 
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {}
-
-  @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    /**
+     * This function is called once each time the robot enters Disabled mode.
+     */
+    @Override
+    public void disabledInit() {
     }
-  }
 
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {}
+    @Override
+    public void disabledPeriodic() {
+    }
 
-  @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-  }
+    /**
+     * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
+     */
+    @Override
+    public void autonomousInit() {
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {}
+        // schedule the autonomous command (example)
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.schedule();
+        }
+        m_robotContainer.arm.setBrakeTrue();
+    }
 
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {}
+    /**
+     * This function is called periodically during autonomous.
+     */
+    @Override
+    public void autonomousPeriodic() {
+    }
 
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {}
+    @Override
+    public void teleopInit() {
+        // This makes sure that the autonomous stops running when
+        // teleop starts running. If you want the autonomous to
+        // continue until interrupted by another command, remove
+        // this line or comment it out.
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.cancel();
+        }
+        m_robotContainer.arm.setBrakeTrue();
+    }
+
+    /**
+     * This function is called periodically during operator control.
+     */
+    @Override
+    public void teleopPeriodic() {
+    }
+
+    @Override
+    public void testInit() {
+        // Cancels all running commands at the start of test mode.
+        CommandScheduler.getInstance().cancelAll();
+    }
+
+    /**
+     * This function is called periodically during test mode.
+     */
+    @Override
+    public void testPeriodic() {
+    }
+
+    /**
+     * This function is called once when the robot is first started up.
+     */
+    @Override
+    public void simulationInit() {
+    }
+
+    /**
+     * This function is called periodically whilst in simulation.
+     */
+    @Override
+    public void simulationPeriodic() {
+    }
 }

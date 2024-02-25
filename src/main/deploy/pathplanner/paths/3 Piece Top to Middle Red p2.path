@@ -3,54 +3,48 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.0,
-        "y": 7.0
+        "x": 14.25,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.1,
-        "y": 7.0
+        "x": 14.35,
+        "y": 5.55
       },
       "isLocked": false,
       "linkedName": "3 Piece Top to Middle Red p1 END"
     },
     {
       "anchor": {
-        "x": 13.243195717160667,
-        "y": 5.890564858052794
+        "x": 13.75,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 13.26545633637369,
-        "y": 6.558383434443381
+        "x": 13.65,
+        "y": 5.55
       },
       "nextControl": {
-        "x": 13.223461831539046,
-        "y": 5.2985482894042715
+        "x": 13.85,
+        "y": 5.55
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 13.9,
-        "y": 5.555088802485298
+        "x": 14.25,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 13.8,
-        "y": 5.555088802485298
+        "x": 14.15,
+        "y": 5.55
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.75,
-      "rotationDegrees": -90.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -90,13 +84,13 @@
   ],
   "globalConstraints": {
     "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxAcceleration": 0.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,

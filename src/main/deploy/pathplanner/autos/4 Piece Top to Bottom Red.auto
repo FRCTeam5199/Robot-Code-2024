@@ -2,15 +2,37 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.7,
+      "x": 15.5,
       "y": 6.6
     },
-    "rotation": -59.0
+    "rotation": -63.646205414393606
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/autos/4 Piece Bottom to Top Blue.auto
+            "name": "SbackShot"
+========
+            "name": "backShot"
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/autos/4 Piece Top to Bottom Red.auto
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
         {
           "type": "path",
           "data": {
@@ -18,15 +40,73 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "4 Piece Top to Bottom Red p2"
+<<<<<<<< HEAD:src/main/deploy/pathplanner/autos/4 Piece Bottom to Top Blue.auto
+            "name": "bottomPieceShot"
+========
+            "name": "backShot"
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/autos/4 Piece Top to Bottom Red.auto
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "4 Piece Top to Bottom Red p3"
+<<<<<<<< HEAD:src/main/deploy/pathplanner/autos/4 Piece Bottom to Top Blue.auto
+            "pathName": "4 Piece Bottom to Top Blue p2"
+========
+            "pathName": "4 Piece Top to Bottom Red p2"
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/autos/4 Piece Top to Bottom Red.auto
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/autos/4 Piece Bottom to Top Blue.auto
+            "name": "middlePieceShot"
+========
+            "name": "backShot"
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/autos/4 Piece Top to Bottom Red.auto
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/autos/4 Piece Bottom to Top Blue.auto
+            "pathName": "4 Piece Bottom to Top Blue p3"
+========
+            "pathName": " 4 Piece Top to Bottom Red p3"
+>>>>>>>> Auton-dev:src/main/deploy/pathplanner/autos/4 Piece Top to Bottom Red.auto
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "topPieceShot"
           }
         }
       ]

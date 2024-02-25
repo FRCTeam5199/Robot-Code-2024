@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.65,
-      "y": 4.5
+      "x": 15.718348583636134,
+      "y": 4.520382906665266
     },
-    "rotation": -124.5
+    "rotation": -122.73522627335957
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "SbackShot"
+            "name": "backShot"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
           }
         },
         {
@@ -32,7 +38,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LbackShot"
+            "name": "backShot"
           }
         },
         {
@@ -45,12 +51,6 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom Far Red p2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LbackShot"
           }
         }
       ]

@@ -3,19 +3,29 @@
   "waypoints": [
     {
       "anchor": {
+<<<<<<< HEAD
         "x": 15.7,
+=======
+        "x": 15.5,
+>>>>>>> Auton-dev
         "y": 6.6
       },
       "prevControl": null,
       "nextControl": {
+<<<<<<< HEAD
         "x": 15.603407417371093,
         "y": 6.625881904510251
+=======
+        "x": 15.403407417371094,
+        "y": 6.625881904510252
+>>>>>>> Auton-dev
       },
       "isLocked": false,
       "linkedName": "top starting point red"
     },
     {
       "anchor": {
+<<<<<<< HEAD
         "x": 13.5,
         "y": 7.1
       },
@@ -26,12 +36,25 @@
       "nextControl": {
         "x": 12.514553340268574,
         "y": 7.1
+=======
+        "x": 14.5,
+        "y": 7.0
+      },
+      "prevControl": {
+        "x": 15.485446659731426,
+        "y": 7.0
+      },
+      "nextControl": {
+        "x": 13.514553340268574,
+        "y": 7.0
+>>>>>>> Auton-dev
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
+<<<<<<< HEAD
         "x": 14.0,
         "y": 7.0
       },
@@ -42,11 +65,27 @@
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
+=======
+        "x": 14.25,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 14.25,
+        "y": 7.070690632574554
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "3 Piece Top to Middle Red p1 END"
+>>>>>>> Auton-dev
     }
   ],
   "rotationTargets": [
     {
+<<<<<<< HEAD
       "waypointRelativePos": 1.05,
+=======
+      "waypointRelativePos": 1.1,
+>>>>>>> Auton-dev
       "rotationDegrees": -179.0,
       "rotateFast": false
     }
@@ -54,8 +93,13 @@
   "constraintZones": [
     {
       "name": "Intake",
+<<<<<<< HEAD
       "minWaypointRelativePos": 1.1,
       "maxWaypointRelativePos": 1.35,
+=======
+      "minWaypointRelativePos": 1.2,
+      "maxWaypointRelativePos": 1.65,
+>>>>>>> Auton-dev
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 3.0,
@@ -67,7 +111,11 @@
   "eventMarkers": [
     {
       "name": "Deploy Intake",
+<<<<<<< HEAD
       "waypointRelativePos": 0.3,
+=======
+      "waypointRelativePos": 0.5,
+>>>>>>> Auton-dev
       "command": {
         "type": "parallel",
         "data": {
@@ -84,7 +132,11 @@
     },
     {
       "name": "Retract Intake",
+<<<<<<< HEAD
       "waypointRelativePos": 1.35,
+=======
+      "waypointRelativePos": 1.7,
+>>>>>>> Auton-dev
       "command": {
         "type": "parallel",
         "data": {
@@ -101,14 +153,23 @@
     }
   ],
   "globalConstraints": {
+<<<<<<< HEAD
     "maxVelocity": 1.5,
     "maxAcceleration": 1.5,
+=======
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+>>>>>>> Auton-dev
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
+<<<<<<< HEAD
     "rotation": -42.0,
+=======
+    "rotation": 180.0,
+>>>>>>> Auton-dev
     "rotateFast": false
   },
   "reversed": false,

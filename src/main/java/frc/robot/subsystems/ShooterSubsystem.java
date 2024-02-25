@@ -4,54 +4,57 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.utility.PID;
 
-public class
-ShooterSubsystem extends SubsystemBase {
+public class ShooterSubsystem extends SubsystemBase {
     private static ShooterSubsystem shooterSubsystem;
-
-    private static boolean subsystemStatus = false;
+    public SwerveDrive drive = TunerConstants.DriveTrain;
 
     public VortexMotorController shooterMotor1;
     public VortexMotorController shooterMotor2;
 
     public VortexMotorController shooterIndexerMotor;
 
-    public CANSparkMax shooterFlippyDoMotor;
-    public SparkPIDController shooterFlippyDoPIDConroller;
+    public SparkPIDController shooterMotor1PidController;
 
-    public double combinedShooterSpeed;
-    public double shooterMotor1Speed;
-    public double shooterMotor2Speed;
-
+    public double shooterSpeed;
+    public double indexerSpeed;
     public double shooterSpeedOffset;
 
+    public double setRPM = 0;
+    public double speedPercent = 0;
+
+    public PIDController topWheelPIDController;
+    public PIDController bottomWheelPIDController;
+
+
+    public boolean autoTargeting = false;
     public boolean ampAndClimbMode = false;
     public boolean runShooter = false;
     public boolean runIndexer = false;
     public boolean intakeShooter = false;
-    public boolean shoot = false;
     public boolean autonSide = false;
 
-    public GenericHID genericHID = new GenericHID(0);
-
-    public ShooterSubsystem() {}
+    public ShooterSubsystem() {
+    }
 
     /**
-     * Gets the instance of the Shooter Subsystem.
+     * Gets the instnace of the Arm Subsystem.
      */
     public static ShooterSubsystem getInstance() {
         if (shooterSubsystem == null) {
@@ -70,165 +73,133 @@ ShooterSubsystem extends SubsystemBase {
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace());
         }
-        try {
-            PIDInit();
-        } catch (Exception exception) {
-            System.err.println("One or more issues occured while trying to initalize PID for Arm Subsystem");
-            System.err.println("Exception Message:" + exception.getMessage());
-            System.err.println("Exception Cause:" + exception.getCause());
-            System.err.println("Exception Stack Trace:" + exception.getStackTrace());
-        }
     }
 
-    public boolean getSubsystemStatus() {
-        return subsystemStatus;
-    }
-
-    /**
+    /*
      * Initalizes the motor(s) for this subsystem
      */
     public void motorInit() {
-        shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID);
-        shooterMotor1.getEncoder().setPosition(0);
-        shooterMotor1.setInvert(true);
+      shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID, 0.0004242300, 0.000002, 50,0.0001489);
+      shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID, 0.000448973, 0.000002, 50,0.0001489);
+      shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
 
-        shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID);
-        shooterMotor2.getEncoder().setPosition(0);
-        shooterMotor2.setInvert(false);
+      shooterMotor1.setInvert(true);
+      shooterMotor2.setInvert(false);
 
-        shooterIndexerMotor = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_INDEXER_MOTOR_ID);
-        shooterIndexerMotor.setInvert(true);
-        shooterIndexerMotor.setBrake(true);
+      shooterIndexerMotor.setInvert(false);
+      shooterIndexerMotor.setBrake(true);
 
-        shooterFlippyDoMotor = new CANSparkMax(11, MotorType.kBrushed);
-        shooterFlippyDoMotor.setIdleMode(IdleMode.kBrake);
-    }
+      shooterMotor1.getEncoder().setPosition(0);
+      shooterMotor2.getEncoder().setPosition(0);
 
-    public void PIDInit() {
-        shooterFlippyDoPIDConroller = shooterFlippyDoMotor.getPIDController();
-        shooterFlippyDoPIDConroller.setP(0.1);
-    }
-
-    public Command increaseShooterSpeed() {
-        return this.runOnce(() -> shooterSpeedOffset += 0.05);
-    }
-
-    public Command decreaseShooterSpeed() {
-        return this.runOnce(() -> shooterSpeedOffset -= 0.05);
-    }
-
-    public RelativeEncoder getShooterMotor1Encoder() {
-        if (!subsystemStatus) {
-            return null;
-        } else {
-            return shooterMotor1.getEncoder();
-        }
-    }
-
-    public RelativeEncoder getShooterMotor2Encoder() {
-        if (!subsystemStatus) return null;
-        return shooterMotor2.getEncoder();
-    }
-
-    public RelativeEncoder getShooterIndexerMotorEncoder() {
-        if (!subsystemStatus) return null;
-        return shooterIndexerMotor.getEncoder();
-    }
-
-  public RelativeEncoder getShooterFlippyDoMotorEncoder() {
-    if (!subsystemStatus) return null;
-		return shooterFlippyDoMotor.getEncoder();
-	}
-
-  public boolean checkMotors() {
-    if ((shooterMotor1 != null && shooterMotor1.getEncoder() != null) && (shooterMotor2 != null && shooterMotor1.getEncoder() != null)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-    public boolean checkPID() {
-        if (shooterFlippyDoPIDConroller != null) {
-            return true;
-        } else {
-            return false;
-        }
+      shooterMotor1.setCurrentLimit(30);
+      shooterMotor2.setCurrentLimit(30);
+      shooterIndexerMotor.setCurrentLimit(40);
     }
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
-        if (checkMotors() && checkPID()) {
-            subsystemStatus = true;
-        } else {
-            subsystemStatus = false;
-        }
+      if (autoTargeting){
+        // System.out.println(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
+        autoSpeed();
+        shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
+        shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
+        System.out.println("auto shooter 1 " +shooterMotor1.getVelocity());
+        System.out.println("auto shooter 2 " +shooterMotor2.getVelocity());
+        // shooterMotor1.setVelocity(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
+        // shooterMotor2.setVelocity(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
 
-        if (subsystemStatus) {
-            subsystemPeriodic();
+      }
+      else if (runShooter) {
+        if (intakeShooter) {
+          shooterMotor1.set(-0.3);
+          shooterMotor2.set(-0.3);
         }
-    }
+        else{
+        shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
+        if(ampAndClimbMode == false){
+          shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
+            }
+        System.out.println("shooter 1 " +shooterMotor1.getVelocity());
+        System.out.println("shooter 2 " +shooterMotor2.getVelocity());
+        } 
+        
+      } else {
+        shooterMotor2.set(0);
+        shooterMotor1.set(0);
+      }
 
-    private void subsystemPeriodic() {
-        // if (checkForGamePiece()) {
-        //   genericHID.setRumble(GenericHID.RumbleType.kBothRumble, 1);
-        // } else {
-        //   genericHID.setRumble(GenericHID.RumbleType.kBothRumble, 0);
-        // }
+      // if(runIndexer){
+      //   if (intakeShooter) {
+      //     shooterIndexerMotor.set(-.4);
+      //   } else {
+      //     shooterIndexerMotor.set(0.6);
+      //   } 
+      // }
+      // else{
+      //   shooterIndexerMotor.set(0);
+      // }
+      // if(shooterMotor1.getVelocity() == 3000 && shooterMotor2.getVelocity()  == 3000){
+      // }
 
         // if (ampAndClimbMode) {
-        //   shooterSpeed = 0.3;
-        //   indexerSpeed = 0.5;
-        // // } else if (intakeShooter) {
-        //   // shooterSpeed = -1;
-        //   // indexerSpeed = -0.5;
+        //     shooterSpeed = 0.2;
+        //     indexerSpeed = 0.5;
+        // } else if (intakeShooter) {
+        //     shooterSpeed = -0.3;
+        //     indexerSpeed = -0.4;
+        // } else if (autonSide) {
+        //     shooterSpeed = 0.7;
+        //     indexerSpeed = 0.5;
         // } else {
-        //   shooterSpeed = 0.75;
-        //   indexerSpeed = 0.5;
+        //     shooterSpeed = setSpeed;
+        //     indexerSpeed = 0.5;
         // }
 
-        // if(autonSide){
-        //   shooterSpeed = 0.5;
+        // if (intakeShooter) {
+        //     shooterMotor1.set(-.3);
+        //     shooterMotor2.set(-.3);
+        // } else {
+        //     if (runShooter) {
+        //         if (!ampAndClimbMode) {
+        //             shooterMotor1.set((shooterSpeed + shooterSpeedOffset) -0.05);
+        //         }
+        //         shooterMotor2.set((shooterSpeed + shooterSpeedOffset));
+        //         System.out.println("velocity of bottom " +shooterMotor1.getVelocity());
+        //         System.out.println("velocity of top " +shooterMotor2.getVelocity());
+        //     } else {
+        //         shooterMotor1.set(0);
+        //         shooterMotor2.set(0);
+        //     }
+        // }
+        // if (intakeShooter) {
+        //     shooterIndexerMotor.set(-.3);
+        // } else {
+
+        //     if (runIndexer) {
+        //         shooterIndexerMotor.set(indexerSpeed);
+        //     } else {
+        //         shooterIndexerMotor.set(0);
+        //     }
         // }
 
-        // if(intakeShooter){
-        // shooterMotor1.set(-.3);
-        // shooterMotor2.set(-.3);
-        // } else {
-        if (runShooter) {
-          if (shooterMotor1Speed == 0 && shooterMotor2Speed == 0) {
-            shooterMotor1.set(combinedShooterSpeed + shooterSpeedOffset);
-            shooterMotor2.set(combinedShooterSpeed + shooterSpeedOffset);
-          } else {
-            shooterMotor1.set(shooterMotor1Speed);
-            shooterMotor2.set(shooterMotor2Speed);
-          }
-        } else {
-            shooterMotor1.set(0);
-            shooterMotor2.set(0);
-        }
-        // }
-        // if(intakeShooter) {
-        //   shooterIndexerMotor.set(-.3);
-        // } else {
-        // if (runIndexer) {
-        // } else {
-        // shooterIndexerMotor.set(0);
-        // }
-        // }
+    }
+    public void autoSpeed(){
+        setRPM = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (6800 - 3000) / (5.7912 -1.27) + 3000;
+        //double x, double in_min, double in_max, double out_min, double out_max
+        // return (x- in_min) * (out_max - out_min) / (in_max -in_min) + out_min;
+    } 
+
+    public Command intakeIndexerForShooting(double speed, double s){
+      return this.runOnce(()-> shooterIndexerMotor.set(speed)).andThen( new WaitCommand(s)).andThen( setIndexerSpeed(0));
     }
 
-    public Command moveFlippyForTime(double s, double seconds) {
-        return new SequentialCommandGroup(flippyDoPercent(s), new WaitCommand(seconds), flippyDoPercent(s));
+    public Command increaseShooterSpeed() {
+        return this.runOnce(() -> shooterSpeedOffset += 50).andThen(()-> System.out.println(shooterSpeedOffset));
     }
 
-    public Command flippyDoPercent(double speed) {
-        return this.runOnce(() -> shooterFlippyDoMotor.set(speed));
-    }
-
-    public Command flippyDoSetpoint(double setpoint) {
-        return this.runOnce(() -> shooterFlippyDoPIDConroller.setReference(setpoint, ControlType.kPosition));
+    public Command decreaseShooterSpeed() {
+        return this.runOnce(() -> shooterSpeedOffset -= 50).andThen(()-> System.out.println(shooterSpeedOffset));
     }
 
     public Command setRunShooter(boolean runShooter) {
@@ -243,25 +214,25 @@ ShooterSubsystem extends SubsystemBase {
         return this.runOnce(() -> this.ampAndClimbMode = ampAndClimbMode);
     }
 
+
     public Command runAutonShooting(boolean side) {
-        return new SequentialCommandGroup(
-                autonSide(side),
-                setRunShooter(true), new WaitCommand(.5), setRunIndexer(true),
-                new WaitCommand(0.3), setRunShooter(false), setRunIndexer(false), autonSide(false));
+        return new SequentialCommandGroup(autonSpeed(side), setRunShooter(true), new WaitCommand(.5), setRunIndexer(true),
+                new WaitCommand(0.3), setRunShooter(false), setRunIndexer(false), autonSpeed(false));
     }
 
-    public Command autonSide(boolean side) {
+    public Command autonSpeed(boolean side) {
         return this.runOnce(() -> this.autonSide = side);
     }
 
     /**
-     * Runs the Shooter Motor to Intake.
-     * True runs the Shooter to Intake.
-     *
-     * @param intakeShooter
+     * Runs the Shooter Motor to Intake
      */
-    public Command setIntakeShooter(boolean intakeShooter) {
+    public Command setintakeShooter(boolean intakeShooter) {
         return this.runOnce(() -> this.intakeShooter = intakeShooter);
+    }
+
+    public Command setRPMShooter(double sp) {
+        return this.runOnce(() -> this.setRPM = sp);
     }
 
     /**
@@ -278,16 +249,8 @@ ShooterSubsystem extends SubsystemBase {
      *
      * @param
      */
-    public Command setCombinedShooterSpeed(double percent) {
-        return this.runOnce(() -> combinedShooterSpeed = percent);
-    }
-
-    public Command setShooterMotor1Speed(double percent) {
-        return this.runOnce(() -> shooterMotor1Speed = percent);
-    }
-
-    public Command setShooterMotor2Speed(double percent) {
-        return this.runOnce(() -> shooterMotor2Speed = percent);
+    public Command setShooterSpeed(double percent) {
+        return this.runOnce(() -> speedPercent = percent);
     }
 
     /**
@@ -303,43 +266,54 @@ ShooterSubsystem extends SubsystemBase {
      * Stops the Shooter Motor
      */
 
-    /**
-     * Checks for current spike inside of the indexer
-     *
-     * @return True if a game piece is in the Indexer
-     */
-    private boolean currentCheck() {
-        new WaitCommand(0.4);
-        if (shooterIndexerMotor.getCurrent() < 65) {
-            return false;
-        }
-        new WaitCommand(0.5);
-        if (shooterIndexerMotor.getCurrent() > 65) {
-            return true;
-        }
-        return false;
-    }
+  /**
+   * Checks for current spike inside of the indexer
+   * @return True if a game piece is in the Indexer
+   */
+  private boolean currentCheck(){
+    new WaitCommand(0.4);
+    if (shooterIndexerMotor.getCurrent() < 39.8){
+      return false;
+    } 
+    if (shooterIndexerMotor.getCurrent() > 39.8){
+      return true;
+    } 
+    return false;    
+  }
 
-    /**
-     * decides if a game piece is truly inside of
-     *
-     * @return true if game piece false if not
-     */
-    public boolean checkForGamePiece() {
-        int piece = 0;
-        int noPiece = 0;
-        if (shooterIndexerMotor.getCurrent() > 65) {
-            for (int i = 0; i <= 10; i++) {
-                if (currentCheck() == true) {
-                    piece++;
-                } else {
-                    noPiece++;
-                }
-            }
+  public boolean reachedSpeed(){
+      if (shooterMotor1.getVelocity() >= setRPM -1 && shooterMotor2.getVelocity() >= setRPM-1){
+        return true;
+      }
+    return false;
+  }
+
+  /**
+   * decides if a game piece is truly inside of 
+   * @return true if game piece false if not
+   */
+  public boolean checkForGamePiece(){
+    int piece = 0;
+    int noPiece = 0;
+    if(intakeShooter){
+      if(shooterIndexerMotor.getCurrent() > 39.8){
+        for(int i = 0; i <=10; i++){
+          if(currentCheck() == true){
+            piece++;
+          }
         }
-        if (piece > noPiece) {
-            return true;
-        }
-        return false;
+      }
     }
-}
+        new WaitCommand(0.5);
+        if(piece > noPiece){
+          return true;
+      }
+      return false;
+    }
+  }
+
+
+    
+
+
+   

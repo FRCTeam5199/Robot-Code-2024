@@ -7,12 +7,13 @@ package frc.robot.utility;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.event.EventLoop;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * Copied so to add rumble feature to controller, everything else stays same. 
+ * Imported to add rumble functionality to command xbox controller;
  * A version of {@link XboxController} with {@link Trigger} factories for command-based.
  *
  * @see XboxController
@@ -31,6 +32,9 @@ public class CommandXboxController extends CommandGenericHID {
     m_hid = new XboxController(port);
   }
 
+  public void setRumble(double r){
+    m_hid.setRumble(GenericHID.RumbleType.kBothRumble, r);
+  }
   /**
    * Get the underlying GenericHID object.
    *
@@ -39,10 +43,6 @@ public class CommandXboxController extends CommandGenericHID {
   @Override
   public XboxController getHID() {
     return m_hid;
-  }
-
-  public void setRumble(double rumble){
-    m_hid.setRumble(GenericHID.RumbleType.kBothRumble, rumble);
   }
 
   /**

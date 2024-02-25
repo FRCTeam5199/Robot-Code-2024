@@ -7,13 +7,10 @@ import com.ctre.phoenix6.mechanisms.swerve.*;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -25,22 +22,18 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
-    public Pose2d robotPose;
-    public final Field2d m_field = new Field2d();
 
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         if (Utils.isSimulation()) {
             startSimThread();
         }
-        robotPose = new Pose2d(3, 3, new Rotation2d()); 
     }
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         if (Utils.isSimulation()) {
             startSimThread();
         }
-        robotPose = new Pose2d(3, 3, new Rotation2d()); 
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
@@ -78,15 +71,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
-    }
-    @Override
-	public void periodic() {
-        updatePose();
-        m_field.setRobotPose(robotPose);
-    }
-
-    public void updatePose(){
-        robotPose = new Pose2d(getPose().getX(), getPose().getY(), new Rotation2d());
     }
 }
 
