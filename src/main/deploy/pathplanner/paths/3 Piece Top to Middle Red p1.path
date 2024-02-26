@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 14.25,
-        "y": 5.55
+        "x": 14.102253140312271,
+        "y": 6.417538427088266
       },
       "prevControl": {
-        "x": 14.25,
-        "y": 7.070690632574554
+        "x": 12.978012831917244,
+        "y": 7.131899456380937
       },
       "nextControl": null,
       "isLocked": false,
@@ -86,13 +86,42 @@
       "name": "Retract Intake",
       "waypointRelativePos": 1.7,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
                 "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAim"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
               }
             }
           ]

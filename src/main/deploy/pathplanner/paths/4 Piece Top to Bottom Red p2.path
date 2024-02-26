@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.25,
-        "y": 5.55
+        "x": 14.102253140312271,
+        "y": 6.417538427088266
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.35,
-        "y": 5.55
+        "x": 14.202253140312271,
+        "y": 6.417538427088266
       },
       "isLocked": false,
       "linkedName": "3 Piece Top to Middle Red p1 END"

@@ -17,31 +17,31 @@
     {
       "anchor": {
         "x": 2.5671635958656545,
-        "y": 4.045446552431566
+        "y": 4.075371117931965
       },
       "prevControl": {
         "x": 2.51330057050626,
-        "y": 3.883857476353383
+        "y": 3.913782041853782
       },
       "nextControl": {
         "x": 2.6658330239737413,
-        "y": 4.341454836755828
+        "y": 4.371379402256227
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.24,
-        "y": 5.54
+        "x": 2.5671635958656545,
+        "y": 4.672623781766821
       },
       "prevControl": {
-        "x": 2.1906578692078233,
-        "y": 5.125589284958361
+        "x": 2.5178214650734776,
+        "y": 4.258213066725181
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue Bottom Note Shooting Pose"
     }
   ],
   "rotationTargets": [
@@ -55,11 +55,59 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.25,
+      "waypointRelativePos": 1.05,
       "command": {
         "type": "parallel",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAim"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "shoot",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.5
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAimOff"
+              }
+            }
+          ]
         }
       }
     }

@@ -17,27 +17,27 @@
     {
       "anchor": {
         "x": 14.266204851953214,
-        "y": 4.087081954477744
+        "y": 4.215901156481343
       },
       "prevControl": {
         "x": 15.655182044682231,
-        "y": 4.3530563105322395
+        "y": 4.481875512535838
       },
       "nextControl": {
         "x": 13.715795534301485,
-        "y": 3.9816844255657102
+        "y": 4.110503627569309
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.25,
-        "y": 5.55
+        "x": 14.125674813403833,
+        "y": 4.754599637587292
       },
       "prevControl": {
-        "x": 14.203156653815297,
-        "y": 4.542868057060051
+        "x": 14.07883146721913,
+        "y": 3.7474676946473435
       },
       "nextControl": null,
       "isLocked": false,
@@ -76,6 +76,29 @@
               "type": "named",
               "data": {
                 "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "shoot",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
               }
             }
           ]

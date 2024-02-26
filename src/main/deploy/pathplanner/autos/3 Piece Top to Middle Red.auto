@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "SbackShot"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "autoAimOff"
           }
         },
         {
@@ -45,12 +45,6 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Top to Middle Red p2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "backShot"
           }
         }
       ]

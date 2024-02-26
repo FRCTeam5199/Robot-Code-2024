@@ -8,7 +8,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "SbackShot"
           }
         },
         {
@@ -26,18 +26,6 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "deployIntake"
           }
         },
@@ -45,12 +33,6 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom to Middle Blue p2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "backShot"
           }
         }
       ]

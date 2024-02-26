@@ -209,6 +209,7 @@ public class ArmSubsystem extends SubsystemBase {
         return this.runOnce(() -> climbMode = bool);
     }
 
+
     public Command isAiming(boolean bool) {
         return this.runOnce(() -> isAiming = bool);
     }
