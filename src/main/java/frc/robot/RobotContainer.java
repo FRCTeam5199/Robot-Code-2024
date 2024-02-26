@@ -299,6 +299,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
-        return new SequentialCommandGroup(auton.fourPieceTopFarRed());
+        return new SequentialCommandGroup(arm.isAiming(true), auton.twoPieceMiddleRed(), arm.isAiming(false));
     }
 }

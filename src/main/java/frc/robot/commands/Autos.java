@@ -40,7 +40,6 @@ public class Autos extends Command{
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
   HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 0.85, .00,0.00), 5, .21, new ReplanningConfig());
   PathConstraints pathConstraints = new PathConstraints(1, 1, 1, 1);
-
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
@@ -54,7 +53,7 @@ public class Autos extends Command{
         AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
 
       PPHolonomicDriveController.setRotationTargetOverride(this::autoAim);
-      //Deploys the intake to grab notes
+
       NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
               arm.isAiming(true),
               arm.setArmSetpoint(50),
@@ -66,31 +65,40 @@ public class Autos extends Command{
               intake.setIntakeSpeed(0.9).onlyIf(()-> arm.getArmEncoder().getPosition()> 1 || arm.getArmEncoder().getPosition() <3),
               shooter.setintakeShooter(true),
               shooter.setRunShooter(true)))  ;
-      // Brings the intake back up to reset pose..
+
       NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(0),
       arm.setArmSetpoint(65),
       new WaitCommand(0.1),
+      intake.deployIntake(),
+      new WaitCommand(0.2),
+      shooter.setIndexerSpeed(-.4),
+      arm.rotateIntake(),
+      intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
+      shooter.setintakeShooter(true),
+      shooter.setRunShooter(true)));
+
+      NamedCommands.registerCommand("retractIntake",new SequentialCommandGroup( intake.setIntakeSpeed(-.9),
+      arm.setArmSetpoint(50),
+      new WaitCommand(0.2),
       shooter.setintakeShooter(false),
       shooter.setRunShooter(false),
-      shooter.setRunIndexer(false),
       intake.stowIntake(),
-      new WaitCommand(0.15),
-      arm.rotateStable()));
+      shooter.setIndexerSpeed(-0.1),
+      new WaitCommand(0.3),
+      arm.rotateStable(),
+      new WaitCommand(0.5),
+      arm.isAiming(false),
+      shooter.setIndexerSpeed(0),
+      intake.setIntakeSpeed(0)));
 
-      //Shooting Backwards from either side starting position of the subwoofer
-      NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
-      //Shooting backwards from middle start position of subwoofer
+
+
+      NamedCommands.registerCommand("Sx", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(160), new WaitCommand(0.5), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
-      //Shooting backwards from the top note position
       NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(170), new WaitCommand(0.8), shooter.runAutonShooting(false), new WaitCommand(0.2)));
-      //enables autoaim during for the drive and arm during auton
-      NamedCommands.registerCommand("autoAim", new SequentialCommandGroup(runOnce(()->enableAutoAim = true), arm.isAutoAiming(true), arm.isAiming(false)));
-      //Begins to rev the shooter before shooting
-      NamedCommands.registerCommand("revShooter", new SequentialCommandGroup(shooter.setIndexerSpeed(-.2), shooter.setRPMShooter(shooter.autonShoot()), shooter.setRunShooter(true)));
-      //Shoots
-      NamedCommands.registerCommand("shoot", new SequentialCommandGroup(shooter.setIndexerSpeed(.5), new WaitCommand(.5), shooter.setRunShooter(false)));
-      //Turns off autoAim for the arm and drive.
-      NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(()->enableAutoAim = false), arm.isAutoAiming(false), arm.isAiming(false)));
+      NamedCommands.registerCommand("autoAim", runOnce(()->enableAutoAim = true));
+      NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), shooter.setRPMShooter(3000), arm.isAiming(false), shooter.setIndexerSpeed(-.5), new WaitCommand(.5), shooter.setRunIndexer(true)));
+      NamedCommands.registerCommand("autoAimOff", runOnce(()->enableAutoAim = false));
 
       Shuffleboard.getTab("Autons").add("Side", side);
       side.addOption("Red Side", true);
@@ -128,7 +136,6 @@ public class Autos extends Command{
     return new WaitCommand(15);
   }
 
-  //returns the orientation in order to shoot at speaker.
   public Optional<Rotation2d> autoAim(){
       if(enableAutoAim){
         return Optional.of(aprilTags.autonAim());
