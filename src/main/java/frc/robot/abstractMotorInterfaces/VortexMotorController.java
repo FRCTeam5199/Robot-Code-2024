@@ -5,6 +5,8 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 
 public class VortexMotorController extends AbstractMotorController {
@@ -48,6 +50,12 @@ public class VortexMotorController extends AbstractMotorController {
     public RelativeEncoder getEncoder() {
         return vortex.getEncoder();
     }
+
+    public SparkAbsoluteEncoder getAbsoluteEncoder(SparkAbsoluteEncoder.Type encoderType) {
+    SparkAbsoluteEncoder.Type newType;
+    newType = SparkAbsoluteEncoder.Type.kDutyCycle;
+    return vortex.getAbsoluteEncoder(newType);
+  }
 
     @Override
     public void setVelocity(double Velocity, double Acceleration, boolean FOC, double feed, int PIDSLOT, boolean brake, boolean forwardLimit, boolean backwardLimit) {}

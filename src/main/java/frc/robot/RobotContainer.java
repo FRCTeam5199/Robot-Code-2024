@@ -95,6 +95,7 @@ public class RobotContainer {
      * Configures the bindings for commands
      */
     private void configureBindings() {
+
         intakeAction = new SequentialCommandGroup(
                 arm.isAiming(true),
                 arm.setArmSetpoint(50),
@@ -125,7 +126,9 @@ public class RobotContainer {
 
 
         new Trigger(() -> shooterSubsystem.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-        new Trigger(() -> shooterSubsystem.reachedSpeed()).and(() -> shooterSubsystem.intakeShooter == false).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
+        new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
+        new Trigger(()-> shooterSubsystem.idleShooting).and(()-> shooterSubsystem.autoTargeting == false).and(()-> shooterSubsystem.intakeShooter == false).onTrue(new InstantCommand(()->shooterSubsystem.IdleRevUp())).onFalse(new InstantCommand(()-> shooterSubsystem.setRPMShooter(0).andThen(shooterSubsystem.setRunShooter(false))));
+
         // new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
         //         if (DriverStation.isDisabled()) {
         //             ArmSubsystem.toggleBrakeMode();
@@ -139,8 +142,7 @@ public class RobotContainer {
 
 
         // new Trigger(() -> shooterSubsystem.checkForGamePiece()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1)).onlyIf(()-> shooterSubsystem.intakeShooter == true)).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-        new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1)).onlyIf(() -> shooterSubsystem.setRPM > 2000)).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-        //         // Drive
+                //         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
                                 .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(1) // Drive
@@ -168,8 +170,8 @@ public class RobotContainer {
 
 //        mainCommandXboxController.povLeft().onTrue(intake.stowIntake());
 //        mainCommandXboxController.povRight().onTrue(intake.deployIntake());
-        mainCommandXboxController.povLeft().onTrue(arm.increaseOffset(4));
-        mainCommandXboxController.povRight().onTrue(arm.decreaseOffset(4));
+        // mainCommandXboxController.povLeft().onTrue(arm.increaseOffset(4));
+        // mainCommandXboxController.povRight().onTrue(arm.decreaseOffset(4));
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setIndexerSpeed(.4)).onFalse(shooterSubsystem.setIndexerSpeed(0));
 
         mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), aprilTags.speakerAlignment(), arm.isAiming(false))).onFalse(arm.isAutoAiming(false));
@@ -179,16 +181,19 @@ public class RobotContainer {
         // mainCommandXboxController.leftTrigger().onTrue(armIsAimingSpeakerAutoAim).onFalse(new SequentialCommandGroup(shooterSubsystem.setRunShooter(false),arm.rotateStable(), new WaitCommand(0.3), arm.isAiming(false)).onlyIf(()->shooterSubsystem.intakeShooter == false));
         mainCommandXboxController.povUp().onTrue(arm.isAiming(true).andThen(arm.rotateAmp()).andThen(auton.goToAmpRed())).onFalse(arm.isAiming(false));
         mainCommandXboxController.povDown().onTrue(shooterSubsystem.setIndexerSpeed(-.1));
+        mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)
+        ).onFalse(intake.setIntakeSpeed(0));
         //climb practice
         mainCommandXboxController.leftTrigger().whileTrue(shooterSubsystem.setIndexerSpeed(-.1).andThen(
                 new ConditionalCommand(
                         new SequentialCommandGroup(shooterSubsystem.setRPMShooter(1500), shooterSubsystem.setRunShooter(true)),
                         new ConditionalCommand(
-                                new InstantCommand(() -> shooterSubsystem.autoTargeting = true).andThen(() -> System.out.println("autoaiming")),
-                                new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), new WaitCommand(0.2), shooterSubsystem.setRunShooter(true), new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> shooterSubsystem.intakeShooter == false),
+                                new InstantCommand(() -> shooterSubsystem.autoTargeting = true).andThen(() -> System.out.println("autoaiming")).andThen(()-> shooterSubsystem.idleShooting = false),
+                                new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), new InstantCommand(()-> shooterSubsystem.idleShooting = false) ,shooterSubsystem.setRunShooter(true), new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> shooterSubsystem.intakeShooter == false),
                                 () -> arm.autoAiming == true),
 
-                        () -> climberSubsystem.climbModeEnabled))).onFalse(shooterSubsystem.setRunShooter(false).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> shooterSubsystem.autoTargeting = false).andThen(shooterSubsystem.setintakeShooter(false)))));
+                        () -> climberSubsystem.climbModeEnabled))).whileFalse(
+                                shooterSubsystem.setRunShooter(false).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> shooterSubsystem.autoTargeting = false).andThen(shooterSubsystem.setintakeShooter(false)))));
 //                 // Intake
 
         mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
@@ -234,7 +239,7 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateSub()).andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateBack()).andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateSafe()).andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
-        buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateAmp()).andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)));
+        buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateAmp()).andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(shooterSubsystem.setRPMShooter(5000)));
         buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.rotateFarShot().andThen(shooterSubsystem.setRPMShooter(5000)));
         buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(arm.rotateHPStation());
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_PREP_SETPOINT).onTrue(arm.setClimbMode(true).andThen(arm.rotatePrepClimbP2()).andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)));
@@ -253,7 +258,7 @@ public class RobotContainer {
 //        buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(arm.setClimbMode(true).andThen(arm.rotateTrapPrep()).andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)).andThen(arm.isAiming(true).andThen(intake.deployIntake())));
         buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(new SequentialCommandGroup(arm.setClimbMode(true), climberSubsystem.setClimbMode(true), arm.rotateTrapPrep(), shooterSubsystem.setAmpandClimbMode(true), shooterSubsystem.setRPMShooter(3300), arm.isAiming(true), intake.deployIntake(), Commands.print("thoough heaven and heart i alone am the honered one")));
         buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(climberSubsystem.setClimbMode(true).andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(true)).andThen(shooterSubsystem.setRPMShooter(2100)));
-        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(climberSubsystem.setClimbMode(false).andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(false)));
+        buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(climberSubsystem.setClimbMode(false).andThen(shooterSubsystem.setAmpandClimbMode(true)).andThen(arm.isAiming(false).andThen(arm.setClimbMode(false))));
         buttonPanel.button(ButtonPanelButtons.CLIMB_UP).whileTrue(climberSubsystem.setClimberSpeed(.8)).onFalse(climberSubsystem.setClimberSpeed(0));
         buttonPanel.button(ButtonPanelButtons.CLIMB_DOWN).whileTrue(climberSubsystem.setClimberSpeed(-.8)).onFalse(climberSubsystem.setClimberSpeed(0));
         buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor1Speed(.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
