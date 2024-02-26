@@ -125,29 +125,14 @@ public class AprilTagSubsystem extends SubsystemBase {
      *
      * @return "Red" or "Blue"
      */
-    public static String getAllianceColor() {
-        if(DriverStation.isDSAttached()){
-            Optional<Alliance> ally = DriverStation.getAlliance();
-                if (ally.isPresent()) {
-                if (ally.get() == Alliance.Red) {
-                    return "Red";
-                }
-                if (ally.get() == Alliance.Blue) {
-                    return "Blue";
-                }
-            }
+    public static Alliance getAllianceColor() {
+        if (DriverStation.getAlliance().isPresent()) {
+            return DriverStation.getAlliance().get();
+        }else{
+            return null;
         }
-        return null;
     }
 
-    public boolean isRed(){
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-        }
-        return false;
-
-    }
 
     /**
      * @param ID
@@ -262,9 +247,13 @@ public class AprilTagSubsystem extends SubsystemBase {
         System.out.println(ally);
         // if(ally.equals("Red")){
             // System.out.println("red");
-        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
-        // } else {
-            // return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
+        if(getAllianceColor() == Alliance.Red){
+            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
+        } else if(getAllianceColor() == Alliance.Blue){
+            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
+        }else{
+            return runOnce(()->System.out.println("No Alliances"));
+        }
     }
 
     public double autonSpeakerAlignment(){
