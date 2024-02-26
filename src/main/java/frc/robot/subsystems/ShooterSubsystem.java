@@ -101,7 +101,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-      System.out.println("amongus " + setRPM + "runShooterAmongus " + runShooter);
+      // System.out.println("amongus " + setRPM + "runShooterAmongus " + runShooter);
       if (autoTargeting){
         // System.out.println(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
         autoSpeed();
@@ -185,12 +185,16 @@ public class ShooterSubsystem extends SubsystemBase {
         //         shooterIndexerMotor.set(0);
         //     }
         // }
-        if(idleShooting & intakeShooter == false){
-          runShooter = true;
-        }
-        else if (idleShooting == false){
-          runShooter = false;
-        }
+        // System.out.println("intake shooter " + shooterMotor1.getVelocity());
+        // if(idleShooting & intakeShooter == false){
+        //   runShooter = true;
+        // }
+        // else if(intakeShooter){
+        //   runShooter = true;
+        // }
+        // else if (idleShooting == false ){
+        //   runShooter = false;
+        // }
 
     }
     public void autoSpeed(){
@@ -198,7 +202,7 @@ public class ShooterSubsystem extends SubsystemBase {
     } 
 
     public void IdleRevUp(){
-      System.out.println("amongus ");
+      // System.out.println("amongus ");
         setRPM = 2000;
         runShooter = true;
       }
@@ -231,8 +235,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     public Command runAutonShooting(boolean side) {
-        return new SequentialCommandGroup(autonSpeed(side), setRunShooter(true), new WaitCommand(.5), setRunIndexer(true),
-                new WaitCommand(0.3), setRunShooter(false), setRunIndexer(false), autonSpeed(false));
+        return new SequentialCommandGroup(setRunShooter(true), setRPMShooter(4000), new WaitCommand(1), setIndexerSpeed(.2),
+                new WaitCommand(0.3), setRunShooter(false), setIndexerSpeed(0));
     }
 
     public Command autonSpeed(boolean side) {

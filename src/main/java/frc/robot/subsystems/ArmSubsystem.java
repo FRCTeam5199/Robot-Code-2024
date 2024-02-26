@@ -27,7 +27,7 @@ public class ArmSubsystem extends SubsystemBase {
     public boolean inAuton = false;
     public boolean climbMode = false;
     public double encoderValue;
-    public boolean isAiming = false;
+    public boolean isAiming = true;
     public boolean autoAiming = false;
     public SwerveDrive drive = TunerConstants.DriveTrain;
     private SparkAbsoluteEncoder armEncoder;
@@ -176,8 +176,8 @@ public class ArmSubsystem extends SubsystemBase {
                 }
                 goToSetpoint(aprilTagSubsystem.armSpeakersAligning(), 0);
             
-            // System.out.println("april tag value arm "  + aprilTagSubsystem.armSpeakersAligning());
-            // System.out.println("encoder value     " + encoderValue);
+            System.out.println("april tag value arm "  + aprilTagSubsystem.armSpeakersAligning());
+            System.out.println("encoder value     " + encoderValue);
         }
     }
 
