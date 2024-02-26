@@ -3,28 +3,28 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.24,
-        "y": 5.54
+        "x": 2.756752180171027,
+        "y": 6.398175637881329
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2812844056452324,
-        "y": 5.54
+        "x": 2.7980365858162592,
+        "y": 6.398175637881329
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Top Piece shot blue "
     },
     {
       "anchor": {
-        "x": 3.06,
+        "x": 2.892330156245012,
         "y": 5.54
       },
       "prevControl": {
-        "x": 3.0100000000000002,
+        "x": 2.842330156245012,
         "y": 5.54
       },
       "nextControl": {
-        "x": 3.11,
+        "x": 2.9423301562450117,
         "y": 5.54
       },
       "isLocked": false,
@@ -32,19 +32,30 @@
     },
     {
       "anchor": {
-        "x": 2.24,
+        "x": 2.304825593257744,
         "y": 5.54
       },
       "prevControl": {
-        "x": 2.2514214259197765,
-        "y": 5.635230651999767
+        "x": 2.6663668627883705,
+        "y": 5.539515122746092
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.25,
+      "rotationDegrees": -90.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.25,
+      "rotationDegrees": -90.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -53,7 +64,26 @@
       "command": {
         "type": "parallel",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAim"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
+            }
+          ]
         }
       }
     }
@@ -66,7 +96,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,

@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "SbackShot"
           }
         },
         {
@@ -24,27 +24,9 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "backShot"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom Far Blue p2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "backShot"
           }
         }
       ]

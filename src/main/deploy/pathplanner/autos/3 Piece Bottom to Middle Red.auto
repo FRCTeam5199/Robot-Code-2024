@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.659794400897903,
-      "y": 4.508672070126443
+      "x": 15.65,
+      "y": 4.4
     },
-    "rotation": -124.5
+    "rotation": -123.11472942132329
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "SBackShot"
+            "name": "SbackShot"
           }
         },
         {

@@ -49,6 +49,11 @@
       "waypointRelativePos": 0.8,
       "rotationDegrees": 180.0,
       "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.65,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
     }
   ],
   "constraintZones": [
@@ -67,7 +72,7 @@
   "eventMarkers": [
     {
       "name": "RetractIntake",
-      "waypointRelativePos": 1.45,
+      "waypointRelativePos": 1.65,
       "command": {
         "type": "parallel",
         "data": {
@@ -76,6 +81,12 @@
               "type": "named",
               "data": {
                 "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAim"
               }
             },
             {
@@ -114,7 +125,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,

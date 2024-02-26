@@ -16,38 +16,43 @@
     },
     {
       "anchor": {
-        "x": 2.616498309919698,
-        "y": 7.025263281295794
+        "x": 2.756752180171027,
+        "y": 6.99697836554143
       },
       "prevControl": {
-        "x": 2.550851786017892,
-        "y": 7.337084269829363
+        "x": 2.691105656269221,
+        "y": 7.308799354075
       },
       "nextControl": {
-        "x": 2.6559660811629335,
-        "y": 6.837791367890429
+        "x": 2.7962199514142627,
+        "y": 6.809506452136066
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.24,
-        "y": 5.54
+        "x": 2.756752180171027,
+        "y": 6.398175637881329
       },
       "prevControl": {
-        "x": 2.3090685996756606,
-        "y": 5.944544655243157
+        "x": 2.8258207798466874,
+        "y": 6.802720293124486
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Top Piece shot blue "
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.4,
-      "rotationDegrees": 0,
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.95,
+      "rotationDegrees": 0.0,
       "rotateFast": false
     }
   ],
@@ -57,9 +62,45 @@
       "name": "retractIntake",
       "waypointRelativePos": 1.45,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAim"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "shoot",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
+              }
+            }
+          ]
         }
       }
     }
@@ -72,7 +113,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -160.2328313232083,
     "rotateFast": false
   },
   "reversed": false,

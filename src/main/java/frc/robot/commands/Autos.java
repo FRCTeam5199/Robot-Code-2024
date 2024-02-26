@@ -91,9 +91,9 @@ public class Autos extends Command{
       shooter.setIndexerSpeed(0),
       intake.setIntakeSpeed(0)));
 
-
-
-      NamedCommands.registerCommand("Sx", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      //Shooting Backwards from either side starting position of the subwoofer
+      NamedCommands.registerCommand("SbackShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(150), new WaitCommand(0.5),shooter.setRunShooter(true), shooter.runAutonShooting(true), new WaitCommand(0.2), arm.setArmSetpoint(45)));
+      //Shooting backwards from middle start position of subwoofer
       NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(160), new WaitCommand(0.5), shooter.runAutonShooting(false), new WaitCommand(0.2), arm.setArmSetpoint(45)));
       NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(170), new WaitCommand(0.8), shooter.runAutonShooting(false), new WaitCommand(0.2)));
       NamedCommands.registerCommand("autoAim", runOnce(()->enableAutoAim = true));
