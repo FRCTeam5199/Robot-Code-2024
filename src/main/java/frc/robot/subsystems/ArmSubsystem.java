@@ -136,32 +136,23 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private void subsystemPeriodic() {
-        if (armEncoder.getPosition() < 170) {
+        if (armEncoder.getPosition() < 145) {
             encoderValue = armEncoder.getPosition();
-        } else if (armEncoder.getPosition() > 170 && armEncoder.getPosition() < 200) {
-            encoderValue = 170;
+        } else if (armEncoder.getPosition() > 145 && armEncoder.getPosition() < 200) {
+            encoderValue = 140;
         } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 361) {
             encoderValue = 0;
-        } else if (armEncoder.getPosition() > 200) {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, 0));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, 0));
-        }
+        } 
+
         if (inAuton) {
             goToSetpoint(rotateSetpoint, rotateOffset);
         }
         if (autoAiming == false) {
             if (isAiming) {
-                if(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset)  > 0){
-                    rotatePIDController.setPID(0.0081262, 0.00472673212, 0.00);
+                    rotatePIDController.setPID(0.0061262, 0.00472673212, 0.00);
                     rotatePIDController.setIZone(3);
-                }
-                if (rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset)  < 0){
-                    rotatePIDController = new PIDController(0.0072262, 0.00219673212, 0.00);
-                    rotatePIDController.setIZone(3);
-                }
+                
                 goToSetpoint(rotateSetpoint, rotateOffset);
-                //   System.out.println("rotateSetpoint"  + rotateSetpoint);
-                // System.out.println("encoder value" + encoderValue);
 
             } else {
                 goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
@@ -171,7 +162,7 @@ public class ArmSubsystem extends SubsystemBase {
                     rotatePIDController.setIZone(2);
                     rotatePIDController.setPID(0.0091262, 0.0089673212, 0.00);
                 }
-                if (rotatePIDController.calculate(encoderValue, aprilTagSubsystem.armSpeakersAligning())  < 0){
+                else if (rotatePIDController.calculate(encoderValue, aprilTagSubsystem.armSpeakersAligning())  < 0){
                     rotatePIDController = new PIDController(0.00019262, 0.000309673212, 0.00);
                     rotatePIDController.setIZone(3);
                 }

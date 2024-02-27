@@ -44,7 +44,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     public boolean autoTargeting = false;
-    public boolean ampAndClimbMode = false;
+    public boolean ampMode = false;
     public boolean runShooter = false;
     public boolean runIndexer = false;
     public boolean intakeShooter = false;
@@ -101,49 +101,35 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-      // System.out.println("amongus " + setRPM + "runShooterAmongus " + runShooter);
-      if (autoTargeting){
-        // System.out.println(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
+      //   else{
+      //   shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
+      //   if(ampAndClimbMode == false){
+      //     shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
+      //       }
+
+      //   if(idleShooting & intakeShooter == false){
+      //     runShooter = true;
+      //   }
+      //   else if(intakeShooter){
+      //     runShooter = true;
+      //   }
+      //   else if(ampAndClimbMode){
+      //     runShooter = true;      
+      //   }
+      //   else if (idleShooting == false){
+      //     runShooter = false;
+      //   }
+      //   System.out.println("idle shooting " + idleShooting);
+      if(autoTargeting){
         autoSpeed();
-        shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
-        shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
-        // System.out.println("auto shooter 1 " +shooterMotor1.getVelocity());
-        // System.out.println("auto shooter 2 " +shooterMotor2.getVelocity());
-        // shooterMotor1.setVelocity(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
-        // shooterMotor2.setVelocity(autoSpeed(drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)), 1.27, 5.7912, 3000, 6800));
-
-      }
-      else if (runShooter) {
-        if (intakeShooter) {
-          shooterMotor1.set(-0.3);
-          shooterMotor2.set(-0.3);
-        }
-        else{
-        shooterMotor1.setVelocity(setRPM + shooterSpeedOffset);
-        if(ampAndClimbMode == false){
-          shooterMotor2.setVelocity(setRPM + shooterSpeedOffset);
-            }
-        // System.out.println("shooter 1 " +shooterMotor1.getVelocity());
-        // System.out.println("shooter 2 " +shooterMotor2.getVelocity());
-        } 
-        
-      } else {
-        shooterMotor2.set(0);
-        shooterMotor1.set(0);
       }
 
-
-        if(idleShooting & intakeShooter == false){
-          runShooter = true;
-        }
-        else if(intakeShooter){
-          runShooter = true;
-        }
-        else if (idleShooting == false){
-          runShooter = false;
-        }
-        System.out.println("idle shooting " + idleShooting);
+      // System.out.println(setRPM);
+      // System.out.println("shooter 1 " +shooterMotor1.getVelocity());
+      // System.out.println("shooter 2 " +shooterMotor2.getVelocity());  
+       
     }
+
     public void autoSpeed(){
         setRPM = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (6800 - 3500) / (5.7912 -1.27) + 3500;
     } 
@@ -154,6 +140,18 @@ public class ShooterSubsystem extends SubsystemBase {
       }
     
   
+    public Command runShooterAtRpm(double vel){
+      return this.runOnce(()-> shooterMotor1.setVelocity(vel + shooterSpeedOffset)).andThen(()->shooterMotor2.setVelocity(vel + shooterSpeedOffset));
+    }
+    public Command runShooterAtPercent(double per){
+      return this.runOnce(()-> shooterMotor1.set(per)).andThen(()-> shooterMotor2.set(per));
+    }
+    public Command runShooterPredeterminedRPM(){
+      return this.runOnce(()-> shooterMotor1.setVelocity(setRPM + shooterSpeedOffset)).andThen(()->shooterMotor2.setVelocity(setRPM + shooterSpeedOffset));
+    }
+    public Command runShooterClimbAmp(double vel){
+      return this.runOnce(()-> shooterMotor1.setVelocity(vel + shooterSpeedOffset)).andThen(()->shooterMotor2.set(0));
+    }
     
     public Command intakeIndexerForShooting(double speed, double s){
       return this.runOnce(()-> shooterIndexerMotor.set(speed)).andThen( new WaitCommand(s)).andThen( setIndexerSpeed(0));
@@ -175,14 +173,14 @@ public class ShooterSubsystem extends SubsystemBase {
         return this.runOnce(() -> this.runIndexer = runIndexer);
     }
 
-    public Command setAmpandClimbMode(boolean ampAndClimbMode) {
-        return this.runOnce(() -> this.ampAndClimbMode = ampAndClimbMode);
+    public Command setAmpMode(boolean ampMode) {
+        return this.runOnce(() -> this.ampMode = ampMode);
     }
 
 
-    public Command runAutonShooting(boolean side) {
-        return new SequentialCommandGroup(setRunShooter(true), setRPMShooter(4000), new WaitCommand(1), setIndexerSpeed(.2),
-                new WaitCommand(0.3), setRunShooter(false), setIndexerSpeed(0));
+    public Command runAutonShooting() {
+        return new SequentialCommandGroup(runShooterAtRpm(4000), new WaitCommand(2), setIndexerSpeed(.2),
+                new WaitCommand(0.3), runShooterAtPercent(0), setIndexerSpeed(0));
     }
 
     public Command autonSpeed(boolean side) {
@@ -198,6 +196,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public Command setRPMShooter(double sp) {
         return this.runOnce(() -> this.setRPM = sp);
+    }
+
+    public double getRPMShooter(){
+      return setRPM;
     }
 
     /**
