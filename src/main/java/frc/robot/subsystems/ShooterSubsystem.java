@@ -186,15 +186,15 @@ public class ShooterSubsystem extends SubsystemBase {
         //     }
         // }
         // System.out.println("intake shooter " + shooterMotor1.getVelocity());
-        // if(idleShooting & intakeShooter == false){
-        //   runShooter = true;
-        // }
-        // else if(intakeShooter){
-        //   runShooter = true;
-        // }
-        // else if (idleShooting == false ){
-        //   runShooter = false;
-        // }
+        if(idleShooting & intakeShooter == false){
+          runShooter = true;
+        }
+        else if(intakeShooter){
+          runShooter = true;
+        }
+        else if (idleShooting == false){
+          runShooter = false;
+        }
 
     }
     public void autoSpeed(){
@@ -202,7 +202,6 @@ public class ShooterSubsystem extends SubsystemBase {
     } 
 
     public void IdleRevUp(){
-      // System.out.println("amongus ");
         setRPM = 2000;
         runShooter = true;
       }
