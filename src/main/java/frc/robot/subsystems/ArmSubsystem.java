@@ -7,6 +7,7 @@ import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
@@ -167,8 +168,8 @@ public class ArmSubsystem extends SubsystemBase {
             }
         } else {
             if(rotatePIDController.calculate(encoderValue, aprilTagSubsystem.armSpeakersAligning())  > 0){
-                    rotatePIDController.setIZone(1.5);
-                    rotatePIDController.setPID(0.0091262, 0.0079673212, 0.00);
+                    rotatePIDController.setIZone(2);
+                    rotatePIDController.setPID(0.0091262, 0.0089673212, 0.00);
                 }
                 if (rotatePIDController.calculate(encoderValue, aprilTagSubsystem.armSpeakersAligning())  < 0){
                     rotatePIDController = new PIDController(0.00019262, 0.000309673212, 0.00);
@@ -176,13 +177,14 @@ public class ArmSubsystem extends SubsystemBase {
                 }
                 goToSetpoint(aprilTagSubsystem.armSpeakersAligning(), 0);
             
-            System.out.println("april tag value arm "  + aprilTagSubsystem.armSpeakersAligning());
-            System.out.println("encoder value     " + encoderValue);
+            // System.out.println("april tag value arm "  + aprilTagSubsystem.armSpeakersAligning());
+            // System.out.println("encoder value     " + encoderValue);
         }
     }
 
     public static void setBrakeTrue(){
         armMotorL.setBrake(true);
+
         armMotorR.setBrake(true);
     }
 

@@ -184,7 +184,7 @@ public class RobotContainer {
         mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)
         ).onFalse(intake.setIntakeSpeed(0));
         //climb practice
-        mainCommandXboxController.leftTrigger().whileTrue(shooterSubsystem.setIndexerSpeed(-.1).andThen(
+        mainCommandXboxController.leftTrigger().whileTrue(new InstantCommand(()->shooterSubsystem.idleShooting = false). andThen(shooterSubsystem.setIndexerSpeed(-.1).andThen(
                 new ConditionalCommand(
                         new SequentialCommandGroup(shooterSubsystem.setRPMShooter(1500), shooterSubsystem.setRunShooter(true)),
                         new ConditionalCommand(
@@ -192,7 +192,7 @@ public class RobotContainer {
                                 new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), new InstantCommand(()-> shooterSubsystem.idleShooting = false) ,shooterSubsystem.setRunShooter(true), new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> shooterSubsystem.intakeShooter == false),
                                 () -> arm.autoAiming == true),
 
-                        () -> climberSubsystem.climbModeEnabled))).whileFalse(
+                        () -> climberSubsystem.climbModeEnabled)))).whileFalse(
                                 shooterSubsystem.setRunShooter(false).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> shooterSubsystem.autoTargeting = false).andThen(shooterSubsystem.setintakeShooter(false)))));
 //                 // Intake
 

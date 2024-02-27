@@ -132,77 +132,23 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor1.set(0);
       }
 
-      // if(runIndexer){
-      //   if (intakeShooter) {
-      //     shooterIndexerMotor.set(-.4);
-      //   } else {
-      //     shooterIndexerMotor.set(0.6);
-      //   } 
-      // }
-      // else{
-      //   shooterIndexerMotor.set(0);
-      // }
-      // if(shooterMotor1.getVelocity() == 3000 && shooterMotor2.getVelocity()  == 3000){
-      // }
 
-        // if (ampAndClimbMode) {
-        //     shooterSpeed = 0.2;
-        //     indexerSpeed = 0.5;
-        // } else if (intakeShooter) {
-        //     shooterSpeed = -0.3;
-        //     indexerSpeed = -0.4;
-        // } else if (autonSide) {
-        //     shooterSpeed = 0.7;
-        //     indexerSpeed = 0.5;
-        // } else {
-        //     shooterSpeed = setSpeed;
-        //     indexerSpeed = 0.5;
-        // }
-
-        // if (intakeShooter) {
-        //     shooterMotor1.set(-.3);
-        //     shooterMotor2.set(-.3);
-        // } else {
-        //     if (runShooter) {
-        //         if (!ampAndClimbMode) {
-        //             shooterMotor1.set((shooterSpeed + shooterSpeedOffset) -0.05);
-        //         }
-        //         shooterMotor2.set((shooterSpeed + shooterSpeedOffset));
-        //         System.out.println("velocity of bottom " +shooterMotor1.getVelocity());
-        //         System.out.println("velocity of top " +shooterMotor2.getVelocity());
-        //     } else {
-        //         shooterMotor1.set(0);
-        //         shooterMotor2.set(0);
-        //     }
-        // }
-        // if (intakeShooter) {
-        //     shooterIndexerMotor.set(-.3);
-        // } else {
-
-        //     if (runIndexer) {
-        //         shooterIndexerMotor.set(indexerSpeed);
-        //     } else {
-        //         shooterIndexerMotor.set(0);
-        //     }
-        // }
-        // System.out.println("intake shooter " + shooterMotor1.getVelocity());
-        // if(idleShooting & intakeShooter == false){
-        //   runShooter = true;
-        // }
-        // else if(intakeShooter){
-        //   runShooter = true;
-        // }
-        // else if (idleShooting == false ){
-        //   runShooter = false;
-        // }
-
+        if(idleShooting & intakeShooter == false){
+          runShooter = true;
+        }
+        else if(intakeShooter){
+          runShooter = true;
+        }
+        else if (idleShooting == false){
+          runShooter = false;
+        }
+        System.out.println("idle shooting " + idleShooting);
     }
     public void autoSpeed(){
         setRPM = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (6800 - 3500) / (5.7912 -1.27) + 3500;
     } 
 
     public void IdleRevUp(){
-      // System.out.println("amongus ");
         setRPM = 2000;
         runShooter = true;
       }

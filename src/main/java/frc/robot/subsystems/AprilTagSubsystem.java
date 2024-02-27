@@ -247,13 +247,12 @@ public class AprilTagSubsystem extends SubsystemBase {
         System.out.println(ally);
         // if(ally.equals("Red")){
             // System.out.println("red");
-        if(getAllianceColor() == Alliance.Red){
+        // if(getAllianceColor() == Alliance.Red){
             return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
-        } else if(getAllianceColor() == Alliance.Blue){
-            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
-        }else{
-            return runOnce(()->System.out.println("No Alliances"));
-        }
+        // } else if(getAllianceColor() == Alliance.Blue){
+        //     return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
+        // }else{
+            // return runOnce(()->System.out.println("No Alliances"));
     }
 
     public double autonSpeakerAlignment(){
@@ -357,7 +356,6 @@ public class AprilTagSubsystem extends SubsystemBase {
 
     public double armSpeakersAligning() {
         double angleForArm = 0;
-        double speakerHeight = MainConstants.SPEAKER_Z - MainConstants.ARM_PIVOT_Z;
         // slightly in front of april tag so it doesnt aim out of field
         double distanceFromRobot = 0;
         // if (getAllianceColor().equals("Blue")) {
@@ -366,6 +364,9 @@ public class AprilTagSubsystem extends SubsystemBase {
             distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
         // }
 
+        double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (0.690 - 0.635) / (5.7912 -1.27) + 0.635;
+        double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
+        // System.out.println(distanceAimSpeaker);
         distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
         angleForArm = Math.toDegrees(Math.atan(speakerHeight / distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;
         // System.out.println("angle:   " + angleForArm);

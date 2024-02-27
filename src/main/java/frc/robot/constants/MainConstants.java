@@ -15,7 +15,7 @@ public class MainConstants {
     public static final double ARM_PIVOT_Z = 0.5588; //0.5715; //meters //22 inch
     public static final double ARM_ORIGINAL_DEGREES = 25;
     // public static final double SPEAKER_Z = 2.340102;
-    public static final double SPEAKER_Z =  1.4511020000000001 + 0.762; //1.4511020000000001 + 0.635; 
+    public static final double SPEAKER_Z =  1.4511020000000001; //+ 0.755; //1.4511020000000001 + 0.635; 
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
     //Mechanical Constants
     public static String CAN_BUS = "";
