@@ -125,7 +125,7 @@ public class RobotContainer {
                 intake.setIntakeSpeed(0));
 
 
-        new Trigger(() -> shooterSubsystem.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1)).andThen(intake.setIntakeSpeed(0))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
+        new Trigger(() -> shooterSubsystem.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
         new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
         new Trigger(()-> shooterSubsystem.idleShooting).and(()-> shooterSubsystem.autoTargeting == false).and(()-> shooterSubsystem.intakeShooter == false).onTrue(new InstantCommand(()->shooterSubsystem.IdleRevUp())).onFalse(new InstantCommand(()-> shooterSubsystem.setRPMShooter(0).andThen(shooterSubsystem.setRunShooter(false))));
 

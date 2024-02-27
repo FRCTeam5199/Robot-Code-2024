@@ -366,7 +366,7 @@ public class AprilTagSubsystem extends SubsystemBase {
 
         double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (0.690 - 0.635) / (5.7912 -1.27) + 0.635;
         double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
-        System.out.println(distanceAimSpeaker);
+        // System.out.println(distanceAimSpeaker);
         distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
         angleForArm = Math.toDegrees(Math.atan(speakerHeight / distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;
         // System.out.println("angle:   " + angleForArm);
