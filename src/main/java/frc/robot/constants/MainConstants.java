@@ -82,9 +82,9 @@ public class MainConstants {
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
             new Transform3d(0.3, 0, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(0))), //front
-            new Transform3d(-.1, .3, .12, new Rotation3d(0, Math.toRadians(11), 0)), //left
-            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)), //right
-            new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0)),
+            new Transform3d(.25, .3, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(90))), //left
+            new Transform3d(.1, -.3, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
+            new Transform3d(-0.6, .1, 0.4826, new Rotation3d(Math.toRadians(24), Math.toDegrees(0), Math.toRadians(-180))), //back
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0))
     };
 
