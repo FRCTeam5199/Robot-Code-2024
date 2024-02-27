@@ -20,12 +20,12 @@
         "y": 7.0
       },
       "prevControl": {
-        "x": 15.485446659731426,
-        "y": 7.0
+        "x": 15.46418675679337,
+        "y": 6.796409682941214
       },
       "nextControl": {
-        "x": 13.514553340268574,
-        "y": 7.0
+        "x": 13.376181274473819,
+        "y": 7.237296985292972
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 6.417538427088266
       },
       "prevControl": {
-        "x": 12.978012831917244,
-        "y": 7.131899456380937
+        "x": 13.40439614429405,
+        "y": 6.742954488628604
       },
       "nextControl": null,
       "isLocked": false,
@@ -130,18 +130,18 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": -25.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "3 Piece AutoAim Paths",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

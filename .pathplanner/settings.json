@@ -5,15 +5,17 @@
   "pathFolders": [
     "1 Piece Paths",
     "2 Piece Paths",
-    "3 Piece Paths",
+    "3 Piece AutoAim Paths",
     "4 Piece Paths",
-    "5 Piece Paths"
+    "5 Piece Paths",
+    "3 Piece Reg Paths"
   ],
   "autoFolders": [
     "1 Piece Autons",
     "2 Piece Autons",
-    "3 Piece Autons",
-    "4 Piece Autons"
+    "3 Piece AutoAim Autons",
+    "4 Piece Autons",
+    "3 Piece Reg Autons"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

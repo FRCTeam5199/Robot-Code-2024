@@ -32,7 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "autoAimOff"
+            "name": "midShot"
           }
         },
         {
@@ -50,6 +50,6 @@
       ]
     }
   },
-  "folder": "3 Piece Autons",
+  "folder": "3 Piece Reg Autons",
   "choreoAuto": false
 }

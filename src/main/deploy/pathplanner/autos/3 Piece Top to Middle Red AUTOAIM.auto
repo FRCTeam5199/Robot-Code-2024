@@ -1,6 +1,12 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 15.5,
+      "y": 6.6
+    },
+    "rotation": 121.0
+  },
   "command": {
     "type": "sequential",
     "data": {
@@ -12,32 +18,32 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "deployIntake"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom to Middle Blue p1"
+            "pathName": "3 Piece Top to Middle Red p1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "deployIntake"
+            "name": "autoAimOff"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom to Middle Blue p2"
+            "pathName": "3 Piece Top to Middle Red p2"
           }
         }
       ]
     }
   },
-  "folder": "3 Piece Reg Autons",
+  "folder": "3 Piece AutoAim Autons",
   "choreoAuto": false
 }
