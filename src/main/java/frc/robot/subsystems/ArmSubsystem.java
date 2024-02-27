@@ -56,6 +56,11 @@ public class ArmSubsystem extends SubsystemBase {
         armMotorR.setBrake(isBrakeMode);
     }
 
+    public static void setBrakeTrue() {
+        armMotorL.setBrake(true);
+        armMotorR.setBrake(true);
+    }
+
     /**
      * init for arm and pid controller
      */
@@ -125,15 +130,15 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (checkMotors() && checkPID()) {
-            subsystemStatus = true;
-        } else {
-            subsystemStatus = false;
-        }
-
-        if (subsystemStatus) {
-            subsystemPeriodic();
-        }
+//        if (checkMotors() && checkPID()) {
+//            subsystemStatus = true;
+//        } else {
+//            subsystemStatus = false;
+//        }
+//
+//        if (subsystemStatus) {
+//            subsystemPeriodic();
+//        }
     }
 
     private void subsystemPeriodic() {
@@ -159,11 +164,6 @@ public class ArmSubsystem extends SubsystemBase {
         } else {
             goToSetpoint(aprilTagSubsystem.armSpeakersAligning(), 0);
         }
-    }
-
-    public static void setBrakeTrue(){
-        armMotorL.setBrake(true);
-        armMotorR.setBrake(true);
     }
 
     private void goToSetpoint(double rotateSetpoint, double rotateOffset) {

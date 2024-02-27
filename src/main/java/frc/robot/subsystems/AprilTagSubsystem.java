@@ -4,33 +4,18 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.pathplanner.lib.commands.PathfindHolonomic;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.hal.simulation.DriverStationDataJNI;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.*;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -39,32 +24,14 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.utility.CommandXboxController;
 
-import javax.swing.text.html.Option;
-
 public class AprilTagSubsystem extends SubsystemBase {
-
     public static PhotonCamera frontCamera;
     private final CommandXboxController mainCommandXboxController = new CommandXboxController(MainConstants.CONTROLLER_PORT);
     public MainConstants Constants = new MainConstants();
@@ -78,7 +45,7 @@ public class AprilTagSubsystem extends SubsystemBase {
     String ally;
 
     //    double z = tz.getDouble(0);
-  
+
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
     PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
     //PhotonPoseEstimator poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[1]);
@@ -90,11 +57,10 @@ public class AprilTagSubsystem extends SubsystemBase {
     // public static PhotonCamera backCamera;
     // public static PhotonCamera shooter;
 
-        PIDController aimControl;
+    PIDController aimControl;
 
     //    PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 //    PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
-   
 
 
     // public static PhotonCamera[] cameraDirections = {front, left, rigth, back};
@@ -113,11 +79,18 @@ public class AprilTagSubsystem extends SubsystemBase {
         // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
     }
-    
+
     @Override
     public void periodic() {
         // ally = getAllianceColor();
-        // System.out.println(ally);
+//        System.out.println(ally);
+        getAllianceColor();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -126,11 +99,9 @@ public class AprilTagSubsystem extends SubsystemBase {
      * @return "Red" or "Blue"
      */
     public Alliance getAllianceColor() {
-        if (DriverStation.getAlliance().isPresent()) {
-            return DriverStation.getAlliance().get();
-        }else{
-            return null;
-        }
+        System.out.println("AUTOS ALLIANCE COLOR: " + Autos.getAllianceColor());
+        ally = String.valueOf(Autos.getAllianceColor());
+        return Autos.getAllianceColor();
     }
 
 
@@ -239,24 +210,24 @@ public class AprilTagSubsystem extends SubsystemBase {
     /**
      * Sets the robots heading to align with the goal based on the position of the bot on the field.
      */
-    public Command speakerAlignment(){
+    public Command speakerAlignment() {
         PIDController aim = new PIDController(.13, 0, .01);
         SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
         Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
         System.out.println(ally);
         // if(ally.equals("Red")){
-            // System.out.println("red");
-        if(getAllianceColor() == Alliance.Red){
+        // System.out.println("red");
+        if (getAllianceColor() == Alliance.Red) {
             return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
-        } else if(getAllianceColor() == Alliance.Blue){
+        } else if (getAllianceColor() == Alliance.Blue) {
             return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
-        }else{
-            return runOnce(()->System.out.println("No Alliances"));
+        } else {
+            return runOnce(() -> System.out.println("No Alliances"));
         }
     }
 
-    public double autonSpeakerAlignment(){
+    public double autonSpeakerAlignment() {
         PIDController aim = new PIDController(.13, 0, .01);
         SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
@@ -269,7 +240,7 @@ public class AprilTagSubsystem extends SubsystemBase {
         // return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
     }
 
-    public Rotation2d autonAim(){
+    public Rotation2d autonAim() {
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
         Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
         System.out.println(ally);
@@ -279,10 +250,7 @@ public class AprilTagSubsystem extends SubsystemBase {
         // } else {
         // return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
     }
-      
-    
-    
-    
+
 
     public double targetHeading() {
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
@@ -361,9 +329,9 @@ public class AprilTagSubsystem extends SubsystemBase {
         // slightly in front of april tag so it doesnt aim out of field
         double distanceFromRobot = 0;
         // if (getAllianceColor().equals("Blue")) {
-            // distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
+        // distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
         // } else if (getAllianceColor().equals("Red")) {
-            distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
+        distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
         // }
 
         distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;

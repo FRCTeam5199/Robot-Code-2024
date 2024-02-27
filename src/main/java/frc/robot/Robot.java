@@ -29,7 +29,7 @@ import java.util.Optional;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends LoggedRobot{
+public class Robot extends LoggedRobot {
     public static final boolean SECOND_TRY = false;
 
     Pose3d poseA = new Pose3d();
@@ -79,7 +79,7 @@ public class Robot extends LoggedRobot{
 
         Logger.recordOutput("MyPose3d", poseA);
         Logger.recordOutput("MyPose3dArray", poseA, poseB);
-        Logger.recordOutput("MyPose3dArray", new Pose3d[] { poseA, poseB });
+        Logger.recordOutput("MyPose3dArray", new Pose3d[]{poseA, poseB});
 
 
         CommandScheduler.getInstance().run();
@@ -88,10 +88,10 @@ public class Robot extends LoggedRobot{
         // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
         // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
-   if(estimatePose1.isPresent()){
-      EstimatedRobotPose robotPose = estimatePose1.get();
-      drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-   }
+        if (estimatePose1.isPresent()) {
+            EstimatedRobotPose robotPose = estimatePose1.get();
+            drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+        }
         // if(estimatePose2.isPresent()){
         //   EstimatedRobotPose robotPose = estimatePose2.get();
         //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
@@ -149,7 +149,7 @@ public class Robot extends LoggedRobot{
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-      //  m_robotContainer.arm.setBrakeTrue();
+        //  m_robotContainer.arm.setBrakeTrue();
     }
 
     /**

@@ -106,7 +106,7 @@ public class RobotContainer {
 //                        intake.setIntakeSpeed(0.9).onlyIf(()-> arm.getArmEncoder().getPosition()> 1 || arm.getArmEncoder().getPosition() <3),
 //                        shooterSubsystem.setintakeShooter(true),
 //                        shooterSubsystem.setRunShooter(true));
-        
+
 
 //        stopIntakeAction = new SequentialCommandGroup(
 //                        intake.setIntakeSpeed(-.9),
@@ -127,10 +127,10 @@ public class RobotContainer {
 //                new Trigger(()-> shooterSubsystem.checkForGamePiece()).and(()-> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(()->mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(()->mainCommandXboxController.setRumble(0)));
 //                new Trigger(()-> shooterSubsystem.reachedSpeed()).and(()-> shooterSubsystem.intakeShooter == false).onTrue(new InstantCommand(()->mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(()->mainCommandXboxController.setRumble(0)));
 //                // new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
-                //         if (DriverStation.isDisabled()) {
-                //             ArmSubsystem.toggleBrakeMode();
-                //         }
-                // }));
+        //         if (DriverStation.isDisabled()) {
+        //             ArmSubsystem.toggleBrakeMode();
+        //         }
+        // }));
 //        new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
 //            if (DriverStation.isDisabled()) {
 //                ArmSubsystem.toggleBrakeMode();
@@ -139,7 +139,7 @@ public class RobotContainer {
 
 
         // new Trigger(() -> shooterSubsystem.checkForGamePiece()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1)).onlyIf(()-> shooterSubsystem.intakeShooter == true)).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-     //   new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1)).onlyIf(() -> shooterSubsystem.setRPM > 2000)).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
+        //   new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1)).onlyIf(() -> shooterSubsystem.setRPM > 2000)).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
         //         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
@@ -172,7 +172,7 @@ public class RobotContainer {
 //        mainCommandXboxController.povRight().onTrue(arm.decreaseOffset(4));
 //        mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setIndexerSpeed(.4)).onFalse(shooterSubsystem.setIndexerSpeed(0));
 
-   //     mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), aprilTags.speakerAlignment(), arm.isAiming(false))).onFalse(arm.isAutoAiming(false));
+        //     mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), aprilTags.speakerAlignment(), arm.isAiming(false))).onFalse(arm.isAutoAiming(false));
 
 
         // mainCommandXboxController.leftTrigger().onTrue(new SequentialCommandGroup(shooterSubsystem.setRunShooter(true), arm.isAiming(true), new WaitCommand(0.2)).onlyIf(() -> shooterSubsystem.intakeShooter == false)).onFalse(shooterSubsystem.setRunShooter(false).alongWith(arm.isAiming(false)).onlyIf(() -> shooterSubsystem.intakeShooter == false));
@@ -191,7 +191,7 @@ public class RobotContainer {
 //                        ()->climberSubsystem.climbModeEnabled))).onFalse(shooterSubsystem.setRunShooter(false).andThen(new InstantCommand(()->arm.isAiming = false).andThen(new InstantCommand(()-> shooterSubsystem.autoTargeting = false).andThen(shooterSubsystem.setintakeShooter(false)))));
 ////                 // Intake
 
-      //  mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
+        //  mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
 
 //                 mainCommandXboxController.b().onTrue(climberSubsystem.setClimberSpeed(0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
 //                 mainCommandXboxController.y().onTrue(climberSubsystem.setClimberSpeed(-0.5)).onFalse(climberSubsystem.setClimberSpeed(0));
@@ -229,9 +229,9 @@ public class RobotContainer {
 //                         drivetrain.seedFieldRelative(new Pose2d(new Translation2d
 //                         (), Rotation2d.fromDegrees(90)));
 //                 }
-                  drivetrain.registerTelemetry(logger::telemeterize);
+        drivetrain.registerTelemetry(logger::telemeterize);
 
-                  mainCommandXboxController.leftBumper().whileTrue(aprilTags.speakerAlignment());
+        mainCommandXboxController.leftBumper().whileTrue(aprilTags.speakerAlignment());
 
 //        buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateSub()).andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
 //        buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateBack()).andThen(shooterSubsystem.setAmpandClimbMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
@@ -286,7 +286,6 @@ public class RobotContainer {
 //
 //        buttonPanel.button(ButtonPanelButtons.AUX_RIGHT_TOP).onTrue(intake.deployIntake());
 //        buttonPanel.button(ButtonPanelButtons.AUX_RIGHT_BOTTOM).onTrue(intake.stowIntake());
-
     }
 
     /**
@@ -296,6 +295,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
-        return new SequentialCommandGroup(auton.fourPieceTopFarRed());
+        return new SequentialCommandGroup(auton.getAuton());
     }
 }
