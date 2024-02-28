@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 2.53,
-        "y": 6.991369417831561
+        "x": 2.67569996678455,
+        "y": 6.985795510052559
       },
       "prevControl": {
-        "x": 1.7590314210585614,
-        "y": 7.167031966018283
+        "x": 1.9047313878431116,
+        "y": 7.161458058239281
       },
       "nextControl": {
-        "x": 2.649220308127315,
-        "y": 6.964205479257041
+        "x": 2.794920274911865,
+        "y": 6.958631571478039
       },
       "isLocked": false,
       "linkedName": null
@@ -55,9 +55,9 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.45,
+      "waypointRelativePos": 1.4,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -72,10 +72,10 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
-    "maxAngularVelocity": 10000.0,
-    "maxAngularAcceleration": 10000.0
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,

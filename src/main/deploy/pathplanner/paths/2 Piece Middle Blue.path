@@ -16,15 +16,15 @@
     },
     {
       "anchor": {
-        "x": 2.3698247396494807,
+        "x": 2.616498309919698,
         "y": 5.5190052971079435
       },
       "prevControl": {
-        "x": 1.7257287296314976,
+        "x": 1.9724022999017148,
         "y": 5.530716133653725
       },
       "nextControl": {
-        "x": 3.305562014651107,
+        "x": 3.5522355849213243,
         "y": 5.501991892107913
       },
       "isLocked": false,
@@ -49,9 +49,9 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 1.45,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -66,8 +66,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
