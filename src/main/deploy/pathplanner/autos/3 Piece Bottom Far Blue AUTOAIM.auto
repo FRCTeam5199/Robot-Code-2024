@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.85,
-      "y": 4.5
+      "x": 0.83,
+      "y": 4.46
     },
-    "rotation": -55.5
+    "rotation": -60.0
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "SbackShot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom Far Blue AutoAim"
+            "pathName": "3 Piece Bottom Far Blue p1 AutoAim"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Bottom Far Blue p2"
           }
         }
       ]

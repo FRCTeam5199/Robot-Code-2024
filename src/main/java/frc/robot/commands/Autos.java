@@ -33,315 +33,346 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
-public class Autos extends Command{
-  SwerveDrive swerveDrive;
-  AprilTagSubsystem aprilTags = new AprilTagSubsystem();
-
-  SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 1.7, .06,0.00), 5, .21, new ReplanningConfig());
-  PathConstraints pathConstraints = new PathConstraints(1, 1, 1, 1);
-  public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
-  public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
-
-  public SendableChooser<Boolean> side = new SendableChooser<>();
-
-  boolean enableAutoAim;
+public class Autos extends Command {
+    public static SendableChooser<Command> autonChooserRed = new SendableChooser<>();
+    public static SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
+    public SendableChooser<Boolean> side = new SendableChooser<>();
+    SwerveDrive swerveDrive;
+    AprilTagSubsystem aprilTags = new AprilTagSubsystem();
+    SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
+    HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01, 0), new PIDConstants(1.7, .06, 0.00), 5, .21, new ReplanningConfig());
+    PathConstraints pathConstraints = new PathConstraints(1, 1, 1, 1);
+    boolean enableAutoAim;
 
 
-    public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm, ShooterSubsystem shooter){
-    this.swerveDrive = swerve;
-        AutoBuilder.configureHolonomic(()-> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, ()-> false, swerveDrive);
+    public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm, ShooterSubsystem shooter) {
+        this.swerveDrive = swerve;
+        AutoBuilder.configureHolonomic(() -> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, () -> false, swerveDrive);
 
-      PPHolonomicDriveController.setRotationTargetOverride(this::autoAim);
+        PPHolonomicDriveController.setRotationTargetOverride(this::autoAim);
 
-      NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
-          arm.isAiming(true),
-          arm.setArmSetpoint(50),
-          new WaitCommand(0.1),
-          intake.deployIntake(),
-          new WaitCommand(0.2),
-          shooter.setIndexerSpeed(-.4),
-          arm.rotateIntake(),
-          intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
-          shooter.runShooterAtPercent(-.6)));
+        NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
+                arm.isAiming(true),
+                arm.setArmSetpoint(50),
+                new WaitCommand(0.1),
+                intake.deployIntake(),
+                new WaitCommand(0.2),
+                shooter.setIndexerSpeed(-.4),
+                arm.rotateIntake(),
+                intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
+                shooter.runShooterAtPercent(-.6)));
 
-      NamedCommands.registerCommand("retractIntake",new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
-      arm.setArmSetpoint(50),
-      new WaitCommand(0.2),
-      shooter.runShooterAtPercent(0),
-      intake.stowIntake(),
-      shooter.setIndexerSpeed(-0.1),
-      new WaitCommand(0.3),
-      arm.rotateStable(),
-      new WaitCommand(0.5),
-      shooter.setIndexerSpeed(0),
-      intake.setIntakeSpeed(0),
-      arm.isAiming(false)));
+        NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
+                arm.setArmSetpoint(50),
+                new WaitCommand(0.2),
+                shooter.runShooterAtPercent(0),
+                intake.stowIntake(),
+                shooter.setIndexerSpeed(-0.1),
+                new WaitCommand(0.3),
+                arm.rotateStable(),
+                new WaitCommand(0.5),
+                shooter.setIndexerSpeed(0),
+                intake.setIntakeSpeed(0),
+                arm.isAiming(false)));
 
 
-      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true),arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-      NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(60), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2),arm.isAiming(false)));
-      NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true),arm.setArmSetpoint(65), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2),arm.isAiming(false)));
-      NamedCommands.registerCommand("autoAim", runOnce(()->enableAutoAim = true));
-      NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), shooter.setRPMShooter(3000), arm.isAiming(false), shooter.setIndexerSpeed(-.5), new WaitCommand(.5), shooter.setRunIndexer(true)));
-      NamedCommands.registerCommand("autoAimOff", runOnce(()->enableAutoAim = false));
+        NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(60), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(65), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
+        NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), shooter.setRPMShooter(3000), arm.isAiming(false), shooter.setIndexerSpeed(-.5), new WaitCommand(.5), shooter.setRunIndexer(true)));
+        NamedCommands.registerCommand("autoAimOff", runOnce(() -> enableAutoAim = false));
 
-      Shuffleboard.getTab("Autons").add("Side", side);
-      side.addOption("Red Side", true);
-      side.addOption("Blue Side", false);
+        Shuffleboard.getTab("Autons").add("Side", side);
+        side.addOption("Red Side", true);
+        side.addOption("Blue Side", false);
 
-    Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
-    autonChooserRed.addOption("Do nothing", doNothing());
+        Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
+        autonChooserRed.addOption("doNothing", doNothing());
 
-    Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
-  }
-  public Command getAuton() {
-    if(DriverStation.getAlliance().get().name() == "Red") {
-      System.out.println("Automatically showing autons for Red");
-      return autonChooserRed.getSelected();
-    } else if (DriverStation.getAlliance().get().name() == "Blue") {
-      System.out.println("Automatically showing autons for Blue");
-      return autonChooserBlue.getSelected();
-    } else if (side.getSelected()) {
-      return autonChooserRed.getSelected();
-    } else {
-      return autonChooserBlue.getSelected();
+        autonChooserRed.addOption("onePieceTaxiTopRed", onePieceTaxiTopRed());
+        autonChooserRed.addOption("onePieceTaxiMiddleRed", onePieceTaxiMiddleRed());
+        autonChooserRed.addOption("onePieceTaxiBottomRed", onePieceTaxiBottomRed());
+        autonChooserRed.addOption("oneAndHalfPieceTaxiBottomRed", oneAndHalfPieceTaxiBottomRed());
+
+        autonChooserRed.addOption("twoPieceTopRed", twoPieceTopRed());
+        autonChooserRed.addOption("twoPieceMiddleRed", twoPieceMiddleRed());
+        autonChooserRed.addOption("twoPieceBottomRed", twoPieceBottomRed());
+        autonChooserRed.addOption("twoAndHalfBottomRed", twoAndHalfBottomRed());
+
+        autonChooserRed.addOption("threePieceTtMRed", threePieceTtMRed());
+        autonChooserRed.addOption("threePieceTtMAutoAimRed", threePieceTtMAutoAimRed());
+        autonChooserRed.addOption("threePieceBtMAutoAimRed", threePieceBtMAutoAimRed());
+        autonChooserRed.addOption("threePieceBottomFarAutoAimRed", threePieceBottomFarAutoAimRed());
+
+        autonChooserRed.addOption("fourPieceTtBAutoAimRed", fourPieceTtBAutoAimRed());
+        autonChooserRed.addOption("fourPieceTopFarAutoAimRed", fourPieceTopFarAutoAimRed());
+
+        Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
+        autonChooserBlue.addOption("doNothing", doNothing());
+
+        autonChooserBlue.addOption("onePieceTaxiTopBlue", onePieceTaxiTopBlue());
+        autonChooserBlue.addOption("onePieceTaxiMiddleBlue", onePieceTaxiMiddleBlue());
+        autonChooserBlue.addOption("onePieceTaxiBottomBlue", onePieceTaxiBottomBlue());
+        autonChooserBlue.addOption("oneAndHalfPieceTaxiBottomBlue", oneAndHalfPieceTaxiBottomBlue());
+
+        autonChooserBlue.addOption("twoPieceTopBlue", twoPieceTopBlue());
+        autonChooserBlue.addOption("twoPieceMiddleBlue", twoPieceMiddleBlue());
+        autonChooserBlue.addOption("twoPieceBottomBlue", twoPieceBottomBlue());
+        autonChooserBlue.addOption("twoAndHalfBottomBlue", twoAndHalfBottomBlue());
+
+        autonChooserBlue.addOption("threePieceTtMRed", threePieceTtMBlue());
+        autonChooserBlue.addOption("threePieceBtMBlue", threePieceBtMBlue());
+        autonChooserBlue.addOption("threePieceTtMAutoAimBlue", threePieceTtMAutoAimBlue());
+        autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceBtMAutoAimBlue());
+        autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceTopFarAutoAimBlue());
+        autonChooserBlue.addOption("threePieceBottomFarAutoAimBlue", threePieceBottomFarAutoAimBlue());
+
+        autonChooserRed.setDefaultOption("doNothing", doNothing());
+        autonChooserBlue.setDefaultOption("doNothing", doNothing());
     }
-  }
 
-  public Command onePieceTaxiTopRed(){
-    return new PathPlannerAuto("1 Piece Taxi Top Red");
-  }
-  
+    public static DriverStation.Alliance getAllianceColor() {
+        if (autonChooserRed.getSelected() != null && autonChooserBlue.getSelected() != null) {
+            if (!autonChooserRed.getSelected().getName().contains("15")) {
+                return DriverStation.Alliance.Red;
+            } else if (!autonChooserBlue.getSelected().getName().contains("15")) {
+                return DriverStation.Alliance.Blue;
+            }
+        }
+        return DriverStation.Alliance.Red;
+    }
+
+    public Command getAuton() {
+        if (autonChooserRed.getSelected() != null && autonChooserBlue.getSelected() != null) {
+            if (!autonChooserRed.getSelected().getName().contains("15")) {
+                return autonChooserRed.getSelected();
+            } else if (!autonChooserBlue.getSelected().getName().contains("15")) {
+                return autonChooserBlue.getSelected();
+            }
+        }
+        return null;
+    }
+
+    public Optional<Rotation2d> autoAim() {
+        if (enableAutoAim) {
+            return Optional.of(aprilTags.autonAim());
+        } else {
+            return Optional.empty();
+        }
+    }
+
     //Autons that don't move
-  public Command doNothing(){
+    public Command doNothing() {
         return new WaitCommand(15);
-  }
+    }
 
-  public Command shootDontMove(){
-    return new WaitCommand(15);
-  }
+    //One piece Autons
+    public Command onePieceTaxiTopRed() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Top Red");
+    }
 
-  public Optional<Rotation2d> autoAim(){
-      if(enableAutoAim){
-        return Optional.of(aprilTags.autonAim());
-      }else{
-        return Optional.empty();
-      }
-  }
+    public Command onePieceTaxiMiddleRed() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Middle Red");
+    }
 
+    public Command onePieceTaxiBottomRed() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Bottom Red");
+    }
 
-  //Taxi Autons
-  public Command taxiTopRed(){
-    return new PathPlannerAuto("Taxi Top Red");
-  }
-    public Command taxiMiddleRed(){
-    return new PathPlannerAuto("1 Piece Taxi Middle Red");
-  }
-    public Command taxiBottomRed(){
-    return new PathPlannerAuto("Taxi Bottom Red");
-  }
-    public Command taxiTopBlue(){
-    return new PathPlannerAuto("Taxi Top Blue");
-  }
-    public Command taxiMiddleBlue(){
-    return new PathPlannerAuto("Taxi Middle Blue");
-  }
-    public Command taxiBottomBlue(){
-    return new PathPlannerAuto("Taxi Bottom Blue");
-  }
+    public Command onePieceTaxiTopBlue() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Top Blue");
+    }
 
-  //One piece Autons
-  public Command shootTaxiTopRed(){
-    return new PathPlannerAuto("Shoot and Taxi Top Red");
-  }
-  public Command shootAndTaxiBottomBlue() {
-    return new PathPlannerAuto("Blue Shoot and Taxi Bottom");
-  }
+    public Command onePieceTaxiMiddleBlue() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Middle Blue");
+    }
+
+    public Command onePieceTaxiBottomBlue() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Bottom Blue");
+    }
+
+    public Command oneAndHalfPieceTaxiBottomRed() {
+        return AutoBuilder.buildAuto("1.5 Piece Taxi Bottom Red");
+    }
+
+    public Command oneAndHalfPieceTaxiBottomBlue() {
+        return AutoBuilder.buildAuto("1.5 Piece Taxi Bottom Blue");
+    }
 
 
-  public Command onePieceMiddleRed(){
-    return new PathPlannerAuto("1 Piece Taxi Middle Red");
-  }
-  public Command shootTaxiBottomRed(){
-    return new PathPlannerAuto("Shoot and Taxi Bottom Red");
-  }
+    //Two Piece autons
+    public Command twoPieceTopRed() {
+        return AutoBuilder.buildAuto("2 Piece Top Red");
+    }
 
-  public Command shootTaxiTopBlue(){
-    return new PathPlannerAuto("Shoot and Taxi Top Blue");
-  }
-    public Command shootTaxiMiddleBlue(){
-    return new PathPlannerAuto("Shoot and Taxi Middle Blue");
-  }
-    public Command shootTaxiBottomBlue(){
-    return new PathPlannerAuto("Shoot and Taxi Bottom Blue");
-  }
+    public Command twoPieceMiddleRed() {
+        return AutoBuilder.buildAuto("2 Piece Middle Red");
+    }
+
+    public Command twoPieceBottomRed() {
+        return AutoBuilder.buildAuto("2 Piece Bottom Red");
+    }
+
+    public Command twoPieceTopBlue() {
+        return AutoBuilder.buildAuto("2 Piece Top Blue");
+    }
+
+    public Command twoPieceMiddleBlue() {
+        return AutoBuilder.buildAuto("2 Piece Middle Blue");
+    }
+
+    public Command twoPieceBottomBlue() {
+        return AutoBuilder.buildAuto("2 Piece Bottom Blue");
+    }
+
+    public Command twoAndHalfBottomRed() {
+        return AutoBuilder.buildAuto("2.5 Piece Bottom Red");
+    }
+
+    public Command twoAndHalfBottomBlue() {
+        return AutoBuilder.buildAuto("2.5 Piece Bottom Blue");
+    }
 
 
-  //Two Piece autons
-  public Command twoPieceTopRed(){
-    return new PathPlannerAuto("2 Piece Top Red");
-  }
+    //Three Piece Regular Autons
+    public Command threePieceTtMRed() {
+        return AutoBuilder.buildAuto("3 Piece Top to Middle Red");
+    }
 
+    public Command threePieceTtMBlue() {
+        return AutoBuilder.buildAuto("3 Piece Top to Middle Blue");
+    }
 
-  public Command twoPieceBottomBlue() {
-    return AutoBuilder.buildAuto("2 Piece Bottom Blue");
-  }
+    public Command threePieceBtMBlue() {
+        return AutoBuilder.buildAuto("3 Piece Bottom to Middle Blue");
+    }
 
-  public Command twoPieceMiddleRed() {
-    return AutoBuilder.buildAuto("2 Piece Middle Red");
-  }
+    //Three Piece AutoAim Autons
+    public Command threePieceTtMAutoAimRed() {
+        return AutoBuilder.buildAuto("3 Piece Top to Middle Red AUTOAIM");
+    }
 
-  public Command twoPieceExtendedRed(){
-    return new PathPlannerAuto("2 Piece Center Top Red");
-  }
+    public Command threePieceBtMAutoAimRed() {
+        return AutoBuilder.buildAuto("3 Piece Bottom to Middle Red AUTOAIM");
+    }
 
-  public Command twoPieceBottomRed() {
-    return new PathPlannerAuto("2 Piece Bottom Red");
-  }
+    public Command threePieceTtMAutoAimBlue() {
+        return AutoBuilder.buildAuto("3 Piece Top to Middle Blue AUTOAIM");
+    }
 
-  //Three Piece Autons
-  public Command threePieceTtMBlue(){
-    return new PathPlannerAuto("3 Piece Top Blue");
-  }
+    public Command threePieceBtMAutoAimBlue() {
+        return AutoBuilder.buildAuto("3 Piece Bottom to Middle Blue AUTOAIM");
+    }
 
-  public Command threePieceTtMRed(){
-    return new PathPlannerAuto("3 Piece Top to Middle Red");
-  }
-  public Command threePieceBtMRed(){
-    return new PathPlannerAuto("3 Piece Bottom to Middle Red");
-  }
-  public Command threePieceMtTRed(){
-    return new PathPlannerAuto("3 Piece Middle to Top Red");
-  }
+    public Command threePieceBottomFarAutoAimRed() {
+        return AutoBuilder.buildAuto("3 Piece Bottom Far Red AUTOAIM");
+    }
 
-  public Command threePieceMtBRed() {
-    return new PathPlannerAuto("3 Piece Middle to Bottom Red");
-  }
+    public Command threePieceTopFarAutoAimBlue() {
+        return AutoBuilder.buildAuto("3 Piece Top Far Blue AUTOAIM");
+    }
 
-  //Four Piece Autons
-  public Command fourPieceBlue(){
-    return new PathPlannerAuto("4 Piece Blue");
-  }
+    public Command threePieceBottomFarAutoAimBlue() {
+        return AutoBuilder.buildAuto("3 Piece Bottom Far Blue AUTOAIM");
+    }
 
-  public Command fourPieceTtBRed(){
-    return new PathPlannerAuto("4 Piece Top to Bottom Red");
-  }
-  public Command fourPieceBtTRed(){
-    return new PathPlannerAuto("4 Piece Bottom to Top Red");
-  }
+    //Four Piece Autons
+    public Command fourPieceTopFarAutoAimRed() {
+        return AutoBuilder.buildAuto("4 Piece Top Far Red AUTOAIM");
+    }
 
-  public Command fourPieceTopFarRed(){
-      return new PathPlannerAuto("4 Piece Top Far Red AUTOAIM");
-  }
+    public Command fourPieceTtBAutoAimRed() {
+        return AutoBuilder.buildAuto("4 Piece Top to Bottom Red AUTOAIM");
+    }
 
-  //Five Pieces
+    public Command goToClimb11() {
+        return new PathfindHolonomic(
+                new Pose2d(11.9047, 3.713, new Rotation2d(60)),
+                pathConstraints,
+                1,
+                swerveDrive::getPose,
+                swerveDrive::getCurrentRobotChassisSpeeds,
+                (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+                pathFollowerConfig);
+    }
 
-  public Command fivePieceTtBRed(){
-    return new PathPlannerAuto("5 Piece Top to Bottom Red");
-  }
+    public Command goToClimb12() {
+        return new PathfindHolonomic(
+                new Pose2d(11.9047, 4.5, new Rotation2d(60)),
+                pathConstraints,
+                1,
+                swerveDrive::getPose,
+                swerveDrive::getCurrentRobotChassisSpeeds,
+                (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+                pathFollowerConfig);
+    }
 
-  public Command fivePieceBtTRed(){
-    return new PathPlannerAuto("5 Piece Bottom to Top Red");
-  }
+    public Command goToClimb13() {
+        return new PathfindHolonomic(
+                new Pose2d(11.22, 4.11, new Rotation2d(60)),
+                pathConstraints,
+                1,
+                swerveDrive::getPose,
+                swerveDrive::getCurrentRobotChassisSpeeds,
+                (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+                pathFollowerConfig);
+    }
 
-  //6 Piece Autons
-  public Command sixPieceBtT(){
-    return new PathPlannerAuto("6 Piece Bottom to Top Red");
-  }
+    public Command goToClimb14() {
+        return new PathfindHolonomic(
+                new Pose2d(5.32, 4.11, new Rotation2d(60)),
+                pathConstraints,
+                1,
+                swerveDrive::getPose,
+                swerveDrive::getCurrentRobotChassisSpeeds,
+                (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+                pathFollowerConfig);
+    }
 
-  public Command test(){
-      return new PathPlannerAuto("test");
-  }
+    public Command goToClimb15() {
+        return new PathfindHolonomic(
+                new Pose2d(4.64, 4.5, new Rotation2d(60)),
+                pathConstraints,
+                1,
+                swerveDrive::getPose,
+                swerveDrive::getCurrentRobotChassisSpeeds,
+                (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+                pathFollowerConfig);
+    }
 
-  public Command goToClimb11(){
-      return new PathfindHolonomic(
-              new Pose2d(11.9047, 3.713, new Rotation2d(60)),
-              pathConstraints,
-              1,
-              swerveDrive::getPose,
-              swerveDrive::getCurrentRobotChassisSpeeds,
-              (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
-              pathFollowerConfig);
-  }
+    public Command goToClimb16() {
+        return new PathfindHolonomic(
+                new Pose2d(4.64, 3.713, new Rotation2d(60)),
+                pathConstraints,
+                1,
+                swerveDrive::getPose,
+                swerveDrive::getCurrentRobotChassisSpeeds,
+                (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+                pathFollowerConfig);
+    }
 
-  public Command goToClimb12(){
-    return new PathfindHolonomic(
-            new Pose2d(11.9047, 4.5, new Rotation2d(60)),
-            pathConstraints,
-            1,
-            swerveDrive::getPose,
-            swerveDrive::getCurrentRobotChassisSpeeds,
-            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
-            pathFollowerConfig);
-  }
+    public Command goToAmpRed() {
+        return new PathfindHolonomic(
+                new Pose2d(14.700757999999999, 7.8742, new Rotation2d(Math.toRadians(90))),
+                pathConstraints,
+                1,
+                swerveDrive::getPose,
+                swerveDrive::getCurrentRobotChassisSpeeds,
+                (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+                pathFollowerConfig);
+    }
 
-  public Command goToClimb13(){
-    return new PathfindHolonomic(
-            new Pose2d(11.22, 4.11, new Rotation2d(60)),
-            pathConstraints,
-            1,
-            swerveDrive::getPose,
-            swerveDrive::getCurrentRobotChassisSpeeds,
-            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
-            pathFollowerConfig);
-  }
-
-  public Command goToClimb14(){
-    return new PathfindHolonomic(
-            new Pose2d(5.32, 4.11, new Rotation2d(60)),
-            pathConstraints,
-            1,
-            swerveDrive::getPose,
-            swerveDrive::getCurrentRobotChassisSpeeds,
-            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
-            pathFollowerConfig);
-  }
-
-  public Command goToClimb15(){
-    return new PathfindHolonomic(
-            new Pose2d(4.64, 4.5, new Rotation2d(60)),
-            pathConstraints,
-            1,
-            swerveDrive::getPose,
-            swerveDrive::getCurrentRobotChassisSpeeds,
-            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
-            pathFollowerConfig);
-  }
-
-  public Command goToClimb16(){
-    return new PathfindHolonomic(
-            new Pose2d(4.64, 3.713, new Rotation2d(60)),
-            pathConstraints,
-            1,
-            swerveDrive::getPose,
-            swerveDrive::getCurrentRobotChassisSpeeds,
-            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
-            pathFollowerConfig);
-  }
-
-  public Command goToAmpRed(){
-   return new PathfindHolonomic(
-          new Pose2d(14.700757999999999, 7.8742, new Rotation2d(Math.toRadians(90))),
-          pathConstraints,
-          1,
-          swerveDrive::getPose,
-          swerveDrive::getCurrentRobotChassisSpeeds,
-          (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
-          pathFollowerConfig);
-  }
-
-   public Command goToAmpBlue(){
-    return new PathfindHolonomic(
-            new Pose2d(1.8415, 8.2042, new Rotation2d(90)),
-            pathConstraints,
-            1,
-            swerveDrive::getPose,
-            swerveDrive::getCurrentRobotChassisSpeeds,
-            (speeds)-> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
-            pathFollowerConfig);
-  }
-
+    public Command goToAmpBlue() {
+        return new PathfindHolonomic(
+                new Pose2d(1.8415, 8.2042, new Rotation2d(90)),
+                pathConstraints,
+                1,
+                swerveDrive::getPose,
+                swerveDrive::getCurrentRobotChassisSpeeds,
+                (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
+                pathFollowerConfig);
+    }
 
 
 }
