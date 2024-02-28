@@ -57,7 +57,7 @@
       "name": "Retract Intake",
       "waypointRelativePos": 1.3,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {

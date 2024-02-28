@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
@@ -80,7 +81,7 @@ public class Autos extends Command {
         NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(60), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
         NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(65), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
-        NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), shooter.setRPMShooter(3000), arm.isAiming(false), shooter.setIndexerSpeed(-.5), new WaitCommand(.5), shooter.setRunIndexer(true)));
+        NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), arm.isAiming(false), runOnce(()->shooter.autoTargeting = true), shooter.runShooterPredeterminedRPM(), new InstantCommand(()->shooter.idleShooting = false), new WaitCommand(2), shooter.setIndexerSpeed(.4), new WaitCommand(1), arm.isAutoAiming(false), arm.isAiming(false), shooter.runShooterAtPercent(0), runOnce(()-> shooter.autoTargeting = false)));
         NamedCommands.registerCommand("autoAimOff", runOnce(() -> enableAutoAim = false));
 
         Shuffleboard.getTab("Autons").add("Side", side);

@@ -36,8 +36,8 @@
         "y": 4.754599637587292
       },
       "prevControl": {
-        "x": 14.07883146721913,
-        "y": 3.7474676946473435
+        "x": 14.067120630674927,
+        "y": 4.005106098657276
       },
       "nextControl": null,
       "isLocked": false,
@@ -72,9 +72,9 @@
   "eventMarkers": [
     {
       "name": "RetractIntake",
-      "waypointRelativePos": 1.65,
+      "waypointRelativePos": 1.45,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -86,30 +86,13 @@
             {
               "type": "named",
               "data": {
-                "name": "autoAim"
+                "name": "revShooter"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "revShooter"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "shoot",
-      "waypointRelativePos": 2.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "shoot"
+                "name": "autoAim"
               }
             }
           ]
@@ -118,7 +101,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 4.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
@@ -129,7 +112,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece AutoAim Paths",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

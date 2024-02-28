@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 2.813006710178897,
-        "y": 4.133925300660873
+        "x": 2.3914165945307624,
+        "y": 3.9816844255657124
       },
       "prevControl": {
-        "x": 2.543805968231605,
-        "y": 3.685077570600452
+        "x": 2.1222158525834702,
+        "y": 3.5328366955052917
       },
       "nextControl": {
-        "x": 3.023717314854795,
-        "y": 4.485250397034318
+        "x": 2.6021271992066604,
+        "y": 4.333009521939157
       },
       "isLocked": false,
       "linkedName": null
@@ -46,7 +46,12 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.8,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.25,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -57,7 +62,7 @@
       "name": "retractIntake",
       "waypointRelativePos": 1.05,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -75,7 +80,7 @@
             {
               "type": "named",
               "data": {
-                "name": "revShooter"
+                "name": "shoot"
               }
             }
           ]
@@ -89,12 +94,6 @@
         "type": "sequential",
         "data": {
           "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "shoot"
-              }
-            },
             {
               "type": "wait",
               "data": {
@@ -126,7 +125,7 @@
   "reversed": false,
   "folder": "3 Piece AutoAim Paths",
   "previewStartingState": {
-    "rotation": 117.49255204445959,
+    "rotation": 32.27535655072941,
     "velocity": 0
   },
   "useDefaultConstraints": false

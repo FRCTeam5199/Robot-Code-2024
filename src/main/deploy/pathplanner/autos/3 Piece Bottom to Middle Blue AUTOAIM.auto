@@ -1,6 +1,12 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 0.83,
+      "y": 4.46
+    },
+    "rotation": -57.92318478431789
+  },
   "command": {
     "type": "sequential",
     "data": {
@@ -8,7 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "SbackShot"
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -21,6 +33,12 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom to Middle Blue p1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -39,6 +57,12 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom to Middle Blue p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
           }
         }
       ]

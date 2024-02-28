@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3725738150477713,
-        "y": 7.038212764014687
+        "x": 1.4194171612308972,
+        "y": 6.722020177278586
       },
       "isLocked": false,
       "linkedName": "Top Blue Starting Pos"
     },
     {
       "anchor": {
-        "x": 2.67569996678455,
-        "y": 6.985795510052559
+        "x": 2.918404239090931,
+        "y": 6.874261052373746
       },
       "prevControl": {
-        "x": 1.9047313878431116,
-        "y": 7.161458058239281
+        "x": 2.1474356601494926,
+        "y": 7.049923600560468
       },
       "nextControl": {
-        "x": 2.794920274911865,
-        "y": 6.958631571478039
+        "x": 3.037624547218246,
+        "y": 6.847097113799226
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 6.6207186260526365
       },
       "prevControl": {
-        "x": 1.6536338921465275,
-        "y": 7.260718658384535
+        "x": 1.7238989114212169,
+        "y": 6.850839379282182
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,7 +46,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.7,
       "rotationDegrees": 0,
       "rotateFast": false
     }
