@@ -23,25 +23,9 @@
         "x": 13.458155995534016,
         "y": 5.55
       },
-      "nextControl": {
-        "x": 14.506947895653866,
-        "y": 5.55
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 15.18,
-        "y": 5.55
-      },
-      "prevControl": {
-        "x": 14.149096061104188,
-        "y": 5.55
-      },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "middle starting point"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -49,7 +33,7 @@
     {
       "name": "New Constraints Zone",
       "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 2.0,
+      "maxWaypointRelativePos": 1.5,
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 1.0,

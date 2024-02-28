@@ -20,7 +20,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2 Piece Bottom Far Blue p1"
+            "pathName": "3 Piece Bottom Far Blue p1 AutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 Piece Bottom Far Blue p2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "retractIntake"
           }
         }
       ]
