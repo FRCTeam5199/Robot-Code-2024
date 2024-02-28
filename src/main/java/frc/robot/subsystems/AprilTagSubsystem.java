@@ -127,11 +127,11 @@ public class AprilTagSubsystem extends SubsystemBase {
         // ally = getAllianceColor();
         // System.out.println(ally);
         getAllianceColor();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     /**
@@ -247,7 +247,7 @@ public class AprilTagSubsystem extends SubsystemBase {
         if (getAllianceColor() == Alliance.Red) {
             return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
         } else if (getAllianceColor() == Alliance.Blue) {
-            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
+            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees((Math.PI - Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX())))))));
         } else {
             return runOnce(() -> System.out.println("Get Alliance Color is Null"));
         }

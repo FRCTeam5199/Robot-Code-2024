@@ -290,6 +290,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
-        return new SequentialCommandGroup(arm.isAiming(true), auton.getAuton(), arm.isAiming(false));
+        return auton.getAuton();
     }
 }
