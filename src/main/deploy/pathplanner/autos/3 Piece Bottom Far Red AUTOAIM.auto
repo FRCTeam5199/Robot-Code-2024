@@ -14,13 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "SbackShot"
+            "name": "backShot"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
           }
         },
         {
@@ -39,6 +39,24 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom Far Red p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAimOff"
           }
         }
       ]

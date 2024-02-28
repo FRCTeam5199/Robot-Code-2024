@@ -18,6 +18,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "3 Piece Top Far Blue p1"
@@ -30,6 +36,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "3 Piece Top Far Blue p2"
@@ -38,7 +50,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LbackShot"
+            "name": "shoot"
           }
         }
       ]

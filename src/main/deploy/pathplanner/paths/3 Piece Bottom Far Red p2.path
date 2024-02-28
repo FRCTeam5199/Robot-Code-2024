@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 12.872615303005214,
-        "y": 2.342167309156301
+        "x": 12.99,
+        "y": 2.32
       },
       "prevControl": null,
       "nextControl": {
-        "x": 11.79528391843225,
-        "y": 0.9298639362308944
+        "x": 12.544988211260305,
+        "y": 2.32
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.563027454157618,
-        "y": 2.48269734770568
+        "x": 8.589050714053986,
+        "y": 2.3758028835553593
       },
       "prevControl": {
-        "x": 8.896901843180094,
-        "y": 2.48269734770568
+        "x": 11.593072733958664,
+        "y": 1.1435407896760934
       },
       "nextControl": {
-        "x": 8.118015665417923,
-        "y": 2.48269734770568
+        "x": 8.32830782743545,
+        "y": 2.4827606799029627
       },
       "isLocked": false,
       "linkedName": null
@@ -41,18 +41,18 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Red Bottom Far shoot"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.95,
+      "waypointRelativePos": 1.0,
       "rotationDegrees": 180.0,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 1.25,
-      "rotationDegrees": 180.0,
+      "waypointRelativePos": 1.55,
+      "rotationDegrees": 15.0,
       "rotateFast": false
     }
   ],
@@ -60,7 +60,7 @@
   "eventMarkers": [
     {
       "name": "deploy",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.5,
       "command": {
         "type": "parallel",
         "data": {
@@ -76,8 +76,8 @@
       }
     },
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 1.2,
+      "name": "retract",
+      "waypointRelativePos": 1.4,
       "command": {
         "type": "sequential",
         "data": {

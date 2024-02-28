@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "SbackShot"
+            "name": "backShot"
           }
         },
         {
@@ -27,12 +27,6 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Top to Middle Blue p1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "midShot"
           }
         },
         {

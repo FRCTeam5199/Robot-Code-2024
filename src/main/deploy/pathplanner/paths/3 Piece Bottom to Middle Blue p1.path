@@ -16,16 +16,32 @@
     },
     {
       "anchor": {
-        "x": 2.813006710178897,
-        "y": 4.133925300660873
+        "x": 2.5671635958656545,
+        "y": 4.086256237745982
       },
       "prevControl": {
-        "x": 2.543805968231605,
-        "y": 3.685077570600452
+        "x": 1.8182374966630883,
+        "y": 4.126377278774689
       },
       "nextControl": {
-        "x": 3.023717314854795,
-        "y": 4.485250397034318
+        "x": 2.6670204090926632,
+        "y": 4.0809067656088205
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.25,
+        "y": 4.086256237745982
+      },
+      "prevControl": {
+        "x": 2.347087895775739,
+        "y": 3.9973584128740915
+      },
+      "nextControl": {
+        "x": 2.152912104224261,
+        "y": 4.175154062617873
       },
       "isLocked": false,
       "linkedName": null
@@ -46,7 +62,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.9,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -55,7 +71,7 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.05,
+      "waypointRelativePos": 1.5500000000000003,
       "command": {
         "type": "parallel",
         "data": {
@@ -84,7 +100,7 @@
     },
     {
       "name": "shoot",
-      "waypointRelativePos": 2.0,
+      "waypointRelativePos": 3.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -98,7 +114,7 @@
             {
               "type": "wait",
               "data": {
-                "waitTime": 0.5
+                "waitTime": 0.25
               }
             },
             {

@@ -86,6 +86,29 @@
           ]
         }
       }
+    },
+    {
+      "name": "shoot",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAimOff"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {

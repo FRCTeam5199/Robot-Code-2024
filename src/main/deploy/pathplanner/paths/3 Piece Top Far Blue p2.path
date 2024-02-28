@@ -44,7 +44,18 @@
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.5,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.95,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -76,6 +87,18 @@
               "data": {
                 "name": "retractIntake"
               }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAim"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
             }
           ]
         }
@@ -90,7 +113,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -175.0,
     "rotateFast": false
   },
   "reversed": false,
