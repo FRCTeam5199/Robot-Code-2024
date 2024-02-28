@@ -12,15 +12,15 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "2 Piece Bottom Far Blue p1"
+            "name": "backShot"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": null
+            "pathName": "2 Piece Bottom Far Blue p1"
           }
         }
       ]

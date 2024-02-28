@@ -89,14 +89,46 @@ public class Autos extends Command {
 
         Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         autonChooserRed.addOption("doNothing", doNothing());
-        autonChooserRed.addOption("twoPieceBottomRed", twoPieceBottomRed());
+
+        autonChooserRed.addOption("onePieceTaxiTopRed", onePieceTaxiTopRed());
+        autonChooserRed.addOption("onePieceTaxiMiddleRed", onePieceTaxiMiddleRed());
+        autonChooserRed.addOption("onePieceTaxiBottomRed", onePieceTaxiBottomRed());
+        autonChooserRed.addOption("oneAndHalfPieceTaxiBottomRed", oneAndHalfPieceTaxiBottomRed());
+
         autonChooserRed.addOption("twoPieceTopRed", twoPieceTopRed());
         autonChooserRed.addOption("twoPieceMiddleRed", twoPieceMiddleRed());
-        autonChooserRed.setDefaultOption("doNothing", doNothing());
+        autonChooserRed.addOption("twoPieceBottomRed", twoPieceBottomRed());
+        autonChooserRed.addOption("twoAndHalfBottomRed", twoAndHalfBottomRed());
+
+        autonChooserRed.addOption("threePieceTtMRed", threePieceTtMRed());
+        autonChooserRed.addOption("threePieceTtMAutoAimRed", threePieceTtMAutoAimRed());
+        autonChooserRed.addOption("threePieceBtMAutoAimRed", threePieceBtMAutoAimRed());
+        autonChooserRed.addOption("threePieceBottomFarAutoAimRed", threePieceBottomFarAutoAimRed());
+
+        autonChooserRed.addOption("fourPieceTtBAutoAimRed", fourPieceTtBAutoAimRed());
+        autonChooserRed.addOption("fourPieceTopFarAutoAimRed", fourPieceTopFarAutoAimRed());
 
         Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         autonChooserBlue.addOption("doNothing", doNothing());
+
+        autonChooserBlue.addOption("onePieceTaxiTopBlue", onePieceTaxiTopBlue());
+        autonChooserBlue.addOption("onePieceTaxiMiddleBlue", onePieceTaxiMiddleBlue());
+        autonChooserBlue.addOption("onePieceTaxiBottomBlue", onePieceTaxiBottomBlue());
+        autonChooserBlue.addOption("oneAndHalfPieceTaxiBottomBlue", oneAndHalfPieceTaxiBottomBlue());
+
+        autonChooserBlue.addOption("twoPieceTopBlue", twoPieceTopBlue());
+        autonChooserBlue.addOption("twoPieceMiddleBlue", twoPieceMiddleBlue());
         autonChooserBlue.addOption("twoPieceBottomBlue", twoPieceBottomBlue());
+        autonChooserBlue.addOption("twoAndHalfBottomBlue", twoAndHalfBottomBlue());
+
+        autonChooserBlue.addOption("threePieceTtMRed", threePieceTtMBlue());
+        autonChooserBlue.addOption("threePieceBtMBlue", threePieceBtMBlue());
+        autonChooserBlue.addOption("threePieceTtMAutoAimBlue", threePieceTtMAutoAimBlue());
+        autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceBtMAutoAimBlue());
+        autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceTopFarAutoAimBlue());
+        autonChooserBlue.addOption("threePieceBottomFarAutoAimBlue", threePieceBottomFarAutoAimBlue());
+
+        autonChooserRed.setDefaultOption("doNothing", doNothing());
         autonChooserBlue.setDefaultOption("doNothing", doNothing());
     }
 
@@ -122,19 +154,6 @@ public class Autos extends Command {
         return null;
     }
 
-    public Command onePieceTaxiTopRed() {
-        return new PathPlannerAuto("1 Piece Taxi Top Red");
-    }
-
-    //Autons that don't move
-    public Command doNothing() {
-        return new WaitCommand(15);
-    }
-
-    public Command shootDontMove() {
-        return new WaitCommand(15);
-    }
-
     public Optional<Rotation2d> autoAim() {
         if (enableAutoAim) {
             return Optional.of(aprilTags.autonAim());
@@ -143,140 +162,128 @@ public class Autos extends Command {
         }
     }
 
-
-    //Taxi Autons
-    public Command taxiTopRed() {
-        return new PathPlannerAuto("Taxi Top Red");
-    }
-
-    public Command taxiMiddleRed() {
-        return new PathPlannerAuto("1 Piece Taxi Middle Red");
-    }
-
-    public Command taxiBottomRed() {
-        return new PathPlannerAuto("Taxi Bottom Red");
-    }
-
-    public Command taxiTopBlue() {
-        return new PathPlannerAuto("Taxi Top Blue");
-    }
-
-    public Command taxiMiddleBlue() {
-        return new PathPlannerAuto("Taxi Middle Blue");
-    }
-
-    public Command taxiBottomBlue() {
-        return new PathPlannerAuto("Taxi Bottom Blue");
+    //Autons that don't move
+    public Command doNothing() {
+        return new WaitCommand(15);
     }
 
     //One piece Autons
-    public Command shootTaxiTopRed() {
-        return new PathPlannerAuto("Shoot and Taxi Top Red");
+    public Command onePieceTaxiTopRed() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Top Red");
     }
 
-    public Command shootAndTaxiBottomBlue() {
-        return new PathPlannerAuto("Blue Shoot and Taxi Bottom");
+    public Command onePieceTaxiMiddleRed() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Middle Red");
     }
 
-
-    public Command onePieceMiddleRed() {
-        return new PathPlannerAuto("1 Piece Taxi Middle Red");
+    public Command onePieceTaxiBottomRed() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Bottom Red");
     }
 
-    public Command shootTaxiBottomRed() {
-        return new PathPlannerAuto("Shoot and Taxi Bottom Red");
+    public Command onePieceTaxiTopBlue() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Top Blue");
     }
 
-    public Command shootTaxiTopBlue() {
-        return new PathPlannerAuto("Shoot and Taxi Top Blue");
+    public Command onePieceTaxiMiddleBlue() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Middle Blue");
     }
 
-    public Command shootTaxiMiddleBlue() {
-        return new PathPlannerAuto("Shoot and Taxi Middle Blue");
+    public Command onePieceTaxiBottomBlue() {
+        return AutoBuilder.buildAuto("1 Piece Taxi Bottom Blue");
     }
 
-    public Command shootTaxiBottomBlue() {
-        return new PathPlannerAuto("Shoot and Taxi Bottom Blue");
+    public Command oneAndHalfPieceTaxiBottomRed() {
+        return AutoBuilder.buildAuto("1.5 Piece Taxi Bottom Red");
+    }
+
+    public Command oneAndHalfPieceTaxiBottomBlue() {
+        return AutoBuilder.buildAuto("1.5 Piece Taxi Bottom Blue");
     }
 
 
     //Two Piece autons
     public Command twoPieceTopRed() {
-        return new PathPlannerAuto("2 Piece Top Red");
-    }
-
-
-    public Command twoPieceBottomBlue() {
-        return AutoBuilder.buildAuto("2 Piece Bottom Blue");
+        return AutoBuilder.buildAuto("2 Piece Top Red");
     }
 
     public Command twoPieceMiddleRed() {
         return AutoBuilder.buildAuto("2 Piece Middle Red");
     }
 
-    public Command twoPieceExtendedRed() {
-        return new PathPlannerAuto("2 Piece Center Top Red");
-    }
-
     public Command twoPieceBottomRed() {
-        return new PathPlannerAuto("2 Piece Bottom Red");
+        return AutoBuilder.buildAuto("2 Piece Bottom Red");
     }
 
-    //Three Piece Autons
-    public Command threePieceTtMBlue() {
-        return new PathPlannerAuto("3 Piece Top Blue");
+    public Command twoPieceTopBlue() {
+        return AutoBuilder.buildAuto("2 Piece Top Blue");
     }
 
+    public Command twoPieceMiddleBlue() {
+        return AutoBuilder.buildAuto("2 Piece Middle Blue");
+    }
+
+    public Command twoPieceBottomBlue() {
+        return AutoBuilder.buildAuto("2 Piece Bottom Blue");
+    }
+
+    public Command twoAndHalfBottomRed() {
+        return AutoBuilder.buildAuto("2.5 Piece Bottom Red");
+    }
+
+    public Command twoAndHalfBottomBlue() {
+        return AutoBuilder.buildAuto("2.5 Piece Bottom Blue");
+    }
+
+
+    //Three Piece Regular Autons
     public Command threePieceTtMRed() {
-        return new PathPlannerAuto("3 Piece Top to Middle Red");
+        return AutoBuilder.buildAuto("3 Piece Top to Middle Red");
     }
 
-    public Command threePieceBtMRed() {
-        return new PathPlannerAuto("3 Piece Bottom to Middle Red");
+    public Command threePieceTtMBlue() {
+        return AutoBuilder.buildAuto("3 Piece Top to Middle Blue");
     }
 
-    public Command threePieceMtTRed() {
-        return new PathPlannerAuto("3 Piece Middle to Top Red");
+    public Command threePieceBtMBlue() {
+        return AutoBuilder.buildAuto("3 Piece Bottom to Middle Blue");
     }
 
-    public Command threePieceMtBRed() {
-        return new PathPlannerAuto("3 Piece Middle to Bottom Red");
+    //Three Piece AutoAim Autons
+    public Command threePieceTtMAutoAimRed() {
+        return AutoBuilder.buildAuto("3 Piece Top to Middle Red AUTOAIM");
+    }
+
+    public Command threePieceBtMAutoAimRed() {
+        return AutoBuilder.buildAuto("3 Piece Bottom to Middle Red AUTOAIM");
+    }
+
+    public Command threePieceTtMAutoAimBlue() {
+        return AutoBuilder.buildAuto("3 Piece Top to Middle Blue AUTOAIM");
+    }
+
+    public Command threePieceBtMAutoAimBlue() {
+        return AutoBuilder.buildAuto("3 Piece Bottom to Middle Blue AUTOAIM");
+    }
+
+    public Command threePieceBottomFarAutoAimRed() {
+        return AutoBuilder.buildAuto("3 Piece Bottom Far Red AUTOAIM");
+    }
+
+    public Command threePieceTopFarAutoAimBlue() {
+        return AutoBuilder.buildAuto("3 Piece Top Far Blue AUTOAIM");
+    }
+
+    public Command threePieceBottomFarAutoAimBlue() {
+        return AutoBuilder.buildAuto("3 Piece Bottom Far Blue AUTOAIM");
     }
 
     //Four Piece Autons
-    public Command fourPieceBlue() {
-        return new PathPlannerAuto("4 Piece Blue");
+    public Command fourPieceTopFarAutoAimRed() {
+        return AutoBuilder.buildAuto("4 Piece Top Far Red AUTOAIM");
     }
 
-    public Command fourPieceTtBRed() {
-        return new PathPlannerAuto("4 Piece Top to Bottom Red");
-    }
-
-    public Command fourPieceBtTRed() {
-        return new PathPlannerAuto("4 Piece Bottom to Top Red");
-    }
-
-    public Command fourPieceTopFarRed() {
-        return new PathPlannerAuto("4 Piece Top Far Red AUTOAIM");
-    }
-
-    //Five Pieces
-
-    public Command fivePieceTtBRed() {
-        return new PathPlannerAuto("5 Piece Top to Bottom Red");
-    }
-
-    public Command fivePieceBtTRed() {
-        return new PathPlannerAuto("5 Piece Bottom to Top Red");
-    }
-
-    //6 Piece Autons
-    public Command sixPieceBtT() {
-        return new PathPlannerAuto("6 Piece Bottom to Top Red");
-    }
-
-    public Command test() {
-        return new PathPlannerAuto("test");
+    public Command fourPieceTtBAutoAimRed() {
+        return AutoBuilder.buildAuto("4 Piece Top to Bottom Red AUTOAIM");
     }
 
     public Command goToClimb11() {
