@@ -125,8 +125,7 @@ public class RobotContainer {
 
         new Trigger(() -> shooterSubsystem.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
         new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-        new Trigger(() -> shooterSubsystem.idleShooting).and(() -> shooterSubsystem.autoTargeting == false).and(() -> shooterSubsystem.intakeShooter == false).and(() -> shooterSubsystem.ampMode == false).onTrue(new InstantCommand(() -> shooterSubsystem.IdleRevUp())).onFalse(new InstantCommand(() -> shooterSubsystem.setRPMShooter(0).andThen(shooterSubsystem.setRunShooter(false))));
-
+        
         // new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
         //         if (DriverStation.isDisabled()) {
         //             ArmSubsystem.toggleBrakeMode();
@@ -138,7 +137,7 @@ public class RobotContainer {
             }
         }));
 
-        //         // Drive
+                //         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
                                 .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(1) // Drive
@@ -195,12 +194,9 @@ public class RobotContainer {
 
                         // based on climbing on or of
                         () -> shooterSubsystem.ampMode)))).whileFalse(
-<<<<<<< HEAD
+
                                 shooterSubsystem.runShooterAtPercent(0).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> shooterSubsystem.autoTargeting = false).andThen(shooterSubsystem.runShooterAtRpm(2000).onlyIf(()->arm.autoAiming)))));
-=======
-                shooterSubsystem.runShooterAtPercent(0).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> shooterSubsystem.autoTargeting = false))));
->>>>>>> 21080bd170e70918b9914dfc0364a319d079d997
-//                 // Intake
+
 
         mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
 
@@ -294,6 +290,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
-        return new SequentialCommandGroup(auton.getAuton());
+        return new SequentialCommandGroup(arm.isAiming(true), auton.getAuton(), arm.isAiming(false));
     }
 }
