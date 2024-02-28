@@ -52,12 +52,12 @@
         "y": 2.775468261350217
       },
       "prevControl": {
-        "x": 3.6850061434787627,
-        "y": 2.775468261350217
+        "x": 5.480807522030166,
+        "y": 1.4132897057491658
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Bottom Blue Far Link"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
