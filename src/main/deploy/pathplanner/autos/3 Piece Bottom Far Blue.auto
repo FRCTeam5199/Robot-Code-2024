@@ -14,25 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "SbackShot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom Far Blue p1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "backShot"
+            "pathName": "3 Piece Bottom Far Blue p1 AutoAim"
           }
         },
         {
@@ -40,16 +28,10 @@
           "data": {
             "pathName": "3 Piece Bottom Far Blue p2"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "backShot"
-          }
         }
       ]
     }
   },
-  "folder": "3 Piece Autons",
+  "folder": "3 Piece AutoAim Autons",
   "choreoAuto": false
 }

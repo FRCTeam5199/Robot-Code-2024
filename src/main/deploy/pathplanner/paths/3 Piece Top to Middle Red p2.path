@@ -3,40 +3,40 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.25,
-        "y": 5.55
+        "x": 14.090542303766492,
+        "y": 6.616622648366552
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.35,
-        "y": 5.55
+        "x": 14.190542303766492,
+        "y": 6.616622648366552
       },
       "isLocked": false,
       "linkedName": "3 Piece Top to Middle Red p1 END"
     },
     {
       "anchor": {
-        "x": 13.75,
+        "x": 13.715795534301481,
         "y": 5.55
       },
       "prevControl": {
-        "x": 13.65,
-        "y": 5.55
+        "x": 13.216037663840924,
+        "y": 5.710510901032189
       },
       "nextControl": {
-        "x": 13.85,
-        "y": 5.55
+        "x": 14.113963976858052,
+        "y": 5.422117320696838
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.25,
+        "x": 14.39502405395681,
         "y": 5.55
       },
       "prevControl": {
-        "x": 14.15,
+        "x": 14.29502405395681,
         "y": 5.55
       },
       "nextControl": null,
@@ -44,29 +44,18 @@
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -113.18303021763431,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Deploy Intake",
-      "waypointRelativePos": 0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "deployIntake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.5,
+      "waypointRelativePos": 1.3,
       "command": {
         "type": "parallel",
         "data": {
@@ -75,6 +64,35 @@
               "type": "named",
               "data": {
                 "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAim"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
               }
             }
           ]
@@ -90,11 +108,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "3 Piece AutoAim Paths",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

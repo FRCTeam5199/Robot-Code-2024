@@ -8,65 +8,54 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.190542303766492,
-        "y": 6.616622648366552
+        "x": 13.809482226667734,
+        "y": 6.558068465637644
       },
       "isLocked": false,
       "linkedName": "3 Piece Top to Middle Red p1 END"
     },
     {
       "anchor": {
-        "x": 13.75,
+        "x": 13.715795534301481,
         "y": 5.55
       },
       "prevControl": {
-        "x": 13.65,
-        "y": 5.55
+        "x": 13.193066045086793,
+        "y": 5.772036305175138
       },
       "nextControl": {
-        "x": 13.85,
-        "y": 5.55
+        "x": 13.961723101762892,
+        "y": 5.445538993788401
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.25,
-        "y": 5.55
+        "x": 14.207650669224307,
+        "y": 5.5040931765173085
       },
       "prevControl": {
-        "x": 14.15,
-        "y": 5.55
+        "x": 14.107650669224308,
+        "y": 5.5040931765173085
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -120.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Deploy Intake",
-      "waypointRelativePos": 0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "deployIntake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.5,
+      "waypointRelativePos": 1.05,
       "command": {
         "type": "parallel",
         "data": {
@@ -83,18 +72,18 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 0.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 Piece Paths",
+  "folder": "3 Piece Reg Paths",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

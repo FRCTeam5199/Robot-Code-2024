@@ -16,32 +16,32 @@
     },
     {
       "anchor": {
-        "x": 8.703557492706997,
-        "y": 1.3233245296733098
+        "x": 8.551316617611835,
+        "y": 0.7260718658384518
       },
       "prevControl": {
-        "x": 10.167412060929687,
-        "y": 2.072818068603326
+        "x": 10.015171185834525,
+        "y": 1.475565404768469
       },
       "nextControl": {
-        "x": 8.264635003386834,
-        "y": 1.0985962151413868
+        "x": 8.112394128291673,
+        "y": 0.5013435513065289
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 11.338495715513847,
-        "y": 1.8268905011355192
+        "x": 12.989723668463029,
+        "y": 2.318745636064738
       },
       "prevControl": {
-        "x": 10.682688868950084,
-        "y": 1.785902573225284
+        "x": 12.333916821899265,
+        "y": 2.277757708154503
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red Bottom Far shoot"
     }
   ],
   "rotationTargets": [
@@ -60,7 +60,7 @@
   "eventMarkers": [
     {
       "name": "retract",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 1.2,
       "command": {
         "type": "parallel",
         "data": {
@@ -69,6 +69,41 @@
               "type": "named",
               "data": {
                 "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAim"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.95,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAimOff"
               }
             }
           ]
@@ -88,7 +123,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "3 Piece AutoAim Paths",
   "previewStartingState": {
     "rotation": -119.76483666278926,
     "velocity": 0

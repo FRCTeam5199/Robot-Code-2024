@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.659794400897903,
-      "y": 4.508672070126443
+      "x": 15.65,
+      "y": 4.4
     },
-    "rotation": -124.5
+    "rotation": -123.11472942132329
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "SbackShot"
           }
         },
         {
@@ -32,13 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "name": "autoAimOff"
           }
         },
         {
@@ -52,16 +46,10 @@
           "data": {
             "pathName": "3 Piece Bottom to Middle Red p2"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "backShot"
-          }
         }
       ]
     }
   },
-  "folder": "3 Piece Autons",
+  "folder": "3 Piece AutoAim Autons",
   "choreoAuto": false
 }

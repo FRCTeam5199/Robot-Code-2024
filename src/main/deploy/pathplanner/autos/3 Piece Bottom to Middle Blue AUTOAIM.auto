@@ -26,6 +26,12 @@
         {
           "type": "named",
           "data": {
+            "name": "autoAimOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "deployIntake"
           }
         },
@@ -38,6 +44,6 @@
       ]
     }
   },
-  "folder": "3 Piece Reg Autons",
+  "folder": "3 Piece AutoAim Autons",
   "choreoAuto": false
 }

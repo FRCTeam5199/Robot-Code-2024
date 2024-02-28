@@ -166,6 +166,7 @@ public class ArmSubsystem extends SubsystemBase {
                     rotatePIDController = new PIDController(0.00019262, 0.000309673212, 0.00);
                     rotatePIDController.setIZone(3);
                 }
+                System.out.println(aprilTagSubsystem.armSpeakersAligning());
                 goToSetpoint(aprilTagSubsystem.armSpeakersAligning(), 0);
             
             // System.out.println("april tag value arm "  + aprilTagSubsystem.armSpeakersAligning());
@@ -201,6 +202,7 @@ public class ArmSubsystem extends SubsystemBase {
     public Command setClimbMode(boolean bool) {
         return this.runOnce(() -> climbMode = bool);
     }
+
 
     public Command isAiming(boolean bool) {
         return this.runOnce(() -> isAiming = bool);

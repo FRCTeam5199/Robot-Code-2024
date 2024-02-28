@@ -38,7 +38,7 @@ public class Autos extends Command{
   AprilTagSubsystem aprilTags = new AprilTagSubsystem();
 
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 0.85, .00,0.00), 5, .21, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01,0), new PIDConstants( 1.7, .06,0.00), 5, .21, new ReplanningConfig());
   PathConstraints pathConstraints = new PathConstraints(1, 1, 1, 1);
   public SendableChooser<Command> autonChooserRed = new SendableChooser<>();
   public SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
@@ -55,6 +55,7 @@ public class Autos extends Command{
       PPHolonomicDriveController.setRotationTargetOverride(this::autoAim);
 
       NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
+          arm.isAiming(true),
           arm.setArmSetpoint(50),
           new WaitCommand(0.1),
           intake.deployIntake(),
@@ -64,7 +65,7 @@ public class Autos extends Command{
           intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
           shooter.runShooterAtPercent(-.6)));
 
-      NamedCommands.registerCommand("retractIntake",new SequentialCommandGroup(  intake.setIntakeSpeed(-.9),
+      NamedCommands.registerCommand("retractIntake",new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
       arm.setArmSetpoint(50),
       new WaitCommand(0.2),
       shooter.runShooterAtPercent(0),
@@ -74,13 +75,13 @@ public class Autos extends Command{
       arm.rotateStable(),
       new WaitCommand(0.5),
       shooter.setIndexerSpeed(0),
-      intake.setIntakeSpeed(0)));
+      intake.setIntakeSpeed(0),
+      arm.isAiming(false)));
 
 
-
-      NamedCommands.registerCommand("Sx", new SequentialCommandGroup(arm.setArmSetpoint(150), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.rotateStable()));
-      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.rotateStable()));
-      NamedCommands.registerCommand("topBackShot", new SequentialCommandGroup(arm.setArmSetpoint(140), new WaitCommand(0.8), shooter.runAutonShooting(), new WaitCommand(0.2)));
+      NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true),arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+      NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(60), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2),arm.isAiming(false)));
+      NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true),arm.setArmSetpoint(65), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2),arm.isAiming(false)));
       NamedCommands.registerCommand("autoAim", runOnce(()->enableAutoAim = true));
       NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), shooter.setRPMShooter(3000), arm.isAiming(false), shooter.setIndexerSpeed(-.5), new WaitCommand(.5), shooter.setRunIndexer(true)));
       NamedCommands.registerCommand("autoAimOff", runOnce(()->enableAutoAim = false));

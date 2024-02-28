@@ -14,7 +14,19 @@
         {
           "type": "named",
           "data": {
+            "name": "SBackshot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "deployIntake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {

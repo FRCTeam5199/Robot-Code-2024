@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "SbackShot"
           }
         },
         {
@@ -32,19 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom Far Red p1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "backShot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "pathName": "3 Piece Bottom Far Red p1 AutoAim"
           }
         },
         {
@@ -56,6 +44,6 @@
       ]
     }
   },
-  "folder": "3 Piece Autons",
+  "folder": "3 Piece AutoAim Autons",
   "choreoAuto": false
 }

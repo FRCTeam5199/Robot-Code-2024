@@ -131,8 +131,16 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void autoSpeed(){
-        setRPM = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (6800 - 3500) / (5.7912 -1.27) + 3500;
-    } 
+        setRPM = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (6800 - 3000) / (5.7912 -1.27) + 3000;
+        //double x, double in_min, double in_max, double out_min, double out_max
+        // return (x- in_min) * (out_max - out_min) / (in_max -in_min) + out_min;
+    }
+
+    public double autonShoot(){
+        return (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547))- 1.27) * (6800 - 3000) / (5.7912 -1.27) + 3000;
+        //double x, double in_min, double in_max, double out_min, double out_max
+        // return (x- in_min) * (out_max - out_min) / (in_max -in_min) + out_min;
+    }
 
     public void IdleRevUp(){
         setRPM = 2000;
@@ -179,7 +187,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     public Command runAutonShooting() {
-        return new SequentialCommandGroup(runShooterAtRpm(4000), new WaitCommand(2), setIndexerSpeed(.2),
+        return new SequentialCommandGroup(runShooterAtPercent(.80), new WaitCommand(1), setIndexerSpeed(.2),
                 new WaitCommand(0.3), runShooterAtPercent(0), setIndexerSpeed(0));
     }
 
@@ -194,6 +202,11 @@ public class ShooterSubsystem extends SubsystemBase {
         return this.runOnce(() -> this.intakeShooter = intakeShooter);
     }
 
+    /**
+     *
+     * @param sp rpm you want the shooter to be at
+     * @return sets the shooter rpm.
+     */
     public Command setRPMShooter(double sp) {
         return this.runOnce(() -> this.setRPM = sp);
     }

@@ -2,30 +2,30 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.85,
-      "y": 4.5
+      "x": 0.8455861704876034,
+      "y": 4.450117887396973
     },
-    "rotation": -55.5
+    "rotation": -62.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "backShot"
+            "pathName": "2 Piece Bottom Far Blue p1"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "3 Piece Bottom Far Blue AutoAim"
+            "name": null
           }
         }
       ]
     }
   },
-  "folder": "3 Piece AutoAim Autons",
+  "folder": "2 Piece Autons",
   "choreoAuto": false
 }

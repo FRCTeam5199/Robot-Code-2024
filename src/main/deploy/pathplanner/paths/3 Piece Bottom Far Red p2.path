@@ -3,28 +3,28 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 11.338495715513847,
-        "y": 1.8268905011355192
+        "x": 12.872615303005214,
+        "y": 2.342167309156301
       },
       "prevControl": null,
       "nextControl": {
-        "x": 10.378207118753753,
-        "y": 1.862023010779259
+        "x": 11.79528391843225,
+        "y": 0.9298639362308944
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.73869000234434,
+        "x": 8.563027454157618,
         "y": 2.48269734770568
       },
       "prevControl": {
-        "x": 9.072564391366816,
+        "x": 8.896901843180094,
         "y": 2.48269734770568
       },
       "nextControl": {
-        "x": 8.293678213604645,
+        "x": 8.118015665417923,
         "y": 2.48269734770568
       },
       "isLocked": false,
@@ -32,16 +32,16 @@
     },
     {
       "anchor": {
-        "x": 11.338495715513847,
-        "y": 1.8268905011355192
+        "x": 12.989723668463029,
+        "y": 2.318745636064738
       },
       "prevControl": {
-        "x": 11.171616294734958,
-        "y": 1.8312820648417858
+        "x": 11.970880888980037,
+        "y": 0.843180231296268
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red Bottom Far shoot"
     }
   ],
   "rotationTargets": [
@@ -57,7 +57,54 @@
     }
   ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "deploy",
+      "waypointRelativePos": 0.6,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "deployIntake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.2,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAim"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -70,7 +117,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "3 Piece AutoAim Paths",
   "previewStartingState": {
     "rotation": 33.49518467426018,
     "velocity": 0

@@ -3,48 +3,59 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.24,
-        "y": 5.54
+        "x": 2.756752180171027,
+        "y": 6.398175637881329
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2812844056452324,
-        "y": 5.54
+        "x": 2.7980365858162592,
+        "y": 6.398175637881329
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Top Piece shot blue "
     },
     {
       "anchor": {
-        "x": 3.06,
+        "x": 2.918404239090931,
         "y": 5.54
       },
       "prevControl": {
-        "x": 3.0100000000000002,
-        "y": 5.54
+        "x": 3.1291992969149973,
+        "y": 5.890550782528099
       },
       "nextControl": {
-        "x": 3.11,
-        "y": 5.54
+        "x": 2.8926377069405276,
+        "y": 5.497150427995812
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.24,
+        "x": 2.304825593257744,
         "y": 5.54
       },
       "prevControl": {
-        "x": 2.2514214259197765,
-        "y": 5.635230651999767
+        "x": 2.5553683061717036,
+        "y": 5.187900589781208
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.25,
+      "rotationDegrees": -90.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.25,
+      "rotationDegrees": -90.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -53,24 +64,43 @@
       "command": {
         "type": "parallel",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAim"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
+            }
+          ]
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "3 Piece AutoAim Paths",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

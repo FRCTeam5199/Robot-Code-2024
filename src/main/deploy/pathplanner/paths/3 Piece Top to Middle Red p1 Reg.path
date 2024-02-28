@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 15.403407417371094,
-        "y": 6.625881904510252
+        "x": 15.367023487256676,
+        "y": 6.780574360007493
       },
       "isLocked": false,
       "linkedName": "top starting point red"
     },
     {
       "anchor": {
-        "x": 14.5,
-        "y": 7.0
+        "x": 14.383313217411029,
+        "y": 7.038212764014687
       },
       "prevControl": {
-        "x": 15.485446659731426,
-        "y": 7.0
+        "x": 14.825961936538535,
+        "y": 6.923294346548892
       },
       "nextControl": {
-        "x": 13.514553340268574,
-        "y": 7.0
+        "x": 13.165386216649752,
+        "y": 7.3544053507507865
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 6.616622648366552
       },
       "prevControl": {
-        "x": 14.090542303766492,
-        "y": 8.137313280941108
+        "x": 13.08341036082928,
+        "y": 6.9328152351026535
       },
       "nextControl": null,
       "isLocked": false,
@@ -66,27 +66,10 @@
   ],
   "eventMarkers": [
     {
-      "name": "Deploy Intake",
-      "waypointRelativePos": 0.5,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "deployIntake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.7,
+      "waypointRelativePos": 1.35,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -101,18 +84,18 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": -25.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 Piece Paths",
+  "folder": "3 Piece Reg Paths",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

@@ -3,59 +3,92 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.125674813403833,
-        "y": 4.754599637587292
+        "x": 0.83,
+        "y": 4.46
       },
       "prevControl": null,
       "nextControl": {
-        "x": 13.423024620656948,
-        "y": 4.988816368502922
+        "x": 0.9299999999999999,
+        "y": 4.46
       },
       "isLocked": false,
-      "linkedName": "middle shooting point"
+      "linkedName": "Bottom Blue Starting Pos"
     },
     {
       "anchor": {
-        "x": 13.55184382266054,
-        "y": 5.52
+        "x": 2.0,
+        "y": 1.75
       },
       "prevControl": {
-        "x": 13.4935519365205,
-        "y": 5.066861217560786
+        "x": 1.1028187012992872,
+        "y": 2.1916624471943504
       },
       "nextControl": {
-        "x": 13.62210884193523,
-        "y": 6.066213330714821
+        "x": 2.897181298700713,
+        "y": 1.3083375528056496
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.254494015407433,
-        "y": 5.52
+        "x": 8.0,
+        "y": 0.75
       },
       "prevControl": {
-        "x": 13.739162411639393,
-        "y": 5.52
+        "x": 7.0,
+        "y": 0.75
+      },
+      "nextControl": {
+        "x": 8.48,
+        "y": 0.75
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.7850061434787623,
+        "y": 2.775468261350217
+      },
+      "prevControl": {
+        "x": 3.6850061434787627,
+        "y": 2.775468261350217
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Bottom Blue Far Link"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 90.0,
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": 0.0,
       "rotateFast": false
     }
   ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "retractIntake",
-      "waypointRelativePos": 1.35,
+      "name": "Deploy Intake",
+      "waypointRelativePos": 1.6,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "deployIntake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Retract Intake",
+      "waypointRelativePos": 2.15,
       "command": {
         "type": "parallel",
         "data": {
@@ -64,35 +97,6 @@
               "type": "named",
               "data": {
                 "name": "retractIntake"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoAim"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "revShooter"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 2.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "shoot"
               }
             }
           ]
@@ -108,11 +112,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 148.39249775375137,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "3 Piece AutoAim Paths",
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }

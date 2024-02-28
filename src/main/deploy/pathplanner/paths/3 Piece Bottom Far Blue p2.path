@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.08490900006051,
-        "y": 1.8503121742334787
+        "x": 3.7850061434787623,
+        "y": 2.775468261350217
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.08490900006051,
-        "y": 1.8503121742334787
+        "x": 4.785006143478761,
+        "y": 2.775468261350217
       },
       "isLocked": false,
       "linkedName": "Bottom Blue Far Link"
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 5.08490900006051,
-        "y": 1.8503121742334787
+        "x": 3.7850061434787623,
+        "y": 2.775468261350217
       },
       "prevControl": {
-        "x": 6.08490900006051,
-        "y": 1.8503121742334787
+        "x": 4.785006143478761,
+        "y": 2.775468261350217
       },
       "nextControl": null,
       "isLocked": false,
@@ -100,7 +100,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "3 Piece AutoAim Paths",
   "previewStartingState": {
     "rotation": 143.130102354156,
     "velocity": 0
