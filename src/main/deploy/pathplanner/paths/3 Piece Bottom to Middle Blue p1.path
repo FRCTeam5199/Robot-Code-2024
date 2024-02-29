@@ -16,32 +16,16 @@
     },
     {
       "anchor": {
-        "x": 2.5671635958656545,
-        "y": 4.086256237745982
+        "x": 2.051802334703099,
+        "y": 3.9816844255657124
       },
       "prevControl": {
-        "x": 1.8182374966630883,
-        "y": 4.126377278774689
+        "x": 1.6136451470566713,
+        "y": 4.008239406635193
       },
       "nextControl": {
-        "x": 2.6670204090926632,
-        "y": 4.0809067656088205
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.25,
-        "y": 4.086256237745982
-      },
-      "prevControl": {
-        "x": 2.347087895775739,
-        "y": 3.9973584128740915
-      },
-      "nextControl": {
-        "x": 2.152912104224261,
-        "y": 4.175154062617873
+        "x": 2.4382599407138885,
+        "y": 3.9582627524741496
       },
       "isLocked": false,
       "linkedName": null
@@ -62,7 +46,12 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 0.85,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.6,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -71,7 +60,7 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.5500000000000003,
+      "waypointRelativePos": 1.6,
       "command": {
         "type": "sequential",
         "data": {
@@ -81,18 +70,6 @@
               "data": {
                 "name": "retractIntake"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoAim"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "revShooter"
-              }
             }
           ]
         }
@@ -100,7 +77,7 @@
     },
     {
       "name": "shoot",
-      "waypointRelativePos": 3.0,
+      "waypointRelativePos": 2.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -116,12 +93,6 @@
               "data": {
                 "waitTime": 0.25
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoAimOff"
-              }
             }
           ]
         }
@@ -129,8 +100,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

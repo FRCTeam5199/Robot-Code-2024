@@ -190,7 +190,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     public Command runAutonShooting() {
-        return new SequentialCommandGroup(runShooterAtPercent(.80), new WaitCommand(1), setIndexerSpeed(.2),
+        return new SequentialCommandGroup(runShooterAtPercent(.75), new WaitCommand(1), setIndexerSpeed(.2),
                 new WaitCommand(0.3), runShooterAtPercent(0), setIndexerSpeed(0));
     }
 

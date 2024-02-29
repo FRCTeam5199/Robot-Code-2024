@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.78,
-      "y": 4.55
+      "x": 15.730059420175902,
+      "y": 4.461828723942754
     },
     "rotation": -123.11472942132329
   },
@@ -14,7 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "SbackShot"
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAimOff"
           }
         },
         {
@@ -27,6 +39,18 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom to Middle Red p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -45,6 +69,18 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom to Middle Red p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         }
       ]

@@ -3,55 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.77690276635903,
-        "y": 4.555515416309007
+        "x": 15.730059420175902,
+        "y": 4.461828723942754
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.980565881245886,
-        "y": 4.321298685393376
+        "x": 14.933722535062758,
+        "y": 4.227611993027124
       },
       "isLocked": false,
       "linkedName": " bottom start point red"
     },
     {
       "anchor": {
-        "x": 14.266204851953214,
-        "y": 4.215901156481343
+        "x": 14.172518159586959,
+        "y": 4.20419031993556
       },
       "prevControl": {
-        "x": 15.655182044682231,
-        "y": 4.481875512535838
+        "x": 14.758177083532992,
+        "y": 4.20419031993556
       },
       "nextControl": {
-        "x": 13.715795534301485,
-        "y": 4.110503627569309
+        "x": 13.680663024664137,
+        "y": 4.20419031993556
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.125674813403833,
-        "y": 4.754599637587292
+        "x": 14.172518159586959,
+        "y": 4.89512967613667
       },
       "prevControl": {
-        "x": 14.07883146721913,
-        "y": 3.7474676946473435
+        "x": 14.055409794129146,
+        "y": 4.227611993027124
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "middle shooting point"
+      "linkedName": "Top Piece shot red"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0.15,
       "rotationDegrees": 180.0,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 1.65,
+      "waypointRelativePos": 1.7,
       "rotationDegrees": 180.0,
       "rotateFast": false
     }
@@ -59,8 +59,8 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 2.5,
-      "maxWaypointRelativePos": 2.75,
+      "minWaypointRelativePos": 1.5,
+      "maxWaypointRelativePos": 1.75,
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 1.0,
@@ -72,7 +72,7 @@
   "eventMarkers": [
     {
       "name": "RetractIntake",
-      "waypointRelativePos": 1.65,
+      "waypointRelativePos": 1.4,
       "command": {
         "type": "sequential",
         "data": {
@@ -98,34 +98,17 @@
           ]
         }
       }
-    },
-    {
-      "name": "shoot",
-      "waypointRelativePos": 2.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "shoot"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 8.746162262555297,
     "rotateFast": false
   },
   "reversed": false,

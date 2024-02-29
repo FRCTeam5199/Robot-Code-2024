@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
@@ -60,7 +61,7 @@ public class Autos extends Command {
                 shooter.setIndexerSpeed(-.4),
                 arm.rotateIntake(),
                 intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
-                shooter.runShooterAtPercent(-.6)));
+                shooter.runShooterAtPercent(-.4)));
 
         NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
                 arm.setArmSetpoint(50),
@@ -73,15 +74,16 @@ public class Autos extends Command {
                 new WaitCommand(0.5),
                 shooter.setIndexerSpeed(0),
                 intake.setIntakeSpeed(0),
-                arm.isAiming(false)));
+                arm.isAiming(false),
+                shooter.runShooterAtPercent(1)));
 
 
         NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(60), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
         NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(65), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("autoAim", new SequentialCommandGroup(runOnce(() -> enableAutoAim = true), arm.isAutoAiming(true), arm.isAiming(false), runOnce(() -> shooter.autoTargeting = true), shooter.runShooterPredeterminedRPM()));
-        NamedCommands.registerCommand("shoot", new SequentialCommandGroup(shooter.setIndexerSpeed(.4), new WaitCommand(.1), shooter.setIndexerSpeed(0)));
-        NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false), arm.isAiming(false), shooter.runShooterAtPercent(0), runOnce(() -> shooter.autoTargeting = false)));
+        //NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
+        NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), arm.isAiming(false), shooter.runShooterAtPercent(1), new WaitCommand(1), shooter.setIndexerSpeed(.4), new WaitCommand(.5), arm.isAutoAiming(false), arm.isAiming(false), shooter.runShooterAtPercent(0),shooter.setIndexerSpeed(0)));
+        NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false)));
 
         Shuffleboard.getTab("Autons").add("Side", side);
         side.addOption("Red Side", true);
@@ -234,7 +236,7 @@ public class Autos extends Command {
     }
 
     public Command threePieceBtMBlue() {
-        return AutoBuilder.buildAuto("3 Piece Bottom to Middle Blue");
+        return new PathPlannerAuto("3 Piece Bottom to Middle Blue");
     }
 
     //Three Piece AutoAim Autons
