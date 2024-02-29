@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.090542303766492,
-        "y": 6.616622648366552
+        "x": 14.125674813403833,
+        "y": 4.754599637587292
       },
       "prevControl": null,
       "nextControl": {
-        "x": 13.809482226667734,
-        "y": 6.558068465637644
+        "x": 13.873677206212825,
+        "y": 4.870980357231286
       },
       "isLocked": false,
-      "linkedName": "3 Piece Top to Middle Red p1 END"
+      "linkedName": "middle shooting point"
     },
     {
       "anchor": {
-        "x": 13.715795534301481,
-        "y": 5.55
+        "x": 13.55184382266054,
+        "y": 5.45
       },
       "prevControl": {
-        "x": 13.193066045086793,
-        "y": 5.772036305175138
+        "x": 13.43427145831081,
+        "y": 5.005279032267182
       },
       "nextControl": {
-        "x": 13.961723101762892,
-        "y": 5.445538993788401
+        "x": 13.577403032301786,
+        "y": 5.546678471246265
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.207650669224307,
-        "y": 5.5040931765173085
+        "x": 14.254494015407433,
+        "y": 5.52
       },
       "prevControl": {
-        "x": 14.107650669224308,
-        "y": 5.5040931765173085
+        "x": 13.739162411639393,
+        "y": 5.52
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,15 +47,15 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.5,
-      "rotationDegrees": -120.0,
+      "rotationDegrees": 90.0,
       "rotateFast": false
     }
   ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Retract Intake",
-      "waypointRelativePos": 1.05,
+      "name": "retractIntake",
+      "waypointRelativePos": 1.35,
       "command": {
         "type": "sequential",
         "data": {

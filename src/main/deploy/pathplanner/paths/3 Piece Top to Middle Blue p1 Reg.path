@@ -1,0 +1,126 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.83,
+        "y": 6.62
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 0.9687195541414795,
+        "y": 6.630576475284029
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.756752180171027,
+        "y": 6.99697836554143
+      },
+      "prevControl": {
+        "x": 2.691105656269221,
+        "y": 7.308799354075
+      },
+      "nextControl": {
+        "x": 2.7962199514142627,
+        "y": 6.809506452136066
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.756752180171027,
+        "y": 6.398175637881329
+      },
+      "prevControl": {
+        "x": 2.8258207798466874,
+        "y": 6.802720293124486
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Top Piece shot blue "
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.95,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "retractIntake",
+      "waypointRelativePos": 1.45,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "topShot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "shoot",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAimOff"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.5,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -160.2328313232083,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "3 Piece Reg Paths",
+  "previewStartingState": {
+    "rotation": 56.989999999999995,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}
