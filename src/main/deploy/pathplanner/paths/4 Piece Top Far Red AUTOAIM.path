@@ -160,12 +160,6 @@
               "data": {
                 "name": "autoAim"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "revShooter"
-              }
             }
           ]
         }
@@ -175,7 +169,7 @@
       "name": "autoaim off",
       "waypointRelativePos": 2.35,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -192,7 +186,7 @@
       "name": "deployintake",
       "waypointRelativePos": 2.6,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -313,7 +307,7 @@
       "name": "shoot",
       "waypointRelativePos": 6.0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
