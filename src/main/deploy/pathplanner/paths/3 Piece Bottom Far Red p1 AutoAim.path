@@ -62,7 +62,7 @@
       "name": "retract",
       "waypointRelativePos": 1.2,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {

@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 
+import java.sql.Driver;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -77,10 +78,11 @@ public class AprilTagSubsystem extends SubsystemBase {
     public PhotonTrackedTarget[] bestTargetFromCameras;
     public MultiTargetPNPResult[] multiTargetPNPResults;
     public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    public PIDController aim = new PIDController(.13, 0, .01);
+    public SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
+    //    double z = tz.getDouble(0);
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
     SwerveDrive drive = TunerConstants.DriveTrain;
-    //    double z = tz.getDouble(0);
-
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
     PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
     //PhotonPoseEstimator poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[1]);
@@ -120,16 +122,12 @@ public class AprilTagSubsystem extends SubsystemBase {
      *
      * @return "Red" or "Blue"
      */
-    public static Alliance getAllianceColor() {
-        System.out.println(Autos.getAllianceColor());
-        return Autos.getAllianceColor();
-    }
 
     @Override
     public void periodic() {
         // ally = getAllianceColor();
         // System.out.println(ally);
-        getAllianceColor();
+//        getAllianceColor();
 //        try {
 //            Thread.sleep(1000);
 //        } catch (InterruptedException e) {
@@ -242,49 +240,35 @@ public class AprilTagSubsystem extends SubsystemBase {
     /**
      * Sets the robots heading to align with the goal based on the position of the bot on the field.
      */
-    public Command speakerAlignment() {
-        PIDController aim = new PIDController(.13, 0, .01);
-        SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
-        Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
-        Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
-        if (getAllianceColor() == Alliance.Red) {
-            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
-        } else if (getAllianceColor() == Alliance.Blue) {
-            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate((drive.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees()), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
-
-        } else {
-            return runOnce(() -> System.out.println("Get Alliance Color is Null"));
-        }
+//    public Command speakerAlignment() {
+//
 //        if (getAllianceColor() == Alliance.Red) {
-   //         return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
-//        } else if (getAllianceColor() == Alliance.Blue) {
+//            System.out.println("speakerAlignment RED");
+//            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
+//        } else if (DriverStation.getAlliance().get() == Alliance.Blue) {
+//            System.out.println("speakerAlignment BLUE");
+//            return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate((drive.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees()), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
 //        } else {
-//            return runOnce(() -> System.out.println("Get Alliance Color is Null"));
+//            System.out.println("speakerAlignment NULL");
+//            return this.runOnce(() -> System.out.println("speakerAlignment NULL"));
 //        }
+//    }
+    public Command speakerAlignmentRed() {
+        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
     }
 
-    public double autonSpeakerAlignment() {
-        PIDController aim = new PIDController(.13, 0, .01);
-        SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
-        Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
-        Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
-        if (getAllianceColor() == Alliance.Red) {
-            return aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))));
-        } else if (getAllianceColor() == Alliance.Blue) {
-            return aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))));
-        } else {
-            System.out.println("Get Alliance Color is Null");
-            return 0;
-        }
+    public Command speakerAlignementBlue() {
+        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate((drive.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees()), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
     }
+
 
     public Rotation2d autonAim() {
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
         Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
-        if (getAllianceColor() == Alliance.Red) {
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
             // System.out.println("red");
             return new Rotation2d(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX())));
-        } else if (getAllianceColor() == Alliance.Blue) {
+        } else if (DriverStation.getAlliance().get() == Alliance.Blue) {
             return new Rotation2d(Math.atan(5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()));
         } else {
             System.out.println("Get Alliance Color is Null");
@@ -364,23 +348,5 @@ public class AprilTagSubsystem extends SubsystemBase {
     //         }
     //     }
 
-    public double armSpeakersAligning() {
-        double angleForArm = 0;
-        // slightly in front of april tag so it doesnt aim out of field
-        double distanceFromRobot = 0;
-        // if (getAllianceColor().equals("Blue")) {
-        // distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(2, 218.42));
-        // } else if (getAllianceColor().equals("Red")) {
-        distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
-        // }
 
-        double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (0.690 - 0.635) / (5.7912 - 1.27) + 0.635;
-        double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
-        // System.out.println(distanceAimSpeaker);
-        distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
-        angleForArm = Math.toDegrees(Math.atan(speakerHeight / distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;
-        // System.out.println("angle:   " + angleForArm);
-
-        return angleForArm;
-    }
 }

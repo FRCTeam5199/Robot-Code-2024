@@ -79,9 +79,9 @@ public class Autos extends Command {
         NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(60), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
         NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(65), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("autoAim", new SequentialCommandGroup(runOnce(() -> enableAutoAim = true), arm.isAutoAiming(true), arm.isAiming(false), runOnce(()->shooter.autoTargeting = true),  shooter.runShooterPredeterminedRPM()));
+        NamedCommands.registerCommand("autoAim", new SequentialCommandGroup(runOnce(() -> enableAutoAim = true), arm.isAutoAiming(true), arm.isAiming(false), runOnce(() -> shooter.autoTargeting = true), shooter.runShooterPredeterminedRPM()));
         NamedCommands.registerCommand("shoot", new SequentialCommandGroup(shooter.setIndexerSpeed(.4), new WaitCommand(.1), shooter.setIndexerSpeed(0)));
-        NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false), arm.isAiming(false), shooter.runShooterAtPercent(0), runOnce(()-> shooter.autoTargeting = false)));
+        NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false), arm.isAiming(false), shooter.runShooterAtPercent(0), runOnce(() -> shooter.autoTargeting = false)));
 
         Shuffleboard.getTab("Autons").add("Side", side);
         side.addOption("Red Side", true);
@@ -130,17 +130,6 @@ public class Autos extends Command {
 
         autonChooserRed.setDefaultOption("doNothing", doNothing());
         autonChooserBlue.setDefaultOption("doNothing", doNothing());
-    }
-
-    public static DriverStation.Alliance getAllianceColor() {
-        if (autonChooserRed.getSelected() != null && autonChooserBlue.getSelected() != null) {
-            if (!autonChooserRed.getSelected().getName().contains("15")) {
-                return DriverStation.Alliance.Red;
-            } else if (!autonChooserBlue.getSelected().getName().contains("15")) {
-                return DriverStation.Alliance.Blue;
-            }
-        }
-        return DriverStation.Alliance.Red;
     }
 
     public Command getAuton() {

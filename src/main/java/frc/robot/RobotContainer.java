@@ -95,6 +95,12 @@ public class RobotContainer {
      * Configures the bindings for commands
      */
     private void configureBindings() {
+        ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
+                aprilTags.speakerAlignmentRed(),
+                aprilTags.speakerAlignementBlue(),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+        );
+
 
         intakeAction = new SequentialCommandGroup(
                 arm.isAiming(true),
@@ -125,7 +131,7 @@ public class RobotContainer {
 
         new Trigger(() -> shooterSubsystem.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
         new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-        
+
         // new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
         //         if (DriverStation.isDisabled()) {
         //             ArmSubsystem.toggleBrakeMode();
@@ -137,7 +143,7 @@ public class RobotContainer {
             }
         }));
 
-                //         // Drive
+        //         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
                                 .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(1) // Drive
@@ -169,7 +175,7 @@ public class RobotContainer {
         // mainCommandXboxController.povRight().onTrue(arm.decreaseOffset(4));
         mainCommandXboxController.rightBumper().onTrue(shooterSubsystem.setIndexerSpeed(.4)).onFalse(shooterSubsystem.setIndexerSpeed(0));
 
-        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), aprilTags.speakerAlignment(), arm.isAiming(false).andThen(()->shooterSubsystem.ampMode = false))).onFalse(arm.isAutoAiming(false));
+        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), speakerAutoDriveAutoAim, arm.isAiming(false).andThen(() -> shooterSubsystem.ampMode = false))).onFalse(arm.isAutoAiming(false));
 
 
         mainCommandXboxController.povUp().onTrue(arm.isAiming(true).andThen(arm.rotateAmp()).andThen(auton.goToAmpRed())).onFalse(arm.isAiming(false));
@@ -195,7 +201,7 @@ public class RobotContainer {
                         // based on climbing on or of
                         () -> shooterSubsystem.ampMode)))).whileFalse(
 
-                                shooterSubsystem.runShooterAtPercent(0).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> shooterSubsystem.autoTargeting = false).andThen(shooterSubsystem.runShooterAtRpm(2000).onlyIf(()->arm.autoAiming)))));
+                shooterSubsystem.runShooterAtPercent(0).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> shooterSubsystem.autoTargeting = false).andThen(shooterSubsystem.runShooterAtRpm(2000).onlyIf(() -> arm.autoAiming)))));
 
 
         mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);

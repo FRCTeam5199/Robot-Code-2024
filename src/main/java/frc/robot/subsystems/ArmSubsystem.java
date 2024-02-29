@@ -8,7 +8,10 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
@@ -36,6 +39,8 @@ public class ArmSubsystem extends SubsystemBase {
     private double rotateSetpoint = 120;
     private double rotateOffset;
 
+    private ConditionalCommand autoAimArmSide;
+
     public ArmSubsystem() {
     }
 
@@ -56,16 +61,18 @@ public class ArmSubsystem extends SubsystemBase {
         armMotorR.setBrake(isBrakeMode);
     }
 
+    public static void setBrakeTrue() {
+        armMotorL.setBrake(true);
+
+        armMotorR.setBrake(true);
+    }
+
     /**
      * init for arm and pid controller
      */
     public void init() {
         motorInit();
-        //  try { motorInit(); } catch (Exception exception) {
-        // 	System.err.println("One or more issues occured while trying to initalize motors for Arm Subsystem");
-        // 	System.err.println("Exception Message:" + exception.getMessage());
-        // 	System.err.println("Exception Cause:" + exception.getCause());
-        // 	System.err.println("Exception Stack Trace:" + exception.getStackTrace()); }
+
 
         try {
             PIDInit();
@@ -142,42 +149,41 @@ public class ArmSubsystem extends SubsystemBase {
             encoderValue = 140;
         } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 361) {
             encoderValue = 0;
-        } 
+        }
 
         if (inAuton) {
             goToSetpoint(rotateSetpoint, rotateOffset);
         }
         if (autoAiming == false) {
             if (isAiming) {
-                    rotatePIDController.setPID(0.0061262, 0.00472673212, 0.00);
-                    rotatePIDController.setIZone(3);
-                
+                rotatePIDController.setPID(0.0061262, 0.00472673212, 0.00);
+                rotatePIDController.setIZone(3);
+
                 goToSetpoint(rotateSetpoint, rotateOffset);
 
             } else {
                 goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
             }
         } else {
-            if(rotatePIDController.calculate(encoderValue, aprilTagSubsystem.armSpeakersAligning())  > 0){
-                    rotatePIDController.setIZone(2);
-                    rotatePIDController.setPID(0.0091262, 0.0089673212, 0.00);
-                }
-                else if (rotatePIDController.calculate(encoderValue, aprilTagSubsystem.armSpeakersAligning())  < 0){
-                    rotatePIDController = new PIDController(0.00019262, 0.000309673212, 0.00);
-                    rotatePIDController.setIZone(3);
-                }
-                System.out.println(aprilTagSubsystem.armSpeakersAligning());
-                goToSetpoint(aprilTagSubsystem.armSpeakersAligning(), 0);
-            
+            if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+                rotateSetpoint = armSpeakersAligningRed();
+            } else {
+                rotateSetpoint = armSpeakersAligningBlue();
+            }
+
+            if (rotatePIDController.calculate(encoderValue, rotateSetpoint) > 0) {
+                rotatePIDController.setIZone(2);
+                rotatePIDController.setPID(0.0091262, 0.0089673212, 0.00);
+            } else if (rotatePIDController.calculate(encoderValue, rotateSetpoint) < 0) {
+                rotatePIDController = new PIDController(0.00019262, 0.000309673212, 0.00);
+                rotatePIDController.setIZone(3);
+            }
+//                System.out.println(aprilTagSubsystem.armSpeakersAligning());
+            goToSetpoint(rotateSetpoint, 0);
+
             // System.out.println("april tag value arm "  + aprilTagSubsystem.armSpeakersAligning());
             // System.out.println("encoder value     " + encoderValue);
         }
-    }
-
-    public static void setBrakeTrue(){
-        armMotorL.setBrake(true);
-
-        armMotorR.setBrake(true);
     }
 
     private void goToSetpoint(double rotateSetpoint, double rotateOffset) {
@@ -188,6 +194,34 @@ public class ArmSubsystem extends SubsystemBase {
             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
             armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
         }
+    }
+
+    public double armSpeakersAligningRed() {
+        double angleForArm = 0;
+        double distanceFromRobot = 0;
+        distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
+        // }
+
+        double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (0.690 - 0.635) / (5.7912 - 1.27) + 0.635;
+        double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
+        distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
+        angleForArm = Math.toDegrees(Math.atan(speakerHeight / distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;
+
+        return angleForArm;
+    }
+
+    public double armSpeakersAligningBlue() {
+        double angleForArm = 0;
+        double distanceFromRobot = 0;
+        distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547));
+        // }
+
+        double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (0.690 - 0.635) / (5.7912 - 1.27) + 0.635;
+        double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
+        distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
+        angleForArm = Math.toDegrees(Math.atan(speakerHeight / distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;
+
+        return angleForArm;
     }
 
 

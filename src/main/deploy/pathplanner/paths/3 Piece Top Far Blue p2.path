@@ -62,7 +62,7 @@
       "name": "Deploy Intake",
       "waypointRelativePos": 0.75,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -79,7 +79,7 @@
       "name": "Retract Intake",
       "waypointRelativePos": 1.5,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {

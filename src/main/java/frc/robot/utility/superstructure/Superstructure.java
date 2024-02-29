@@ -17,6 +17,7 @@ public class Superstructure {
     public static boolean getClimbButtonPressed() {
         return stop;
     }
+
     public static boolean getBrakeButtonPressed() {
         return brake;
     }

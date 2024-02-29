@@ -86,7 +86,7 @@
       "name": "shoot",
       "waypointRelativePos": 2.0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
