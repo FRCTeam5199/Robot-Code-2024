@@ -154,7 +154,7 @@ public class ArmSubsystem extends SubsystemBase {
         if (inAuton) {
             goToSetpoint(rotateSetpoint, rotateOffset);
         }
-        if (autoAiming == false) {
+        if (!autoAiming) {
             if (isAiming) {
                 rotatePIDController.setPID(0.0061262, 0.00472673212, 0.00);
                 rotatePIDController.setIZone(3);
@@ -197,10 +197,9 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double armSpeakersAligningRed() {
-        double angleForArm = 0;
-        double distanceFromRobot = 0;
+        double angleForArm;
+        double distanceFromRobot;
         distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
-        // }
 
         double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (0.690 - 0.635) / (5.7912 - 1.27) + 0.635;
         double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
@@ -211,10 +210,9 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double armSpeakersAligningBlue() {
-        double angleForArm = 0;
-        double distanceFromRobot = 0;
+        double angleForArm;
+        double distanceFromRobot;
         distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547));
-        // }
 
         double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (0.690 - 0.635) / (5.7912 - 1.27) + 0.635;
         double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
