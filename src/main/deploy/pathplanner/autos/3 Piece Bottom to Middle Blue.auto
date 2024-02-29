@@ -1,6 +1,12 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 0.8207147183525153,
+      "y": 4.459858150485532
+    },
+    "rotation": -52.5
+  },
   "command": {
     "type": "sequential",
     "data": {
@@ -32,6 +38,18 @@
         {
           "type": "named",
           "data": {
+            "name": "bottomShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "deployIntake"
           }
         },
@@ -39,6 +57,12 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Bottom to Middle Blue p2 Reg"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "midShot"
           }
         }
       ]

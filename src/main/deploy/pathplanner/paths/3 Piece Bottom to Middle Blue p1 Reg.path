@@ -8,52 +8,36 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0680920648574521,
-        "y": 4.016816935203058
+        "x": 1.2745940876497155,
+        "y": 4.193450694593698
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.5671635958656545,
-        "y": 4.086256237745982
+        "x": 2.705300795216977,
+        "y": 4.213184580215315
       },
       "prevControl": {
-        "x": 1.8182374966630883,
-        "y": 4.126377278774689
+        "x": 1.9850139700279419,
+        "y": 4.272386237080167
       },
       "nextControl": {
-        "x": 2.6670204090926632,
-        "y": 4.0809067656088205
+        "x": 2.804964722571145,
+        "y": 4.20499302454237
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.25,
-        "y": 4.086256237745982
+        "x": 2.616498309919698,
+        "y": 4.805201148863836
       },
       "prevControl": {
-        "x": 2.347087895775739,
-        "y": 3.9973584128740915
-      },
-      "nextControl": {
-        "x": 2.152912104224261,
-        "y": 4.175154062617873
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.5671635958656545,
-        "y": 4.672623781766821
-      },
-      "prevControl": {
-        "x": 2.754452527449989,
-        "y": 4.262744502664469
+        "x": 2.705300795216977,
+        "y": 4.631903288825782
       },
       "nextControl": null,
       "isLocked": false,
@@ -71,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.5500000000000003,
+      "waypointRelativePos": 1.5,
       "command": {
         "type": "sequential",
         "data": {
@@ -80,41 +64,6 @@
               "type": "named",
               "data": {
                 "name": "retractIntake"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "bottomShot"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "shoot",
-      "waypointRelativePos": 3.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "shoot"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 0.25
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoAimOff"
               }
             }
           ]

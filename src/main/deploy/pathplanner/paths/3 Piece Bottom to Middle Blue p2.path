@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.5671635958656545,
-        "y": 4.672623781766821
+        "x": 2.616498309919698,
+        "y": 4.805201148863836
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9418259121824937,
-        "y": 4.883418839590889
+        "x": 2.991160626236537,
+        "y": 5.0159962066879045
       },
       "isLocked": false,
       "linkedName": "Blue Bottom Note Shooting Pose"

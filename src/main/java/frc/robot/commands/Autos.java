@@ -80,8 +80,9 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(60), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(65), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        //NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
+        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(63), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
         NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), arm.isAiming(false), shooter.runShooterAtPercent(1), new WaitCommand(1), shooter.setIndexerSpeed(.4), new WaitCommand(.5), arm.isAutoAiming(false), arm.isAiming(false), shooter.runShooterAtPercent(0),shooter.setIndexerSpeed(0)));
         NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false)));
 
