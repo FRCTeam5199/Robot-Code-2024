@@ -1,6 +1,12 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 15.5,
+      "y": 6.6
+    },
+    "rotation": 121.0
+  },
   "command": {
     "type": "sequential",
     "data": {
@@ -14,7 +20,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 1.0
           }
         },
         {
@@ -26,7 +32,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom to Middle Blue p1 Reg"
+            "pathName": "3 Piece Bottom to Middle Red p1 Reg"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "topShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
           }
         },
         {
@@ -38,7 +62,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom to Middle Blue p2 Reg"
+            "pathName": "3 Piece Bottom to Middle Red p2 Reg"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "midShot"
           }
         }
       ]

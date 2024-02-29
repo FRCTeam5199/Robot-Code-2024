@@ -1,0 +1,143 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.83,
+        "y": 4.46
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.0680920648574521,
+        "y": 4.016816935203058
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.5671635958656545,
+        "y": 4.086256237745982
+      },
+      "prevControl": {
+        "x": 1.8182374966630883,
+        "y": 4.126377278774689
+      },
+      "nextControl": {
+        "x": 2.6670204090926632,
+        "y": 4.0809067656088205
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.25,
+        "y": 4.086256237745982
+      },
+      "prevControl": {
+        "x": 2.347087895775739,
+        "y": 3.9973584128740915
+      },
+      "nextControl": {
+        "x": 2.152912104224261,
+        "y": 4.175154062617873
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.5671635958656545,
+        "y": 4.672623781766821
+      },
+      "prevControl": {
+        "x": 2.754452527449989,
+        "y": 4.262744502664469
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Blue Bottom Note Shooting Pose"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.9,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "retractIntake",
+      "waypointRelativePos": 1.5500000000000003,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "bottomShot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "shoot",
+      "waypointRelativePos": 3.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.25
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "autoAimOff"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.5,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 155.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "3 Piece Reg Paths",
+  "previewStartingState": {
+    "rotation": 117.49255204445959,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}
