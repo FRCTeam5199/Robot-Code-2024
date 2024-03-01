@@ -5,33 +5,27 @@
       "x": 0.83,
       "y": 4.46
     },
-    "rotation": -60.0
+    "rotation": -53.165507787924554
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "backShot"
+            "pathName": "3 Piece Bottom Far Blue p1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom Far Blue p1 AutoAim"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3 Piece Bottom Far Blue p2 AUTOAIM"
+            "pathName": "3 Piece Bottom Far Blue p2"
           }
         }
       ]
     }
   },
-  "folder": "3 Piece AutoAim Autons",
+  "folder": "3 Piece Reg Autons",
   "choreoAuto": false
 }

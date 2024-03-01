@@ -16,28 +16,28 @@
     },
     {
       "anchor": {
-        "x": 2.756752180171027,
-        "y": 6.99697836554143
+        "x": 2.719320017812645,
+        "y": 6.780574360007493
       },
       "prevControl": {
-        "x": 2.691105656269221,
-        "y": 7.308799354075
+        "x": 3.047223441094527,
+        "y": 7.061634437106249
       },
       "nextControl": {
-        "x": 2.7962199514142627,
-        "y": 6.809506452136066
+        "x": 2.573860593882563,
+        "y": 6.655894853781708
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.756752180171027,
-        "y": 6.398175637881329
+        "x": 2.5202357965343594,
+        "y": 6.347273407813577
       },
       "prevControl": {
-        "x": 2.8258207798466874,
-        "y": 6.802720293124486
+        "x": 2.5893043962100197,
+        "y": 6.751818063056734
       },
       "nextControl": null,
       "isLocked": false,
@@ -70,12 +70,6 @@
               "data": {
                 "name": "retractIntake"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "topShot"
-              }
             }
           ]
         }
@@ -91,13 +85,7 @@
             {
               "type": "named",
               "data": {
-                "name": "shoot"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoAimOff"
+                "name": "topShot"
               }
             }
           ]
@@ -106,8 +94,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

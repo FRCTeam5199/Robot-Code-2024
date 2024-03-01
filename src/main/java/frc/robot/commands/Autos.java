@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -75,13 +76,15 @@ public class Autos extends Command {
                 shooter.setIndexerSpeed(0),
                 intake.setIntakeSpeed(0),
                 arm.isAiming(false),
-                shooter.runShooterAtPercent(1)));
+                shooter.runShooterAtPercent(.5)));
 
 
         NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(60), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(63), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(59), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61.5), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("bottomFarShot",new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(40), new WaitCommand(0.5), shooter.autoFarShot(), new WaitCommand(0.2), arm.isAiming(false)));
+
         NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
         NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), arm.isAiming(false), shooter.runShooterAtPercent(1), new WaitCommand(1), shooter.setIndexerSpeed(.4), new WaitCommand(.5), arm.isAutoAiming(false), arm.isAiming(false), shooter.runShooterAtPercent(0),shooter.setIndexerSpeed(0)));
         NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false)));
@@ -126,6 +129,7 @@ public class Autos extends Command {
 
         autonChooserBlue.addOption("threePieceTtMRed", threePieceTtMBlue());
         autonChooserBlue.addOption("threePieceBtMBlue", threePieceBtMBlue());
+        autonChooserBlue.addOption("threePieceTtMBlue", threePieceTtMBlue());
         autonChooserBlue.addOption("threePieceTtMAutoAimBlue", threePieceTtMAutoAimBlue());
         autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceBtMAutoAimBlue());
         autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceTopFarAutoAimBlue());
@@ -148,7 +152,14 @@ public class Autos extends Command {
 
     public Optional<Rotation2d> autoAim() {
         if (enableAutoAim) {
-            return Optional.of(aprilTags.autonAim());
+            if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+                return Optional.of(aprilTags.autonAimRed());
+            }else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue){
+                return Optional.of(aprilTags.autonAimBlue());
+            }
+            else{
+                return Optional.empty();
+            }
         } else {
             return Optional.empty();
         }
@@ -237,6 +248,7 @@ public class Autos extends Command {
     }
 
     public Command threePieceBtMBlue() {
+
         return new PathPlannerAuto("3 Piece Bottom to Middle Blue");
     }
 
@@ -278,6 +290,10 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("4 Piece Top to Bottom Red AUTOAIM");
     }
 
+
+    public Command test(){
+        return AutoBuilder.buildAuto("test");
+    }
     public Command goToClimb11() {
         return new PathfindHolonomic(
                 new Pose2d(11.9047, 3.713, new Rotation2d(60)),

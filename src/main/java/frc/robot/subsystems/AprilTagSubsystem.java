@@ -262,18 +262,14 @@ public class AprilTagSubsystem extends SubsystemBase {
     }
 
 
-    public Rotation2d autonAim() {
+    public Rotation2d autonAimRed() {
         Pose2d stagePoseRed = new Pose2d(16.579342, 5.547867999, new Rotation2d(180));
         Pose2d stagePoseBlue = new Pose2d(-0.038099999999999995, 5.547867999, new Rotation2d(0));
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
-            // System.out.println("red");
-            return new Rotation2d(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX())));
-        } else if (DriverStation.getAlliance().get() == Alliance.Blue) {
-            return new Rotation2d(Math.atan(5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()));
-        } else {
-            System.out.println("Get Alliance Color is Null");
-            return null;
-        }
+        return new Rotation2d(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX())));
+    }
+
+    public Rotation2d autonAimBlue(){
+        return new Rotation2d(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))).plus(Rotation2d.fromDegrees(180));
     }
 
 

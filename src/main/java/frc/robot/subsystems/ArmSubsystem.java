@@ -187,6 +187,10 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private void goToSetpoint(double rotateSetpoint, double rotateOffset) {
+        System.out.println("Rotate Setpoint: " + rotateSetpoint);
+        System.out.println("Arm Position: " + armEncoder.getPosition());
+
+        if (armEncoder.getPosition() < 0 || rotateSetpoint < 0) return;
         if (climbMode) {
             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
             armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);

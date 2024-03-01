@@ -240,6 +240,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
-        return auton.getAuton();
+        return auton.test();
     }
 }

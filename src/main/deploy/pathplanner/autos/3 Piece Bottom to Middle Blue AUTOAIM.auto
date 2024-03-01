@@ -46,6 +46,12 @@
           "data": {
             "pathName": "3 Piece Bottom to Middle Blue p2"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "midShot"
+          }
         }
       ]
     }

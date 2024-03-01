@@ -194,6 +194,14 @@ public class ShooterSubsystem extends SubsystemBase {
                 new WaitCommand(0.3), runShooterAtPercent(0), setIndexerSpeed(0));
     }
 
+    public Command autoFarShot(){
+        return new SequentialCommandGroup(runShooterAtPercent(1),
+                new WaitCommand(1),
+                setIndexerSpeed(.2),
+                new WaitCommand(0.3), runShooterAtPercent(0),
+                setIndexerSpeed(0));
+    }
+
     public Command autonSpeed(boolean side) {
         return this.runOnce(() -> this.autonSide = side);
     }

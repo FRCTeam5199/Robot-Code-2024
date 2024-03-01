@@ -3,66 +3,66 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.5202357965343594,
-        "y": 6.347273407813577
+        "x": 15.730059420175902,
+        "y": 4.461828723942754
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.543657469625922,
-        "y": 7.108477783289376
+        "x": 15.390445160350428,
+        "y": 3.665491838831879
       },
       "isLocked": false,
-      "linkedName": "Top Piece shot blue "
+      "linkedName": " bottom start point red"
     },
     {
       "anchor": {
-        "x": 2.918404239090931,
-        "y": 5.54
+        "x": 8.65671414652606,
+        "y": 0.7494935389322822
       },
       "prevControl": {
-        "x": 3.609343595292039,
-        "y": 6.382405917450922
+        "x": 9.148569281448882,
+        "y": 0.8314693947527537
       },
       "nextControl": {
-        "x": 2.88669569090724,
-        "y": 5.501340357320818
+        "x": 8.164859011603237,
+        "y": 0.6675176831118107
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.304825593257744,
-        "y": 5.54
+        "x": 11.397049898238935,
+        "y": 2.0259747224224673
       },
       "prevControl": {
-        "x": 2.5553683061717036,
-        "y": 5.187900589781208
+        "x": 10.846640580587206,
+        "y": 1.4287220585876108
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "3 Piece red far "
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.25,
-      "rotationDegrees": -112.42947083086484,
+      "waypointRelativePos": 0.85,
+      "rotationDegrees": 180.0,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 1.25,
-      "rotationDegrees": -129.30542139680296,
+      "waypointRelativePos": 1.4,
+      "rotationDegrees": 180.0,
       "rotateFast": false
     }
   ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "retractIntake",
-      "waypointRelativePos": 1.5,
+      "name": "retract",
+      "waypointRelativePos": 0.85,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
@@ -77,18 +77,21 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 2.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 34.45723886256567,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "3 Piece Reg Paths",
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "previewStartingState": {
+    "rotation": -122.47119229080108,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }

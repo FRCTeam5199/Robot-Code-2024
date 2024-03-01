@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.718348583636134,
-      "y": 4.520382906665266
+      "x": 15.730059420175902,
+      "y": 4.461828723942754
     },
-    "rotation": -122.73522627335957
+    "rotation": -124.09497795476555
   },
   "command": {
     "type": "sequential",
@@ -18,27 +18,21 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "deployIntake"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "3 Piece Bottom Far Red p1 AUTOAIM"
+            "waitTime": 0.4
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Bottom Far Red p2 AUTOAIM"
+            "pathName": "3 Piece Bottom Far Red p1"
           }
         },
         {
@@ -50,18 +44,24 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.25
+            "waitTime": 0.2
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Bottom Far Red p2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoAimOff"
+            "name": "shoot"
           }
         }
       ]
     }
   },
-  "folder": "3 Piece AutoAim Autons",
+  "folder": "3 Piece Reg Autons",
   "choreoAuto": false
 }

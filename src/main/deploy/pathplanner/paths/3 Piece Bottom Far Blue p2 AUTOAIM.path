@@ -3,73 +3,61 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.5,
-        "y": 6.6
+        "x": 3.7850061434787623,
+        "y": 2.775468261350217
       },
       "prevControl": null,
       "nextControl": {
-        "x": 15.403407417371094,
-        "y": 6.625881904510252
+        "x": 4.785006143478761,
+        "y": 2.775468261350217
       },
       "isLocked": false,
-      "linkedName": "top starting point red"
+      "linkedName": "Bottom Blue Far Link"
     },
     {
       "anchor": {
-        "x": 14.5,
-        "y": 7.0
+        "x": 8.0,
+        "y": 2.45
       },
       "prevControl": {
-        "x": 15.485446659731426,
-        "y": 7.0
+        "x": 7.0,
+        "y": 2.45
       },
       "nextControl": {
-        "x": 13.514553340268574,
-        "y": 7.0
+        "x": 8.5,
+        "y": 2.45
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.219361505770088,
-        "y": 6.335562571267796
+        "x": 3.7850061434787623,
+        "y": 2.775468261350217
       },
       "prevControl": {
-        "x": 14.219361505770088,
-        "y": 7.856253203842352
+        "x": 4.785006143478761,
+        "y": 2.775468261350217
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "3 Piece Top to Middle Red p1 END"
+      "linkedName": "Bottom Blue Far Link"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.1,
-      "rotationDegrees": -179.0,
+      "waypointRelativePos": 0.95,
+      "rotationDegrees": 0,
       "rotateFast": false
     }
   ],
-  "constraintZones": [
-    {
-      "name": "Intake",
-      "minWaypointRelativePos": 1.2,
-      "maxWaypointRelativePos": 1.65,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [
     {
       "name": "Deploy Intake",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.7,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -84,9 +72,9 @@
     },
     {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.7,
+      "waypointRelativePos": 1.6,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -108,11 +96,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 143.9239884436315,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 Piece Paths",
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "folder": "3 Piece AutoAim Paths",
+  "previewStartingState": {
+    "rotation": 143.130102354156,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }
