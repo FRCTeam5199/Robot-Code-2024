@@ -83,7 +83,7 @@ public class Autos extends Command {
         NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(59), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
         NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61.5), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("bottomFarShot",new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(40), new WaitCommand(0.5), shooter.autoFarShot(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("bottomFarShot",new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(45.5), new WaitCommand(0.5), shooter.autoFarShot(), new WaitCommand(0.2), arm.isAiming(false)));
 
         NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
         NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), arm.isAiming(false), shooter.runShooterAtPercent(1), new WaitCommand(1), shooter.setIndexerSpeed(.4), new WaitCommand(.5), arm.isAutoAiming(false), arm.isAiming(false), shooter.runShooterAtPercent(0),shooter.setIndexerSpeed(0)));
@@ -107,9 +107,9 @@ public class Autos extends Command {
         autonChooserRed.addOption("twoAndHalfBottomRed", twoAndHalfBottomRed());
 
         autonChooserRed.addOption("threePieceTtMRed", threePieceTtMRed());
-        autonChooserRed.addOption("threePieceTtMAutoAimRed", threePieceTtMAutoAimRed());
+   //     autonChooserRed.addOption("threePieceTtMAutoAimRed", threePieceTtMAutoAimRed());
         autonChooserRed.addOption("threePieceBtMAutoAimRed", threePieceBtMAutoAimRed());
-        autonChooserRed.addOption("threePieceBottomFarAutoAimRed", threePieceBottomFarAutoAimRed());
+    //    autonChooserRed.addOption("threePieceBottomFarAutoAimRed", threePieceBottomFarAutoAimRed());
 
         autonChooserRed.addOption("fourPieceTtBAutoAimRed", fourPieceTtBAutoAimRed());
         autonChooserRed.addOption("fourPieceTopFarAutoAimRed", fourPieceTopFarAutoAimRed());
@@ -127,13 +127,13 @@ public class Autos extends Command {
         autonChooserBlue.addOption("twoPieceBottomBlue", twoPieceBottomBlue());
         autonChooserBlue.addOption("twoAndHalfBottomBlue", twoAndHalfBottomBlue());
 
-        autonChooserBlue.addOption("threePieceTtMRed", threePieceTtMBlue());
         autonChooserBlue.addOption("threePieceBtMBlue", threePieceBtMBlue());
         autonChooserBlue.addOption("threePieceTtMBlue", threePieceTtMBlue());
-        autonChooserBlue.addOption("threePieceTtMAutoAimBlue", threePieceTtMAutoAimBlue());
-        autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceBtMAutoAimBlue());
-        autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceTopFarAutoAimBlue());
-        autonChooserBlue.addOption("threePieceBottomFarAutoAimBlue", threePieceBottomFarAutoAimBlue());
+      //  autonChooserBlue.addOption("threePieceTtMAutoAimBlue", threePieceTtMAutoAimBlue());
+      //  autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceBtMAutoAimBlue());
+      //  autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceTopFarAutoAimBlue());
+      //  autonChooserBlue.addOption("threePieceBottomFarAutoAimBlue", threePieceBottomFarAutoAimBlue());
+      //  autonChooserBlue.addOption("threePieceBottomFar", threePieceBottomFarBlue());
 
         autonChooserRed.setDefaultOption("doNothing", doNothing());
         autonChooserBlue.setDefaultOption("doNothing", doNothing());
@@ -279,6 +279,10 @@ public class Autos extends Command {
 
     public Command threePieceBottomFarAutoAimBlue() {
         return AutoBuilder.buildAuto("3 Piece Bottom Far Blue AUTOAIM");
+    }
+
+    public Command threePieceBottomFarBlue() {
+        return AutoBuilder.buildAuto("3 Piece Bottom Far Blue");
     }
 
     //Four Piece Autons

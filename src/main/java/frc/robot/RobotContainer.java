@@ -175,7 +175,7 @@ public class RobotContainer {
                         // normal aiming / auto aiming
                         new ConditionalCommand(
                                 new SequentialCommandGroup(new InstantCommand(() -> shooterSubsystem.autoTargeting = true), shooterSubsystem.runShooterPredeterminedRPM(), new InstantCommand(() -> shooterSubsystem.idleShooting = false)),
-                                new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), new InstantCommand(() -> shooterSubsystem.idleShooting = false), shooterSubsystem.runShooterPredeterminedRPM(), new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> shooterSubsystem.intakeShooter == false),
+                                new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), shooterSubsystem.runShooterPredeterminedRPM(), new InstantCommand(() -> shooterSubsystem.idleShooting = false), new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> !shooterSubsystem.intakeShooter),
                                 () -> arm.autoAiming == true),
 
                         // based on climbing on or of
@@ -240,6 +240,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
-        return auton.test();
+        return auton.getAuton();
     }
 }
