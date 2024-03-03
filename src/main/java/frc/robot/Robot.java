@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import org.photonvision.EstimatedRobotPose;
 
 import org.littletonrobotics.junction.inputs.LoggableInputs;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.LoggedRobot;
 
@@ -56,11 +57,12 @@ public class Robot extends LoggedRobot{
         // userInterface.initalizeGameTab();
 
         m_robotContainer = new RobotContainer();
+        Logger.addDataReceiver(new WPILOGWriter("/media/sda1/"));
         Logger.start();
     }
 
     /**
-     * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
+     * This function is called ev  ery 20 ms, no matter the mode. Use this for items like diagnostics
      * that you want ran during disabled, autonomous, teleoperated and test.
      *
      * <p>This runs after the mode specific periodic functions, but before LiveWindow and
@@ -80,7 +82,10 @@ public class Robot extends LoggedRobot{
         Logger.recordOutput("MyPose3dArray", poseA, poseB);
         Logger.recordOutput("MyPose3dArray", new Pose3d[] { poseA, poseB });
 
+        Logger.recordOutput("sticky fault boot during enbale ", drive.getPigeon2().getFault_BootDuringEnable().getValueAsDouble());
+        Logger.recordOutput("boot during enbale ", drive.getPigeon2().getStickyFault_BootDuringEnable().getValueAsDouble());
 
+        
         CommandScheduler.getInstance().run();
         // System.out.println(drive.getPose());
         Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();

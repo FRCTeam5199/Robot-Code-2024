@@ -143,7 +143,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private void subsystemPeriodic() {
-        if (armEncoder.getPosition() < 145) {
+        if (armEncoder.getPosition() < 145 && armEncoder.getPosition() > 0) {
             encoderValue = armEncoder.getPosition();
         } else if (armEncoder.getPosition() > 145 && armEncoder.getPosition() < 200) {
             encoderValue = 140;
@@ -187,10 +187,10 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private void goToSetpoint(double rotateSetpoint, double rotateOffset) {
-        System.out.println("Rotate Setpoint: " + rotateSetpoint);
-        System.out.println("Arm Position: " + armEncoder.getPosition());
+        // System.out.println("Rotate Setpoint: " + rotateSetpoint);
+        // System.out.println("Arm Position: " + armEncoder.getPosition());
 
-        if (armEncoder.getPosition() < 0 || rotateSetpoint < 0) return;
+        if (encoderValue < 0 || rotateSetpoint < 0) return;
         if (climbMode) {
             armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
             armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
@@ -205,7 +205,7 @@ public class ArmSubsystem extends SubsystemBase {
         double distanceFromRobot;
         distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
 
-        double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (0.690 - 0.635) / (5.7912 - 1.27) + 0.635;
+        double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (0.700 - 0.645) / (5.7912 - 1.27) + 0.645;
         double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
         distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
         angleForArm = Math.toDegrees(Math.atan(speakerHeight / distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;
@@ -218,7 +218,7 @@ public class ArmSubsystem extends SubsystemBase {
         double distanceFromRobot;
         distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547));
 
-        double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (0.690 - 0.635) / (5.7912 - 1.27) + 0.635;
+        double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (0.700 - 0.645) / (5.7912 - 1.27) + 0.645;
         double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
         distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
         angleForArm = Math.toDegrees(Math.atan(speakerHeight / distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;

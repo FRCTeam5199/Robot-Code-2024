@@ -78,10 +78,11 @@ public class Autos extends Command {
                 arm.isAiming(false),
                 shooter.runShooterAtPercent(.5)));
 
+        
 
         NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(59), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61.5), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(60), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(62.5), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("bottomFarShot",new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(45.5), new WaitCommand(0.5), shooter.autoFarShot(), new WaitCommand(0.2), arm.isAiming(false)));
 
@@ -95,6 +96,7 @@ public class Autos extends Command {
 
         Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         autonChooserRed.addOption("doNothing", doNothing());
+        autonChooserRed.addOption("move do nothing", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), shooter.setIndexerSpeed(0), arm.isAiming(false)));
 
         autonChooserRed.addOption("onePieceTaxiTopRed", onePieceTaxiTopRed());
         autonChooserRed.addOption("onePieceTaxiMiddleRed", onePieceTaxiMiddleRed());
@@ -116,6 +118,7 @@ public class Autos extends Command {
 
         Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         autonChooserBlue.addOption("doNothing", doNothing());
+        autonChooserBlue.addOption("move do nothing",new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), shooter.setIndexerSpeed(0), arm.isAiming(false)));
 
         autonChooserBlue.addOption("onePieceTaxiTopBlue", onePieceTaxiTopBlue());
         autonChooserBlue.addOption("onePieceTaxiMiddleBlue", onePieceTaxiMiddleBlue());
