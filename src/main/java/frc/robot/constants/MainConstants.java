@@ -84,7 +84,7 @@ public class MainConstants {
             new Transform3d(0.3, 0, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(0))), //front
             new Transform3d(.25, .3, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(90))), //left
             new Transform3d(.1, -.3, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
-            new Transform3d(-0.6, .1, 0.4826, new Rotation3d(Math.toRadians(24), Math.toDegrees(0), Math.toRadians(-180))), //back
+            new Transform3d(-0.3, .1, 0.409, new Rotation3d(Math.toRadians(125), 0, Math.toRadians(-180))), //back
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0))
     };
 
@@ -170,7 +170,7 @@ public class MainConstants {
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
         //Control Panel
-        public static final double ARM_SUBWOOFER_SETPOINT = 67;
+        public static final double ARM_SUBWOOFER_SETPOINT = 68;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 140.25;
         public static final double ARM_SAFE_SETPOINT = 53;
         public static final double ARM_AMP_SETPOINT = 48.5;

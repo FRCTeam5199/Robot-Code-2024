@@ -74,7 +74,7 @@ public class AprilTagSubsystem extends SubsystemBase {
     private final CommandXboxController mainCommandXboxController = new CommandXboxController(MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT);
     public MainConstants Constants = new MainConstants();
     // 0 Front, 1 Back, 2 Left, 3 Rigggggggggggggggght
-    public PhotonCamera[] allCameras = {frontCamera};
+    public PhotonCamera[] allCameras = {frontCamera, backCamera};
     public PhotonTrackedTarget[] bestTargetFromCameras;
     public MultiTargetPNPResult[] multiTargetPNPResults;
     public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
@@ -85,13 +85,13 @@ public class AprilTagSubsystem extends SubsystemBase {
     SwerveDrive drive = TunerConstants.DriveTrain;
     PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
     PhotonPoseEstimator poseEstimatorFront = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Front"), Constants.cameraPositions[0]);
-    //PhotonPoseEstimator poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[1]);
+    PhotonPoseEstimator poseEstimatorBack = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Back"), Constants.cameraPositions[3]);
     //PhotonPoseEstimator poseEstimatorLeft = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Left"), Constants.cameraPositions[2]);
     //PhotonPoseEstimator poseEstimatorRight = new PhotonPoseEstimator(fieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera("Right"), Constants.cameraPositions[3]);
 
     // public static PhotonCamera leftCamera;
     // public static PhotonCamera rightCamera;
-    // public static PhotonCamera backCamera;
+    public static PhotonCamera backCamera;
     // public static PhotonCamera shooter;
 
     PIDController aimControl;
@@ -104,11 +104,11 @@ public class AprilTagSubsystem extends SubsystemBase {
 
     public AprilTagSubsystem() {
         allCameras[0] = new PhotonCamera("Front");
-//        allCameras[1] = new PhotonCamera("Back");
+        // allCameras[1] = new PhotonCamera("Back");
 //        allCameras[2] = new PhotonCamera("Left");
 //        allCameras[3] = new PhotonCamera("Right");
         poseEstimatorFront.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
-//        poseEstimatorBack.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+        // poseEstimatorBack.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
 //        poseEstimatorLeft.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
 //        poseEstimatorRight.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
 
@@ -197,18 +197,18 @@ public class AprilTagSubsystem extends SubsystemBase {
     /**
      * estimated pose back
      */
-//    public Optional<EstimatedRobotPose> getVisionPoseBack() {
-//        poseEstimatorBack.setReferencePose(drive.getPose());
-//
-//        var result = allCameras[1].getLatestResult();
-//
-//        if(result.hasTargets()){
-//            return poseEstimatorBack.update();
-//        }else{
-//            // System.out.println("O Tags on Front");
-//            return Optional.empty();
-//        }
-//    }
+   public Optional<EstimatedRobotPose> getVisionPoseBack() {
+       poseEstimatorBack.setReferencePose(drive.getPose());
+
+       var result = allCameras[1].getLatestResult();
+
+       if(result.hasTargets()){
+           return poseEstimatorBack.update();
+       }else{
+           // System.out.println("O Tags on Front");
+           return Optional.empty();
+       }
+   }
 
     /**
      * shooter gamera pose estimation
