@@ -87,6 +87,8 @@ public class MainConstants {
             new Transform3d(-0.6, .1, 0.4826, new Rotation3d(Math.toRadians(24), Math.toDegrees(0), Math.toRadians(-180))), //back
             new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0))
     };
+    public static int LED_LENGTH = 0;
+    public static int LED_PORT = 0;
 
     public static class OperatorConstants {
         //Operator Constants

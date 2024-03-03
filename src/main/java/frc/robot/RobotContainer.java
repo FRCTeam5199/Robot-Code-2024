@@ -5,6 +5,9 @@
 package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+
+import javax.swing.text.AbstractDocument.LeafElement;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -12,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.controls.ButtonPanelButtons;
 import frc.robot.utility.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.LED.LEDManager;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.controls.CommandButtonPanel;
@@ -23,6 +27,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.utility.superstructure.*;
+import frc.robot.LED.LEDManager;
 // import frc.robot.utility.Akit;
 
 
@@ -55,9 +60,10 @@ public class RobotContainer {
     // driving in open loop
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    private final Telemetry logger = new Telemetry(MaxSpeed);
+    private final Telemetry logger = new Telemetry(MaxSpeed);  
+    private final static LEDManager Led = new LEDManager();
 
-    public Command intakeAction;
+        public Command intakeAction;
     public Command stopIntakeAction;
     //     public final static Akit log = new Akit();
     Autos auton;
@@ -115,7 +121,7 @@ public class RobotContainer {
 
         new Trigger(() -> shooterSubsystem.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
         new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-
+        //new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> Led.green())).onFalse(new InstantCommand(() -> Led.red()));
         // new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
         //         if (DriverStation.isDisabled()) {
         //             ArmSubsystem.toggleBrakeMode();
