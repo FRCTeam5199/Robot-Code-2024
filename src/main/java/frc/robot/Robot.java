@@ -97,26 +97,26 @@ public class Robot extends LoggedRobot{
         CommandScheduler.getInstance().run();
         // System.out.println(drive.getPose());
         Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
-        // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
+        //Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
-        // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
+        Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
    if(estimatePose1.isPresent()){
       EstimatedRobotPose robotPose = estimatePose1.get();
       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
    }
     
-        // if(estimatePose2.isPresent()){
-        //   EstimatedRobotPose robotPose = estimatePose2.get();
-        //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-        // }
+    // if(estimatePose2.isPresent()){
+    //     EstimatedRobotPose robotPose = estimatePose2.get();
+    //     drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    // }
         // if(estimatePose3.isPresent()){
         //   EstimatedRobotPose robotPose = estimatePose3.get();
         //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
         // }
-        // if(estimatePose4.isPresent()){
-        //   EstimatedRobotPose robotPose = estimatePose4.get();
-        //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-        // }
+        if(estimatePose4.isPresent()){
+          EstimatedRobotPose robotPose = estimatePose4.get();
+          drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+        }
 
         // userInterface.updateGameTab();
     }

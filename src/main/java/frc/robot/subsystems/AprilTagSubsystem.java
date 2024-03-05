@@ -104,7 +104,7 @@ public class AprilTagSubsystem extends SubsystemBase {
 
     public AprilTagSubsystem() {
         allCameras[0] = new PhotonCamera("Front");
-        // allCameras[1] = new PhotonCamera("Back");
+        allCameras[1] = new PhotonCamera("Back");
 //        allCameras[2] = new PhotonCamera("Left");
 //        allCameras[3] = new PhotonCamera("Right");
         poseEstimatorFront.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
@@ -112,8 +112,6 @@ public class AprilTagSubsystem extends SubsystemBase {
 //        poseEstimatorLeft.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
 //        poseEstimatorRight.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
 
-
-        // allCameras[3] = new PhotonCamera("Back");
         // allCameras[4] = new PhotonCamera("Shooter");
     }
 
