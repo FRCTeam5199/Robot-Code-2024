@@ -27,8 +27,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
@@ -45,9 +47,21 @@ public class Autos extends Command {
     HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(3, .01, 0), new PIDConstants(1.7, .06, 0.00), 5, .21, new ReplanningConfig());
     PathConstraints pathConstraints = new PathConstraints(1, 1, 1, 1);
     boolean enableAutoAim;
+    
+    public ShooterSubsystem shooter;
+    public IntakeSubsystem intake;
+    public IndexerSubsystem indexer;
+    public ArmSubsystem arm;
 
 
-    public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm, ShooterSubsystem shooter) {
+    public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm, ShooterSubsystem shooter, IndexerSubsystem indexer, RobotContainer robotContainer) {
+        
+        this.shooter = shooter;
+        this.intake = intake;
+        this.indexer = indexer;
+        this.arm = arm;
+
+
         this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(() -> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, () -> false, swerveDrive);
 
@@ -59,7 +73,7 @@ public class Autos extends Command {
                 new WaitCommand(0.1),
                 intake.deployIntake(),
                 new WaitCommand(0.2),
-                shooter.setIndexerSpeed(-.4),
+                indexer.setIndexerSpeed(-.4),
                 arm.rotateIntake(),
                 intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
                 shooter.runShooterAtPercent(-.4)));
@@ -69,25 +83,25 @@ public class Autos extends Command {
                 new WaitCommand(0.2),
                 shooter.runShooterAtPercent(0),
                 intake.stowIntake(),
-                shooter.setIndexerSpeed(-0.1),
+                indexer.setIndexerSpeed(-0.1),
                 new WaitCommand(0.3),
                 arm.rotateStable(),
                 new WaitCommand(0.5),
-                shooter.setIndexerSpeed(0),
+                indexer.setIndexerSpeed(0),
                 intake.setIntakeSpeed(0),
                 arm.isAiming(false),
                 shooter.runShooterAtPercent(.5)));
 
         
 
-        NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61), new WaitCommand(0.2), shooter.runAutonShooting(), new WaitCommand(.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(63.5), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("bottomFarShot",new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(45.5), new WaitCommand(0.5), shooter.autoFarShot(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting() , new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61), new WaitCommand(0.2),  robotContainer.runAutoShooting() , new WaitCommand(.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(63.5), new WaitCommand(0.5), robotContainer.runAutoShooting() , new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5),  robotContainer.runAutoShooting() , new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("bottomFarShot",new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(45.5), new WaitCommand(0.5),  robotContainer.autoFarShot() , new WaitCommand(0.2), arm.isAiming(false)));
 
         NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
-        NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), arm.isAiming(false), shooter.runShooterAtPercent(1), new WaitCommand(1), shooter.setIndexerSpeed(.4), new WaitCommand(.5), arm.isAutoAiming(false), arm.isAiming(false), shooter.runShooterAtPercent(0),shooter.setIndexerSpeed(0)));
+        NamedCommands.registerCommand("shoot", new SequentialCommandGroup(arm.isAutoAiming(true), arm.isAiming(false), shooter.runShooterAtPercent(1), new WaitCommand(1), indexer.setIndexerSpeed(.4), new WaitCommand(.5), arm.isAutoAiming(false), arm.isAiming(false), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0)));
         NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false)));
 
         Shuffleboard.getTab("Autons").add("Side", side);
@@ -96,7 +110,7 @@ public class Autos extends Command {
 
         Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         autonChooserRed.addOption("doNothing", doNothing());
-        autonChooserRed.addOption("move do nothing", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), shooter.setIndexerSpeed(0), arm.isAiming(false)));
+        autonChooserRed.addOption("move do nothing", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5),  robotContainer.runAutoShooting() , new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
 
         autonChooserRed.addOption("onePieceTaxiTopRed", onePieceTaxiTopRed());
         autonChooserRed.addOption("onePieceTaxiMiddleRed", onePieceTaxiMiddleRed());
@@ -118,7 +132,7 @@ public class Autos extends Command {
 
         Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         autonChooserBlue.addOption("doNothing", doNothing());
-        autonChooserBlue.addOption("move do nothing",new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), shooter.runAutonShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), shooter.setIndexerSpeed(0), arm.isAiming(false)));
+        autonChooserBlue.addOption("move do nothing",new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5),  robotContainer.runAutoShooting() , new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
 
         autonChooserBlue.addOption("onePieceTaxiTopBlue", onePieceTaxiTopBlue());
         autonChooserBlue.addOption("onePieceTaxiMiddleBlue", onePieceTaxiMiddleBlue());
@@ -141,6 +155,7 @@ public class Autos extends Command {
         autonChooserRed.setDefaultOption("doNothing", doNothing());
         autonChooserBlue.setDefaultOption("doNothing", doNothing());
     }
+
 
     public Command getAuton() {
         if (autonChooserRed.getSelected() != null && autonChooserBlue.getSelected() != null) {

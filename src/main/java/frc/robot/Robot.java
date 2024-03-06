@@ -5,17 +5,24 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.units.Power;
+
 import org.photonvision.EstimatedRobotPose;
+
+import com.ctre.phoenix6.CANBus;
+import com.revrobotics.SparkFlexExternalEncoder;
 
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.conduit.schema.PDPData;
 import org.littletonrobotics.junction.LoggedRobot;
 
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.TunerConstants;
@@ -24,6 +31,8 @@ import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 import java.util.Optional;
+
+import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 
 /**
@@ -94,16 +103,29 @@ public class Robot extends LoggedRobot{
         Logger.recordOutput("heading of pigeon", drive.getPigeon2().getAngle());
         Logger.recordOutput("supply voltage voltage of pigeon", drive.getPigeon2().getSupplyVoltage().getValueAsDouble());
 
+        PowerDistribution power = new PowerDistribution(62, ModuleType.kRev);
+        Logger.recordOutput("get Voltage of battery", power.getVoltage());
+        power.close();
+        try{
+        Logger.recordOutput("front camera alive", aprilTagSubsystem.frontCamera.isConnected());
+        Logger.recordOutput("back camera alive", aprilTagSubsystem.backCamera.isConnected());
+        } catch (Exception e){
+            
+        }
+        // Logger.recordOutput("front camera alive", null);
+        // Logger.recordOutput("front camera alive", null);
+
         CommandScheduler.getInstance().run();
         // System.out.println(drive.getPose());
         Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
         //Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
-        Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
+        // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
    if(estimatePose1.isPresent()){
       EstimatedRobotPose robotPose = estimatePose1.get();
       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
    }
+
     
     // if(estimatePose2.isPresent()){
     //     EstimatedRobotPose robotPose = estimatePose2.get();
@@ -113,10 +135,10 @@ public class Robot extends LoggedRobot{
         //   EstimatedRobotPose robotPose = estimatePose3.get();
         //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
         // }
-        if(estimatePose4.isPresent()){
-          EstimatedRobotPose robotPose = estimatePose4.get();
-          drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-        }
+        // if(estimatePose4.isPresent()){
+        //   EstimatedRobotPose robotPose = estimatePose4.get();
+        //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+        // }
 
         // userInterface.updateGameTab();
     }
