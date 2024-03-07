@@ -18,6 +18,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "3 Piece Top to Middle Red p1"
@@ -26,7 +32,37 @@
         {
           "type": "named",
           "data": {
-            "name": "autoAimOff"
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Top to Middle Red p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "retractIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "revShooter"
           }
         },
         {
@@ -36,9 +72,9 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "3 Piece Top to Middle Red p2"
+            "name": "autoShoot"
           }
         }
       ]

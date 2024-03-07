@@ -32,28 +32,12 @@
     },
     {
       "anchor": {
-        "x": 13.223461831539051,
-        "y": 7.025263281295794
+        "x": 13.52,
+        "y": 6.92
       },
       "prevControl": {
-        "x": 13.124792403430964,
-        "y": 7.114065766593072
-      },
-      "nextControl": {
-        "x": 13.358694862555115,
-        "y": 6.903553553381336
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 14.22,
-        "y": 6.34
-      },
-      "prevControl": {
-        "x": 14.022684010184042,
-        "y": 6.492448124847294
+        "x": 13.322684010184041,
+        "y": 7.072448124847294
       },
       "nextControl": null,
       "isLocked": false,
@@ -62,17 +46,17 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.1,
+      "waypointRelativePos": 1.05,
       "rotationDegrees": 180.0,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 2,
+      "waypointRelativePos": 1.5,
       "rotationDegrees": 180.0,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 2.4000000000000004,
+      "waypointRelativePos": 1.7,
       "rotationDegrees": -25.0,
       "rotateFast": false
     }
@@ -80,8 +64,8 @@
   "constraintZones": [
     {
       "name": "Intake",
-      "minWaypointRelativePos": 1.2,
-      "maxWaypointRelativePos": 1.65,
+      "minWaypointRelativePos": 1.1,
+      "maxWaypointRelativePos": 1.35,
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 3.0,
@@ -92,25 +76,8 @@
   ],
   "eventMarkers": [
     {
-      "name": "Deploy Intake",
-      "waypointRelativePos": 0.5,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "deployIntake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Retract Intake",
-      "waypointRelativePos": 1.7,
+      "waypointRelativePos": 1.55,
       "command": {
         "type": "sequential",
         "data": {
@@ -119,12 +86,6 @@
               "type": "named",
               "data": {
                 "name": "retractIntake"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoAim"
               }
             },
             {
@@ -139,7 +100,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 2.0,
+      "waypointRelativePos": 1.5,
       "command": {
         "type": "sequential",
         "data": {
@@ -156,8 +117,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
