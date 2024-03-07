@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.219361505770088,
-        "y": 6.335562571267796
+        "x": 14.22,
+        "y": 6.34
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.319361505770088,
-        "y": 6.335562571267796
+        "x": 14.141087512944257,
+        "y": 6.186573142377054
       },
       "isLocked": false,
       "linkedName": "3 Piece Top to Middle Red p1 END"
     },
     {
       "anchor": {
-        "x": 13.715795534301481,
-        "y": 5.55
+        "x": 13.460268458998456,
+        "y": 5.446552431566402
       },
       "prevControl": {
-        "x": 13.216037663840924,
-        "y": 5.710510901032189
+        "x": 13.552744403266827,
+        "y": 5.569853690590891
       },
       "nextControl": {
-        "x": 14.113963976858052,
-        "y": 5.422117320696838
+        "x": 13.43066763056603,
+        "y": 5.407084660323167
       },
       "isLocked": false,
       "linkedName": null
@@ -46,8 +46,18 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": -113.18303021763431,
+      "waypointRelativePos": 0.35,
+      "rotationDegrees": -113.18,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.1,
+      "rotationDegrees": -113.18,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.55,
+      "rotationDegrees": 0.0,
       "rotateFast": false
     }
   ],
@@ -101,8 +111,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 0.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -113,6 +123,9 @@
   },
   "reversed": false,
   "folder": "3 Piece AutoAim Paths",
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": -25.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": false
 }

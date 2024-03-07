@@ -16,38 +16,64 @@
     },
     {
       "anchor": {
-        "x": 14.5,
-        "y": 7.0
+        "x": 14.49629745413337,
+        "y": 7.025263281295794
       },
       "prevControl": {
-        "x": 15.46418675679337,
-        "y": 6.796409682941214
+        "x": 14.841640452511676,
+        "y": 7.035130224106603
       },
       "nextControl": {
-        "x": 13.376181274473819,
-        "y": 7.237296985292972
+        "x": 13.821904060068935,
+        "y": 7.005994898608237
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.219361505770088,
-        "y": 6.335562571267796
+        "x": 13.223461831539051,
+        "y": 7.025263281295794
       },
       "prevControl": {
-        "x": 13.521504509751868,
-        "y": 6.660978632808135
+        "x": 13.124792403430964,
+        "y": 7.114065766593072
+      },
+      "nextControl": {
+        "x": 13.358694862555115,
+        "y": 6.903553553381336
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 14.22,
+        "y": 6.34
+      },
+      "prevControl": {
+        "x": 14.022684010184042,
+        "y": 6.492448124847294
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "3 Piece Top to Middle Red p1 END"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 1.1,
-      "rotationDegrees": -179.0,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 2,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 2.4000000000000004,
+      "rotationDegrees": -25.0,
       "rotateFast": false
     }
   ],
@@ -130,8 +156,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -142,6 +168,9 @@
   },
   "reversed": false,
   "folder": "3 Piece AutoAim Paths",
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": 121.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": false
 }
