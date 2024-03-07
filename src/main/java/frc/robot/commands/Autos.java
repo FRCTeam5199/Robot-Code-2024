@@ -53,56 +53,52 @@ public class Autos extends Command {
     boolean enableAutoAim;
 
 
-    public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystem arm, ShooterSubsystem shooter, IndexerSubsystem indexer, RobotContainer robotContainer) {
+    public Autos(SwerveDrive swerve) {
 
-        this.shooter = shooter;
-        this.intake = intake;
-        this.indexer = indexer;
-        this.arm = arm;
-
+ 
 
         this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(() -> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, () -> false, swerveDrive);
 
         PPHolonomicDriveController.setRotationTargetOverride(this::autoAim);
 
-        NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
-                arm.isAiming(true),
-                arm.setArmSetpoint(50),
-                new WaitCommand(0.1),
-                intake.deployIntake(),
-                new WaitCommand(0.2),
-                indexer.setIndexerSpeed(-.4),
-                arm.rotateIntake(),
-                intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
-                shooter.runShooterAtPercent(-.4)));
+        // NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
+        //         arm.isAiming(true),
+        //         arm.setArmSetpoint(50),
+        //         new WaitCommand(0.1),
+        //         intake.deployIntake(),
+        //         new WaitCommand(0.2),
+        //         indexer.setIndexerSpeed(-.4),
+        //         arm.rotateIntake(),
+        //         intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
+        //         shooter.runShooterAtPercent(-.4)));
 
-        NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
-                arm.setArmSetpoint(50),
-                new WaitCommand(0.2),
-                shooter.runShooterAtPercent(0),
-                intake.stowIntake(),
-                indexer.setIndexerSpeed(-0.1),
-                new WaitCommand(0.3),
-                arm.rotateStable(),
-                new WaitCommand(0.5),
-                indexer.setIndexerSpeed(0),
-                intake.setIntakeSpeed(0),
-                arm.isAiming(false),
-                shooter.runShooterAtPercent(.5)));
+        // NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
+        //         arm.setArmSetpoint(50),
+        //         new WaitCommand(0.2),
+        //         shooter.runShooterAtPercent(0),
+        //         intake.stowIntake(),
+        //         indexer.setIndexerSpeed(-0.1),
+        //         new WaitCommand(0.3),
+        //         arm.rotateStable(),
+        //         new WaitCommand(0.5),
+        //         indexer.setIndexerSpeed(0),
+        //         intake.setIntakeSpeed(0),
+        //         arm.isAiming(false),
+        //         shooter.runShooterAtPercent(.5)));
 
 
-        NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61), new WaitCommand(0.2), robotContainer.runAutoShooting(), new WaitCommand(.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(63.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("bottomFarShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(45.5), new WaitCommand(0.5), robotContainer.autoFarShot(), new WaitCommand(0.2), arm.isAiming(false)));
+        // NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        // NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61), new WaitCommand(0.2), robotContainer.runAutoShooting(), new WaitCommand(.2), arm.isAiming(false)));
+        // NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(63.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        // NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        // NamedCommands.registerCommand("bottomFarShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(45.5), new WaitCommand(0.5), robotContainer.autoFarShot(), new WaitCommand(0.2), arm.isAiming(false)));
 
-        NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
-        NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false)));
+        // NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
+        // NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false)));
 
-        NamedCommands.registerCommand("revShooter", shooter.runShooterAtRpm(shooter.autoSpeed()));
-        NamedCommands.registerCommand("autoShoot", new SequentialCommandGroup(arm.isAutoAiming(true), new WaitCommand(0.7), indexer.setIndexerSpeed(0.2), new WaitCommand(0.2), indexer.setIndexerSpeed(0)));
+        // NamedCommands.registerCommand("revShooter", shooter.runShooterAtRpm(shooter.autoSpeed()));
+        // NamedCommands.registerCommand("autoShoot", new SequentialCommandGroup(arm.isAutoAiming(true), new WaitCommand(0.7), indexer.setIndexerSpeed(0.2), new WaitCommand(0.2), indexer.setIndexerSpeed(0)));
 
         Shuffleboard.getTab("Autons").add("Side", side);
         side.addOption("Red Side", true);
@@ -110,7 +106,7 @@ public class Autos extends Command {
 
         Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         autonChooserRed.addOption("doNothing", doNothing());
-        autonChooserRed.addOption("move do nothing", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
+       // autonChooserRed.addOption("move do nothing", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
 
         autonChooserRed.addOption("onePieceTaxiTopRed", onePieceTaxiTopRed());
         autonChooserRed.addOption("onePieceTaxiMiddleRed", onePieceTaxiMiddleRed());
@@ -132,7 +128,7 @@ public class Autos extends Command {
 
         Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         autonChooserBlue.addOption("doNothing", doNothing());
-        autonChooserBlue.addOption("move do nothing", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
+      //  autonChooserBlue.addOption("move do nothing", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
 
         autonChooserBlue.addOption("onePieceTaxiTopBlue", onePieceTaxiTopBlue());
         autonChooserBlue.addOption("onePieceTaxiMiddleBlue", onePieceTaxiMiddleBlue());
