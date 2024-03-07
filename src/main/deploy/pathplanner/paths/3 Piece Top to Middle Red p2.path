@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 13.441087512944256,
-        "y": 6.766573142377054
+        "x": 13.499736230241691,
+        "y": 6.788456653836385
       },
       "isLocked": false,
       "linkedName": "3 Piece Top to Middle Red p1 END"
     },
     {
       "anchor": {
-        "x": 13.65760731521463,
-        "y": 5.495887145620446
+        "x": 13.628006486782203,
+        "y": 5.377483831890741
       },
       "prevControl": {
-        "x": 13.55760731521463,
-        "y": 5.495887145620446
+        "x": 13.6181395439714,
+        "y": 5.3972177175123575
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,13 +30,42 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.2,
-      "rotationDegrees": -113.18,
+      "waypointRelativePos": 0.3,
+      "rotationDegrees": -90.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.6,
+      "rotationDegrees": -90.0,
       "rotateFast": false
     }
   ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "retractIntake",
+      "waypointRelativePos": 0.95,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "revShooter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
@@ -45,7 +74,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 2.6025622024998065,
     "rotateFast": false
   },
   "reversed": false,

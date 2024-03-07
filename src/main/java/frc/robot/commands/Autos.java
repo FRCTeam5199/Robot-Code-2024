@@ -102,7 +102,7 @@ public class Autos extends Command {
         NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false)));
 
         NamedCommands.registerCommand("revShooter", shooter.runShooterAtRpm(shooter.autoSpeed()));
-        NamedCommands.registerCommand("autoShoot", new SequentialCommandGroup(arm.isAutoAiming(true), new WaitCommand(0.5), indexer.setIndexerSpeed(0.2), new WaitCommand(0.2), indexer.setIndexerSpeed(0)));
+        NamedCommands.registerCommand("autoShoot", new SequentialCommandGroup(arm.isAutoAiming(true), new WaitCommand(0.7), indexer.setIndexerSpeed(0.2), new WaitCommand(0.2), indexer.setIndexerSpeed(0)));
 
         Shuffleboard.getTab("Autons").add("Side", side);
         side.addOption("Red Side", true);

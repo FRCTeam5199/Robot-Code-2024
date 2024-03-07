@@ -8,36 +8,36 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.933722535062758,
-        "y": 4.227611993027124
+        "x": 15.650729762997988,
+        "y": 4.420390379242297
       },
       "isLocked": false,
       "linkedName": " bottom start point red"
     },
     {
       "anchor": {
-        "x": 14.172518159586959,
-        "y": 4.20419031993556
+        "x": 14.04,
+        "y": 4.09
       },
       "prevControl": {
-        "x": 14.758177083532992,
-        "y": 4.20419031993556
+        "x": 14.223386013936878,
+        "y": 4.138902937049834
       },
       "nextControl": {
-        "x": 13.680663024664137,
-        "y": 4.20419031993556
+        "x": 13.89199585783787,
+        "y": 4.050532228756765
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.172518159586959,
-        "y": 4.89512967613667
+        "x": 14.04,
+        "y": 4.09
       },
       "prevControl": {
-        "x": 14.055409794129146,
-        "y": 4.227611993027124
+        "x": 13.922285027646979,
+        "y": 3.965047380863993
       },
       "nextControl": null,
       "isLocked": false,
@@ -72,7 +72,7 @@
   "eventMarkers": [
     {
       "name": "RetractIntake",
-      "waypointRelativePos": 1.4,
+      "waypointRelativePos": 1.8,
       "command": {
         "type": "sequential",
         "data": {
@@ -81,12 +81,6 @@
               "type": "named",
               "data": {
                 "name": "retractIntake"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoAim"
               }
             },
             {

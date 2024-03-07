@@ -20,13 +20,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.3
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoAimOff"
+            "waitTime": 0.1
           }
         },
         {
@@ -44,19 +38,13 @@
         {
           "type": "named",
           "data": {
-            "name": "shoot"
+            "name": "autoShoot"
           }
         },
         {
           "type": "wait",
           "data": {
             "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoAimOff"
           }
         },
         {
@@ -74,13 +62,7 @@
         {
           "type": "named",
           "data": {
-            "name": "shoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "name": "autoShoot"
           }
         }
       ]
