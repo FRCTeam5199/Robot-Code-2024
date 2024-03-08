@@ -130,12 +130,12 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double autoSpeed() {
-        if (DriverStation.getAlliance().get() == Alliance.Red){
-            return  (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (6800 - 3000) / (5.7912 - 1.27) + 3000;
-        }
-        else if (DriverStation.getAlliance().get() == Alliance.Blue){
-            return  (drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (6800 - 3000) / (5.7912 - 1.27) + 3000;
-        }
+        // if (DriverStation.getAlliance().get() == Alliance.Red){
+        //     return  (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (6800 - 3000) / (5.7912 - 1.27) + 3000;
+        // }
+        // else if (DriverStation.getAlliance().get() == Alliance.Blue){
+        //     return  (drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (6800 - 3000) / (5.7912 - 1.27) + 3000;
+        // }
         return 0;
     }
     public Command runAutoAimRed(){
