@@ -41,12 +41,12 @@ import frc.robot.LED.LEDManager;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
-    public final static ArmSubsystem arm = new ArmSubsystem();
-    public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-    public final static IntakeSubsystem intake = new IntakeSubsystem();
-    public final static IndexerSubsystem indexer = new IndexerSubsystem();
+//     public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
+//     public final static ArmSubsystem arm = new ArmSubsystem();
+//     public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+//     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+//     public final static IntakeSubsystem intake = new IntakeSubsystem();
+//     public final static IndexerSubsystem indexer = new IndexerSubsystem();
 
 
     public static final CommandButtonPanel buttonPanel = new CommandButtonPanel(MainConstants.OperatorConstants.TOP_BUTTON_PANEL_PORT, MainConstants.OperatorConstants.BOTTOM_BUTTON_PANEL_PORT);
@@ -67,16 +67,16 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);  
     //private final static LEDManager Led = new LEDManager();
 
-        public Command intakeAction;
-    public Command stopIntakeAction;
-    //     public final static Akit log = new Akit();
-    Autos auton;
+//         public Command intakeAction;
+//     public Command stopIntakeAction;
+//     //     public final static Akit log = new Akit();
+//     Autos auton;
 
-    ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
-                aprilTags.speakerAlignmentRed(),
-                aprilTags.speakerAlignementBlue(),
-                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-        );
+//     ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
+//                 aprilTags.speakerAlignmentRed(),
+//                 aprilTags.speakerAlignementBlue(),
+//                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+//         );
 
 
     public RobotContainer() {
@@ -87,7 +87,6 @@ public class RobotContainer {
         // indexer.init();
 
 
-        auton = new Autos(drivetrain);
         // SmartDashboard.putData("Field", drivetrain.m_field);
         configureBindings();
     }
@@ -266,6 +265,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
-        return auton.getAuton();
+        return null;
     }
 }
