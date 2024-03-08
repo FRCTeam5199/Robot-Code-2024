@@ -103,6 +103,8 @@ public class ArmSubsystem extends SubsystemBase {
 
         armEncoder = armMotorL.getAbsoluteEncoder(Type.kDutyCycle);
 
+        armMotorR.follow(armMotorL);
+
     }
 
     public void PIDInit() {
@@ -131,6 +133,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+
         if (checkMotors() && checkPID()) {
             subsystemStatus = true;
         } else {
@@ -143,6 +146,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private void subsystemPeriodic() {
+        
         if (armEncoder.getPosition() < 145 && armEncoder.getPosition() > 0) {
             encoderValue = armEncoder.getPosition();
         } else if (armEncoder.getPosition() > 145 && armEncoder.getPosition() < 200) {
@@ -178,11 +182,8 @@ public class ArmSubsystem extends SubsystemBase {
                 rotatePIDController = new PIDController(0.00019262, 0.000309673212, 0.00);
                 rotatePIDController.setIZone(3);
             }
-//                System.out.println(aprilTagSubsystem.armSpeakersAligning());
             goToSetpoint(rotateSetpoint, 0);
 
-            // System.out.println("april tag value arm "  + aprilTagSubsystem.armSpeakersAligning());
-            // System.out.println("encoder value     " + encoderValue);
         }
     }
 

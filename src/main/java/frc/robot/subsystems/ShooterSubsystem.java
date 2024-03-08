@@ -4,11 +4,19 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.SlotConfigs;
+import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -21,12 +29,6 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
 public class ShooterSubsystem extends SubsystemBase {
     private static ShooterSubsystem shooterSubsystem;
     public SwerveDrive drive = TunerConstants.DriveTrain;
-
-    public VortexMotorController shooterMotor1;
-    public VortexMotorController shooterMotor2;
-
-    public TalonMotorController shooterTop;
-    public TalonMotorController shooterBottom;
 
     public SparkPIDController shooterMotor1PidController;
 
@@ -49,6 +51,12 @@ public class ShooterSubsystem extends SubsystemBase {
     public boolean autonSide = false;
     public boolean idleShooting = false;
 
+    public TalonFX topShooter;
+    public TalonFX bottomShooter;
+
+    public VelocityVoltage velocity_request;
+
+
     public ShooterSubsystem() {
     }
 
@@ -64,6 +72,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void init() {
+        velocity_request = new VelocityVoltage(0).withSlot(0).withFeedForward(0.7).withEnableFOC(true);
+    
         try {
             motorInit();
         } catch (Exception exception) {
@@ -78,36 +88,40 @@ public class ShooterSubsystem extends SubsystemBase {
      * Initalizes the motor(s) for this subsystem
      */
     public void motorInit() {
-        shooterMotor1 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_1_ID, 0.0008443300, 0.000001, 200, 0.0001929);
-        shooterMotor2 = new VortexMotorController(MainConstants.IDs.Motors.SHOOTER_MOTOR_2_ID, 0.000812973, 0.000001, 200, 0.0001892);
 
 
-        shooterMotor1.setInvert(true);
-        shooterMotor2.setInvert(false);
+        topShooter = new TalonFX(14);
+        bottomShooter = new TalonFX(15);
 
 
-        shooterMotor1.getEncoder().setPosition(0);
-        shooterMotor2.getEncoder().setPosition(0);
+        SlotConfigs SlotConfigTopShooter = new SlotConfigs();
+        SlotConfigs SlotConfigBottomShooter = new SlotConfigs();
 
-        shooterMotor1.setCurrentLimit(30);
-        shooterMotor2.setCurrentLimit(30);
+        configureSlot(SlotConfigTopShooter, 2, 0.1, 0.7, 0.1, 0);
+        configureSlot(SlotConfigBottomShooter, 2, 0.1, 0.7, 0.1, 0);
+
+        
+        topShooter.getConfigurator().apply(SlotConfigTopShooter);
+        bottomShooter.getConfigurator().apply(SlotConfigBottomShooter);
+        
     }
 
     @Override
     public void periodic() {
-        
+        // System.out.println(autoSpeed());
+        if(topShooter.getVelocity().getValueAsDouble() > 1){
+            System.out.println("top shooter " + topShooter.getVelocity().getValueAsDouble());
+            System.out.println("botttom shooter " + bottomShooter.getVelocity().getValueAsDouble());
+        }
 
     }
 
-    public double autoSpeed() {
-        return  (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (6800 - 3000) / (5.7912 - 1.27) + 3000;
-         
-    }
-
-    public double autonShoot() {
-        return (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (6800 - 3000) / (5.7912 - 1.27) + 3000;
-        //double x, double in_min, double in_max, double out_min, double out_max
-        // return (x- in_min) * (out_max - out_min) / (in_max -in_min) + out_min;
+    public void configureSlot(SlotConfigs SlotConfig, double kA, double kV, double kP, double kI, double kD){
+        SlotConfig.kA = kA;
+        SlotConfig.kV = kV;
+        SlotConfig.kP = kP;
+        SlotConfig.kI = kI;
+        SlotConfig.kD = kD;
     }
 
     public void IdleRevUp() {
@@ -115,28 +129,37 @@ public class ShooterSubsystem extends SubsystemBase {
         runShooter = true;
     }
 
-
-    public Command setAutoTargeting(boolean bool){
-        return this.runOnce(()-> autoTargeting = bool);
+    public double autoSpeed() {
+        if (DriverStation.getAlliance().get() == Alliance.Red){
+            return  (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (6800 - 3000) / (5.7912 - 1.27) + 3000;
+        }
+        else if (DriverStation.getAlliance().get() == Alliance.Blue){
+            return  (drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (6800 - 3000) / (5.7912 - 1.27) + 3000;
+        }
+        return 0;
     }
-    public Command autoAimShooting(){
-        return this.run(()->runShooterAtRpm(autoSpeed()).andThen(()-> System.out.println(autoSpeed())));
+    public Command runAutoAimRed(){
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((autoSpeed()/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoSpeed()/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + autoSpeed()/90 + "  velocity " + autoSpeed())));
+    }
+    
+    public Command runAutoAimBlue(){
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((autoSpeed()/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoSpeed()/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + autoSpeed()/90 + "  velocity " + autoSpeed())));
     }
 
     public Command runShooterAtRpm(double vel) {
-        return this.runOnce(() -> shooterMotor1.setVelocity(vel + shooterSpeedOffset)).andThen(() -> shooterMotor2.setVelocity(vel + shooterSpeedOffset));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((vel/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((vel/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + vel/90 + "  velocity " + vel)));
     }
 
     public Command runShooterAtPercent(double per) {
-        return this.runOnce(() -> shooterMotor1.set(per)).andThen(() -> shooterMotor2.set(per));
+        return this.runOnce(() -> topShooter.set(per)).andThen(() -> bottomShooter.set(per));
     }
 
     public Command runShooterPredeterminedRPM() {
-        return this.runOnce(() -> shooterMotor1.setVelocity(setRPM + shooterSpeedOffset)).andThen(() -> shooterMotor2.setVelocity(setRPM + shooterSpeedOffset));
-    }
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((setRPM/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((setRPM/90))));
+        }
 
     public Command runShooterClimbAmp(double vel) {
-        return this.runOnce(() -> shooterMotor1.setVelocity(vel + shooterSpeedOffset)).andThen(() -> shooterMotor2.set(0));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((vel/90)))).andThen(() -> bottomShooter.set(0));
     }
 
     public Command increaseShooterSpeed() {
@@ -188,25 +211,12 @@ public class ShooterSubsystem extends SubsystemBase {
         return this.runOnce(() -> speedPercent = percent);
     }
 
-    /**
-     * Sets the Shooter motor velocity based on the RPM of the motor
-     *
-     * @param
-     */
-    public Command setShooterVelocity(double velocity) {
-        return this.runOnce(() -> runShooting(velocity));
-    }
-
-    private void runShooting(double v) {
-        shooterMotor1.setVelocity(v);
-        shooterMotor2.setVelocity(v);
-    }
 
 
 
     public boolean reachedSpeed() {
         if (setRPM > 0) {
-            if (shooterMotor1.getVelocity() >= setRPM - 1 && shooterMotor2.getVelocity() >= setRPM - 1) {
+            if (topShooter.getVelocity().getValueAsDouble() >= setRPM - 1 && bottomShooter.getVelocity().getValueAsDouble() >= setRPM - 1) {
                 return true;
             }
         }

@@ -77,7 +77,11 @@ public class RobotContainer {
                 aprilTags.speakerAlignementBlue(),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
         );
-
+    ConditionalCommand autoAimShooting = new ConditionalCommand(
+                shooterSubsystem.runAutoAimRed(),
+                shooterSubsystem.runAutoAimBlue(),        
+                ()-> DriverStation.getAlliance().get() == DriverStation.Alliance.Red        
+        );
 
     public RobotContainer() {
         shooterSubsystem.init();
@@ -169,7 +173,7 @@ public class RobotContainer {
 
         mainCommandXboxController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
         
-        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), shooterSubsystem.runShooterAtRpm(shooterSubsystem.autoSpeed()), speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.isAutoAiming(false), (shooterSubsystem.runShooterAtPercent(0))));
+        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), autoAimShooting, speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.isAutoAiming(false), (shooterSubsystem.runShooterAtPercent(0))));
         
         mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(3000)));
         // mainCommandXboxController.povUp().onTrue(arm.isAiming(true).andThen(arm.rotateAmp()).andThen(auton.goToAmpRed())).onFalse(arm.isAiming(false));
@@ -206,7 +210,7 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateBack()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateSafe()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateAmp()).andThen(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false))));
-        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.rotateFarShot().andThen(shooterSubsystem.setRPMShooter(5000)));
+        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.rotateFarShot().andThen(shooterSubsystem.setRPMShooter(6000)));
         buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(new SequentialCommandGroup(arm.isAiming(true), arm.rotateHPStation(), shooterSubsystem.runShooterAtPercent(-.4), indexer.setIndexerSpeed(-.2))).onFalse(new SequentialCommandGroup(arm.rotateStable(), shooterSubsystem.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_PREP_SETPOINT).onTrue(arm.setClimbMode(true).andThen(arm.rotatePrepClimbP2()).andThen(shooterSubsystem.setAmpMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_SETPOINT).onTrue(arm.setClimbMode(true).andThen(arm.rotateTrap()).andThen(shooterSubsystem.setRPMShooter(3300)));

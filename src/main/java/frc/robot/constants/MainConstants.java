@@ -19,7 +19,7 @@ public class MainConstants {
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
     //Mechanical Constants
     public static String CAN_BUS = "";
-    public static double WHEEL_DIAMETER = 4;
+    public static double WHEEL_DIAMETER = 2;
     public static double DRIVE_GEAR_RATIO = 5.36;
     public static double STEER_GEAR_RATIO = 12.8;
     //All swerve offsets are in degrees.
@@ -84,7 +84,7 @@ public class MainConstants {
             new Transform3d(0.3, 0, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(0))), //front
             new Transform3d(.25, .3, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(90))), //left
             new Transform3d(.1, -.3, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
-            new Transform3d(-0.29, -.5, 0.409, new Rotation3d(Math.toRadians(125), 0, Math.toRadians(180))), //back
+            new Transform3d(-.2, -.5, 0.409, new Rotation3d(Math.toRadians(125), 0, Math.toRadians(180))), //back
             new Transform3d(0, 0
             , 0, new Rotation3d(0, 0, 0))
     };

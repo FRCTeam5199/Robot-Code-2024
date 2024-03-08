@@ -106,6 +106,13 @@ public class Robot extends LoggedRobot{
         PowerDistribution power = new PowerDistribution(62, ModuleType.kRev);
         Logger.recordOutput("get Voltage of battery", power.getVoltage());
         power.close();
+
+        Logger.recordOutput("top shooter current supply", m_robotContainer.shooterSubsystem.topShooter.getSupplyCurrent().getValueAsDouble());
+        Logger.recordOutput("bottom shooter current supply", m_robotContainer.shooterSubsystem.bottomShooter.getSupplyCurrent().getValueAsDouble());
+
+        Logger.recordOutput("top shooter supply voltage", m_robotContainer.shooterSubsystem.topShooter.getSupplyVoltage().getValueAsDouble());
+        Logger.recordOutput("bottom shooter supply voltage", m_robotContainer.shooterSubsystem.bottomShooter.getSupplyVoltage().getValueAsDouble());
+
         try{
         Logger.recordOutput("front camera alive", aprilTagSubsystem.frontCamera.isConnected());
         Logger.recordOutput("back camera alive", aprilTagSubsystem.backCamera.isConnected());
@@ -118,9 +125,9 @@ public class Robot extends LoggedRobot{
         CommandScheduler.getInstance().run();
         // System.out.println(drive.getPose());
         Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
-        //Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
+        Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
-        // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
+        Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
    if(estimatePose1.isPresent()){
       EstimatedRobotPose robotPose = estimatePose1.get();
       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
@@ -130,15 +137,17 @@ public class Robot extends LoggedRobot{
     // if(estimatePose2.isPresent()){
     //     EstimatedRobotPose robotPose = estimatePose2.get();
     //     drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    
     // }
+
         // if(estimatePose3.isPresent()){
         //   EstimatedRobotPose robotPose = estimatePose3.get();
         //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
         // }
-        // if(estimatePose4.isPresent()){
-        //   EstimatedRobotPose robotPose = estimatePose4.get();
-        //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-        // }
+        if(estimatePose4.isPresent()){
+          EstimatedRobotPose robotPose = estimatePose4.get();
+          drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+        }
 
         // userInterface.updateGameTab();
     }
