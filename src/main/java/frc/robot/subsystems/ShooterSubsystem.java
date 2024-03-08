@@ -155,7 +155,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command runShooterPredeterminedRPM() {
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((setRPM/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((setRPM/90))));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((setRPM/90)+ shooterSpeedOffset))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((setRPM/90)+ shooterSpeedOffset)));
         }
 
     public Command runShooterClimbAmp(double vel) {
