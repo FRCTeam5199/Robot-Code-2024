@@ -98,11 +98,12 @@ public class Autos extends Command {
         NamedCommands.registerCommand("bottomFarShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(45.5), new WaitCommand(0.5), robotContainer.autoFarShot(), new WaitCommand(0.2), arm.isAiming(false)));
 
         NamedCommands.registerCommand("autoAim", new SequentialCommandGroup(arm.isAutoAiming(true), new WaitCommand(0.3), shooter.runShooterAtRpm(5300), new WaitCommand(2), indexer.setIndexerSpeed(0.2)));
-        NamedCommands.registerCommand("stopAutoAim",new SequentialCommandGroup(arm.isAutoAiming(false), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0)));
+        NamedCommands.registerCommand("stopAutoAim", new SequentialCommandGroup(arm.isAutoAiming(false), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0)));
         NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false)));
 
-        NamedCommands.registerCommand("revShooter", new InstantCommand(()-> shooter.autoTargeting = true).andThen(shooter.runShooterPredeterminedRPM()));
-        NamedCommands.registerCommand("autoShoot", new SequentialCommandGroup(arm.isAutoAiming(true), new WaitCommand(0.7), indexer.setIndexerSpeed(0.2), new WaitCommand(0.2), indexer.setIndexerSpeed(0)));
+        NamedCommands.registerCommand("autoShoot", new SequentialCommandGroup(arm.isAutoAiming(true), new InstantCommand(() -> shooter.autoTargeting = true), shooter.runShooterPredeterminedRPM(),
+                new WaitCommand(0.7), indexer.setIndexerSpeed(0.2),
+                new WaitCommand(0.2), indexer.setIndexerSpeed(0), arm.isAutoAiming(false)));
 
         Shuffleboard.getTab("Autons").add("Side", side);
         side.addOption("Red Side", true);
@@ -120,7 +121,7 @@ public class Autos extends Command {
         autonChooserRed.addOption("twoPieceTopRed", twoPieceTopRed());
         autonChooserRed.addOption("twoPieceMiddleRed", twoPieceMiddleRed());
         autonChooserRed.addOption("twoPieceBottomRed", twoPieceBottomRed());
- 
+
 
         autonChooserRed.addOption("threePieceTtMRed", threePieceTtMRed());
         //     autonChooserRed.addOption("threePieceTtMAutoAimRed", threePieceTtMAutoAimRed());
@@ -138,7 +139,7 @@ public class Autos extends Command {
         autonChooserBlue.addOption("onePieceTaxiMiddleBlue", onePieceTaxiMiddleBlue());
         autonChooserBlue.addOption("onePieceTaxiBottomBlue", onePieceTaxiBottomBlue());
         autonChooserBlue.addOption("oneAndHalfPieceTaxiBottomBlue", oneAndHalfPieceTaxiBottomBlue());
-        autonChooserBlue.addOption("twoPieceBottomFarBlue",twoPieceBottomFarBlue());
+        autonChooserBlue.addOption("twoPieceBottomFarBlue", twoPieceBottomFarBlue());
 
         autonChooserBlue.addOption("twoPieceTopBlue", twoPieceTopBlue());
         autonChooserBlue.addOption("twoPieceMiddleBlue", twoPieceMiddleBlue());
@@ -188,7 +189,7 @@ public class Autos extends Command {
         return new WaitCommand(15);
     }
 
-    public Command newAuto(){
+    public Command newAuto() {
         return AutoBuilder.buildAuto("3 piece");
     }
 
@@ -255,7 +256,7 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("2.5 Piece Bottom Blue");
     }
 
-    public Command twoPieceBottomFarBlue(){
+    public Command twoPieceBottomFarBlue() {
         return AutoBuilder.buildAuto("2 Piece Far Bottom Blue");
     }
 

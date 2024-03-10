@@ -71,8 +71,8 @@
   ],
   "eventMarkers": [
     {
-      "name": "RetractIntake",
-      "waypointRelativePos": 1.8,
+      "name": "retractIntake",
+      "waypointRelativePos": 1.75,
       "command": {
         "type": "sequential",
         "data": {
@@ -82,12 +82,6 @@
               "data": {
                 "name": "retractIntake"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "revShooter"
-              }
             }
           ]
         }
@@ -96,7 +90,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

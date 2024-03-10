@@ -8,50 +8,34 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0680920648574521,
-        "y": 4.016816935203058
+        "x": 0.958851917703837,
+        "y": 4.331587893945019
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.051802334703099,
-        "y": 3.9816844255657124
+        "x": 2.75,
+        "y": 4.1
       },
       "prevControl": {
-        "x": 1.6136451470566713,
-        "y": 4.008239406635193
-      },
-      "nextControl": {
-        "x": 2.4382599407138885,
-        "y": 3.9582627524741496
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.616498309919698,
-        "y": 4.805201148863836
-      },
-      "prevControl": {
-        "x": 2.8037872415040326,
-        "y": 4.395321869761484
+        "x": 2.6019958578378697,
+        "y": 4.090133057189191
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Blue Bottom Note Shooting Pose"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.85,
+      "waypointRelativePos": 0.45,
       "rotationDegrees": 0,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 0.8,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -60,7 +44,7 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 0.95,
       "command": {
         "type": "sequential",
         "data": {
@@ -69,29 +53,6 @@
               "type": "named",
               "data": {
                 "name": "retractIntake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "shoot",
-      "waypointRelativePos": 2.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "shoot"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 0.25
               }
             }
           ]

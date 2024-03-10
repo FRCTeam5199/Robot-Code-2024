@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.461681613805452,
-        "y": 6.62
+        "x": 2.89,
+        "y": 6.99
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.502966019450684,
-        "y": 6.62
-      },
-      "isLocked": false,
-      "linkedName": "Top Piece shot blue "
-    },
-    {
-      "anchor": {
-        "x": 2.918404239090931,
-        "y": 5.54
-      },
-      "prevControl": {
-        "x": 2.918404239090931,
-        "y": 5.93
-      },
-      "nextControl": {
-        "x": 2.918404239090931,
-        "y": 5.490000000000001
+        "x": 2.9312844056452323,
+        "y": 6.99
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.304825593257744,
-        "y": 5.54
+        "x": 2.89,
+        "y": 5.46628631718802
       },
       "prevControl": {
-        "x": 2.7369663639224755,
-        "y": 5.54
+        "x": 2.8533049373791073,
+        "y": 5.68335905902581
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,12 +30,12 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.25,
+      "waypointRelativePos": 0.15,
       "rotationDegrees": -90.0,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 1.25,
+      "waypointRelativePos": 0.65,
       "rotationDegrees": -90.0,
       "rotateFast": false
     }
@@ -60,7 +44,7 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.5,
+      "waypointRelativePos": 0.95,
       "command": {
         "type": "sequential",
         "data": {
@@ -70,18 +54,6 @@
               "data": {
                 "name": "retractIntake"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoAim"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "revShooter"
-              }
             }
           ]
         }
@@ -89,7 +61,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0

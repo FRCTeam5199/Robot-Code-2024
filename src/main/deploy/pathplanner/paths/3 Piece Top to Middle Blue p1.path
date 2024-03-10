@@ -16,44 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.016669825067563,
-        "y": 7.049923600561746
+        "x": 2.89,
+        "y": 6.99
       },
       "prevControl": {
-        "x": 1.698013591815422,
-        "y": 7.049923600561746
-      },
-      "nextControl": {
-        "x": 2.335326058319704,
-        "y": 7.049923600561746
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.9066934025469573,
-        "y": 7.049923600561746
-      },
-      "prevControl": {
-        "x": 2.806693402546957,
-        "y": 7.049923600561746
-      },
-      "nextControl": {
-        "x": 3.0066934025469574,
-        "y": 7.049923600561746
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.9066934025469573,
-        "y": 7.049923600561746
-      },
-      "prevControl": {
-        "x": 2.9184042390927387,
-        "y": 7.061634437107528
+        "x": 2.7814636290811046,
+        "y": 7.0097338856216185
       },
       "nextControl": null,
       "isLocked": false,
@@ -62,13 +30,13 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.65,
-      "rotationDegrees": 0.0,
+      "waypointRelativePos": 0.35,
+      "rotationDegrees": 11.15,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 2.0999999999999996,
-      "rotationDegrees": 0.0,
+      "waypointRelativePos": 0.75,
+      "rotationDegrees": 11.15,
       "rotateFast": false
     }
   ],
@@ -76,7 +44,7 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1,
+      "waypointRelativePos": 0.75,
       "command": {
         "type": "sequential",
         "data": {
@@ -86,41 +54,6 @@
               "data": {
                 "name": "retractIntake"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoAim"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "revShooter"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "shoot",
-      "waypointRelativePos": 1,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "shoot"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "autoAimOff"
-              }
             }
           ]
         }
@@ -128,14 +61,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": -144.63753811293083,
+    "velocity": 0,
+    "rotation": -160.2328313232083,
     "rotateFast": false
   },
   "reversed": false,
