@@ -42,6 +42,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.MultiTargetPNPResult;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -94,6 +95,8 @@ public class AprilTagSubsystem extends SubsystemBase {
     public static PhotonCamera backCamera;
     // public static PhotonCamera shooter;
 
+    double difference = 1000000;
+
     PIDController aimControl;
 
     //    PhotonPoseEstimator.PoseStrategy poseStrategy = PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
@@ -145,42 +148,45 @@ public class AprilTagSubsystem extends SubsystemBase {
      * estimated position from front
      */
 
-    // public Optional<EstimatedRobotPose> getVisionPoseFront() {
-    //     poseEstimatorFront.setReferencePose(drive.getPose());
+    public Optional<EstimatedRobotPose> getVisionPoseFront() {
+        poseEstimatorFront.setReferencePose(drive.getPose());
 
-    //     var result = allCameras[0].getLatestResult();
+        var result = allCameras[0].getLatestResult();
 
-    //     if (result.hasTargets()) {
-    //         return poseEstimatorFront.update();
-    //     } else {
-    //         // System.out.println("O Tags on Front");
-    //         return Optional.empty();
-    //     }
-    // }
+        if (result.hasTargets()) {
+            return poseEstimatorFront.update();
+        } else {
+            // System.out.println("O Tags on Front");
+            return Optional.empty();
+        }
+    }
 
     /**
      * estimated pose right
      * @return the estimated vision pose from the right camera. If there is no position to give it returns an empty value
      */
-//    public Optional<EstimatedRobotPose> getVisionPoseRight() {
-//        poseEstimatorRight.setReferencePose(drive.getPose());
+   public Optional<EstimatedRobotPose> getVisionPoseRight() {
+       poseEstimatorRight.setReferencePose(drive.getPose());
 
-//        var result = allCameras[2].getLatestResult();
+       var result = allCameras[2].getLatestResult();
 
-//        if(result.hasTargets()){
-//            return poseEstimatorRight.update();
-//        }else{
-//            // System.out.println("O Tags on Front");
-//            return Optional.empty();
-//        }
+       if(result.hasTargets()){
+           return poseEstimatorRight.update();
+       }else{
+           // System.out.println("O Tags on Front");
+           return Optional.empty();
+       }
 
-//    }
+   }
+
+   public int getBestCamera(){
+    return 5;
+   }
 
     /**
      * estimated pose left
      */
    public Optional<EstimatedRobotPose> getVisionPoseLeft() {
-    System.out.println("leftcam");
        poseEstimatorLeft.setReferencePose(drive.getPose());
 
        var result = allCameras[3].getLatestResult();
@@ -196,24 +202,29 @@ public class AprilTagSubsystem extends SubsystemBase {
     /**
      * estimated pose back
      */
-//    public Optional<EstimatedRobotPose> getVisionPoseBack() {
-//        poseEstimatorBack.setReferencePose(drive.getPose());
+   public Optional<EstimatedRobotPose> getVisionPoseBack() {
+       poseEstimatorBack.setReferencePose(drive.getPose());
 
-//        var result = allCameras[1].getLatestResult();
+       var result = allCameras[1].getLatestResult();
 
-//        if(result.hasTargets()){
-//            return poseEstimatorBack.update();
-//        }else{
-//            // System.out.println("O Tags on Front");
-//            return Optional.empty();
-//        }
-//    }
+       if(result.hasTargets()){
+           return poseEstimatorBack.update();
+       }else{
+           // System.out.println("O Tags on Front");
+           return Optional.empty();
+       }
+   }
 
-    /**
-     * shooter gamera pose estimation
-     */
+//    public Optional<EstimatedRobotPose> getBestCameraResult(){
+//     EstimatedRobotPose[] possiblePoses = {getVisionPoseFront().get(), getVisionPoseBack().get(), getVisionPoseRight().get(), getVisionPoseLeft().get()};
+//     for(int i = 0; i <= 3; i++){
+//         difference = drive.getPose().minus(possiblePoses[i].estimatedPose.toPose2d()).getX() + drive.getPose().minus(possiblePoses[i].estimatedPose.toPose2d()).getY();
 
-
+//         if(drive.getPose().minus(possiblePoses[i].estimatedPose.toPose2d()).getX() + drive.getPose().minus(possiblePoses[i].estimatedPose.toPose2d()).getY() < difference){
+            
+//         }
+//     }
+//   }
     public boolean checkForID(int ID) {
         for (PhotonCamera camera : allCameras) {
             for (PhotonTrackedTarget target : camera.getLatestResult().getTargets()) {

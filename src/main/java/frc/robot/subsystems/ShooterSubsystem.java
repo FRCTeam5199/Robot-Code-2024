@@ -38,12 +38,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public double setRPM = 0;
     public double speedPercent = 0;
+    public double autoAimRPM = 0;
 
     public PIDController topWheelPIDController;
     public PIDController bottomWheelPIDController;
 
 
-    public boolean autoTargeting = true;
+    public boolean autoTargeting = false;
     public boolean ampMode = false;
     public boolean runShooter = false;
     public boolean runIndexer = false;
@@ -72,7 +73,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void init() {
-        velocity_request = new VelocityVoltage(0).withSlot(0).withFeedForward(0.7).withEnableFOC(true);
+        velocity_request = new VelocityVoltage(0).withSlot(0).withFeedForward(1).withEnableFOC(true);
     
         try {
             motorInit();
@@ -97,8 +98,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SlotConfigs SlotConfigTopShooter = new SlotConfigs();
         SlotConfigs SlotConfigBottomShooter = new SlotConfigs();
 
-        configureSlot(SlotConfigTopShooter, 2, 0.1, 0.7, 0.1, 0);
-        configureSlot(SlotConfigBottomShooter, 2, 0.1, 0.7, 0.1, 0);
+        configureSlot(SlotConfigTopShooter, 2.2, 0.1, 0.7, 0.2, 0);
+        configureSlot(SlotConfigBottomShooter, 2.2, 0.1, 0.7, 0.2, 0);
 
         
         topShooter.getConfigurator().apply(SlotConfigTopShooter);
@@ -108,13 +109,29 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // System.out.println(autoSpeed());
-        if(topShooter.getVelocity().getValueAsDouble() > 1){
-            System.out.println("top shooter " + topShooter.getVelocity().getValueAsDouble());
-            System.out.println("botttom shooter " + bottomShooter.getVelocity().getValueAsDouble());
-        }
+      
+        // if(topShooter.getVelocity().getValueAsDouble() > 1){
+        //     // System.out.println("top shooter " + topShooter.getVelocity().getValueAsDouble());
+        //     // System.out.println("botttom shooter " + bottomShooter.getVelocity().getValueAsDouble());
+        //     System.out.println("thingy " + autoAimRPM);
+        //     System.out.println("weird thingy + 1" +autoAimRPM/90);
+        // }
+        if(DriverStation.getAlliance().isPresent()){
+            if (DriverStation.getAlliance().get() == Alliance.Red){
+                autoAimRPM = ((drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (6800 - 3400) / (5.7912 - 1.27) + 3400);
 
+
+            }
+            else if (DriverStation.getAlliance().get() == Alliance.Blue){
+                autoAimRPM = ((drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.39) * (6800 - 3400) / (5.7912 - 1.39) + 3400);
+                
+            }
+
+        // System.out.println(autoAimRPM);
+        // System.out.println("super" + autoAimRPM/90);
+        }
     }
+    
 
     public void configureSlot(SlotConfigs SlotConfig, double kA, double kV, double kP, double kI, double kD){
         SlotConfig.kA = kA;
@@ -124,27 +141,16 @@ public class ShooterSubsystem extends SubsystemBase {
         SlotConfig.kD = kD;
     }
 
-    public void IdleRevUp() {
-        setRPM = 2000;
-        runShooter = true;
+
+    public void autoSpeed() {
+       
     }
 
-    public double autoSpeed() {
-        // if (DriverStation.getAlliance().get() == Alliance.Red){
-        //     return  (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (6800 - 3000) / (5.7912 - 1.27) + 3000;
-        // }
-        // else if (DriverStation.getAlliance().get() == Alliance.Blue){
-        //     return  (drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (6800 - 3000) / (5.7912 - 1.27) + 3000;
-        // }
-        return 0;
-    }
-    public Command runAutoAimRed(){
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((autoSpeed()/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoSpeed()/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + autoSpeed()/90 + "  velocity " + autoSpeed())));
+    
+    public Command  autoAim(){
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((autoAimRPM/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoAimRPM/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + autoAimRPM/90 + "  velocity " + autoAimRPM)));
     }
     
-    public Command runAutoAimBlue(){
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((autoSpeed()/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoSpeed()/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + autoSpeed()/90 + "  velocity " + autoSpeed())));
-    }
 
     public Command runShooterAtRpm(double vel) {
         return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((vel/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((vel/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + vel/90 + "  velocity " + vel)));
@@ -223,9 +229,3 @@ public class ShooterSubsystem extends SubsystemBase {
         return false;
     }
 }
-
-
-    
-
-
-   

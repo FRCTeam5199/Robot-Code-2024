@@ -1,17 +1,31 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.trajectory.constraint.RectangularRegionConstraint;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
@@ -19,14 +33,21 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 
-public class ArmSubsystem extends SubsystemBase {
+public class ArmSubsystem extends SubsystemBase {  
+    
+    public CANSparkBase armMotorL;
+    public CANSparkBase armMotorR;
+    public RelativeEncoder encoder;
+    public SparkPIDController sparkPIDController;
+
+
+
     private static ArmSubsystem armSubsystem;
     private static AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+    public ArmFeedforward feedforward;
 
     private static boolean subsystemStatus = false;
 
-    private static VortexMotorController armMotorL;
-    private static VortexMotorController armMotorR;
     private static boolean isBrakeMode = false;
     public boolean inAuton = false;
     public boolean climbMode = false;
@@ -38,6 +59,7 @@ public class ArmSubsystem extends SubsystemBase {
     private PIDController rotatePIDController;
     private double rotateSetpoint = 120;
     private double rotateOffset;
+    private double pidPercent;
 
     private ConditionalCommand autoAimArmSide;
 
@@ -57,14 +79,18 @@ public class ArmSubsystem extends SubsystemBase {
 
     public static void toggleBrakeMode() {
         isBrakeMode = !isBrakeMode;
-        armMotorL.setBrake(isBrakeMode);
-        armMotorR.setBrake(isBrakeMode);
+        // if (isBrakeMode) {
+        //     armMotorL.setIdleMode(IdleMode.kBrake);
+        //     armMotorR.setIdleMode(IdleMode.kBrake);
+        // } else {
+        //     armMotorL.setIdleMode(IdleMode.kCoast);
+        //     armMotorR.setIdleMode(IdleMode.kCoast);
+        // }
     }
 
-    public static void setBrakeTrue() {
-        armMotorL.setBrake(true);
-
-        armMotorR.setBrake(true);
+    public void setBrakeTrue() {
+        armMotorL.setIdleMode(IdleMode.kBrake);
+        armMotorR.setIdleMode(IdleMode.kBrake);
     }
 
     /**
@@ -88,28 +114,34 @@ public class ArmSubsystem extends SubsystemBase {
         return subsystemStatus;
     }
 
-    public void motorInit() {
-        armMotorL = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR_ID);
-        armMotorR = new VortexMotorController(MainConstants.IDs.Motors.ARM_MOTOR2_ID);
+    public void motorInit() { 
+        armMotorL = new CANSparkFlex(MainConstants.IDs.Motors.ARM_MOTOR_ID, CANSparkLowLevel.MotorType.kBrushless);
+        armMotorR = new CANSparkFlex(MainConstants.IDs.Motors.ARM_MOTOR2_ID, CANSparkLowLevel.MotorType.kBrushless);
 
-        armMotorL.setInvert(false);
-        armMotorL.setBrake(true);
+        armMotorL.setInverted(false);
+        armMotorL.setIdleMode(IdleMode.kBrake);
 
-        armMotorR.setInvert(true);
-        armMotorR.setBrake(true);
+        
+        armMotorR.setInverted(true);
+        armMotorR.setIdleMode(IdleMode.kBrake);
 
-        armMotorL.setCurrentLimit(40);
-        armMotorR.setCurrentLimit(40);
+        armMotorL.setSmartCurrentLimit(40);
+        armMotorR.setSmartCurrentLimit(40);
+
 
         armEncoder = armMotorL.getAbsoluteEncoder(Type.kDutyCycle);
 
-        armMotorR.follow(armMotorL);
 
+        armMotorL.burnFlash();
+        armMotorR.burnFlash();
+
+        
+        feedforward = new ArmFeedforward(1, 0.58, 1.35);
     }
 
     public void PIDInit() {
 
-        rotatePIDController = new PIDController(0.0083262, 0.00569673212, 0.003);
+        rotatePIDController = new PIDController(0.0085262, 0.00569673212, 0.003);
         rotatePIDController.setIZone(3);
 
     }
@@ -133,6 +165,22 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+         if (armEncoder.getPosition() < 150 && armEncoder.getPosition() > 0) {
+            encoderValue = armEncoder.getPosition();
+        } else if (armEncoder.getPosition() > 150 && armEncoder.getPosition() < 200) {
+            encoderValue = 140;
+        } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 361) {
+            encoderValue = 0;
+        }
+
+        ArmFeedforward feedforward = new ArmFeedforward(1, 0.58, 1.35);
+
+        // double f = rotatePIDController.calculate(encoderValue, 120) + feedforward.calculate(Math.toRadians(120-23), 0);
+        
+
+        // System.out.println(f);
+        // armMotorL.set(f);
+       
 
         if (checkMotors() && checkPID()) {
             subsystemStatus = true;
@@ -146,44 +194,39 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private void subsystemPeriodic() {
-        
-        if (armEncoder.getPosition() < 145 && armEncoder.getPosition() > 0) {
-            encoderValue = armEncoder.getPosition();
-        } else if (armEncoder.getPosition() > 145 && armEncoder.getPosition() < 200) {
-            encoderValue = 140;
-        } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 361) {
-            encoderValue = 0;
-        }
-
+       
         if (inAuton) {
             goToSetpoint(rotateSetpoint, rotateOffset);
         }
         if (!autoAiming) {
             if (isAiming) {
-                rotatePIDController.setPID(0.0061262, 0.00472673212, 0.00);
+                rotatePIDController.setPID(0.0075262, 0.00472673212, 0.00);
                 rotatePIDController.setIZone(3);
 
                 goToSetpoint(rotateSetpoint, rotateOffset);
+                   System.out.println("encoder " + encoderValue + " desired "  + rotateSetpoint);
 
             } else {
                 goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
             }
+            
         } else {
             if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
                 rotateSetpoint = armSpeakersAligningRed();
             } else {
                 rotateSetpoint = armSpeakersAligningBlue();
             }
-
-            if (rotatePIDController.calculate(encoderValue, rotateSetpoint) > 0) {
-                rotatePIDController.setIZone(2);
-                rotatePIDController.setPID(0.0091262, 0.0089673212, 0.00);
-            } else if (rotatePIDController.calculate(encoderValue, rotateSetpoint) < 0) {
-                rotatePIDController = new PIDController(0.00019262, 0.000309673212, 0.00);
-                rotatePIDController.setIZone(3);
-            }
+            // if (rotatePIDController.calculate(encoderValue, rotateSetpoint) > 0) {
+            //     rotatePIDController.setPID(0.0091262, 0.009273212, 0.00);
+            //     rotatePIDController.setIZone(3.4);
+            // } else if (rotatePIDController.calculate(encoderValue, rotateSetpoint) < 0) {
+            //     rotatePIDController = new PIDController(0.00019262, 0.000409673212, 0.00);
+            //     rotatePIDController.setIZone(3);
+            // }
             goToSetpoint(rotateSetpoint, 0);
 
+            
+            System.out.println("encoder " + encoderValue + "desired "  + rotateSetpoint);
         }
     }
 
@@ -193,21 +236,21 @@ public class ArmSubsystem extends SubsystemBase {
 
         if (encoderValue < 0 || rotateSetpoint < 0) return;
         if (climbMode) {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
-            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
+            // armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
+            // armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
+            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians(rotateSetpoint-23), 0));
         } else {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians(rotateSetpoint-23), 0));
         }
     }
 
     public double armSpeakersAligningRed() {
         double angleForArm;
         double distanceFromRobot;
-        distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547));
+        distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.479342, 5.547));
 
-        double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (0.700 - 0.645) / (5.7912 - 1.27) + 0.645;
-        double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
+        // double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (0.700 - 0.645) / (5.7912 - 1.27) + 0.645;
+        double speakerHeight = MainConstants.SPEAKER_Z - MainConstants.ARM_PIVOT_Z;
         distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
         angleForArm = Math.toDegrees(Math.atan(speakerHeight / distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;
 
@@ -219,8 +262,8 @@ public class ArmSubsystem extends SubsystemBase {
         double distanceFromRobot;
         distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547));
 
-        double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (0.700 - 0.645) / (5.7912 - 1.27) + 0.645;
-        double speakerHeight = (MainConstants.SPEAKER_Z + distanceAimSpeaker) - MainConstants.ARM_PIVOT_Z;
+        // double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(0.01, 5.547)) - 1.27) * (0.700 - 0.645) / (5.7912 - 1.27) + 0.645;
+        double speakerHeight = (MainConstants.SPEAKER_Z) - MainConstants.ARM_PIVOT_Z;
         distanceFromRobot += MainConstants.ARM_PIVOT_X_OFFSET;
         angleForArm = Math.toDegrees(Math.atan(speakerHeight / distanceFromRobot)) + MainConstants.ARM_ORIGINAL_DEGREES;
 

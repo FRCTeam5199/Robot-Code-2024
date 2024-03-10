@@ -12,10 +12,10 @@ public class MainConstants {
 
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
     public static final double ARM_PIVOT_X_OFFSET = 0.18415; //0.2032; //meters //7.25 inch
-    public static final double ARM_PIVOT_Z = 0.5588; //0.5715; //meters //22 inch
+    public static final double ARM_PIVOT_Z = 0.5800;//0.5788; //0.5715; //meters //22 inch
     public static final double ARM_ORIGINAL_DEGREES = 25;
     // public static final double SPEAKER_Z = 2.340102;
-    public static final double SPEAKER_Z =  1.4511020000000001; //+ 0.755; //1.4511020000000001 + 0.635; 
+    public static final double SPEAKER_Z =  1.4511020000000001 + 0.63; //+ 0.755; //1.4511020000000001 + 0.635; 
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
     //Mechanical Constants
     public static String CAN_BUS = "";
@@ -82,9 +82,9 @@ public class MainConstants {
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
             new Transform3d(0.3, 0, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(0))), //front
-            new Transform3d(.25, .3, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(90))), //left
-            new Transform3d(.1, -.3, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
-            new Transform3d(-.2, -.5, 0.409, new Rotation3d(Math.toRadians(125), 0, Math.toRadians(180))), //back
+            new Transform3d(.225, .28, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(90))), //left
+            new Transform3d(.1, -.4, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
+            new Transform3d(-.175, -.4, 0.409, new Rotation3d(Math.toRadians(125), 0, Math.toRadians(180))), //back
             new Transform3d(0, 0
             , 0, new Rotation3d(0, 0, 0))
     };

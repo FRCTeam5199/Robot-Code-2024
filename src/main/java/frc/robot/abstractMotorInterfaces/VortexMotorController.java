@@ -36,10 +36,25 @@ public class VortexMotorController extends AbstractMotorController {
         sparkPIDController.setFF(FF);
         sparkPIDController.setOutputRange(-1,1);
         vortex.burnFlash();
-        
-        
         encoder = vortex.getEncoder();
+        
     }
+
+    // public VortexMotorController(int ID, double kP, double kI, double IZone, double FF, boolean useOutsideEncoder){
+    //     vortex = new CANSparkFlex(ID, CANSparkLowLevel.MotorType.kBrushless);
+
+    //      sparkPIDController = vortex.getPIDController();
+    //     sparkPIDController.setP(kP);
+    //     sparkPIDController.setI(kI);
+    //     sparkPIDController.setD(0);
+    //     sparkPIDController.setIZone(IZone);
+    //     sparkPIDController.setFF(FF);
+    //     sparkPIDController.setOutputRange(-1,1);
+    //     vortex.burnFlash();
+
+    //     encoder = vortex.getAbsoluteEncoder();
+
+    // }
 
     @Override
     public AbstractMotorController setInvert(boolean invert) {
@@ -56,6 +71,7 @@ public class VortexMotorController extends AbstractMotorController {
     newType = SparkAbsoluteEncoder.Type.kDutyCycle;
     return vortex.getAbsoluteEncoder(newType);
   }
+  
 
     @Override
     public void setVelocity(double Velocity, double Acceleration, boolean FOC, double feed, int PIDSLOT, boolean brake, boolean forwardLimit, boolean backwardLimit) {}
@@ -81,6 +97,7 @@ public class VortexMotorController extends AbstractMotorController {
     
     public void setReferencePercent(double percent){
         sparkPIDController.setReference(percent, CANSparkBase.ControlType.kDutyCycle);
+
     }
 
 
@@ -116,6 +133,7 @@ public class VortexMotorController extends AbstractMotorController {
 
     }
 
+  
     @Override
     public double getAngularVelocity() {
         return 0;

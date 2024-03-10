@@ -88,20 +88,20 @@ public class Autos extends Command {
                 new WaitCommand(0.5),
                 indexer.setIndexerSpeed(0),
                 intake.setIntakeSpeed(0),
-                arm.isAiming(false),
-                shooter.runShooterAtPercent(.5)));
+                arm.isAiming(false)));
 
 
         NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61), new WaitCommand(0.2), robotContainer.runAutoShooting(), new WaitCommand(.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(63.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("bottomFarShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(45.5), new WaitCommand(0.5), robotContainer.autoFarShot(), new WaitCommand(0.2), arm.isAiming(false)));
 
-        NamedCommands.registerCommand("autoAim", runOnce(() -> enableAutoAim = true));
+        NamedCommands.registerCommand("autoAim", new SequentialCommandGroup(arm.isAutoAiming(true), new WaitCommand(0.3), shooter.runShooterAtRpm(5300), new WaitCommand(2), indexer.setIndexerSpeed(0.2)));
+        NamedCommands.registerCommand("stopAutoAim",new SequentialCommandGroup(arm.isAutoAiming(false), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0)));
         NamedCommands.registerCommand("autoAimOff", new SequentialCommandGroup(runOnce(() -> enableAutoAim = false), arm.isAutoAiming(false)));
 
-        NamedCommands.registerCommand("revShooter", shooter.runShooterAtRpm(shooter.autoSpeed()));
+        NamedCommands.registerCommand("revShooter", new InstantCommand(()-> shooter.autoTargeting = true).andThen(shooter.runShooterPredeterminedRPM()));
         NamedCommands.registerCommand("autoShoot", new SequentialCommandGroup(arm.isAutoAiming(true), new WaitCommand(0.7), indexer.setIndexerSpeed(0.2), new WaitCommand(0.2), indexer.setIndexerSpeed(0)));
 
         Shuffleboard.getTab("Autons").add("Side", side);
@@ -120,7 +120,7 @@ public class Autos extends Command {
         autonChooserRed.addOption("twoPieceTopRed", twoPieceTopRed());
         autonChooserRed.addOption("twoPieceMiddleRed", twoPieceMiddleRed());
         autonChooserRed.addOption("twoPieceBottomRed", twoPieceBottomRed());
-        autonChooserRed.addOption("twoAndHalfBottomRed", twoAndHalfBottomRed());
+ 
 
         autonChooserRed.addOption("threePieceTtMRed", threePieceTtMRed());
         //     autonChooserRed.addOption("threePieceTtMAutoAimRed", threePieceTtMAutoAimRed());
@@ -138,6 +138,7 @@ public class Autos extends Command {
         autonChooserBlue.addOption("onePieceTaxiMiddleBlue", onePieceTaxiMiddleBlue());
         autonChooserBlue.addOption("onePieceTaxiBottomBlue", onePieceTaxiBottomBlue());
         autonChooserBlue.addOption("oneAndHalfPieceTaxiBottomBlue", oneAndHalfPieceTaxiBottomBlue());
+        autonChooserBlue.addOption("twoPieceBottomFarBlue",twoPieceBottomFarBlue());
 
         autonChooserBlue.addOption("twoPieceTopBlue", twoPieceTopBlue());
         autonChooserBlue.addOption("twoPieceMiddleBlue", twoPieceMiddleBlue());
@@ -185,6 +186,10 @@ public class Autos extends Command {
     //Autons that don't move
     public Command doNothing() {
         return new WaitCommand(15);
+    }
+
+    public Command newAuto(){
+        return AutoBuilder.buildAuto("3 piece");
     }
 
     //One piece Autons
@@ -246,12 +251,12 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("2 Piece Bottom Blue");
     }
 
-    public Command twoAndHalfBottomRed() {
-        return AutoBuilder.buildAuto("2.5 Piece Bottom Red");
-    }
-
     public Command twoAndHalfBottomBlue() {
         return AutoBuilder.buildAuto("2.5 Piece Bottom Blue");
+    }
+
+    public Command twoPieceBottomFarBlue(){
+        return AutoBuilder.buildAuto("2 Piece Far Bottom Blue");
     }
 
 

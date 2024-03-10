@@ -113,25 +113,20 @@ public class Robot extends LoggedRobot{
         Logger.recordOutput("top shooter supply voltage", m_robotContainer.shooterSubsystem.topShooter.getSupplyVoltage().getValueAsDouble());
         Logger.recordOutput("bottom shooter supply voltage", m_robotContainer.shooterSubsystem.bottomShooter.getSupplyVoltage().getValueAsDouble());
 
-        try{
-        Logger.recordOutput("front camera alive", aprilTagSubsystem.frontCamera.isConnected());
-        Logger.recordOutput("back camera alive", aprilTagSubsystem.backCamera.isConnected());
-        } catch (Exception e){
-            
-        }
+        
         // Logger.recordOutput("front camera alive", null);
         // Logger.recordOutput("front camera alive", null);
 
         CommandScheduler.getInstance().run();
         // System.out.println(drive.getPose());
-       // Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
-        //Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
-        Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
-       // Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
-//    if(estimatePose1.isPresent()){
-//       EstimatedRobotPose robotPose = estimatePose1.get();
-//       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-//    }
+        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
+        // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
+        // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
+        Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
+    if(estimatePose1.isPresent()){
+      EstimatedRobotPose robotPose = estimatePose1.get();
+      drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+   }
 
     
     // if(estimatePose2.isPresent()){
@@ -140,15 +135,14 @@ public class Robot extends LoggedRobot{
     
     // }
 
-        if(estimatePose3.isPresent()){
-            System.out.println("left present");
-          EstimatedRobotPose robotPose = estimatePose3.get();
+    //     if(estimatePose3.isPresent()){
+    //       EstimatedRobotPose robotPose = estimatePose3.get();
+    //       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    //     }
+        if(estimatePose4.isPresent()){
+          EstimatedRobotPose robotPose = estimatePose4.get();
           drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
         }
-        // if(estimatePose4.isPresent()){
-        //   EstimatedRobotPose robotPose = estimatePose4.get();
-        //   drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-        // }
 
         // userInterface.updateGameTab();
     }
