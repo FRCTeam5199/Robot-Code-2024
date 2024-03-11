@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.json.simple.parser.Yytoken;
+
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkBase;
@@ -21,6 +23,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.constraint.RectangularRegionConstraint;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -58,10 +61,14 @@ public class ArmSubsystem extends SubsystemBase {
     private SparkAbsoluteEncoder armEncoder;
     private PIDController rotatePIDController;
     private double rotateSetpoint = 120;
+
+    public final double horizontalOffset = 21.7;
+
     private double rotateOffset;
     private double pidPercent;
 
-    private ConditionalCommand autoAimArmSide;
+    public ArmFeedforward feedfoward;
+    public ProfiledPIDController pidController;
 
     public ArmSubsystem() {
     }
@@ -136,13 +143,21 @@ public class ArmSubsystem extends SubsystemBase {
         armMotorR.burnFlash();
 
         
-        feedforward = new ArmFeedforward(1, 0.58, 1.35);
     }
 
     public void PIDInit() {
 
         rotatePIDController = new PIDController(0.0085262, 0.00569673212, 0.003);
         rotatePIDController.setIZone(3);
+
+
+        // KS units = volts to overcome static friction
+        // KG units = volts to compensate for gravity when the arm is horizontal
+        // KV units = volts / (radians per second)
+        feedforward = new ArmFeedforward(0.077, 0.253, 0); // requires radians
+
+        pidController = new ProfiledPIDController(0.1, 0.1, 0.1, new TrapezoidProfile.Constraints(0.5, 0.5));
+        pidController.reset(encoderValue, 0);
 
     }
 
@@ -172,9 +187,41 @@ public class ArmSubsystem extends SubsystemBase {
         } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 361) {
             encoderValue = 0;
         }
+        
+        pidController.setGoal(new TrapezoidProfile.State(120,0));
+           
+        TrapezoidProfile armProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(0.5, 0.1));
 
-        ArmFeedforward feedforward = new ArmFeedforward(1, 0.58, 1.35);
+        // armProfile.calculate(1, new TrapezoidProfile.State(encoderValue, 0), new TrapezoidProfile.State(120, 0));
+        System.out.println(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians((rotateSetpoint-21.7)), 0));
+        // armMotorL.set
+        // PID proportional integral derivative
+        // kp --> what's the unit --> x per y
+        // x the motion, y is the unit error
+        // kp --> voltage per unit of error
+        // PID(5, 2, 1) volts per degree of error --> new PID(5 * 360,  2 * 360, 1 * 360) with units ovlts per rotation of error
 
+        // armMotorL.setVoltage(ff voltage + pid voltage);
+
+
+        // PositionVoltage -- combined position request w/ the ability to augment it with voltage feed forward
+
+        
+        // armMotorL.setVoltage(
+        //     pidController.calculate(encoderValue)
+        //         + feedforward.calculate(Math.toRadians(pidController.getSetpoint().position+23), pidController.getSetpoint().velocity));
+        
+
+        // armMotorL.setVoltage(0.33); //0.176 // 0.33 / 21.7 offset Kg = 0.253
+        // max = kg + ks
+        // min = kg - ks
+        // max + min = 2kg
+        // kg = 0.253
+        // 0.33 = 0.253 + ks
+        // ks = 0.077
+
+
+                //  Math.toRadians((pidController.getSetpoint().position+23))
         // double f = rotatePIDController.calculate(encoderValue, 120) + feedforward.calculate(Math.toRadians(120-23), 0);
         
 
@@ -189,7 +236,7 @@ public class ArmSubsystem extends SubsystemBase {
         }
 
         if (subsystemStatus) {
-            subsystemPeriodic();
+            // subsystemPeriodic();
         }
     }
 
@@ -227,7 +274,8 @@ public class ArmSubsystem extends SubsystemBase {
 
             
             System.out.println("encoder " + encoderValue + "desired "  + rotateSetpoint);
-        }
+
+        }   
     }
 
     private void goToSetpoint(double rotateSetpoint, double rotateOffset) {
@@ -238,9 +286,9 @@ public class ArmSubsystem extends SubsystemBase {
         if (climbMode) {
             // armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
             // armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians(rotateSetpoint-23), 0));
+            armMotorL.setVoltage(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians((rotateSetpoint-21.7)), 0));
         } else {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians(rotateSetpoint-23), 0));
+            armMotorL.setVoltage(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians((rotateSetpoint-21.7)), 0));
         }
     }
 

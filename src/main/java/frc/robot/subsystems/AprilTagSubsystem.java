@@ -79,7 +79,7 @@ public class AprilTagSubsystem extends SubsystemBase {
     public PhotonTrackedTarget[] bestTargetFromCameras;
     public MultiTargetPNPResult[] multiTargetPNPResults;
     public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-    public PIDController aim = new PIDController(.13, 0, .01);
+    public PIDController aim = new PIDController(.13, 0, .0);
     public SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
     //    double z = tz.getDouble(0);
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
