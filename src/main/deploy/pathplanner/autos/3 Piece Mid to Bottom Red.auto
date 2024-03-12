@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.2616259583396,
+      "y": 5.527514849608931
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Mid to Top Red p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Mid to Bottom Red p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "3 Piece Reg Autons",
+  "choreoAuto": false
+}

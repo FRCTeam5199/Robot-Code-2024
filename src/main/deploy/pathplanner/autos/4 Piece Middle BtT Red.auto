@@ -1,0 +1,79 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.24991512179886,
+      "y": 5.58606903233778
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Middle BtT p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Middle BtT p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Middle BtT p3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "4 Piece Autons",
+  "choreoAuto": false
+}

@@ -1,0 +1,68 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 15.24991512179886,
+        "y": 5.550936522700434
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 13.364324967309516,
+        "y": 5.550936522700434
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 13.598687168843668,
+        "y": 5.550936522700434
+      },
+      "prevControl": {
+        "x": 14.453578236685718,
+        "y": 5.550936522700434
+      },
+      "nextControl": {
+        "x": 12.743796101001617,
+        "y": 5.550936522700434
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 15.273336794890424,
+        "y": 5.539225686154654
+      },
+      "prevControl": {
+        "x": 14.845891260969399,
+        "y": 5.539225686154654
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "3 Piece Reg Paths",
+  "previewStartingState": {
+    "rotation": -178.6028189727038,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
