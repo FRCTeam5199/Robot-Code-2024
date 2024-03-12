@@ -61,6 +61,7 @@ public class ArmSubsystem extends SubsystemBase {
     public SwerveDrive drive = TunerConstants.DriveTrain;
     private SparkAbsoluteEncoder armEncoder;
     private PIDController rotatePIDController;
+    private PIDController voltagePIDController;
     private double rotateSetpoint = 120;
 
     public final double horizontalOffset = 21.7;
@@ -120,6 +121,7 @@ public class ArmSubsystem extends SubsystemBase {
             System.err.println("Exception Stack Trace:" + exception.getStackTrace());
         }
         trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(120,0), new TrapezoidProfile.State(encoderValue, armEncoder.getVelocity()*360.0));
+     
     }
 
     public boolean getSubsystemStatus() {
@@ -152,8 +154,9 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void PIDInit() {
 
-        rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
-        rotatePIDController.setIZone(3);
+    rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
+    voltagePIDController = new PIDController(0.1, 0, 0);
+    rotatePIDController.setIZone(3);
 
 
         // KS units = volts to overcome static friction
@@ -238,14 +241,16 @@ public class ArmSubsystem extends SubsystemBase {
         }
 
         if (subsystemStatus) {
-            subsystemPeriodic();
+            if (DriverStation.isEnabled()){
+            subsystemPeriodic( );
+            }
         }
     }
 
     private void subsystemPeriodic() {
-   
+        
         if(isAiming){
-            rotatePIDController.setPID(0.06, 0.00569673212, 0.00);
+          
             goToSetpoint(rotateOffset);
         }
         else{
@@ -289,12 +294,12 @@ public class ArmSubsystem extends SubsystemBase {
         TrapezoidProfile.State goalState = trapProfile.calculate(timer.get());
         
         if (climbMode) {
-            armMotorL.setVoltage(rotatePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity ));
+            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity ));
         } else {
-            armMotorL.setVoltage(rotatePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity ));
+            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity ));
             
         }
-        System.out.println(rotatePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity));
+        System.out.println(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity));
 
         //rotateSetpoint - encoderValue = direction
         // current position and target position
@@ -373,7 +378,7 @@ public class ArmSubsystem extends SubsystemBase {
      * @return command to move armMotor to setPoint
      */
     public Command setArmSetpoint(double setpoint) {
-        return this.runOnce(() -> System.out.println("changed to " + setpoint)).andThen(() -> setTrapezoidalProfileSetpoint( setpoint));
+        return this.runOnce(() -> System.out.println("changed to " + setpoint)).andThen(() -> setTrapezoidalProfileSetpoint(setpoint));
     }
 
 
