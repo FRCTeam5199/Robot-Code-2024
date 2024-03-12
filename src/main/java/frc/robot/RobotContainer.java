@@ -171,7 +171,7 @@ public class RobotContainer {
         
         mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true),shooterSubsystem.autoAim(), speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.isAutoAiming(false), shooterSubsystem.runShooterAtPercent(0)));
         
-        mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(6000))).onFalse(shooterSubsystem.runShooterAtPercent(0));
+        mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(6000))).onFalse(shooterSubsystem.runShooterAtRpm(0));
        
         mainCommandXboxController.povDown().onTrue(indexer.setIndexerSpeed(-.1));
 
