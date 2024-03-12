@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.zip.ZipEntry;
+
 import org.json.simple.parser.Yytoken;
 
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -72,7 +74,7 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmFeedforward feedfoward;
     public TrapezoidProfile trapProfile;
     // degrees/sec
-    public final TrapezoidProfile.Constraints trapConstraints =  new TrapezoidProfile.Constraints(1, 0.75);
+    public final TrapezoidProfile.Constraints trapConstraints =  new TrapezoidProfile.Constraints(45, 90);
     public final Timer timer = new Timer();
 
     public ArmSubsystem() {
@@ -155,17 +157,18 @@ public class ArmSubsystem extends SubsystemBase {
     public void PIDInit() {
 
     rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
-    voltagePIDController = new PIDController(0.1, 0, 0);
+    voltagePIDController = new PIDController(0.0, 0, 0);
     rotatePIDController.setIZone(3);
 
 
         // KS units = volts to overcome static friction
         // KG units = volts to compensate for gravity when the arm is horizontal
         // KV units = volts / (radians per second)
-        feedforward = new ArmFeedforward(0.077, 0.253, 6); // requires radians
+        // feedforward = new ArmFeedforward(0.077, 0.253, 6); // requires radians
+        feedforward = new ArmFeedforward(0.077, 0.253, 6);
 
-      
-    }
+        setTrapezoidalProfileSetpoint(120);
+    } 
 
     public boolean checkMotors() {
         if (armMotorL != null && armEncoder != null) {
@@ -186,16 +189,17 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-         if (armEncoder.getPosition() < 150 && armEncoder.getPosition() > 0) {
+         if (armEncoder.getPosition() < 200 && armEncoder.getPosition() > 0) {
             encoderValue = armEncoder.getPosition();
-        } else if (armEncoder.getPosition() > 150 && armEncoder.getPosition() < 200) {
+        } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 250) {
             encoderValue = 140;
-        } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 361) {
+        } else if (armEncoder.getPosition() > 250 && armEncoder.getPosition() < 361) {
             encoderValue = 0;
         }
         if(DriverStation.isEnabled()){
-            System.out.println("encoder " + encoderValue + "value " + rotateSetpoint);
+            // System.out.println("encoder " + encoderValue + "value " + rotateSetpoint);
         }
+        goToSetpoint(rotateOffset);
         // armMotorL.setVoltage(0.9+(0.077+ 0.253));
 
         // armProfile.calculate(1, new TrapezoidProfile.State(encoderValue, 0), new TrapezoidProfile.State(120, 0));
@@ -242,7 +246,7 @@ public class ArmSubsystem extends SubsystemBase {
 
         if (subsystemStatus) {
             if (DriverStation.isEnabled()){
-            subsystemPeriodic( );
+            // subsystemPeriodic( );
             }
         }
     }
@@ -292,14 +296,16 @@ public class ArmSubsystem extends SubsystemBase {
         if (encoderValue < 0 || rotateSetpoint < 0) return;
 
         TrapezoidProfile.State goalState = trapProfile.calculate(timer.get());
-        
+
+        System.out.println("goal " + goalState.velocity);
+        System.out.println("position" + goalState.position);
         if (climbMode) {
-            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity ));
+            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
         } else {
-            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity ));
+            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
             
         }
-        System.out.println(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity));
+        // System.out.println(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity));
 
         //rotateSetpoint - encoderValue = direction
         // current position and target position
