@@ -72,8 +72,7 @@ public class RobotContainer {
 
         LEDs.init();
         LEDs.setMode(LEDMode.IDLE);
-        // LEDs.setBlue(255);
-        // LEDs.start();
+        LEDs.start();
 
         // SmartDashboard.putData("Field", drivetrain.m_field);
         configureBindings();
@@ -151,9 +150,9 @@ public class RobotContainer {
         // // Reorient drive
         // mainCommandXboxController.button(8).onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
-       mainCommandXboxController.rightBumper().onTrue(new InstantCommand(() -> LEDs.setMode(LEDMode.NOTE))).onFalse(new InstantCommand(() -> LEDs.setMode(LEDMode.IDLE)));
+       mainCommandXboxController.rightBumper().onTrue(new InstantCommand(() -> LEDs.setMode(LEDMode.SHOOTING))).onFalse(new InstantCommand(() -> LEDs.setMode(LEDMode.IDLE)));
         
-       mainCommandXboxController.leftBumper().onTrue(new InstantCommand(() -> LEDs.setMode(LEDMode.TRACKING))).onFalse(new InstantCommand(() -> LEDs.setMode(LEDMode.IDLE)));
+       mainCommandXboxController.leftBumper().onTrue(new InstantCommand(() -> LEDs.setMode(LEDMode.INTAKING))).onFalse(new InstantCommand(() -> LEDs.setMode(LEDMode.IDLE)));
         
       //  mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(3000)));
         // mainCommandXboxController.povUp().onTrue(arm.isAiming(true).andThen(arm.rotateAmp()).andThen(auton.goToAmpRed())).onFalse(arm.isAiming(false));

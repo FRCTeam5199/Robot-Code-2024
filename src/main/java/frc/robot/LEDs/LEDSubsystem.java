@@ -8,8 +8,8 @@ import frc.robot.Main;
 import frc.robot.constants.MainConstants;
 
 public class LEDSubsystem extends SubsystemBase {
-    AddressableLED LEDRGB = new AddressableLED(MainConstants.LED_PORT);
-    AddressableLEDBuffer LEDBUFFER = new AddressableLEDBuffer(MainConstants.LED_LENGTH);
+    AddressableLED LEDLights = new AddressableLED(MainConstants.IDs.LED_PORT);
+    AddressableLEDBuffer LEDBuffer = new AddressableLEDBuffer(MainConstants.Configs.LED_LENGTH);
 
     boolean powerSaverMode;
 
@@ -17,25 +17,23 @@ public class LEDSubsystem extends SubsystemBase {
 
     public enum LEDMode {
         IDLE,
-        NOTE,
-        TRACKING
+        INTAKING,
+        SHOOTING
     }
 
     public LEDSubsystem() {}
 
     public void init() {
-        LEDRGB.setLength(LEDBUFFER.getLength());
-
-        LEDRGB.setData(LEDBUFFER);
-        LEDRGB.start();
+        LEDLights.setLength(LEDBuffer.getLength());
+        selectedLEDMode = null;
     }
 
     public void start() {
-        LEDRGB.start();
+        LEDLights.start();
     }
 
     public void stop() {
-        LEDRGB.stop();
+        LEDLights.stop();
     }
 
     public void setPowerSaverMode(boolean mode) {
@@ -49,11 +47,11 @@ public class LEDSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (powerSaverMode) {
-            for(int i = 0; i < MainConstants.LED_LENGTH; i++) {
+            for(int i = 0; i < LEDBuffer.getLength(); i++) {
                 if (getRed(i) >= 15) {
                     if (getGreen(i) >= 15) {
                         if (getBlue(i) >= 15) {
-                            LEDBUFFER.setRGB(i, LEDBUFFER.getRed(i) - 15, LEDBUFFER.getGreen(i) - 15, LEDBUFFER.getBlue(i) - 15);
+                            LEDBuffer.setRGB(i, LEDBuffer.getRed(i) - 15, LEDBuffer.getGreen(i) - 15, LEDBuffer.getBlue(i) - 15);
                         } else {
                             setBlue(i, 0);
                         }
@@ -69,128 +67,114 @@ public class LEDSubsystem extends SubsystemBase {
         if (selectedLEDMode == LEDMode.IDLE) {
             // setFade(Color.kBlue, Color.kLightBlue);
             setColor(Color.kBlue);
-        } else if (selectedLEDMode == LEDMode.NOTE) {
+        } else if (selectedLEDMode == LEDMode.INTAKING) {
             // setFade(Color.kBlue, Color.kDarkSeaGreen);
-            setColor(Color.kViolet);
-        } else if (selectedLEDMode == LEDMode.TRACKING) {
+            setColor(Color.kAqua);
+        } else if (selectedLEDMode == LEDMode.SHOOTING) {
             // setFade(Color.kBlue, Color.kBlueViolet);
-            setColor(Color.kGreen);
+            setColor(Color.kRed);
         } else {
             rainbow();
         }
 
-        System.out.println(selectedLEDMode.toString());
-
-        // setRGB(255, 255, 255);
+        LEDLights.setData(LEDBuffer);
     }
 
     public int getRed(int LEDindex) {
-        return LEDBUFFER.getRed(LEDindex);
+        return LEDBuffer.getRed(LEDindex);
     }
 
     public int getGreen(int LEDindex) {
-        return LEDBUFFER.getGreen(LEDindex);
+        return LEDBuffer.getGreen(LEDindex);
     }
 
     public int getBlue(int LEDindex) {
-        return LEDBUFFER.getBlue(LEDindex);
+        return LEDBuffer.getBlue(LEDindex);
     }
 
     public void setRGB(int index, int red, int blue, int green) {
-        LEDBUFFER.setRGB(index, red, blue, green);
-        LEDRGB.setData(LEDBUFFER);
+        LEDBuffer.setRGB(index, red, blue, green);
     }
 
     public void setRGB(int red, int blue, int green) {
-        for(int i = 0; i < MainConstants.LED_LENGTH; i++) { LEDBUFFER.setRGB(i, red, blue, green); }
-        LEDRGB.setData(LEDBUFFER);
+        for(int i = 0; i < LEDBuffer.getLength(); i++) { LEDBuffer.setRGB(i, red, blue, green); }
     }
 
     public void setColor(int index, Color color) {
-        LEDBUFFER.setLED(index, color);
-        LEDRGB.setData(LEDBUFFER);
+        LEDBuffer.setLED(index, color);
     }
 
     public void setColor(Color color) {
-        for(int i = 0; i < MainConstants.LED_LENGTH; i++) { LEDBUFFER.setLED(i, color); }
-        LEDRGB.setData(LEDBUFFER);
+        for(int i = 0; i < LEDBuffer.getLength(); i++) { LEDBuffer.setLED(i, color); }
     }
 
     public void setRed(int index, int red) {
-        LEDBUFFER.setRGB(index, red, LEDBUFFER.getGreen(index), LEDBUFFER.getBlue(index));
-        LEDRGB.setData(LEDBUFFER);
+        LEDBuffer.setRGB(index, red, LEDBuffer.getGreen(index), LEDBuffer.getBlue(index));
     }
 
     public void setRed(int red) {
-        for(int i = 0; i < MainConstants.LED_LENGTH; i++) { LEDBUFFER.setRGB(i, red, LEDBUFFER.getGreen(i), LEDBUFFER.getBlue(i)); }
-        LEDRGB.setData(LEDBUFFER);
+        for(int i = 0; i < LEDBuffer.getLength(); i++) { LEDBuffer.setRGB(i, red, LEDBuffer.getGreen(i), LEDBuffer.getBlue(i)); }
     }
 
     public void setGreen(int index, int green) {
-        LEDBUFFER.setRGB(index, LEDBUFFER.getRed(index), green, LEDBUFFER.getBlue(index));
-        LEDRGB.setData(LEDBUFFER);
+        LEDBuffer.setRGB(index, LEDBuffer.getRed(index), green, LEDBuffer.getBlue(index));
     }
 
     public void setGreen(int green) {
-        for(int i = 0; i < MainConstants.LED_LENGTH; i++) { LEDBUFFER.setRGB(i, LEDBUFFER.getRed(i), green, LEDBUFFER.getBlue(i)); }
-        LEDRGB.setData(LEDBUFFER);
+        for(int i = 0; i < LEDBuffer.getLength(); i++) { LEDBuffer.setRGB(i, LEDBuffer.getRed(i), green, LEDBuffer.getBlue(i)); }
     }
 
     public void setBlue(int index, int blue) {
-        LEDBUFFER.setRGB(index, LEDBUFFER.getRed(index), LEDBUFFER.getGreen(index), blue);
-        LEDRGB.setData(LEDBUFFER);
+        LEDBuffer.setRGB(index, LEDBuffer.getRed(index), LEDBuffer.getGreen(index), blue);
     }
 
     public void setBlue(int blue) {
-        for(int i = 0; i < MainConstants.LED_LENGTH; i++) { LEDBUFFER.setRGB(i, LEDBUFFER.getRed(i), LEDBUFFER.getGreen(i), blue); }
-        LEDRGB.setData(LEDBUFFER);
+        for(int i = 0; i < LEDBuffer.getLength(); i++) { LEDBuffer.setRGB(i, LEDBuffer.getRed(i), LEDBuffer.getGreen(i), blue); }
     }
 
     public void setShift(int red1, int green1, int blue1, int red2, int green2, int blue2) {
-        for(int i = 0; i < MainConstants.LED_LENGTH; i++) {
-            if (i <= (LEDBUFFER.getLength() / 2)) { LEDBUFFER.setRGB(i, red1, green1, blue1);
-            } else { LEDBUFFER.setRGB(i, red1, green1, blue1); }
+        for(int i = 0; i < LEDBuffer.getLength(); i++) {
+            if (i <= (LEDBuffer.getLength() / 2)) { LEDBuffer.setRGB(i, red1, green1, blue1);
+            } else { LEDBuffer.setRGB(i, red1, green1, blue1); }
         }
-        
-        LEDRGB.setData(LEDBUFFER);
     }
 
     public void setShift(Color color1, Color color2) {
-        for(int i = 0; i < MainConstants.LED_LENGTH; i++) {
-            if (i <= (LEDBUFFER.getLength() / 2)) { LEDBUFFER.setLED(i, color1);
-            } else { LEDBUFFER.setLED(i, color2); }
+        for(int i = 0; i < LEDBuffer.getLength(); i++) {
+            if (i <= (LEDBuffer.getLength() / 2)) { LEDBuffer.setLED(i, color1);
+            } else { LEDBuffer.setLED(i, color2); }
         }
-        
-        LEDRGB.setData(LEDBUFFER);
+    }
+
+    public void setShift(Color... colors) {
+        for(int i = 0; i < LEDBuffer.getLength(); i++) {
+            LEDBuffer.setLED(i, colors[(int)Math.round(LEDBuffer.getLength() / colors.length)]);
+        }
     }
 
     public void setFade(int red, int green, int blue) {
-        for(int i = 0; i < MainConstants.LED_LENGTH; i++) { LEDBUFFER.setRGB(i, red + i, green + i, blue + i); }
-        LEDRGB.setData(LEDBUFFER);
+        for(int i = 0; i < LEDBuffer.getLength(); i++) { LEDBuffer.setRGB(i, red + i, green + i, blue + i); }
     }
 
     public void setFade(int red, int green, int blue, double strength) {
-        for(int i = 0; i < MainConstants.LED_LENGTH; i++) { LEDBUFFER.setRGB(i, red + (int)Math.round(i * strength), green + (int)Math.round(i * strength), blue + (int)Math.round(i * strength)); }
-        LEDRGB.setData(LEDBUFFER);
+        for(int i = 0; i < LEDBuffer.getLength(); i++) { LEDBuffer.setRGB(i, red + (int)Math.round(i * strength), green + (int)Math.round(i * strength), blue + (int)Math.round(i * strength)); }
     }
 
     public void setFade(Color... color) {
-        for(int i = 0; i < MainConstants.LED_LENGTH; i++) { LEDBUFFER.setLED(i, color[Math.round(MainConstants.LED_LENGTH / color.length)]); }
-        LEDRGB.setData(LEDBUFFER);
+        for(int i = 0; i < LEDBuffer.getLength(); i++) { LEDBuffer.setLED(i, color[Math.round(LEDBuffer.getLength() / color.length)]); }
     }
 
     public void rainbow() {
         int rainbowFirstPixelHue = 0;
+
         // For every pixel
-        for (var i = 0; i < LEDBUFFER.getLength(); i++) {
-          LEDBUFFER.setHSV(i, (rainbowFirstPixelHue + (i * 180 / LEDBUFFER.getLength())) % 180, 255, 128);
+        for (var i = 0; i < LEDBuffer.getLength(); i++) {
+          LEDBuffer.setHSV(i, (rainbowFirstPixelHue + (i * 180 / LEDBuffer.getLength())) % 180, 255, 128);
         }
 
         // Increase by to make the rainbow "move"
         rainbowFirstPixelHue += 3;
         // Check bounds
         rainbowFirstPixelHue %= 180;
-        
-        LEDRGB.setData(LEDBUFFER);
       }
 }

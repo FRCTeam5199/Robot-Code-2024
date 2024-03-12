@@ -43,9 +43,7 @@ public class MainConstants {
     public static boolean INVERT_BR_DRIVE = false;
     public static boolean INVERT_BR_STEER = false;
     public static double MAX_VELOCITY_METERS_PER_SECOND = 0;
-    //Operator Constants
-    public static int CONTROLLER_PORT = 0;
-    public static int BUTTON_PANEL_PORT = 0;
+    
     //right hp red 9, left hp 10 // right hp blue 1, left hp blue 2
     //middle red speaker 4, right red speaker 3 // middle blue speaker 7, left blue speaker 8
     //red amp 5 // blue amp 6
@@ -86,8 +84,6 @@ public class MainConstants {
             new Transform3d(0, 0
             , 0, new Rotation3d(0, 0, 0))
     };
-    public static int LED_LENGTH = 90;
-    public static int LED_PORT = 0;
 
     public static class OperatorConstants {
         //Operator Constants
@@ -97,13 +93,16 @@ public class MainConstants {
         public static int BOTTOM_BUTTON_PANEL_PORT = 2;
     }
 
+    public static class Configs {
+        public static final int LED_LENGTH = 16;//61
+    }
+
     public static class IDs {
         // Pigeon
         public static int PIGEON2_ID = 22;
 
-        // Pneumatics
-        // public static final int PCM_ID = 0;
-        // public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = null;
+        //LEDs
+        public static final int LED_PORT = 0;
 
         public static class Motors {
             // Drive
@@ -141,9 +140,11 @@ public class MainConstants {
             public static final int SHOOTER_INDEXER_MOTOR_ID = 4;
         }
     }
-
+    
     public static class PIDConstants {
+        // Intake
         public static final PID INTAKE_PID = new PID(0.1, 0, 0);
+
         // Climber
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 
@@ -177,6 +178,5 @@ public class MainConstants {
         public static final double ARM_AMP_SETPOINT = 48.5;
         public static final double ARM_FAR_SHOT_SETPOINT = 45.5;
         public static final double ARM_HP_STATION_SETPOINT = 150;
-
     }
 }
