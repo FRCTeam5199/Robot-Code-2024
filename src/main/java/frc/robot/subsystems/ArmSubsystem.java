@@ -105,6 +105,8 @@ public class ArmSubsystem extends SubsystemBase {
     public void setBrakeTrue() {
         armMotorL.setIdleMode(IdleMode.kBrake);
         armMotorR.setIdleMode(IdleMode.kBrake);
+
+        setTrapezoidalProfileSetpoint(120);
     }
 
     /**
@@ -165,7 +167,7 @@ public class ArmSubsystem extends SubsystemBase {
         // KG units = volts to compensate for gravity when the arm is horizontal
         // KV units = volts / (radians per second)
         // feedforward = new ArmFeedforward(0.077, 0.253, 6); // requires radians
-        feedforward = new ArmFeedforward(0.077, 0.253, 6);
+        feedforward = new ArmFeedforward(0.077, 0.253, 1.42);
 
         setTrapezoidalProfileSetpoint(120);
     } 
@@ -199,6 +201,9 @@ public class ArmSubsystem extends SubsystemBase {
         if(DriverStation.isEnabled()){
             // System.out.println("encoder " + encoderValue + "value " + rotateSetpoint);
         }
+        // System.out.println("encoder value" + encoderValue);
+        System.out.println("velocity " + armEncoder.getVelocity());
+        
         goToSetpoint(rotateOffset);
         // armMotorL.setVoltage(0.9+(0.077+ 0.253));
 
@@ -297,8 +302,8 @@ public class ArmSubsystem extends SubsystemBase {
 
         TrapezoidProfile.State goalState = trapProfile.calculate(timer.get());
 
-        System.out.println("goal " + goalState.velocity);
-        System.out.println("position" + goalState.position);
+        // System.out.println("goal " + goalState.velocity);
+        // System.out.println("position" + goalState.position);
         if (climbMode) {
             armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
         } else {
