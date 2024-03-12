@@ -41,8 +41,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     private ConditionalCommand autoAimArmSide;
 
-    public ArmSubsystem() {
-    }
+    public ArmSubsystem() {}
 
     /**
      * Gets the instnace of the Arm Subsystem.
@@ -71,8 +70,14 @@ public class ArmSubsystem extends SubsystemBase {
      * init for arm and pid controller
      */
     public void init() {
-        motorInit();
-
+        try {
+            motorInit();
+        } catch (Exception exception) {
+            System.err.println("One or more issues occured while trying to initalize PID for Arm Subsystem");
+            System.err.println("Exception Message:" + exception.getMessage());
+            System.err.println("Exception Cause:" + exception.getCause());
+            System.err.println("Exception Stack Trace:" + exception.getStackTrace());
+        }
 
         try {
             PIDInit();

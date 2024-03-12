@@ -7,9 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.utility.PID;
 
-
 public class MainConstants {
-
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
     public static final double ARM_PIVOT_X_OFFSET = 0.18415; //0.2032; //meters //7.25 inch
     public static final double ARM_PIVOT_Z = 0.5588; //0.5715; //meters //22 inch
@@ -88,13 +86,13 @@ public class MainConstants {
             new Transform3d(0, 0
             , 0, new Rotation3d(0, 0, 0))
     };
-    public static int LED_LENGTH = 0;
+    public static int LED_LENGTH = 90;
     public static int LED_PORT = 0;
 
     public static class OperatorConstants {
         //Operator Constants
         public static int MAIN_CONTROLLER_PORT = 0;
-        public static int OPERATOR_CONTROLLER_PORT = 1;
+        public static int OPERATOR_CONTROLLER_PORT = 3;
         public static int TOP_BUTTON_PANEL_PORT = 1;
         public static int BOTTOM_BUTTON_PANEL_PORT = 2;
     }

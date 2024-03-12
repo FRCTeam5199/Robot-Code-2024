@@ -5,34 +5,18 @@
 package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
-
-import javax.swing.text.AbstractDocument.LeafElement;
-
-import org.w3c.dom.CDATASection;
-
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.controls.ButtonPanelButtons;
-import frc.robot.utility.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.LED.LEDManager;
-import frc.robot.commands.Autos;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.LEDs.LEDSubsystem;
+import frc.robot.LEDs.LEDSubsystem.LEDMode;
 import frc.robot.constants.MainConstants;
 import frc.robot.controls.CommandButtonPanel;
-import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.drivetrain.SwerveDrive;
-import frc.robot.utility.superstructure.*;
-import frc.robot.LED.LEDManager;
-// import frc.robot.utility.Akit;
-
+import frc.robot.utility.CommandXboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,13 +25,14 @@ import frc.robot.LED.LEDManager;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-//     public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
+    public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
 //     public final static ArmSubsystem arm = new ArmSubsystem();
 //     public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 //     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 //     public final static IntakeSubsystem intake = new IntakeSubsystem();
 //     public final static IndexerSubsystem indexer = new IndexerSubsystem();
 
+    public final static LEDSubsystem LEDs = new LEDSubsystem();
 
     public static final CommandButtonPanel buttonPanel = new CommandButtonPanel(MainConstants.OperatorConstants.TOP_BUTTON_PANEL_PORT, MainConstants.OperatorConstants.BOTTOM_BUTTON_PANEL_PORT);
     private final double MaxSpeed = 6; // 8 meters per second desired top speed
@@ -57,7 +42,7 @@ public class RobotContainer {
             MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT); // My joystick
     private final CommandXboxController operatorCommandXboxController = new CommandXboxController(
             MainConstants.OperatorConstants.OPERATOR_CONTROLLER_PORT);
-    private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
+    // private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -72,12 +57,11 @@ public class RobotContainer {
 //     //     public final static Akit log = new Akit();
 //     Autos auton;
 
-//     ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
-//                 aprilTags.speakerAlignmentRed(),
-//                 aprilTags.speakerAlignementBlue(),
-//                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-//         );
-
+    ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
+                aprilTags.speakerAlignmentRed(),
+                aprilTags.speakerAlignementBlue(),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+        );
 
     public RobotContainer() {
         // shooterSubsystem.init();
@@ -86,6 +70,10 @@ public class RobotContainer {
         // climberSubsystem.init();
         // indexer.init();
 
+        LEDs.init();
+        LEDs.setMode(LEDMode.IDLE);
+        // LEDs.setBlue(255);
+        // LEDs.start();
 
         // SmartDashboard.putData("Field", drivetrain.m_field);
         configureBindings();
@@ -95,7 +83,6 @@ public class RobotContainer {
      * Configures the bindings for commands
      */
     private void configureBindings() {
-
 
         // intakeAction = new SequentialCommandGroup(
         //         arm.isAiming(true),
@@ -107,7 +94,6 @@ public class RobotContainer {
         //         arm.rotateIntake(),
         //         intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
         //         shooterSubsystem.runShooterAtPercent(-.6));
-
 
         // stopIntakeAction = new SequentialCommandGroup(
         //         intake.setIntakeSpeed(-.9),
@@ -122,7 +108,6 @@ public class RobotContainer {
         //         arm.isAiming(false),
         //         indexer.setIndexerSpeed(0),
         //         intake.setIntakeSpeed(0));
-
 
         // new Trigger(() -> indexer.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
         // new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
@@ -139,36 +124,36 @@ public class RobotContainer {
         // }));
 
         //         // Drive
-        drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive
-                                .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(0) // Drive
-                                // forward
-                                // with
-                                // negative Y (forward)
-                                .withVelocityY(
-                                        -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(0) // Drive
-                                // left
-                                // with
-                                // negative
-                                // X (left)
-                                .withRotationalRate(-mainCommandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(0) // Drive
+        // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+        //         drivetrain.applyRequest(() -> drive
+        //                         .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(0) // Drive
+        //                         // forward
+        //                         // with
+        //                         // negative Y (forward)
+        //                         .withVelocityY(
+        //                                 -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(0) // Drive
+        //                         // left
+        //                         // with
+        //                         // negative
+        //                         // X (left)
+        //                         .withRotationalRate(-mainCommandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(0) // Drive
                         // counterclockwise
                         // with
                         // negative
                         // X
                         // (left)
                         
-        ));
+        // ));
         
 
         // Brake drive
-        mainCommandXboxController.button(7).whileTrue(drivetrain.applyRequest(() -> brake));
-        // Reorient drive
-        mainCommandXboxController.button(8).onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
+        // mainCommandXboxController.button(7).whileTrue(drivetrain.applyRequest(() -> brake));
+        // // Reorient drive
+        // mainCommandXboxController.button(8).onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
-      //  mainCommandXboxController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
+       mainCommandXboxController.rightBumper().onTrue(new InstantCommand(() -> LEDs.setMode(LEDMode.NOTE))).onFalse(new InstantCommand(() -> LEDs.setMode(LEDMode.IDLE)));
         
-      //  mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), shooterSubsystem.runShooterAtRpm(shooterSubsystem.autoSpeed()), speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.isAutoAiming(false), (shooterSubsystem.runShooterAtPercent(0))));
+       mainCommandXboxController.leftBumper().onTrue(new InstantCommand(() -> LEDs.setMode(LEDMode.TRACKING))).onFalse(new InstantCommand(() -> LEDs.setMode(LEDMode.IDLE)));
         
       //  mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(3000)));
         // mainCommandXboxController.povUp().onTrue(arm.isAiming(true).andThen(arm.rotateAmp()).andThen(auton.goToAmpRed())).onFalse(arm.isAiming(false));
@@ -199,7 +184,7 @@ public class RobotContainer {
 
     //    mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
 
-        drivetrain.registerTelemetry(logger::telemeterize);
+        // drivetrain.registerTelemetry(logger::telemeterize);
 
         // buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateSub()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
         // buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateBack()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
