@@ -255,7 +255,7 @@ public class ArmSubsystem extends SubsystemBase {
             goToSetpoint(rotateSetpoint, 0);
 
 
-            System.out.println("encoder " + encoderValue + "desired " + rotateSetpoint);
+            // System.out.println("encoder " + encoderValue + "desired " + rotateSetpoint);
 
         }
     }
@@ -270,11 +270,19 @@ public class ArmSubsystem extends SubsystemBase {
             armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
 //            armMotorL.setVoltage(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians((rotateSetpoint - 21.7)), 0));
         } else {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+                if(armEncoder.getPosition() > 137){
+                    System.out.println("Increased Arm Motion: " + rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 1.5);
+                    armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 1.5);
+                    armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 1.5);
+                }
+                else{
+                    armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+                    armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+                }
+            }
 //            armMotorL.setVoltage(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians((rotateSetpoint - 21.7)), 0));
         }
-    }
+    
 
     public double armSpeakersAligningRed() {
         double angleForArm;

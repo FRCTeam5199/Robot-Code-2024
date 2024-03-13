@@ -153,7 +153,7 @@ public class ShooterSubsystem extends SubsystemBase {
     
 
     public Command runShooterAtRpm(double vel) {
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((vel/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((vel/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + vel/90 + "  velocity " + vel)));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((vel/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((vel/90))));/*.alongWith(new InstantCommand(()-> System.out.println("value" + vel/90 + "  velocity " + vel)*/
     }
 
     public Command runShooterAtPercent(double per) {
