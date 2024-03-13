@@ -74,7 +74,7 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmFeedforward feedfoward;
     public TrapezoidProfile trapProfile;
     // degrees/sec
-    public final TrapezoidProfile.Constraints trapConstraints =  new TrapezoidProfile.Constraints(45, 90);
+    public final TrapezoidProfile.Constraints trapConstraints =  new TrapezoidProfile.Constraints(720, 1440);
     public final Timer timer = new Timer();
 
     public ArmSubsystem() {
@@ -160,14 +160,13 @@ public class ArmSubsystem extends SubsystemBase {
 
     rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
     voltagePIDController = new PIDController(0.0, 0, 0);
-    rotatePIDController.setIZone(3);
 
 
         // KS units = volts to overcome static friction
         // KG units = volts to compensate for gravity when the arm is horizontal
         // KV units = volts / (radians per second)
         // feedforward = new ArmFeedforward(0.077, 0.253, 6); // requires radians
-        feedforward = new ArmFeedforward(0.077, 0.253, 1.42);
+        feedforward = new ArmFeedforward(0.077, 0.253, 1.48);
 
         setTrapezoidalProfileSetpoint(120);
     } 
@@ -199,10 +198,10 @@ public class ArmSubsystem extends SubsystemBase {
             encoderValue = 0;
         }
         if(DriverStation.isEnabled()){
+            System.out.println("velocity " + armEncoder.getVelocity());
             // System.out.println("encoder " + encoderValue + "value " + rotateSetpoint);
         }
         // System.out.println("encoder value" + encoderValue);
-        System.out.println("velocity " + armEncoder.getVelocity());
         
         goToSetpoint(rotateOffset);
         // armMotorL.setVoltage(0.9+(0.077+ 0.253));
