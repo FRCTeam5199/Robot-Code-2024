@@ -26,24 +26,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4 Piece Middle BtT p1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "backShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "deployIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "4 Piece Middle BtT p2"
           }
         },
@@ -63,6 +45,24 @@
           "type": "path",
           "data": {
             "pathName": "4 Piece Middle BtT p3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Middle BtT p1"
           }
         },
         {

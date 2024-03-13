@@ -122,12 +122,15 @@ public class Autos extends Command {
         autonChooserRed.addOption("twoPieceMiddleRed", twoPieceMiddleRed());
         autonChooserRed.addOption("twoPieceBottomRed", twoPieceBottomRed());
 
+        autonChooserRed.addOption("threePieceMtBRed", threePieceMtBRed());
+        autonChooserRed.addOption("threePieceMtTRed", threePieceMtTRed());
 
-        autonChooserRed.addOption("threePieceTtMRed", threePieceTtMRed());
-        //     autonChooserRed.addOption("threePieceTtMAutoAimRed", threePieceTtMAutoAimRed());
-        autonChooserRed.addOption("threePieceBtMAutoAimRed", threePieceBtMAutoAimRed());
-        //    autonChooserRed.addOption("threePieceBottomFarAutoAimRed", threePieceBottomFarAutoAimRed());
+//        autonChooserRed.addOption("threePieceTtMRed", threePieceTtMRed());
+//        autonChooserRed.addOption("threePieceTtMAutoAimRed", threePieceTtMAutoAimRed());
+//        autonChooserRed.addOption("threePieceBtMAutoAimRed", threePieceBtMAutoAimRed());
+//        autonChooserRed.addOption("threePieceBottomFarAutoAimRed", threePieceBottomFarAutoAimRed());
 
+        autonChooserRed.addOption("fourPieceMiddleTtBRed", fourPieceMiddleTtBRed());
         autonChooserRed.addOption("fourPieceTtBAutoAimRed", fourPieceTtBAutoAimRed());
         autonChooserRed.addOption("fourPieceTopFarAutoAimRed", fourPieceTopFarAutoAimRed());
 
@@ -266,12 +269,19 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("3 Piece Top to Middle Red");
     }
 
+    public Command threePieceMtTRed() {
+        return new PathPlannerAuto("3 Piece Middle to Top Red");
+    }
+
+    public Command threePieceMtBRed() {
+        return new PathPlannerAuto("3 Piece Middle to Bottom Red");
+    }
+
     public Command threePieceTtMBlue() {
         return AutoBuilder.buildAuto("3 Piece Top to Middle Blue");
     }
 
     public Command threePieceBtMBlue() {
-
         return new PathPlannerAuto("3 Piece Bottom to Middle Blue");
     }
 
@@ -311,6 +321,10 @@ public class Autos extends Command {
     //Four Piece Autons
     public Command fourPieceTopFarAutoAimRed() {
         return AutoBuilder.buildAuto("4 Piece Top Far Red AUTOAIM");
+    }
+
+    public Command fourPieceMiddleTtBRed() {
+        return AutoBuilder.buildAuto("4 Piece Middle BtT Red");
     }
 
     public Command fourPieceTtBAutoAimRed() {
