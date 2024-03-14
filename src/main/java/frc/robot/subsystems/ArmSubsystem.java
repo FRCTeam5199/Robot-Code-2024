@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.zip.ZipEntry;
-
 import org.json.simple.parser.Yytoken;
 
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -39,22 +37,21 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 
-public class ArmSubsystem extends SubsystemBase {  
-    
+public class ArmSubsystem extends SubsystemBase {
+
+    private static ArmSubsystem armSubsystem;
+    private static AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
+    private static boolean subsystemStatus = false;
+    private static boolean isBrakeMode = false;
+    public final double horizontalOffset = 21.7;
     public CANSparkBase armMotorL;
     public CANSparkBase armMotorR;
     public RelativeEncoder encoder;
     public SparkPIDController sparkPIDController;
 
-
-
-    private static ArmSubsystem armSubsystem;
-    private static AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
     public ArmFeedforward feedforward;
 
-    private static boolean subsystemStatus = false;
 
-    private static boolean isBrakeMode = false;
     public boolean inAuton = false;
     public boolean climbMode = false;
     public double encoderValue;
@@ -63,10 +60,9 @@ public class ArmSubsystem extends SubsystemBase {
     public SwerveDrive drive = TunerConstants.DriveTrain;
     private SparkAbsoluteEncoder armEncoder;
     private PIDController rotatePIDController;
-    private PIDController voltagePIDController;
+private PIDController voltagePIDController;
     private double rotateSetpoint = 120;
 
-    public final double horizontalOffset = 21.7;
 
     private double rotateOffset;
     private double pidPercent;
@@ -124,7 +120,7 @@ public class ArmSubsystem extends SubsystemBase {
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace());
         }
-        trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(120,0), new TrapezoidProfile.State(encoderValue, armEncoder.getVelocity()*360.0));
+trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(120,0), new TrapezoidProfile.State(encoderValue, armEncoder.getVelocity()*360.0));
      
     }
 
@@ -132,14 +128,14 @@ public class ArmSubsystem extends SubsystemBase {
         return subsystemStatus;
     }
 
-    public void motorInit() { 
+    public void motorInit() {
         armMotorL = new CANSparkFlex(MainConstants.IDs.Motors.ARM_MOTOR_ID, CANSparkLowLevel.MotorType.kBrushless);
         armMotorR = new CANSparkFlex(MainConstants.IDs.Motors.ARM_MOTOR2_ID, CANSparkLowLevel.MotorType.kBrushless);
 
         armMotorL.setInverted(false);
         armMotorL.setIdleMode(IdleMode.kBrake);
 
-        
+
         armMotorR.setInverted(true);
         armMotorR.setIdleMode(IdleMode.kBrake);
 
@@ -153,23 +149,23 @@ public class ArmSubsystem extends SubsystemBase {
         armMotorL.burnFlash();
         armMotorR.burnFlash();
 
-        
+
     }
 
     public void PIDInit() {
 
-    rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
-    voltagePIDController = new PIDController(0.0, 0, 0);
+        rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
+        voltagePIDController = new PIDController(0.0, 0, 0);
 
 
         // KS units = volts to overcome static friction
         // KG units = volts to compensate for gravity when the arm is horizontal
         // KV units = volts / (radians per second)
-        // feedforward = new ArmFeedforward(0.077, 0.253, 6); // requires radians
-        feedforward = new ArmFeedforward(0.077, 0.253, 1.48);
+// feedforward = new ArmFeedforward(0.077, 0.253, 6); // requires radians
+        feedforward = new ArmFeedforward(0.077, 0.253, 0);
 
-        setTrapezoidalProfileSetpoint(120);
-    } 
+    setTrapezoidalProfileSetpoint(120);
+    }
 
     public boolean checkMotors() {
         if (armMotorL != null && armEncoder != null) {
@@ -190,24 +186,24 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-         if (armEncoder.getPosition() < 200 && armEncoder.getPosition() > 0) {
+        if (armEncoder.getPosition() < 200 && armEncoder.getPosition() > 0) {
             encoderValue = armEncoder.getPosition();
         } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 250) {
             encoderValue = 140;
         } else if (armEncoder.getPosition() > 250 && armEncoder.getPosition() < 361) {
             encoderValue = 0;
         }
-        if(DriverStation.isEnabled()){
-            System.out.println("velocity " + armEncoder.getVelocity());
+if(DriverStation.isEnabled()){
+            System.out.println("velocity " + armMotorR.getEncoder().getVelocity()/80);
             // System.out.println("encoder " + encoderValue + "value " + rotateSetpoint);
         }
         // System.out.println("encoder value" + encoderValue);
-        
-        goToSetpoint(rotateOffset);
+
+    goToSetpoint(rotateOffset);
         // armMotorL.setVoltage(0.9+(0.077+ 0.253));
 
         // armProfile.calculate(1, new TrapezoidProfile.State(encoderValue, 0), new TrapezoidProfile.State(120, 0));
-                // armMotorL.set
+        // armMotorL.set
         // PID proportional integral derivative
         // kp --> what's the unit --> x per y
         // x the motion, y is the unit error
@@ -219,11 +215,11 @@ public class ArmSubsystem extends SubsystemBase {
 
         // PositionVoltage -- combined position request w/ the ability to augment it with voltage feed forward
 
-        
+
         // armMotorL.setVoltage(
-        //     pidController.calculate(encoderValue) a
+        //     pidController.calculate(encoderValue)
         //         + feedforward.calculate(Math.toRadians(pidController.getSetpoint().position+23), pidController.getSetpoint().velocity));
-        
+
 
         // armMotorL.setVoltage(0.33); //0.176 // 0.33 / 21.7 offset Kg = 0.253
         // max = kg + ks
@@ -234,13 +230,13 @@ public class ArmSubsystem extends SubsystemBase {
         // ks = 0.077
 
 
-                //  Math.toRadians((pidController.getSetpoint().position+23))
+        //  Math.toRadians((pidController.getSetpoint().position+23))
         // double f = rotatePIDController.calculate(encoderValue, 120) + feedforward.calculate(Math.toRadians(120-23), 0);
-        
+
 
         // System.out.println(f);
         // armMotorL.set(f);
-       
+
 
         if (checkMotors() && checkPID()) {
             subsystemStatus = true;
@@ -251,12 +247,12 @@ public class ArmSubsystem extends SubsystemBase {
         if (subsystemStatus) {
             if (DriverStation.isEnabled()){
             // subsystemPeriodic( );
-            }
+}
         }
     }
 
     private void subsystemPeriodic() {
-        
+
         if(isAiming){
           
             goToSetpoint(rotateOffset);
@@ -282,31 +278,29 @@ public class ArmSubsystem extends SubsystemBase {
         //         goToSetpoint(rotateOffset);
         //     }
         //     System.out.println("encoder " + encoderValue + "desired "  + rotateSetpoint);
-            
-        // } else {
-        //     if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-        //         setTrapezoidalProfileSetpoint( armSpeakersAligningRed());
+
+            // } else {
+                //     if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+                //         setTrapezoidalProfileSetpoint( armSpeakersAligningRed());
         //     } else {
-        //         setTrapezoidalProfileSetpoint( armSpeakersAligningBlue());
+                //         setTrapezoidalProfileSetpoint( armSpeakersAligningBlue());
         //     }
         //     System.out.println("encoder " + encoderValue + "desired "  + rotateSetpoint);
 
-        // }   
-    }
+        }
+    
 
-
+    
     public void goToSetpoint(double rotateOffset) {
-
+        
         if (encoderValue < 0 || rotateSetpoint < 0) return;
 
         TrapezoidProfile.State goalState = trapProfile.calculate(timer.get());
 
-        // System.out.println("goal " + goalState.velocity);
-        // System.out.println("position" + goalState.position);
         if (climbMode) {
             armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
         } else {
-            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
+                armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
             
         }
         // System.out.println(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity));
@@ -314,8 +308,8 @@ public class ArmSubsystem extends SubsystemBase {
         //rotateSetpoint - encoderValue = direction
         // current position and target position
         // feedforward.calculate(current arm angle, velocity)
-    }
-
+        }
+    
 
     public double armSpeakersAligningRed() {
         double angleForArm;
