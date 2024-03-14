@@ -64,20 +64,20 @@ public class RobotContainer {
     // driving in open loop
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    private final Telemetry logger = new Telemetry(MaxSpeed);  
+    private final Telemetry logger = new Telemetry(MaxSpeed);
     //private final static LEDManager Led = new LEDManager();
 
-        public Command intakeAction;
+    public Command intakeAction;
     public Command stopIntakeAction;
     //     public final static Akit log = new Akit();
     Autos auton;
 
     ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
-                aprilTags.speakerAlignmentRed(),
-                aprilTags.speakerAlignementBlue(),
-                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-        );
-   
+            aprilTags.speakerAlignmentRed(),
+            aprilTags.speakerAlignementBlue(),
+            () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+    );
+
 
     public RobotContainer() {
         shooterSubsystem.init();
@@ -110,19 +110,19 @@ public class RobotContainer {
                 shooterSubsystem.runShooterAtPercent(-.3));
 
 
-                stopIntakeAction = new SequentialCommandGroup(
-                        intake.setIntakeSpeed(-.9),
-                        arm.setArmSetpoint(50),
-                        new WaitCommand(0.2),
-                        shooterSubsystem.runShooterAtPercent(0),
-                        intake.stowIntake(),
-                        indexer.setIndexerSpeed(-0.1),
-                        new WaitCommand(0.3),
-                        arm.rotateStable(),
-                        new WaitCommand(0.5),
-                        arm.isAiming(false),
-                        indexer.setIndexerSpeed(0),
-                        intake.setIntakeSpeed(0));
+        stopIntakeAction = new SequentialCommandGroup(
+                intake.setIntakeSpeed(-.9),
+                arm.setArmSetpoint(50),
+                new WaitCommand(0.2),
+                shooterSubsystem.runShooterAtPercent(0),
+                intake.stowIntake(),
+                indexer.setIndexerSpeed(-0.1),
+                new WaitCommand(0.3),
+                arm.rotateStable(),
+                new WaitCommand(0.5),
+                arm.isAiming(false),
+                indexer.setIndexerSpeed(0),
+                intake.setIntakeSpeed(0));
 
 
         new Trigger(() -> indexer.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
@@ -158,9 +158,9 @@ public class RobotContainer {
                         // negative
                         // X
                         // (left)
-                        
-        ));
-        
+
+                ));
+
 
         // Brake drive
         mainCommandXboxController.button(7).whileTrue(drivetrain.applyRequest(() -> brake));
@@ -168,11 +168,11 @@ public class RobotContainer {
         mainCommandXboxController.button(8).onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
         mainCommandXboxController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
-        
-        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true),shooterSubsystem.autoAim(), speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.isAutoAiming(false), shooterSubsystem.runShooterAtPercent(0)));
-        
+
+        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), shooterSubsystem.autoAim(), speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.isAutoAiming(false), shooterSubsystem.runShooterAtPercent(0)));
+
         mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(6000))).onFalse(shooterSubsystem.runShooterAtPercent(0));
-       
+
         mainCommandXboxController.povDown().onTrue(indexer.setIndexerSpeed(-.1));
 
         mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)
@@ -187,14 +187,14 @@ public class RobotContainer {
                                 arm.isAiming(true).andThen(shooterSubsystem.runShooterClimbAmp(4000)),
                                 () -> climberSubsystem.climbModeEnabled),
 
-                        // normal aiming / auto aiming
+                        // normal aiming
                         new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), shooterSubsystem.runShooterPredeterminedRPM(), new InstantCommand(() -> shooterSubsystem.idleShooting = false), new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> !shooterSubsystem.intakeShooter),
-                                
+
 
                         // based on climbing on or of
                         () -> shooterSubsystem.ampMode)))).onFalse(
 
-                                shooterSubsystem.runShooterAtPercent(0).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false))));
+                shooterSubsystem.runShooterAtPercent(0).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false))));
 
 
         mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
@@ -245,13 +245,14 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.AUX_RIGHT_BOTTOM).onTrue(intake.stowIntake());
         buttonPanel.button(ButtonPanelButtons.AUX_LEFT_TOP).onTrue(shooterSubsystem.setRunShooter(true).andThen(shooterSubsystem.setintakeShooter(true))).onFalse(shooterSubsystem.setRunShooter(false).andThen(shooterSubsystem.setintakeShooter(false)));
     }
-    
-    public Command runAutoShooting(){
-        return new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(.75), new WaitCommand(1), indexer.setIndexerSpeed(.2),
+
+    public Command runAutoShooting() {
+        return new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(.60), new WaitCommand(1), indexer.setIndexerSpeed(.2),
                 new WaitCommand(0.3), shooterSubsystem.runShooterAtPercent(0), indexer.setIndexerSpeed(0));
     }
-    public Command autoFarShot(){
-        return  new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(1),
+
+    public Command autoFarShot() {
+        return new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(1),
                 new WaitCommand(1),
                 indexer.setIndexerSpeed(.2),
                 new WaitCommand(0.3), shooterSubsystem.runShooterAtPercent(0),

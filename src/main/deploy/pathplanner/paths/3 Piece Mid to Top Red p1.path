@@ -16,15 +16,15 @@
     },
     {
       "anchor": {
-        "x": 13.598687168843668,
+        "x": 14.072018913268595,
         "y": 5.550936522700434
       },
       "prevControl": {
-        "x": 14.453578236685718,
+        "x": 14.926909981110645,
         "y": 5.550936522700434
       },
       "nextControl": {
-        "x": 12.743796101001617,
+        "x": 13.217127845426544,
         "y": 5.550936522700434
       },
       "isLocked": false,
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 15.24991512179886,
-        "y": 5.550936522700434
+        "x": 14.75,
+        "y": 5.54
       },
       "prevControl": {
-        "x": 14.822469587877835,
-        "y": 5.550936522700434
+        "x": 14.322554466078975,
+        "y": 5.54
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,10 +46,28 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "retract",
+      "waypointRelativePos": 1.45,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 1.75,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

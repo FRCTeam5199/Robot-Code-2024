@@ -91,7 +91,7 @@ public class Autos extends Command {
                 arm.isAiming(false)));
 
 
-        NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(148 /*141*/), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61), new WaitCommand(0.2), robotContainer.runAutoShooting(), new WaitCommand(.2), arm.isAiming(false)));
         NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
         NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
@@ -112,6 +112,7 @@ public class Autos extends Command {
         Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         autonChooserRed.addOption("doNothing", doNothing());
         autonChooserRed.addOption("move do nothing", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
+        autonChooserRed.addOption("testBackShot", testBackShot());
 
         autonChooserRed.addOption("onePieceTaxiTopRed", onePieceTaxiTopRed());
         autonChooserRed.addOption("onePieceTaxiMiddleRed", onePieceTaxiMiddleRed());
@@ -197,6 +198,10 @@ public class Autos extends Command {
     }
 
     //One piece Autons
+    public Command testBackShot() {
+        return AutoBuilder.buildAuto("backShot");
+    }
+
     public Command onePieceTaxiTopRed() {
         return AutoBuilder.buildAuto("1 Piece Taxi Top Red");
     }
@@ -324,7 +329,7 @@ public class Autos extends Command {
     }
 
     public Command fourPieceMiddleTtBRed() {
-        return AutoBuilder.buildAuto("4 Piece Middle BtT Red");
+        return AutoBuilder.buildAuto("4 Piece Middle TtB Red");
     }
 
     public Command fourPieceTtBAutoAimRed() {
