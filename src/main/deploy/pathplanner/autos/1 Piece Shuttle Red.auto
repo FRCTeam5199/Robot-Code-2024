@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.739450316385803,
+      "y": 4.52825959032701
+    },
+    "rotation": -121.72360295768388
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1 Piece Shuttle Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shuttleShot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Shuttle Paths",
+  "choreoAuto": false
+}

@@ -114,7 +114,21 @@ public class Autos extends Command {
                 robotContainer.runAutoShooting(),
                 arm.isAiming(false)));
 
+        NamedCommands.registerCommand("retractIntakeStable", new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
+                arm.setArmSetpoint(50),
+                new WaitCommand(0.2),
+                shooter.runShooterAtPercent(0),
+                intake.stowIntake(),
+                indexer.setIndexerSpeed(-0.1),
+                new WaitCommand(0.3),
+                arm.rotateStable(),
+                new WaitCommand(0.5),
+                indexer.setIndexerSpeed(0),
+                intake.setIntakeSpeed(0),
+                robotContainer.runAutoShooting(),
+                arm.isAiming(false)));
 
+        NamedCommands.registerCommand("shuttleShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(23), new WaitCommand(.3), robotContainer.runAutoShooting(), new WaitCommand(.1), arm.isAiming(false)));
         NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(147 /*141*/), new WaitCommand(0.3), robotContainer.runAutoShooting(), new WaitCommand(0.1), arm.isAiming(false)));
         NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61), new WaitCommand(0.2), robotContainer.runAutoShooting(), new WaitCommand(.2), arm.isAiming(false)));
         NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
