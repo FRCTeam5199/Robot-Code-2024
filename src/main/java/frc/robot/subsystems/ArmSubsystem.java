@@ -72,7 +72,11 @@ private PIDController voltagePIDController;
     public TrapezoidProfile trapProfile;
     // degrees/sec
     // public final TrapezoidProfile.Constraints trapConstraints =  new TrapezoidProfile.Constraints(270, 727);
-    public final TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(700, 1500);
+    public  TrapezoidProfile.State prevState = new TrapezoidProfile.State(0, 0);
+    //undershoot usually maximum mehanical reached
+    //overshoot (what kA is todo) 
+    public final TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(650, 800);
+    public final TrapezoidProfile.Constraints crossTrapContrainrs = new TrapezoidProfile.Constraints(450, 400);
     public final Timer timer = new Timer();
 
     public ArmSubsystem() {
@@ -104,7 +108,6 @@ private PIDController voltagePIDController;
         armMotorL.setIdleMode(IdleMode.kBrake);
         armMotorR.setIdleMode(IdleMode.kBrake);
 
-        // setTrapezoidalProfileSetpoint(120);
     }
 
     /**
@@ -122,7 +125,8 @@ private PIDController voltagePIDController;
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace());
         }
-    trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(45,0), new TrapezoidProfile.State(encoderValue, ((armEncoder.getVelocity()/80)*360)));
+    trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(120,0), new TrapezoidProfile.State(encoderValue, ((armEncoder.getVelocity()/80)*360)));
+    setTrapezoidalProfileSetpoint(120);
     }
 
     public boolean getSubsystemStatus() {
@@ -156,14 +160,14 @@ private PIDController voltagePIDController;
     public void PIDInit() {
 
         rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
-        voltagePIDController = new PIDController(0.083, 0, 0);
+        voltagePIDController = new PIDController(0.08, 0, 0);
 
         // KS units = volts to overcome static friction
         // KG units = volts to compensate for gravity when the arm is horizontal
         // KV units = volts / (radians per second)
 // feedforward = new ArmFeedforward(0.077, 0.253, 6); // requires radians
         // feedforward = new ArmFeedforward(0.077, 0.253, 1.36);
-        feedforward = new ArmFeedforward(0.077, 0.253, 2.62);
+        feedforward = new ArmFeedforward(0.077, 0.253, 1.35);
 
     }
 
@@ -301,11 +305,12 @@ private PIDController voltagePIDController;
         TrapezoidProfile.State goalState = trapProfile.calculate(timer.get());
 
         if (climbMode) {
-            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
+            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
         } else {
-            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
+            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
             
         }
+        prevState = goalState;
         // System.out.println(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity));
 
         //rotateSetpoint - encoderValue = direction
@@ -487,8 +492,15 @@ private PIDController voltagePIDController;
         // trapProfile = new TrapezoidProfile(climbTrapezoidalConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, armEncoder.getVelocity()*360.0));
 
         // } else {
-        trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity()/80)*360));
-        // }
-        timer.restart();        
+        if((rotateSetpoint > 120 & encoderValue > 120) || (setpoint < 120 &&  encoderValue < 120)){
+            trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity()/80)*360));
+        }
+        else{
+            trapProfile = new TrapezoidProfile(crossTrapContrainrs, new TrapezoidProfile.State(rotateSetpoint, 0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity()/80)*360));
+        }
+        
+        timer.restart();   
+        prevState = trapProfile.calculate(timer.get());
+
     }
 }
