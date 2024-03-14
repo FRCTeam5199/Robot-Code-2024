@@ -163,9 +163,9 @@ public class MainConstants {
         public static final double CLIMBER_RETRACTED_SETPOINT = 0;
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 23; //Maybe make it 22.5 for chain
+        public static final double ARM_STABLE_SETPOINT = 28; //Maybe make it 22.5 for chain
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
-        public static final double ARM_INTAKE_SETPOINT = .5;
+        public static final double ARM_INTAKE_SETPOINT = 4;
         public static final double ARM_TRAP_SETPOINT = 118;
         public static final double ARM_TRAP_PREP_SETPOINT = 82;
         public static final double ARM_TRAP_PREP2_SETPOINT = 72;
