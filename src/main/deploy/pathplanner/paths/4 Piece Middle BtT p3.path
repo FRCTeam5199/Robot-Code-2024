@@ -4,40 +4,40 @@
     {
       "anchor": {
         "x": 15.0,
-        "y": 5.562647359246215
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
         "x": 15.019245423106232,
-        "y": 5.535354916863679
+        "y": 5.472707557617464
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 13.963482542349704,
-        "y": 6.689787225728298
+        "x": 13.825345342998377,
+        "y": 6.660186397295872
       },
       "prevControl": {
-        "x": 14.05404446823379,
-        "y": 6.587289254903322
+        "x": 13.915907268882464,
+        "y": 6.557688426470896
       },
       "nextControl": {
-        "x": 13.871623900983009,
-        "y": 6.793752818894642
+        "x": 13.733486701631682,
+        "y": 6.764151990462216
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.85,
-        "y": 5.6
+        "x": 15.0,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 14.810532228756761,
-        "y": 5.6394677712432335
+        "x": 14.960532228756762,
+        "y": 5.539467771243234
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,12 +47,12 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 1.1,
-      "rotationDegrees": 144.46,
+      "rotationDegrees": 130.0,
       "rotateFast": false
     },
     {
       "waypointRelativePos": 0.35,
-      "rotationDegrees": 144.46,
+      "rotationDegrees": 130.0,
       "rotateFast": false
     }
   ],
@@ -60,7 +60,7 @@
   "eventMarkers": [
     {
       "name": "halfRetractIntake",
-      "waypointRelativePos": 1.3,
+      "waypointRelativePos": 1.4,
       "command": {
         "type": "sequential",
         "data": {

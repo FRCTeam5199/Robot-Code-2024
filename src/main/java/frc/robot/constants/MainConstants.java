@@ -163,23 +163,23 @@ public class MainConstants {
         public static final double CLIMBER_RETRACTED_SETPOINT = 0;
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 23; //Maybe make it 22.5 for chain
+        public static final double ARM_STABLE_SETPOINT = 25; //Maybe make it 22.5 for chain
         public static final double ARM_AUTON_STABLE = 100;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = .5;
-        public static final double ARM_TRAP_SETPOINT = 118;
-        public static final double ARM_TRAP_PREP_SETPOINT = 82;
-        public static final double ARM_TRAP_PREP2_SETPOINT = 72;
+        public static final double ARM_TRAP_SETPOINT = 123;
+        public static final double ARM_TRAP_PREP_SETPOINT = 84;
+        public static final double ARM_TRAP_PREP2_SETPOINT = 74;
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
         //Control Panel
-        public static final double ARM_SUBWOOFER_SETPOINT = 68;
+        public static final double ARM_SUBWOOFER_SETPOINT = 70;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 140.25;
-        public static final double ARM_SAFE_SETPOINT = 53;
-        public static final double ARM_AMP_SETPOINT = 48.5;
-        public static final double ARM_FAR_SHOT_SETPOINT = 45.5;
-        public static final double ARM_HP_STATION_SETPOINT = 150;
+        public static final double ARM_SAFE_SETPOINT = 55;
+        public static final double ARM_AMP_SETPOINT = 50.5;
+        public static final double ARM_FAR_SHOT_SETPOINT = 47.5;
+        public static final double ARM_HP_STATION_SETPOINT = 152;
 
     }
 }
