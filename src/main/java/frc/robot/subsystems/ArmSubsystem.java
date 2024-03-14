@@ -24,6 +24,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.constraint.RectangularRegionConstraint;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -47,6 +48,10 @@ public class ArmSubsystem extends SubsystemBase {
     public CANSparkBase armMotorR;
     public RelativeEncoder encoder;
     public SparkPIDController sparkPIDController;
+
+    public ArmFeedforward feedforward;
+
+
     public boolean inAuton = false;
     public boolean climbMode = false;
     public double encoderValue;
@@ -54,10 +59,26 @@ public class ArmSubsystem extends SubsystemBase {
     public boolean autoAiming = false;
     public SwerveDrive drive = TunerConstants.DriveTrain;
     private SparkAbsoluteEncoder armEncoder;
+    // private RelativeEncoder armEncoder;
     private PIDController rotatePIDController;
+private PIDController voltagePIDController;
     private double rotateSetpoint = 120;
+
+
     private double rotateOffset;
     private double pidPercent;
+
+    public ArmFeedforward feedfoward;
+    public TrapezoidProfile trapProfile;
+    // degrees/sec
+    // public final TrapezoidProfile.Constraints trapConstraints =  new TrapezoidProfile.Constraints(270, 727);
+    public  TrapezoidProfile.State prevState = new TrapezoidProfile.State(0, 0);
+    //undershoot usually maximum mehanical reached
+    //overshoot (what kA is todo) 
+    public final TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(650, 800);
+    public final TrapezoidProfile.Constraints crossTrapContrainrs = new TrapezoidProfile.Constraints(450, 400);
+    public final TrapezoidProfile.Constraints climbTrapConstraints = new TrapezoidProfile.Constraints(300, 250);
+    public final Timer timer = new Timer();
 
     public ArmSubsystem() {
     }
@@ -87,6 +108,7 @@ public class ArmSubsystem extends SubsystemBase {
     public void setBrakeTrue() {
         armMotorL.setIdleMode(IdleMode.kBrake);
         armMotorR.setIdleMode(IdleMode.kBrake);
+
     }
 
     /**
@@ -104,6 +126,8 @@ public class ArmSubsystem extends SubsystemBase {
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace());
         }
+    trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(120,0), new TrapezoidProfile.State(encoderValue, ((armEncoder.getVelocity()/80)*360)));
+    setTrapezoidalProfileSetpoint(120);
     }
 
     public boolean getSubsystemStatus() {
@@ -136,14 +160,15 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void PIDInit() {
 
-        rotatePIDController = new PIDController(0.0085262, 0.00569673212, 0.003);
-        rotatePIDController.setIZone(3);
-
+        rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
+        voltagePIDController = new PIDController(0.08, 0, 0);
 
         // KS units = volts to overcome static friction
         // KG units = volts to compensate for gravity when the arm is horizontal
         // KV units = volts / (radians per second)
-
+// feedforward = new ArmFeedforward(0.077, 0.253, 6); // requires radians
+        // feedforward = new ArmFeedforward(0.077, 0.253, 1.36);
+        feedforward = new ArmFeedforward(0.077, 0.253, 1.35);
 
     }
 
@@ -166,14 +191,22 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (armEncoder.getPosition() < 150 && armEncoder.getPosition() > 0) {
-            encoderValue = armEncoder.getPosition();
-        } else if (armEncoder.getPosition() > 150 && armEncoder.getPosition() < 200) {
-            encoderValue = 149;
-        } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 361) {
+        if (armEncoder.getPosition() < 200 && armEncoder.getPosition() > 0) {
+            encoderValue = (armEncoder.getPosition());
+        } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 250) {
+            encoderValue = 140;
+        } else if (armEncoder.getPosition() > 250 && armEncoder.getPosition() < 361) {
             encoderValue = 0;
         }
 
+        if(DriverStation.isEnabled()){
+            System.out.println("pos" + encoderValue);
+            // System.out.println("encoder " + encoderValue + "value " + rotateSetpoint);
+        }
+        // System.out.println("encoder value" + encoderValue);
+        
+        goToSetpoint(rotateOffset);
+        // armMotorL.setVoltage(0.9+(0.077+ 0.253));
 
         // armProfile.calculate(1, new TrapezoidProfile.State(encoderValue, 0), new TrapezoidProfile.State(120, 0));
         // armMotorL.set
@@ -218,64 +251,74 @@ public class ArmSubsystem extends SubsystemBase {
         }
 
         if (subsystemStatus) {
-            subsystemPeriodic();
+            if (DriverStation.isEnabled()){
+            // subsystemPeriodic( );
+            }
+
+        
         }
     }
 
     private void subsystemPeriodic() {
-//        System.out.println("Arm Position: " + armEncoder.getPosition());
 
-        if (inAuton) {
-            goToSetpoint(rotateSetpoint, rotateOffset);
+        if(isAiming){
+          
+            goToSetpoint(rotateOffset);
         }
-        if (!autoAiming) {
-            if (isAiming) {
-                rotatePIDController.setPID(0.0075262, 0.00472673212, 0.00);
-                rotatePIDController.setIZone(3);
-
-                goToSetpoint(rotateSetpoint, rotateOffset);
-//                System.out.println("encoder " + encoderValue + " desired " + rotateSetpoint);
-
-            } else {
-                goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);
+        else{
+            if(rotatePIDController.calculate(encoderValue, 23) > 0){
+                rotatePIDController.setPID(0.0085262,0.00569673212 , 0);
+            }
+            else{
+                rotatePIDController.setPID(0.0045262,0.00569673212 , 0);
             }
 
-        } else {
-            if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-                rotateSetpoint = armSpeakersAligningRed();
-            } else {
-                rotateSetpoint = armSpeakersAligningBlue();
-            }
-            // if (rotatePIDController.calculate(encoderValue, rotateSetpoint) > 0) {
-            //     rotatePIDController.setPID(0.0091262, 0.009273212, 0.00);
-            //     rotatePIDController.setIZone(3.4);
-            // } else if (rotatePIDController.calculate(encoderValue, rotateSetpoint) < 0) {
-            //     rotatePIDController = new PIDController(0.00019262, 0.000409673212, 0.00);
-            //     rotatePIDController.setIZone(3);
-            // }
-            goToSetpoint(rotateSetpoint, 0);
+            // armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
+            armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
+        }
+        // if (inAuton) {
+        //     goToSetpoint(rotateOffset);
+        // }
+        // if (!autoAiming) {
+        //     if (isAiming) {
+        //         goToSetpoint(rotateOffset);
+        //     } else {
+        //         goToSetpoint(rotateOffset);
+        //     }
+        //     System.out.println("encoder " + encoderValue + "desired "  + rotateSetpoint);
 
-
-            // System.out.println("encoder " + encoderValue + "desired " + rotateSetpoint);
+            // } else {
+                //     if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+                //         setTrapezoidalProfileSetpoint( armSpeakersAligningRed());
+        //     } else {
+                //         setTrapezoidalProfileSetpoint( armSpeakersAligningBlue());
+        //     }
+        //     System.out.println("encoder " + encoderValue + "desired "  + rotateSetpoint);
 
         }
-    }
+    
 
-    private void goToSetpoint(double rotateSetpoint, double rotateOffset) {
-        // System.out.println("Rotate Setpoint: " + rotateSetpoint);
-        // System.out.println("Arm Position: " + armEncoder.getPosition());
-
+    
+    public void goToSetpoint(double rotateOffset) {
+        
         if (encoderValue < 0 || rotateSetpoint < 0) return;
+
+        TrapezoidProfile.State goalState = trapProfile.calculate(timer.get());
+
         if (climbMode) {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
-            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset) * 0.5);
-//            armMotorL.setVoltage(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians((rotateSetpoint - 21.7)), 0));
+            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
         } else {
-            armMotorL.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
-            armMotorR.set(rotatePIDController.calculate(encoderValue, rotateSetpoint + rotateOffset));
+            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
+            
         }
-//            armMotorL.setVoltage(rotatePIDController.calculate(encoderValue, rotateSetpoint) + feedforward.calculate(Math.toRadians((rotateSetpoint - 21.7)), 0));
-    }
+        prevState = goalState;
+        // System.out.println(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity));
+
+        //rotateSetpoint - encoderValue = direction
+        // current position and target position
+        // feedforward.calculate(current arm angle, velocity)
+        }
+    
 
 
     public double armSpeakersAligningRed() {
@@ -330,7 +373,7 @@ public class ArmSubsystem extends SubsystemBase {
         return this.runOnce(() -> rotateOffset -= amount);
     }
 
-    public AbsoluteEncoder getArmEncoder() {
+    public SparkAbsoluteEncoder getArmEncoder() {
         if (!subsystemStatus) return null;
         return armEncoder;
     }
@@ -349,7 +392,7 @@ public class ArmSubsystem extends SubsystemBase {
      * @return command to move armMotor to setPoint
      */
     public Command setArmSetpoint(double setpoint) {
-        return this.runOnce(() -> System.out.println("changed to " + setpoint)).andThen(() -> rotateSetpoint = setpoint);
+        return this.runOnce(() -> System.out.println("changed to " + setpoint)).andThen(() -> setTrapezoidalProfileSetpoint(setpoint));
     }
 
 
@@ -357,90 +400,115 @@ public class ArmSubsystem extends SubsystemBase {
      * Sets the Arm setpoint to the Arm Stable setpoint
      */
     public Command rotateStable() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_STABLE_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_STABLE_SETPOINT));
     }
 
     /**
      * Sets the Arm setpoint to the Arm Amp setpoint
      */
     public Command rotateAmp() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_AMP_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_AMP_SETPOINT));
     }
 
     /**
      * Sets the Arm setpoint to the Arm Back setpoint
      */
     public Command rotateBack() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT));
     }
 
     /**
      * Sets the Arm setpoint to the Arm Front setpoint
      */
     public Command rotateFront() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT));
     }
 
     /**
      * Sets the Arm setpoint to slightly above retracted intake
      */
     public Command rotateIntake() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_INTAKE_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_INTAKE_SETPOINT));
     }
 
     /**
      * Sets the Arm setpoint to the Arm climb setpoint
      */
     public Command rotateTrap() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_TRAP_SETPOINT));
     }
 
     public Command rotatePrepClimbP2() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_PREP2_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_TRAP_PREP2_SETPOINT));
     }
 
     public Command rotateTopPiece() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_TOP_PIECE_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_TOP_PIECE_SETPOINT));
     }
 
     public Command rotateBottomPiece() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_BOTTOM_PIECE_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_BOTTOM_PIECE_SETPOINT));
     }
 
     public Command rotateMiddlePiece() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_MIDDLE_PIECE_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_MIDDLE_PIECE_SETPOINT));
     }
 
     /**
      * Sets the Arm setpoint to the Arm Trap setpoint
      */
     public Command rotateTrapPrep() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_TRAP_PREP_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_TRAP_PREP_SETPOINT));
     }
 
     /**
      * Sets the Arm setpoint to the Arm Subwoofer setpoint
      */
     public Command rotateSub() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_SUBWOOFER_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_SUBWOOFER_SETPOINT));
     }
 
     /**
      * Sets the Arm setpoint to the Arm Podium setpoint
      */
     public Command rotateSafe() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_SAFE_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_SAFE_SETPOINT));
     }
 
     public Command rotateFarShot() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_FAR_SHOT_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_FAR_SHOT_SETPOINT));
     }
 
     public Command rotateHPStation() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_HP_STATION_SETPOINT);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint(MainConstants.Setpoints.ARM_HP_STATION_SETPOINT));
     }
-
+    
     public Command rotateAutonStable() {
         return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_AUTON_STABLE);
     }
+
+    private void setTrapezoidalProfileSetpoint(double setpoint) {
+        // todo
+        
+        rotateSetpoint= setpoint;
+        // trap constraints degrees
+        // rotateSetpoint  degrees?
+        //
+        if(climbMode) {
+        trapProfile = new TrapezoidProfile(climbTrapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, armEncoder.getVelocity()*360.0));
+
+        } else  {
+        if((rotateSetpoint > 120 & encoderValue > 120) || (setpoint < 120 &&  encoderValue < 120)){
+            trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity()/80)*360));
+        }
+        else{
+            trapProfile = new TrapezoidProfile(crossTrapContrainrs, new TrapezoidProfile.State(rotateSetpoint, 0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity()/80)*360));
+        }
+    }
+        
+        timer.restart();   
+        prevState = trapProfile.calculate(timer.get());
+
+    }
+
 }
