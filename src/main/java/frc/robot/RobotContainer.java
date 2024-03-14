@@ -15,8 +15,10 @@ import frc.robot.LEDs.LEDSubsystem;
 import frc.robot.LEDs.LEDSubsystem.LEDMode;
 import frc.robot.constants.MainConstants;
 import frc.robot.controls.CommandButtonPanel;
+import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.utility.CommandXboxController;
+import frc.robot.subsystems.drivetrain.SwerveDrive;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -42,7 +44,7 @@ public class RobotContainer {
             MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT); // My joystick
     private final CommandXboxController operatorCommandXboxController = new CommandXboxController(
             MainConstants.OperatorConstants.OPERATOR_CONTROLLER_PORT);
-    // private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
+    private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -123,26 +125,21 @@ public class RobotContainer {
         // }));
 
         //         // Drive
-        // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        //         drivetrain.applyRequest(() -> drive
-        //                         .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(0) // Drive
-        //                         // forward
-        //                         // with
-        //                         // negative Y (forward)
-        //                         .withVelocityY(
-        //                                 -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(0) // Drive
-        //                         // left
-        //                         // with
-        //                         // negative
-        //                         // X (left)
-        //                         .withRotationalRate(-mainCommandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(0) // Drive
-                        // counterclockwise
-                        // with
-                        // negative
-                        // X
-                        // (left)
+         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+                 drivetrain.applyRequest(() -> drive
+                                 .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(0) // Drive
+                                 // forward
+                                 // with
+                                 // negative Y (forward)
+                                 .withVelocityY(
+                                         -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(0) // Drive
+                                 // left
+                                 // with
+                                 // negative
+                                 // X (left)
+                                 .withRotationalRate(-mainCommandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(0) // Drive
                         
-        // ));
+         ));
         
 
         // Brake drive
