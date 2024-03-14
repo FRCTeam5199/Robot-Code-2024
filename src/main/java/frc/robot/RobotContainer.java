@@ -4,251 +4,256 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import static frc.robot.utility.UserInterface.ROBOT_TAB;
 
-import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.subsystems.CompressorSubsystem;
+import frc.robot.subsystems.piecemanipulation.ArmSubsystem;
+import frc.robot.subsystems.piecemanipulation.ClawSubsystem;
+import frc.robot.subsystems.piecemanipulation.ElevatorSubsystem;
+import frc.robot.subsystems.piecemanipulation.IntakeSubsystem;
+import frc.robot.subsystems.piecemanipulation.WristSubsystem;
+import frc.robot.utility.UserInterface;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.LEDs.LEDSubsystem;
-import frc.robot.LEDs.LEDSubsystem.LEDMode;
-import frc.robot.constants.MainConstants;
-import frc.robot.controls.CommandButtonPanel;
-import frc.robot.subsystems.AprilTagSubsystem;
-import frc.robot.utility.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
-    public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
-//     public final static ArmSubsystem arm = new ArmSubsystem();
-//     public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-//     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-//     public final static IntakeSubsystem intake = new IntakeSubsystem();
-//     public final static IndexerSubsystem indexer = new IndexerSubsystem();
+  private final CommandXboxController commandXboxController = new CommandXboxController(0);
 
-    public final static LEDSubsystem LEDs = new LEDSubsystem();
+  public UserInterface UI;
 
-    public static final CommandButtonPanel buttonPanel = new CommandButtonPanel(MainConstants.OperatorConstants.TOP_BUTTON_PANEL_PORT, MainConstants.OperatorConstants.BOTTOM_BUTTON_PANEL_PORT);
-    private final double MaxSpeed = 6; // 8 meters per second desired top speed
-    private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
-    /* Setting up bindings for necessary control of the swerve drive platform */
-    private final CommandXboxController mainCommandXboxController = new CommandXboxController(
-            MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT); // My joystick
-    private final CommandXboxController operatorCommandXboxController = new CommandXboxController(
-            MainConstants.OperatorConstants.OPERATOR_CONTROLLER_PORT);
-    // private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
-    // driving in open loop
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    private final Telemetry logger = new Telemetry(MaxSpeed);  
-    //private final static LEDManager Led = new LEDManager();
+  // not public or private so Robot.java has access to it.
+  public final static ArmSubsystem arm = new ArmSubsystem();
 
-//         public Command intakeAction;
-//     public Command stopIntakeAction;
-//     //     public final static Akit log = new Akit();
-//     Autos auton;
+  public static ElevatorSubsystem elevator = new ElevatorSubsystem();
 
-    ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
-                aprilTags.speakerAlignmentRed(),
-                aprilTags.speakerAlignementBlue(),
-                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-        );
+  public static WristSubsystem wrist = new WristSubsystem();
 
-    public RobotContainer() {
-        // shooterSubsystem.init();
-        // arm.init();
-        // intake.init();
-        // climberSubsystem.init();
-        // indexer.init();
+  public static final ClawSubsystem claw = new ClawSubsystem();
 
-        LEDs.init();
-        LEDs.setMode(LEDMode.IDLE);
-        LEDs.start();
+  public static final IntakeSubsystem intake = new IntakeSubsystem();
 
-        // SmartDashboard.putData("Field", drivetrain.m_field);
-        configureBindings();
-    }
+  public final CompressorSubsystem compressor = new CompressorSubsystem();
 
-    /**
-     * Configures the bindings for commands
-     */
-    private void configureBindings() {
+  // public final Auton auton;
 
-        // intakeAction = new SequentialCommandGroup(
-        //         arm.isAiming(true),
-        //         arm.setArmSetpoint(50),
-        //         new WaitCommand(0.1),
-        //         intake.deployIntake(),
-        //         new WaitCommand(0.2),
-        //         indexer.setIndexerSpeed(-.4),
-        //         arm.rotateIntake(),
-        //         intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
-        //         shooterSubsystem.runShooterAtPercent(-.6));
+  SendableChooser<Command> autonChooser = new SendableChooser<>();
 
-        // stopIntakeAction = new SequentialCommandGroup(
-        //         intake.setIntakeSpeed(-.9),
-        //         arm.setArmSetpoint(50),
-        //         new WaitCommand(0.2),
-        //         shooterSubsystem.runShooterAtPercent(0),
-        //         intake.stowIntake(),
-        //         indexer.setIndexerSpeed(-0.1),
-        //         new WaitCommand(0.3),
-        //         arm.rotateStable(),
-        //         new WaitCommand(0.5),
-        //         arm.isAiming(false),
-        //         indexer.setIndexerSpeed(0),
-        //         intake.setIntakeSpeed(0));
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
+  public RobotContainer() {
+    compressor.init();
 
-        // new Trigger(() -> indexer.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-        // new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-        // //new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> Led.green())).onFalse(new InstantCommand(() -> Led.red()));
-        // new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
-        //         if (DriverStation.isDisabled()) {
-        //             ArmSubsystem.toggleBrakeMode();
-        //         }
-        // }));
-        // new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
-        //     if (DriverStation.isDisabled()) {
-        //         ArmSubsystem.toggleBrakeMode();
-        //     }
-        // }));
+    claw.init();
 
-        //         // Drive
-        // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        //         drivetrain.applyRequest(() -> drive
-        //                         .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(0) // Drive
-        //                         // forward
-        //                         // with
-        //                         // negative Y (forward)
-        //                         .withVelocityY(
-        //                                 -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(0) // Drive
-        //                         // left
-        //                         // with
-        //                         // negative
-        //                         // X (left)
-        //                         .withRotationalRate(-mainCommandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(0) // Drive
-                        // counterclockwise
-                        // with
-                        // negative
-                        // X
-                        // (left)
-                        
-        // ));
-        
+    elevator.init();
 
-        // Brake drive
-        // mainCommandXboxController.button(7).whileTrue(drivetrain.applyRequest(() -> brake));
-        // // Reorient drive
-        // mainCommandXboxController.button(8).onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
+    arm.init();
 
-       mainCommandXboxController.rightBumper().onTrue(new InstantCommand(() -> LEDs.setMode(LEDMode.SHOOTING))).onFalse(new InstantCommand(() -> LEDs.setMode(LEDMode.IDLE)));
-        
-       mainCommandXboxController.leftBumper().onTrue(new InstantCommand(() -> LEDs.setMode(LEDMode.INTAKING))).onFalse(new InstantCommand(() -> LEDs.setMode(LEDMode.IDLE)));
-        
-      //  mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(3000)));
-        // mainCommandXboxController.povUp().onTrue(arm.isAiming(true).andThen(arm.rotateAmp()).andThen(auton.goToAmpRed())).onFalse(arm.isAiming(false));
+    wrist.init();
 
-       // mainCommandXboxController.povDown().onTrue(indexer.setIndexerSpeed(-.1));
+    intake.init();
 
-      //  mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)
-       // ).onFalse(intake.setIntakeSpeed(0));
-        //climb practice
-      //  mainCommandXboxController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.idleShooting = false).andThen(indexer.setIndexerSpeed(-.1).andThen(
-           //     new ConditionalCommand(
+    configureBindings();
 
-                        // climb / amp
-           //             new ConditionalCommand(
-           //                     shooterSubsystem.runShooterClimbAmp(3300),
-           //                     arm.isAiming(true).andThen(shooterSubsystem.runShooterClimbAmp(5000)),
-           //                     () -> climberSubsystem.climbModeEnabled),
+    ROBOT_TAB.add(autonChooser);
+  }
 
-                        // normal aiming / auto aiming
-            //            new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), shooterSubsystem.runShooterPredeterminedRPM(), new InstantCommand(() -> shooterSubsystem.idleShooting = false), new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> !shooterSubsystem.intakeShooter),
-                                
+  public void configureBindings() {
+    // Stable command composition
+    ConditionalCommand stableCommandGroup = 
+      new ConditionalCommand(
+          new ParallelCommandGroup(
+            new InstantCommand(() -> elevator.low()),
+            new InstantCommand(() -> arm.retract()),
+            new InstantCommand(() -> arm.rotateStable())
+          ),
+          new ParallelCommandGroup(
+            new SequentialCommandGroup(
+              new InstantCommand(() -> arm.retract()),
+              new InstantCommand(() -> elevator.low()),
+              new InstantCommand(() -> arm.rotateStable())
+            ),  
+            new SequentialCommandGroup(
+              new InstantCommand(() -> wrist.moveLeft()),
+              new WaitCommand(0.5),
+              new InstantCommand(() -> wrist.stopRotation())
+            )
+          ),
+        arm::isFront
+      );
 
-                        // based on climbing on or of
-               //         () -> shooterSubsystem.ampMode)))).onFalse(
+    // Human player command composition
+    ConditionalCommand humanPlayerCommandGroup = 
+      new ConditionalCommand(
+        new ParallelCommandGroup(
+          new InstantCommand(() -> elevator.humanPlayer()),
+          new InstantCommand(() -> arm.rotateHumanPlayer()),
+          new InstantCommand(() -> arm.extendHumanPlayer())
+        ),
+        new ParallelCommandGroup(
+          new SequentialCommandGroup(
+            new InstantCommand(() -> arm.retract()),
+            new InstantCommand(() -> elevator.low()),
+            new InstantCommand(() -> arm.rotateHumanPlayer()),
+            new WaitCommand(0.8),
+            new InstantCommand(() -> elevator.humanPlayer()),
+            new InstantCommand(() -> arm.extendHumanPlayer())
+          ),
+          new SequentialCommandGroup(
+              new InstantCommand(() -> wrist.moveLeft()),
+              new WaitCommand(0.5),
+              new InstantCommand(() -> wrist.stopRotation())
+          )
+        ),
+      arm::isFront);
 
-                //                shooterSubsystem.runShooterAtPercent(0).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false))));
+    // High goal command composition
+    ConditionalCommand highGoalCommandGroup = 
+      new ConditionalCommand(
+        new ParallelCommandGroup(
+          new SequentialCommandGroup(
+            new InstantCommand(() -> elevator.low()),
+            new InstantCommand(() -> arm.retract()),
+            new InstantCommand(() -> arm.rotateHigh()),
+            new WaitCommand(0.8),
+            new InstantCommand(() -> arm.extend()),
+            new InstantCommand(() -> elevator.high())
+          ),
+          new SequentialCommandGroup(
+              new InstantCommand(() -> wrist.moveRight()),
+              new WaitCommand(0.5),
+              new InstantCommand(() -> wrist.stopRotation())
+          )
+        ),
+        new ParallelCommandGroup(
+          new InstantCommand(() -> elevator.high()),
+          new InstantCommand(() -> arm.rotateHigh()),
+          new InstantCommand(() -> arm.extend())
+        ),
+      arm::isFront);
 
-
-    //    mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
-
-        // drivetrain.registerTelemetry(logger::telemeterize);
-
-        // buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateSub()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
-        // buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateBack()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
-        // buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateSafe()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
-        // buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateAmp()).andThen(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false))));
-        // buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.rotateFarShot().andThen(shooterSubsystem.setRPMShooter(5000)));
-        // buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(new SequentialCommandGroup(arm.isAiming(true), arm.rotateHPStation(), shooterSubsystem.runShooterAtPercent(-.4), indexer.setIndexerSpeed(-.2))).onFalse(new SequentialCommandGroup(arm.rotateStable(), shooterSubsystem.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
-        // buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_PREP_SETPOINT).onTrue(arm.setClimbMode(true).andThen(arm.rotatePrepClimbP2()).andThen(shooterSubsystem.setAmpMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)));
-        // buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_SETPOINT).onTrue(arm.setClimbMode(true).andThen(arm.rotateTrap()).andThen(shooterSubsystem.setRPMShooter(3300)));
-        // buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(arm.increaseOffset(1));
-        // buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(arm.decreaseOffset(1));
-
-        // buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_UP).onTrue(intake.increaseOffset());
-        // buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_DOWN).onTrue(intake.decreaseOffset());
-
-        // buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(arm.increaseOffset(1));
-        // buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(arm.decreaseOffset(1));
-        // buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
-        // buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
-
-        // buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(new SequentialCommandGroup(arm.setClimbMode(true), climberSubsystem.setClimbMode(true), arm.rotateTrapPrep(), shooterSubsystem.setAmpMode(true), arm.isAiming(true), intake.deployIntake(), Commands.print("thoough heaven and heart i alone am the honered one")));
-        // buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(climberSubsystem.setClimbMode(true).andThen(shooterSubsystem.setAmpMode(false)).andThen(arm.isAiming(true)).andThen(shooterSubsystem.setRPMShooter(2100)));
-        // buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(climberSubsystem.setClimbMode(false).andThen(shooterSubsystem.setAmpMode(false)).andThen(arm.isAiming(false).andThen(arm.setClimbMode(false))));
-        // buttonPanel.button(ButtonPanelButtons.CLIMB_UP).whileTrue(climberSubsystem.setClimberSpeed(.8)).onFalse(climberSubsystem.setClimberSpeed(0));
-        // buttonPanel.button(ButtonPanelButtons.CLIMB_DOWN).whileTrue(climberSubsystem.setClimberSpeed(-.8)).onFalse(climberSubsystem.setClimberSpeed(0));
-        // buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor1Speed(.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
-        // buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor1Speed(-.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
-        // buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor2Speed(.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
-        // buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor2Speed(-.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
-
-
-//         buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
-//         buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
-
-//         buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor1Speed(0.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
-//         buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor1Speed(-0.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
-//         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor2Speed(0.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
-//         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor2Speed(-0.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
-//         buttonPanel.button(ButtonPanelButtons.CLIMB_UP).onTrue(climberSubsystem.setClimberSpeed(0.8)).onFalse(climberSubsystem.setClimberSpeed(0));
-//         buttonPanel.button(ButtonPanelButtons.CLIMB_DOWN).onTrue(climberSubsystem.setClimberSpeed(-0.8)).onFalse(climberSubsystem.setClimberSpeed(0));
-
-//         buttonPanel.button(ButtonPanelButtons.AUX_RIGHT_TOP).onTrue(intake.deployIntake());
-//         buttonPanel.button(ButtonPanelButtons.AUX_RIGHT_BOTTOM).onTrue(intake.stowIntake());
-//         buttonPanel.button(ButtonPanelButtons.AUX_LEFT_TOP).onTrue(shooterSubsystem.setRunShooter(true).andThen(shooterSubsystem.setintakeShooter(true))).onFalse(shooterSubsystem.setRunShooter(false).andThen(shooterSubsystem.setintakeShooter(false)));
-//     }
+    // Medium goal command composition
+    ConditionalCommand midGoalCommandGroup = 
+      new ConditionalCommand(
+        new ParallelCommandGroup(
+          new SequentialCommandGroup(
+            new InstantCommand(() -> arm.retract()),
+            new InstantCommand(() -> elevator.low()),
+            new InstantCommand(() -> arm.rotateMedium()),
+            new WaitCommand(0.8),
+            new InstantCommand(() -> arm.extendMedium()),
+            new InstantCommand(() -> elevator.medium())
+          ),
+          new SequentialCommandGroup(
+              new InstantCommand(() -> wrist.moveRight()),
+              new WaitCommand(0.5),
+              new InstantCommand(() -> wrist.stopRotation())
+          )
+        ),
+        new ParallelCommandGroup(
+          new InstantCommand(() -> elevator.medium()),
+          new InstantCommand(() -> arm.rotateMedium()),
+          new InstantCommand(() -> arm.extendMedium())
+        ),
+      arm::isFront);
+    // Low goal command composition
+    ConditionalCommand lowGoalCommandGroup = 
+      new ConditionalCommand(
+        new ParallelCommandGroup(
+          new SequentialCommandGroup(
+            new InstantCommand(() -> arm.retract()),
+            new InstantCommand(() -> elevator.low()),
+            new InstantCommand(() -> arm.rotateLow()),
+            new WaitCommand(0.8),
+            new InstantCommand(() -> arm.extendLow())
+          ),
+          new SequentialCommandGroup(
+              new InstantCommand(() -> wrist.moveRight()),
+              new WaitCommand(0.5),
+              new InstantCommand(() -> wrist.stopRotation())
+          )
+        ),
+        new ParallelCommandGroup(
+          new InstantCommand(() -> elevator.low()),
+          new InstantCommand(() -> arm.rotateLow()),
+          new InstantCommand(() -> arm.extendLow())
+        ),
+      arm::isFront);
     
-//     public Command runAutoShooting(){
-//         return new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(.75), new WaitCommand(1), indexer.setIndexerSpeed(.2),
-//                 new WaitCommand(0.3), shooterSubsystem.runShooterAtPercent(0), indexer.setIndexerSpeed(0));
-//     }
-//     public Command autoFarShot(){
-//         return  new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(1),
-//                 new WaitCommand(1),
-//                 indexer.setIndexerSpeed(.2),
-//                 new WaitCommand(0.3), shooterSubsystem.runShooterAtPercent(0),
-//                 indexer.setIndexerSpeed(0));
+      ConditionalCommand hp1CommandGroup =
+      new ConditionalCommand(
+        new ParallelCommandGroup(
+          new InstantCommand(() -> elevator.humanPlayer()),
+          new InstantCommand(() -> arm.rotateHumanPlayer()),
+          new InstantCommand(() -> arm.extendHumanPlayer1())
+        ),
+        new ParallelCommandGroup(
+          new SequentialCommandGroup(
+            new InstantCommand(() -> arm.retract()),
+            new InstantCommand(() -> elevator.low()),
+            new InstantCommand(() -> arm.rotateHumanPlayer()),
+            new WaitCommand(0.8),
+            new InstantCommand(() -> elevator.humanPlayer()),
+            new InstantCommand(() -> arm.extendHumanPlayer1())
+          ),
+          new SequentialCommandGroup(
+              new InstantCommand(() -> wrist.moveLeft()),
+              new WaitCommand(0.5),
+              new InstantCommand(() -> wrist.stopRotation())
+          )
+        ),
+      arm::isFront);
+    // Map position commands to button panel triggers
+    commandXboxController.rightBumper().onTrue(humanPlayerCommandGroup);
+    commandXboxController.leftBumper().onTrue(hp1CommandGroup);
+
+    commandXboxController.povRight().onTrue(stableCommandGroup);
+
+    commandXboxController.rightTrigger().onTrue(intake.ManualRetract());
+    commandXboxController.leftTrigger().onTrue(new ConditionalCommand(
+      new SequentialCommandGroup(new InstantCommand(() -> arm.setHighDunk())),
+      new SequentialCommandGroup(new InstantCommand(() -> arm.setMidDunk())),
+      arm::isHigh)).onFalse(new InstantCommand(() -> arm.resetDunk()));
+
+    commandXboxController.povUp().onTrue(highGoalCommandGroup);
+    commandXboxController.povLeft().onTrue(midGoalCommandGroup);
+    commandXboxController.povDown().onTrue(lowGoalCommandGroup);
+    
+    commandXboxController.button(6).onTrue(wrist.moveLeftManual());
+    commandXboxController.button(7).onTrue(wrist.moveRightManual());
+
+    // Map claw commands toxbox controller triggers
+    if (Constants.ENABLE_CLAW) {
+      commandXboxController.y().onTrue(claw.openPiston());
+      commandXboxController.a().onTrue(claw.closePiston());
     }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        // return auton.twoPieceMiddleBlue();
-        return null;
+    if (Constants.ENABLE_INTAKE) {
+        commandXboxController.x().toggleOnTrue(intake.spinBottomWithLimit());
+        commandXboxController.b().onTrue(intake.fastOutake().andThen(intake.stopSpinToKeep())).onFalse((intake.stopSpin()));
     }
+  
+    // buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 1).onTrue(arm.changeRotateOffset(1));
+    // buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 2).onTrue(arm.changeRotateOffset(-1));
+    
+    // buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_2, 1).onTrue(arm.changeExention(0.5));
+    // buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_2, 10).onTrue(arm.changeExention(-0.5));
+  }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    return null;
+  }
 }

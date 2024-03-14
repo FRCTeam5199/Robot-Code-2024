@@ -4,14 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.RobotBase;
+import org.littletonrobotics.junction.LoggedRobot;
 
 /**
  * Do NOT add any static variables to this class, or any initialization at all. Unless you know what
  * you are doing, do not modify this file except to change the parameter class to the startRobot
  * call.
  */
-public final class Main {
+public final class Main extends LoggedRobot {
   private Main() {}
 
   /**
@@ -20,6 +20,6 @@ public final class Main {
    * <p>If you change your main robot class, change the parameter type.
    */
   public static void main(String... args) {
-    RobotBase.startRobot(Robot::new);
+    LoggedRobot.startRobot(Robot::new);
   }
 }
