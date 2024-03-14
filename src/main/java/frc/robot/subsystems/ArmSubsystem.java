@@ -223,6 +223,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private void subsystemPeriodic() {
+//        System.out.println("Arm Position: " + armEncoder.getPosition());
 
         if (inAuton) {
             goToSetpoint(rotateSetpoint, rotateOffset);
@@ -233,7 +234,7 @@ public class ArmSubsystem extends SubsystemBase {
                 rotatePIDController.setIZone(3);
 
                 goToSetpoint(rotateSetpoint, rotateOffset);
-                System.out.println("encoder " + encoderValue + " desired " + rotateSetpoint);
+//                System.out.println("encoder " + encoderValue + " desired " + rotateSetpoint);
 
             } else {
                 goToSetpoint(MainConstants.Setpoints.ARM_STABLE_SETPOINT, rotateOffset);

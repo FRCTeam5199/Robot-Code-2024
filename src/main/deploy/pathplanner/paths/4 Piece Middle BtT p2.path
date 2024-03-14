@@ -8,7 +8,7 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.394689526883834,
+        "x": 15.114782612161516,
         "y": 5.562647359246215
       },
       "isLocked": false,
@@ -16,28 +16,28 @@
     },
     {
       "anchor": {
-        "x": 13.821193063213515,
-        "y": 5.574358195791997
+        "x": 14.002950313592937,
+        "y": 5.56
       },
       "prevControl": {
-        "x": 14.910552678806646,
-        "y": 5.574358195791997
+        "x": 14.072018913268595,
+        "y": 5.578354484201561
       },
       "nextControl": {
-        "x": 13.422336342800868,
-        "y": 5.574358195791997
+        "x": 13.946649006787055,
+        "y": 5.545038332163262
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 15.226493448707295,
-        "y": 5.58606903233778
+        "x": 15.0,
+        "y": 5.56
       },
       "prevControl": {
-        "x": 14.570582049437153,
-        "y": 5.58606903233778
+        "x": 14.990090830615111,
+        "y": 5.5191528273367085
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,10 +46,28 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "halfRetractIntake",
+      "waypointRelativePos": 1.35,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "halfRetractIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -64,5 +82,5 @@
     "rotation": -179.06080905426435,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

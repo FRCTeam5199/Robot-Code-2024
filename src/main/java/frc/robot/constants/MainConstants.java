@@ -164,7 +164,7 @@ public class MainConstants {
 
         //Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 23; //Maybe make it 22.5 for chain
-        public static final double ARM_AUTON_STABLE = 60;
+        public static final double ARM_AUTON_STABLE = 100;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = .5;
         public static final double ARM_TRAP_SETPOINT = 118;

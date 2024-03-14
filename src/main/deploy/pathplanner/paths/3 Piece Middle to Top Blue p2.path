@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3,
+        "x": 1.46,
         "y": 5.550936522700434
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4593728180323695,
-        "y": 6.745441850370149
+        "x": 1.4975420566225763,
+        "y": 5.634024344971768
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7427416909042077,
-        "y": 6.956236908194216
+        "x": 2.6460991383521244,
+        "y": 6.798323596647194
       },
       "prevControl": {
-        "x": 1.9657967113442418,
-        "y": 6.21036972781665
+        "x": 2.541994282931155,
+        "y": 6.70375540725161
       },
       "nextControl": {
-        "x": 3.0355126045487455,
-        "y": 7.237296985292972
+        "x": 2.7763962704486413,
+        "y": 6.916684683802815
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3,
-        "y": 5.55
+        "x": 1.46,
+        "y": 5.550936522700434
       },
       "prevControl": {
-        "x": 1.6396142598276637,
-        "y": 5.954023860829461
+        "x": 1.371197514702722,
+        "y": 5.5410695798896255
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "retract",
-      "waypointRelativePos": 1.3,
+      "waypointRelativePos": 1.35,
       "command": {
         "type": "sequential",
         "data": {
@@ -85,8 +85,8 @@
   "reversed": false,
   "folder": "3 Piece Reg Paths",
   "previewStartingState": {
-    "rotation": -14.47029410006592,
+    "rotation": 0.0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
