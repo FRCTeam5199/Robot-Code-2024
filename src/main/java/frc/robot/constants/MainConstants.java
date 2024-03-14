@@ -15,7 +15,7 @@ public class MainConstants {
     public static final double ARM_PIVOT_Z = 0.5800;//0.5788; //0.5715; //meters //22 inch
     public static final double ARM_ORIGINAL_DEGREES = 25;
     // public static final double SPEAKER_Z = 2.340102;
-    public static final double SPEAKER_Z =  1.4511020000000001 + 0.63; //+ 0.755; //1.4511020000000001 + 0.635; 
+    public static final double SPEAKER_Z = 1.4511020000000001 + 0.63; //+ 0.755; //1.4511020000000001 + 0.635;
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
     //Mechanical Constants
     public static String CAN_BUS = "";
@@ -79,6 +79,8 @@ public class MainConstants {
     public static int OVERHEAT_THRESHOLD = 80;
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
     public static int BrakeButtonid = 0;
+    public static int LED_LENGTH = 0;
+    public static int LED_PORT = 0;
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
             new Transform3d(0.3, 0, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(0))), //front
@@ -86,10 +88,8 @@ public class MainConstants {
             new Transform3d(.1, -.4, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
             new Transform3d(-.175, -.4, 0.409, new Rotation3d(Math.toRadians(125), 0, Math.toRadians(180))), //back
             new Transform3d(0, 0
-            , 0, new Rotation3d(0, 0, 0))
+                    , 0, new Rotation3d(0, 0, 0))
     };
-    public static int LED_LENGTH = 0;
-    public static int LED_PORT = 0;
 
     public static class OperatorConstants {
         //Operator Constants
@@ -164,6 +164,7 @@ public class MainConstants {
 
         //Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 23; //Maybe make it 22.5 for chain
+        public static final double ARM_AUTON_STABLE = 60;
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = .5;
         public static final double ARM_TRAP_SETPOINT = 118;
