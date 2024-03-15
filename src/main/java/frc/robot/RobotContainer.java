@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
+import java.sql.Driver;
+
 import javax.swing.text.AbstractDocument.LeafElement;
 
 import org.w3c.dom.CDATASection;
@@ -77,7 +79,7 @@ public class RobotContainer {
             aprilTags.speakerAlignementBlue(),
             () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
     );
-
+   
 
     public RobotContainer() {
         shooterSubsystem.init();
@@ -169,7 +171,7 @@ public class RobotContainer {
 
         mainCommandXboxController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
 
-        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true), shooterSubsystem.autoAim(), speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.isAutoAiming(false), shooterSubsystem.runShooterAtPercent(0)));
+        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true),arm.goToQueuedSetpoint(),shooterSubsystem.autoAim(), speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.rotateStable(), shooterSubsystem.runShooterAtPercent(0),arm.isAiming(false)));
 
         mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(6000))).onFalse(shooterSubsystem.runShooterAtPercent(0));
 
@@ -184,17 +186,17 @@ public class RobotContainer {
                         // climb / amp
                         new ConditionalCommand(
                                 shooterSubsystem.runShooterClimbAmp(3300),
-                                arm.isAiming(true).andThen(shooterSubsystem.runShooterClimbAmp(4000)),
+                                arm.goToQueuedSetpoint().andThen(shooterSubsystem.runShooterClimbAmp(4000)),
                                 () -> climberSubsystem.climbModeEnabled),
 
                         // normal aiming
-                        new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), shooterSubsystem.runShooterPredeterminedRPM(), new InstantCommand(() -> shooterSubsystem.idleShooting = false), new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> !shooterSubsystem.intakeShooter),
+                        new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), shooterSubsystem.runShooterPredeterminedRPM(), arm.goToQueuedSetpoint() , new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> !shooterSubsystem.intakeShooter),
 
 
                         // based on climbing on or of
                         () -> shooterSubsystem.ampMode)))).onFalse(
 
-                shooterSubsystem.runShooterAtPercent(0).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false))));
+                shooterSubsystem.runShooterAtPercent(0).andThen(((arm.rotateStable())).onlyIf(() -> climberSubsystem.climbModeEnabled == false)));
 
 
         mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);

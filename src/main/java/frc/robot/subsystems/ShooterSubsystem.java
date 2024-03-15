@@ -148,7 +148,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     
     public Command  autoAim(){
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((autoAimRPM/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoAimRPM/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + autoAimRPM/90 + "  velocity " + autoAimRPM)));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((autoAimRPM/90)+20)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoAimRPM/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + autoAimRPM/90 + "  velocity " + autoAimRPM)));
     }
     
 

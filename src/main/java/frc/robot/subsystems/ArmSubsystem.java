@@ -25,6 +25,7 @@ import edu.wpi.first.math.trajectory.constraint.RectangularRegionConstraint;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -43,7 +44,7 @@ public class ArmSubsystem extends SubsystemBase {
     private static AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
     private static boolean subsystemStatus = false;
     private static boolean isBrakeMode = false;
-    public final double horizontalOffset = 21.7;
+    public final double horizontalOffset = 29;
     public CANSparkBase armMotorL;
     public CANSparkBase armMotorR;
     public RelativeEncoder encoder;
@@ -64,6 +65,9 @@ public class ArmSubsystem extends SubsystemBase {
 private PIDController voltagePIDController;
     private double rotateSetpoint = 120;
 
+    // setpoint to go to when not in stable position
+    public double setPointInQue;
+
 
     private double rotateOffset;
     private double pidPercent;
@@ -75,7 +79,7 @@ private PIDController voltagePIDController;
     public  TrapezoidProfile.State prevState = new TrapezoidProfile.State(0, 0);
     //undershoot usually maximum mehanical reached
     //overshoot (what kA is todo) 
-    public final TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(650, 800);
+    public final TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(700, 800);
     public final TrapezoidProfile.Constraints crossTrapContrainrs = new TrapezoidProfile.Constraints(450, 400);
     public final TrapezoidProfile.Constraints climbTrapConstraints = new TrapezoidProfile.Constraints(300, 250);
     public final Timer timer = new Timer();
@@ -161,7 +165,7 @@ private PIDController voltagePIDController;
     public void PIDInit() {
 
         rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
-        voltagePIDController = new PIDController(0.08, 0, 0);
+        voltagePIDController = new PIDController(0.09, 0, 0);
 
         // KS units = volts to overcome static friction
         // KG units = volts to compensate for gravity when the arm is horizontal
@@ -199,13 +203,8 @@ private PIDController voltagePIDController;
             encoderValue = 0;
         }
 
-        if(DriverStation.isEnabled()){
-            System.out.println("pos" + encoderValue);
-            // System.out.println("encoder " + encoderValue + "value " + rotateSetpoint);
-        }
         // System.out.println("encoder value" + encoderValue);
         
-        goToSetpoint(rotateOffset);
         // armMotorL.setVoltage(0.9+(0.077+ 0.253));
 
         // armProfile.calculate(1, new TrapezoidProfile.State(encoderValue, 0), new TrapezoidProfile.State(120, 0));
@@ -252,7 +251,7 @@ private PIDController voltagePIDController;
 
         if (subsystemStatus) {
             if (DriverStation.isEnabled()){
-            // subsystemPeriodic( );
+            subsystemPeriodic();
             }
 
         
@@ -261,21 +260,21 @@ private PIDController voltagePIDController;
 
     private void subsystemPeriodic() {
 
-        if(isAiming){
+        // if(isAiming){
           
-            goToSetpoint(rotateOffset);
-        }
-        else{
-            if(rotatePIDController.calculate(encoderValue, 23) > 0){
-                rotatePIDController.setPID(0.0085262,0.00569673212 , 0);
-            }
-            else{
-                rotatePIDController.setPID(0.0045262,0.00569673212 , 0);
-            }
+        //     goToSetpoint(rotateOffset);
+        // }
+        // else{
+        //     if(rotatePIDController.calculate(encoderValue, 23) > 0){
+        //         rotatePIDController.setPID(0.0085262,0.00569673212 , 0);
+        //     }
+        //     else{
+        //         rotatePIDController.setPID(0.0045262,0.00569673212 , 0);
+        //     }
 
-            // armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
-            armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
-        }
+        //     // armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
+        //     armMotorL.set(rotatePIDController.calculate(encoderValue, MainConstants.Setpoints.ARM_STABLE_SETPOINT));
+        // }
         // if (inAuton) {
         //     goToSetpoint(rotateOffset);
         // }
@@ -295,6 +294,18 @@ private PIDController voltagePIDController;
         //     }
         //     System.out.println("encoder " + encoderValue + "desired "  + rotateSetpoint);
 
+            goToSetpoint(rotateOffset);
+            // System.out.println("setPoint que" + setPointInQue);
+            // System.out.println("desired setpoint" + rotateSetpoint);
+            // System.out.println("encoder " + encoderValue);
+            if (autoAiming){
+                if(DriverStation.getAlliance().get() == Alliance.Red){
+                    setPointInQue = armSpeakersAligningRed();
+                }
+                else if(DriverStation.getAlliance().get() == Alliance.Blue){
+                    setPointInQue = armSpeakersAligningBlue();
+                }
+            }
         }
     
 
@@ -321,10 +332,11 @@ private PIDController voltagePIDController;
     
 
 
-    public double armSpeakersAligningRed() {
+    public double  armSpeakersAligningRed() {
         double angleForArm;
         double distanceFromRobot;
         distanceFromRobot = drive.getPose().getTranslation().getDistance(new Translation2d(16.479342, 5.547));
+        // System.out.println("distance from robot ///////////////////////////////////////" + distanceFromRobot);
 
         // double distanceAimSpeaker = (drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (0.700 - 0.645) / (5.7912 - 1.27) + 0.645;
         double speakerHeight = MainConstants.SPEAKER_Z - MainConstants.ARM_PIVOT_Z;
@@ -360,7 +372,6 @@ private PIDController voltagePIDController;
         return this.runOnce(() -> climbMode = bool);
     }
 
-
     public Command isAiming(boolean bool) {
         return this.runOnce(() -> isAiming = bool);
     }
@@ -395,6 +406,9 @@ private PIDController voltagePIDController;
         return this.runOnce(() -> System.out.println("changed to " + setpoint)).andThen(() -> setTrapezoidalProfileSetpoint(setpoint));
     }
 
+    public Command goToQueuedSetpoint(){
+        return this.runOnce(()->setTrapezoidalProfileSetpoint(setPointInQue));
+    }
 
     /**
      * Sets the Arm setpoint to the Arm Stable setpoint
@@ -407,21 +421,21 @@ private PIDController voltagePIDController;
      * Sets the Arm setpoint to the Arm Amp setpoint
      */
     public Command rotateAmp() {
-        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_AMP_SETPOINT));
+        return this.runOnce(() -> setPointInQue =  MainConstants.Setpoints.ARM_AMP_SETPOINT);
     }
 
     /**
      * Sets the Arm setpoint to the Arm Back setpoint
      */
     public Command rotateBack() {
-        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT));
+        return this.runOnce(() -> setPointInQue =  MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT);
     }
 
     /**
      * Sets the Arm setpoint to the Arm Front setpoint
      */
     public Command rotateFront() {
-        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT));
+        return this.runOnce(() -> setPointInQue =  MainConstants.Setpoints.ARM_SPEAKER_FRONT_SETPOINT);
     }
 
     /**
@@ -458,33 +472,33 @@ private PIDController voltagePIDController;
      * Sets the Arm setpoint to the Arm Trap setpoint
      */
     public Command rotateTrapPrep() {
-        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_TRAP_PREP_SETPOINT));
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint(MainConstants.Setpoints.ARM_TRAP_PREP_SETPOINT));
     }
 
     /**
      * Sets the Arm setpoint to the Arm Subwoofer setpoint
      */
     public Command rotateSub() {
-        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_SUBWOOFER_SETPOINT));
+        return this.runOnce(() -> setPointInQue = MainConstants.Setpoints.ARM_SUBWOOFER_SETPOINT);
     }
 
     /**
      * Sets the Arm setpoint to the Arm Podium setpoint
      */
     public Command rotateSafe() {
-        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_SAFE_SETPOINT));
+        return this.runOnce(() -> setPointInQue = MainConstants.Setpoints.ARM_SAFE_SETPOINT);
     }
 
     public Command rotateFarShot() {
-        return this.runOnce(() -> setTrapezoidalProfileSetpoint( MainConstants.Setpoints.ARM_FAR_SHOT_SETPOINT));
+        return this.runOnce(() -> setPointInQue =  MainConstants.Setpoints.ARM_FAR_SHOT_SETPOINT);
     }
 
     public Command rotateHPStation() {
-        return this.runOnce(() -> setTrapezoidalProfileSetpoint(MainConstants.Setpoints.ARM_HP_STATION_SETPOINT));
+        return this.runOnce(() -> setPointInQue = MainConstants.Setpoints.ARM_HP_STATION_SETPOINT);
     }
     
     public Command rotateAutonStable() {
-        return this.runOnce(() -> rotateSetpoint = MainConstants.Setpoints.ARM_AUTON_STABLE);
+        return this.runOnce(() -> setTrapezoidalProfileSetpoint(MainConstants.Setpoints.ARM_AUTON_STABLE));
     }
 
     private void setTrapezoidalProfileSetpoint(double setpoint) {
