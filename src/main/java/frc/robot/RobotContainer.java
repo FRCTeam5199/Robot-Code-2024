@@ -249,7 +249,7 @@ public class RobotContainer {
     }
 
     public Command runAutoShooting() {
-        return new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(.60), new WaitCommand(0.5), indexer.setIndexerSpeed(.2),
+        return new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(.60), new WaitCommand(0.35), indexer.setIndexerSpeed(.2),
                 new WaitCommand(0.2), shooterSubsystem.runShooterAtPercent(0), indexer.setIndexerSpeed(0));
     }
 

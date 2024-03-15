@@ -71,7 +71,7 @@
   "eventMarkers": [
     {
       "name": "retract",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 2.1999999999999997,
       "command": {
         "type": "sequential",
         "data": {

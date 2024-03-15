@@ -68,8 +68,6 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
                 arm.isAiming(true),
-                arm.setArmSetpoint(50),
-                new WaitCommand(0.1),
                 intake.deployIntake(),
                 new WaitCommand(0.2),
                 indexer.setIndexerSpeed(-.4),
@@ -79,8 +77,6 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("halfDeployIntake", new SequentialCommandGroup(
                 arm.isAiming(true),
-                arm.setArmSetpoint(50),
-                new WaitCommand(0.1),
                 new WaitCommand(0.2),
                 indexer.setIndexerSpeed(-.4),
                 arm.rotateIntake(),
@@ -88,27 +84,21 @@ public class Autos extends Command {
                 shooter.runShooterAtPercent(-.4)));
 
         NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
-                arm.setArmSetpoint(50),
-                new WaitCommand(0.2),
+                arm.rotateAutonStable(),
+                new WaitCommand(0.4),
                 shooter.runShooterAtPercent(0),
                 intake.stowIntake(),
                 indexer.setIndexerSpeed(-0.1),
                 new WaitCommand(0.3),
-                arm.rotateAutonStable(),
-                new WaitCommand(0.5),
                 indexer.setIndexerSpeed(0),
-                intake.setIntakeSpeed(0),
-                robotContainer.runAutoShooting(),
-                arm.isAiming(false)));
+                intake.setIntakeSpeed(0)));
 
         NamedCommands.registerCommand("halfRetractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
-                arm.setArmSetpoint(50),
-                new WaitCommand(0.2),
+                arm.rotateAutonStable(),
+                new WaitCommand(0.4),
                 shooter.runShooterAtPercent(0),
                 indexer.setIndexerSpeed(-0.1),
-                new WaitCommand(0.3),
-                arm.rotateAutonStable(),
-                new WaitCommand(0.5),
+                new WaitCommand(0.1),
                 indexer.setIndexerSpeed(0),
                 intake.setIntakeSpeed(0),
                 robotContainer.runAutoShooting(),
@@ -128,12 +118,13 @@ public class Autos extends Command {
                 robotContainer.runAutoShooting(),
                 arm.isAiming(false)));
 
-        NamedCommands.registerCommand("shuttleShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(23), new WaitCommand(.3), robotContainer.runAutoShooting(), new WaitCommand(.1), arm.isAiming(false)));
-        NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(147 /*141*/), new WaitCommand(0.3), robotContainer.runAutoShooting(), new WaitCommand(0.1), arm.isAiming(false)));
-        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61), new WaitCommand(0.2), robotContainer.runAutoShooting(), new WaitCommand(.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.isAiming(false)));
-        NamedCommands.registerCommand("bottomFarShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(45.5), new WaitCommand(0.5), robotContainer.autoFarShot(), new WaitCommand(0.2), arm.isAiming(false)));
+        NamedCommands.registerCommand("shuttleShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(23), new WaitCommand(.3), robotContainer.runAutoShooting(), new WaitCommand(.1), arm.rotateStable()));
+        NamedCommands.registerCommand("halfBackShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(147 /*141*/), new WaitCommand(0.25), robotContainer.runAutoShooting()));
+        NamedCommands.registerCommand("backShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(147 /*141*/), new WaitCommand(0.25), robotContainer.runAutoShooting(), arm.rotateStable()));
+        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61), new WaitCommand(0.2), robotContainer.runAutoShooting(), new WaitCommand(.2), arm.rotateStable()));
+        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(61.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.rotateStable()));
+        NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(57.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.rotateStable()));
+        NamedCommands.registerCommand("bottomFarShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(45.5), new WaitCommand(0.5), robotContainer.autoFarShot(), new WaitCommand(0.2), arm.rotateStable()));
 
         NamedCommands.registerCommand("autoAim", new SequentialCommandGroup(arm.isAutoAiming(true), new WaitCommand(0.3), shooter.runShooterAtRpm(5300), new WaitCommand(2), indexer.setIndexerSpeed(0.2)));
         NamedCommands.registerCommand("stopAutoAim", new SequentialCommandGroup(arm.isAutoAiming(false), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0)));
@@ -192,6 +183,8 @@ public class Autos extends Command {
         autonChooserBlue.addOption("threePieceTtMBlue", threePieceTtMBlue());
         autonChooserBlue.addOption("threePieceMtTBlue", threePieceMtTBlue());
         autonChooserBlue.addOption("threePieceMtBBlue", threePieceMtBBlue());
+
+        autonChooserBlue.addOption("fourPieceTtBBlue", fourPieceMiddleTtBBlue());
         //  autonChooserBlue.addOption("threePieceTtMAutoAimBlue", threePieceTtMAutoAimBlue());
         //  autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceBtMAutoAimBlue());
         //  autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceTopFarAutoAimBlue());
@@ -379,6 +372,8 @@ public class Autos extends Command {
     public Command fourPieceMiddleTtBRed() {
         return AutoBuilder.buildAuto("4 Piece Middle TtB Red");
     }
+
+    public Command fourPieceMiddleTtBBlue(){return AutoBuilder.buildAuto("4 Piece Top to Bottom Blue");}
 
     public Command fourPieceTtBAutoAimRed() {
         return AutoBuilder.buildAuto("4 Piece Top to Bottom Red AUTOAIM");

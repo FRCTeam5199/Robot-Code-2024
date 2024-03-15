@@ -172,7 +172,7 @@ public class MainConstants {
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
-        public static final double ARM_AUTON_STABLE = 80;
+        public static final double ARM_AUTON_STABLE = 147;
         //Control Panel
         public static final double ARM_SUBWOOFER_SETPOINT = 71;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 141.25;

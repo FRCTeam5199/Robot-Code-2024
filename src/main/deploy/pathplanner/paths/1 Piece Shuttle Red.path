@@ -116,7 +116,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Shuttle Paths",
+  "folder": null,
   "previewStartingState": {
     "rotation": -121.23921488820862,
     "velocity": 0

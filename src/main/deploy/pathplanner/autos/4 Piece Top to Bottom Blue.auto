@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "halfBackShot"
           }
         },
         {
@@ -26,43 +26,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Middle to Top Blue p1"
+            "pathName": "4 Piece Middle TtB Blue p1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "halfBackShot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "deployIntake"
+            "name": "halfDeployIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Middle to Top Blue p2"
+            "pathName": "4 Piece Middle TtB Blue p2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "halfBackShot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "deployIntake"
+            "name": "halfDeployIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Middle to Bottom Blue p2"
+            "pathName": "4 Piece Middle TtB Blue p3"
           }
         },
         {

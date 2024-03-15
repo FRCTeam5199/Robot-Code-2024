@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "halfBackShot"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "halfBackShot"
           }
         },
         {
@@ -50,7 +50,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "halfBackShot"
           }
         },
         {

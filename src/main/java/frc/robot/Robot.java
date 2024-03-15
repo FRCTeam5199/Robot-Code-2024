@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.units.Power;
 
+import edu.wpi.first.wpilibj.*;
 import org.photonvision.EstimatedRobotPose;
 
 import com.ctre.phoenix6.CANBus;
@@ -17,10 +18,6 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.LoggedRobot;
 
-import edu.wpi.first.wpilibj.CAN;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -123,25 +120,29 @@ public class Robot extends LoggedRobot{
         // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
         Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
-    if(estimatePose1.isPresent()){
-      EstimatedRobotPose robotPose = estimatePose1.get();
-      drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-   }
 
-    
-    // if(estimatePose2.isPresent()){
-    //     EstimatedRobotPose robotPose = estimatePose2.get();
-    //     drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    
-    // }
+        if(!DriverStation.isAutonomous()) {
 
-    //     if(estimatePose3.isPresent()){
-    //       EstimatedRobotPose robotPose = estimatePose3.get();
-    //       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-    //     }
-        if(estimatePose4.isPresent()){
-          EstimatedRobotPose robotPose = estimatePose4.get();
-          drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+            if (estimatePose1.isPresent()) {
+                EstimatedRobotPose robotPose = estimatePose1.get();
+                drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+            }
+
+
+            // if(estimatePose2.isPresent()){
+            //     EstimatedRobotPose robotPose = estimatePose2.get();
+            //     drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+
+            // }
+
+            //     if(estimatePose3.isPresent()){
+            //       EstimatedRobotPose robotPose = estimatePose3.get();
+            //       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+            //     }
+            if (estimatePose4.isPresent()) {
+                EstimatedRobotPose robotPose = estimatePose4.get();
+                drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+            }
         }
 
         // userInterface.updateGameTab();

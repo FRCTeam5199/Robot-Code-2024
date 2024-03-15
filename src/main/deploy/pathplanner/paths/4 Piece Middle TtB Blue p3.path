@@ -3,53 +3,75 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3,
-        "y": 5.550936522700434
+        "x": 1.22,
+        "y": 5.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3000000000000003,
-        "y": 5.550936522700434
+        "x": 1.60723829737102,
+        "y": 4.349045012324901
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6263652527305066,
-        "y": 5.550936522700434
+        "x": 1.8820021507184186,
+        "y": 4.060826342293255
       },
       "prevControl": {
-        "x": 1.626365252730511,
-        "y": 5.550936522700434
+        "x": 1.8430493800489383,
+        "y": 4.060826342293255
       },
       "nextControl": {
-        "x": 2.96597951255817,
-        "y": 5.550936522700434
+        "x": 1.9320021507184186,
+        "y": 4.060826342293255
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3,
-        "y": 5.550936522700434
+        "x": 2.4,
+        "y": 4.06
       },
       "prevControl": {
-        "x": 1.7824337451813277,
-        "y": 5.533370267881762
+        "x": 2.424412218466245,
+        "y": 4.026667932478781
+      },
+      "nextControl": {
+        "x": 1.8936139812967647,
+        "y": 4.7514116793832635
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.35,
+        "y": 5.4
+      },
+      "prevControl": {
+        "x": 1.620379985362581,
+        "y": 5.069671269710274
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.0,
+      "rotationDegrees": 0.07333168720734004,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "retract",
-      "waypointRelativePos": 1.4,
+      "waypointRelativePos": 2.1999999999999997,
       "command": {
         "type": "sequential",
         "data": {
@@ -67,17 +89,17 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 3.8,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Reg Paths",
+  "folder": "4 Piece Paths",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
