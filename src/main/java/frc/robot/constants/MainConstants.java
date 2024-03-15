@@ -15,7 +15,7 @@ public class MainConstants {
     public static final double ARM_PIVOT_Z = 0.5800;//0.5788; //0.5715; //meters //22 inch
     public static final double ARM_ORIGINAL_DEGREES = 29.5;
     // public static final double SPEAKER_Z = 2.340102;
-    public static final double SPEAKER_Z = 1.4511020000000001 + 0.68; //+ 0.755; //1.4511020000000001 + 0.635;
+    public static final double SPEAKER_Z = 1.4511020000000001 + 0.69; //+ 0.755; //1.4511020000000001 + 0.635;
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
     //Mechanical Constants
     public static String CAN_BUS = "";
@@ -174,12 +174,12 @@ public class MainConstants {
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
         public static final double ARM_AUTON_STABLE = 147;
         //Control Panel
-        public static final double ARM_SUBWOOFER_SETPOINT = 71;
+        public static final double ARM_SUBWOOFER_SETPOINT = 77;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 141.25;
         public static final double ARM_SAFE_SETPOINT = 56;
-        public static final double ARM_AMP_SETPOINT = 51.5;
+        public static final double ARM_AMP_SETPOINT = 48.5;
         public static final double ARM_FAR_SHOT_SETPOINT = 48.5;
-        public static final double ARM_HP_STATION_SETPOINT = 153;
+        public static final double ARM_HP_STATION_SETPOINT = 140;
 
     }
 }

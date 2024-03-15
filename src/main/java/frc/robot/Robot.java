@@ -51,6 +51,7 @@ public class Robot extends LoggedRobot{
     private RobotContainer m_robotContainer;
 
 
+
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
@@ -110,7 +111,6 @@ public class Robot extends LoggedRobot{
         Logger.recordOutput("top shooter supply voltage", m_robotContainer.shooterSubsystem.topShooter.getSupplyVoltage().getValueAsDouble());
         Logger.recordOutput("bottom shooter supply voltage", m_robotContainer.shooterSubsystem.bottomShooter.getSupplyVoltage().getValueAsDouble());
 
-        
         // Logger.recordOutput("front camera alive", null);
         // Logger.recordOutput("front camera alive", null);
 

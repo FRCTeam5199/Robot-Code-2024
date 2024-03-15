@@ -295,6 +295,7 @@ private PIDController voltagePIDController;
         //     System.out.println("encoder " + encoderValue + "desired "  + rotateSetpoint);
 
             goToSetpoint(rotateOffset);
+            System.out.println(encoderValue);
             // System.out.println("setPoint que" + setPointInQue);
             // System.out.println("desired setpoint" + rotateSetpoint);
             // System.out.println("encoder " + encoderValue);
