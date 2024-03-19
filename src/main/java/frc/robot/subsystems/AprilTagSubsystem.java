@@ -15,6 +15,7 @@ import edu.wpi.first.hal.simulation.DriverStationDataJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -24,12 +25,7 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 
@@ -74,12 +70,18 @@ public class AprilTagSubsystem extends SubsystemBase {
     public static PhotonCamera frontCamera;
     private final CommandXboxController mainCommandXboxController = new CommandXboxController(MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT);
     public MainConstants Constants = new MainConstants();
+
+    public final TrapezoidProfile.Constraints aimConstraints = new TrapezoidProfile.Constraints(700, 800);
+
     // 0 Front, 1 Back, 2 Left, 3 Rigggggggggggggggght
     public PhotonCamera[] allCameras = {frontCamera, backCamera, rightCamera, leftCamera};
     public PhotonTrackedTarget[] bestTargetFromCameras;
     public MultiTargetPNPResult[] multiTargetPNPResults;
     public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public PIDController aim = new PIDController(.13, 0, .0);
+
+    TrapezoidProfile.State target;
+    public TrapezoidProfile betterAim;
     public SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
     //    double z = tz.getDouble(0);
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
@@ -264,7 +266,12 @@ public class AprilTagSubsystem extends SubsystemBase {
 //        }
 //    }
     public Command speakerAlignmentRed() {
-        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
+        target = new TrapezoidProfile.State(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX())), 0);
+        betterAim = new TrapezoidProfile(aimConstraints);
+        var goToTarget = betterAim.calculate(1, target, new TrapezoidProfile.State(drive.getPose().getRotation().getRadians(), 1));
+        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getRadians(), goToTarget.position)));
+
+        //return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
     }
 
     public Command speakerAlignementBlue() {
