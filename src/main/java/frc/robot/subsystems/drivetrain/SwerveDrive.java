@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.*;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -41,6 +42,10 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
+    public Command driveAtAngle(SwerveRequest.FieldCentricFacingAngle angleRequest, Rotation2d angle){
+        return run(() -> this.setControl(angleRequest.withTargetDirection(angle)));
+    }
+
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();
 
@@ -56,14 +61,12 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
 
-    public ChassisSpeeds getChassisSpeed() {
-        return m_kinematics.toChassisSpeeds(getState().ModuleStates);
-    }
 
     public Pose2d getPose() {
         return m_odometry.getEstimatedPosition();
 
     }
+
 
     public SwerveModulePosition[] getModulePositions() {
         return m_modulePositions;

@@ -275,7 +275,14 @@ public class AprilTagSubsystem extends SubsystemBase {
     }
 
     public Command speakerAlignementBlue() {
-        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate((drive.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees()), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
+        target = new TrapezoidProfile.State(Math.atan((5.548 - drive.getPose().getY()) / (-.0381 - drive.getPose().getX())), 0);
+        betterAim = new TrapezoidProfile(aimConstraints);
+        var goToTarget = betterAim.calculate(1, target, new TrapezoidProfile.State(drive.getPose().getRotation().getRadians(), 1));
+
+        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getRadians(), goToTarget.position)));
+
+
+        // return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate((drive.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees()), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
     }
 
 
