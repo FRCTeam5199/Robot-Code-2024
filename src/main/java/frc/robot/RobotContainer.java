@@ -59,6 +59,7 @@ public class RobotContainer {
             MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT); // My joystick
     private final CommandXboxController operatorCommandXboxController = new CommandXboxController(
             MainConstants.OperatorConstants.OPERATOR_CONTROLLER_PORT);
+        private final CommandXboxController testingController = new CommandXboxController(3);
     private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -108,7 +109,7 @@ public class RobotContainer {
                 new WaitCommand(0.2),
                 indexer.setIndexerSpeed(-.4),
                 arm.rotateIntake(),
-                intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getAbsolutePosition() > 1 || arm.getArmEncoder().getAbsolutePosition() < 3),
+                // intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getAbsolutePosition() > 1 || arm.getArmEncoder().getAbsolutePosition() < 3),
                 shooterSubsystem.runShooterAtPercent(-.3));
 
 
@@ -177,10 +178,12 @@ public class RobotContainer {
 
         mainCommandXboxController.povDown().onTrue(indexer.setIndexerSpeed(-.1));
 
-        mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)
-        ).onFalse(intake.setIntakeSpeed(0));
+        
+        testingController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
+        testingController.povLeft().onTrue(shooterSubsystem.runShooterAtRpm(3000)).onFalse(shooterSubsystem.runShooterAtPercent(0));
 
-        mainCommandXboxController.povUp().onTrue(arm.moveAtSpeed(0.1)).onFalse(arm.moveAtSpeed(0));
+        mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)).onFalse(intake.setIntakeSpeed(0));
+
         //climb practice
         mainCommandXboxController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.idleShooting = false).andThen(indexer.setIndexerSpeed(-.1).andThen(
                 new ConditionalCommand(

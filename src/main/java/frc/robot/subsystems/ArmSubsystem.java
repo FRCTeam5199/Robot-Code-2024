@@ -1,8 +1,25 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.SlotConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
+import com.ctre.phoenix6.controls.MotionMagicExpoTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
+import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.StrictFollower;
+import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.ControlModeValue;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.wpilibj.*;
 
 import com.revrobotics.RelativeEncoder;
@@ -29,8 +46,8 @@ public class ArmSubsystem extends SubsystemBase {
     public final double horizontalOffset = 29;
     public TalonFX armMotorL;
     public TalonFX armMotorR;
-    public RelativeEncoder encoder;
-    public SparkPIDController sparkPIDController;
+    public CANcoder armCANCoder;
+    public MotionMagicVoltage m_MotionMagicVoltageRequest;
 
     public ArmFeedforward feedforward;
 
@@ -41,8 +58,10 @@ public class ArmSubsystem extends SubsystemBase {
     public boolean isAiming = true;
     public boolean autoAiming = false;
     public SwerveDrive drive = TunerConstants.DriveTrain;
-    private DutyCycleEncoder armEncoder;
+
     // private RelativeEncoder armEncoder;
+
+
     private PIDController rotatePIDController;
 private PIDController voltagePIDController;
     private double rotateSetpoint = 120;
@@ -64,7 +83,7 @@ private PIDController voltagePIDController;
     public final TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints( 200, 200);
     public final TrapezoidProfile.Constraints crossTrapContrainrs = new TrapezoidProfile.Constraints(200, 200);
     public final TrapezoidProfile.Constraints climbTrapConstraints = new TrapezoidProfile.Constraints(200, 200);
-    public final Timer timer = new Timer();
+        public final Timer timer = new Timer();
 
     public ArmSubsystem() {
     }
@@ -112,7 +131,7 @@ private PIDController voltagePIDController;
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace());
         }
-   // trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(120,0), new TrapezoidProfile.State(encoderValue, ((armEncoder./80)*360)));
+    // trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(120,0), new TrapezoidProfile.State(encoderValue, ((armEncoder./80)*360)));
     setTrapezoidalProfileSetpoint(120);
     }
 
@@ -131,20 +150,52 @@ private PIDController voltagePIDController;
         armMotorR.setNeutralMode(NeutralModeValue.Brake);
 //        armMotorR.setControl(new Follower(armMotorL.getDeviceID(), true));
 
+        
+        armCANCoder = new CANcoder(50);
+
+
+        SlotConfigs SlotConfigLeft = new SlotConfigs();
+        SlotConfigs SlotConfigRigth = new SlotConfigs();
+
+        configureSlot(SlotConfigLeft,0,1 ,0, 0, 0, 0, 0);
+        configureSlot(SlotConfigRigth,0,1, 0, 0, 0, 0, 0);
+        
+
+
+        armMotorL.getConfigurator().apply(SlotConfigLeft);
+        armMotorR.getConfigurator().apply(SlotConfigRigth);
+        
+        CANcoderConfiguration CANCoder_Config = new CANcoderConfiguration();
+
+        armCANCoder.getConfigurator().apply(CANCoder_Config);
+
+        TalonFXConfiguration fx_cfg = new TalonFXConfiguration();
+        fx_cfg.Feedback.FeedbackRemoteSensorID = armCANCoder.getDeviceID();
+        fx_cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+
+        fx_cfg.Feedback.SensorToMechanismRatio = 1;
+        fx_cfg.Feedback.RotorToSensorRatio = 80;
+
+        armMotorL.getConfigurator().apply(fx_cfg.Feedback);
+
+
+        
+        
+
         armMotorL.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(40).withStatorCurrentLimitEnable(true));
         armMotorR.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(40).withStatorCurrentLimitEnable(true));
 
 
-        armEncoder = new DutyCycleEncoder(new DigitalInput(1));
 
-
-
-
+        m_MotionMagicVoltageRequest = new MotionMagicVoltage(120.0/360.0);
+        
+        
+        
     }
 
     public void PIDInit() {
 
-//        rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
+
         rotatePIDController = new PIDController(0.03, 0.00569673212, 0.00);
         voltagePIDController = new PIDController(0.09, 0, 0);
 
@@ -158,7 +209,7 @@ private PIDController voltagePIDController;
     }
 
     public boolean checkMotors() {
-        if (armMotorL != null && armEncoder != null) {
+        if (armMotorL != null && armCANCoder != null) {
             return true;
         } else {
             return false;
@@ -176,14 +227,25 @@ private PIDController voltagePIDController;
 
     @Override
     public void periodic() {
-//        System.out.println(armEncoder.getAbsolutePosition());
-        if (armEncoder.getAbsolutePosition() < 200 && armEncoder.getAbsolutePosition()> 0) {
-            encoderValue = (armEncoder.getAbsolutePosition());
-        } else if (armEncoder.getAbsolutePosition() > 200 && armEncoder.getAbsolutePosition() < 250) {
-            encoderValue = 140;
-        } else if (armEncoder.getAbsolutePosition() > 250 && armEncoder.getAbsolutePosition() < 361) {
-            encoderValue = 0;
+        //        System.out.println(armEncoder.getAbsolutePosition());
+        // if (armCANCoder.getAbsolutePosition().getValueAsDouble() < 200 && armCANCoder.getAbsolutePosition().getValueAsDouble() > 0) {
+        //     encoderValue = (armCANCoder.getAbsolutePosition().getValueAsDouble());
+        // } else if (armCANCoder.getAbsolutePosition().getValueAsDouble() > 200 && armCANCoder.getAbsolutePosition().getValueAsDouble()< 250) {
+        //     encoderValue = armCANCoder.getAbsolutePosition().getValueAsDouble();
+        // } else if (armCANCoder.getAbsolutePosition().getValueAsDouble() > 250 && armCANCoder.getAbsolutePosition().getValueAsDouble() < 361) {
+        //     encoderValue = 0;
+        // }
+        
+        System.out.println(armCANCoder.getAbsolutePosition().getValueAsDouble());
+            StrictFollower f = new StrictFollower(30);
+
+        if(DriverStation.isEnabled()){
+
+        // armMotorL.setControl(m_MotionMagicVoltageRequest);
+        
+        // armMotorR.setControl(f);
         }
+
 
         // System.out.println("encoder value" + encoderValue);
         
@@ -233,16 +295,13 @@ private PIDController voltagePIDController;
 
         if (subsystemStatus) {
             if (DriverStation.isEnabled()){
-//            subsystemPeriodic();
+            //            subsystemPeriodic();
             }
 
         
         }
     }
 
-    public Command moveAtSpeed(double percent) {
-        return this.runOnce(() -> armMotorL.set(percent)).andThen(() -> armMotorR.set(percent));
-    }
 
     private void subsystemPeriodic() {
 
@@ -281,7 +340,7 @@ private PIDController voltagePIDController;
         //     System.out.println("encoder " + encoderValue + "desired "  + rotateSetpoint);
 
             goToSetpoint(rotateOffset);
-            // System.out.println("setPoint que" + setPointInQue);
+                        // System.out.println("setPoint que" + setPointInQue);
             // System.out.println("desired setpoint" + rotateSetpoint);
             // System.out.println("encoder " + encoderValue);
             if (autoAiming){
@@ -293,12 +352,22 @@ private PIDController voltagePIDController;
                 }
             }
         }
+    public void configureSlot(SlotConfigs SlotConfig, double kS,double kG,double kA, double kV, double kP, double kI, double kD){
+        SlotConfig.kS = kS;
+        SlotConfig.kG = kG;
+        SlotConfig.kA = kA;
+        SlotConfig.kV = kV;
+        SlotConfig.kP = kP;
+        SlotConfig.kI = kI;
+        SlotConfig.kD = kD;
+    }
+
     
 public Command testArm() {
         return this.runOnce(() -> rotateSetpoint = 80);
 }
     
-    public void goToSetpoint(double rotateOffset) {
+public void goToSetpoint(double rotateOffset) {
         
         if (encoderValue < 0 || rotateSetpoint < 0) return;
 
@@ -306,11 +375,11 @@ public Command testArm() {
         System.out.println(rotatePIDController.calculate(armMotorL.getPosition().getValue(), rotateSetpoint));
 //        TrapezoidProfile.State goalState = trapProfile.calculate(timer.get());
 
-//        if (climbMode) {
-//            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
-//        } else {
-//            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
-//
+        //        if (climbMode) {
+            //            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
+        //        } else {
+            //            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
+            //
 //        }
 //        prevState = goalState;
         // System.out.println(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity));
@@ -374,9 +443,9 @@ public Command testArm() {
         return this.runOnce(() -> rotateOffset -= amount);
     }
 
-    public DutyCycleEncoder getArmEncoder() {
+    public CANcoder getArmEncoder() {
         if (!subsystemStatus) return null;
-        return armEncoder;
+        return armCANCoder;
     }
 
     /**
@@ -499,14 +568,14 @@ public Command testArm() {
         // rotateSetpoint  degrees?
         //
         if(climbMode) {
-       // trapProfile = new TrapezoidProfile(climbTrapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, armEncoder.getVelocity().getValue()*360.0));
+        // trapProfile = new TrapezoidProfile(climbTrapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, armEncoder.getVelocity().getValue()*360.0));
 
         } else  {
         if((rotateSetpoint > 120 & encoderValue > 120) || (setpoint < 120 &&  encoderValue < 120)){
-        //    trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity().getValue()/80)*360));
+            //    trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity().getValue()/80)*360));
         }
         else{
-       //     trapProfile = new TrapezoidProfile(crossTrapContrainrs, new TrapezoidProfile.State(rotateSetpoint, 0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity().getValue()/80)*360));
+            //     trapProfile = new TrapezoidProfile(crossTrapContrainrs, new TrapezoidProfile.State(rotateSetpoint, 0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity().getValue()/80)*360));
         }
     }
         

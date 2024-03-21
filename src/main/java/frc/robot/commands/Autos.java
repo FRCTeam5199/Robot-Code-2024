@@ -66,22 +66,22 @@ public class Autos extends Command {
 
         PPHolonomicDriveController.setRotationTargetOverride(this::autoAim);
 
-        NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
-                arm.isAiming(true),
-                intake.deployIntake(),
-                new WaitCommand(0.2),
-                indexer.setIndexerSpeed(-.4),
-                arm.rotateIntake(),
-                intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getAbsolutePosition() > 1 || arm.getArmEncoder().getAbsolutePosition() < 3),
-                shooter.runShooterAtPercent(-.4)));
+        // NamedCommands.registerCommand("deployIntake", new SequentialCommandGroup(
+        //         arm.isAiming(true),
+        //         intake.deployIntake(),
+        //         new WaitCommand(0.2),
+        //         indexer.setIndexerSpeed(-.4),
+        //         arm.rotateIntake(),
+        //         intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getAbsolutePosition() > 1 || arm.getArmEncoder().getAbsolutePosition() < 3),
+        //         shooter.runShooterAtPercent(-.4)));
 
-        NamedCommands.registerCommand("halfDeployIntake", new SequentialCommandGroup(
-                arm.isAiming(true),
-                new WaitCommand(0.2),
-                indexer.setIndexerSpeed(-.4),
-                arm.rotateIntake(),
-                intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getAbsolutePosition() > 1 || arm.getArmEncoder().getAbsolutePosition() < 3),
-                shooter.runShooterAtPercent(-.4)));
+        // NamedCommands.registerCommand("halfDeployIntake", new SequentialCommandGroup(
+        //         arm.isAiming(true),
+        //         new WaitCommand(0.2),
+        //         indexer.setIndexerSpeed(-.4),
+        //         arm.rotateIntake(),
+        //         intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getAbsolutePosition() > 1 || arm.getArmEncoder().getAbsolutePosition() < 3),
+        //         shooter.runShooterAtPercent(-.4)));
 
         NamedCommands.registerCommand("actualIntake", 
         new SequentialCommandGroup(                arm.isAiming(true),
