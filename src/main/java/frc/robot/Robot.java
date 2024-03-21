@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
@@ -49,6 +50,7 @@ public class Robot extends LoggedRobot{
     AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
+
 
 
 
@@ -143,6 +145,9 @@ public class Robot extends LoggedRobot{
                 EstimatedRobotPose robotPose = estimatePose4.get();
                 drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
             }
+        }
+        if(DriverStation.isEnabled()){
+            System.out.println("drive"  + drive.getPose().getRotation().getDegrees());
         }
 
         // userInterface.updateGameTab();

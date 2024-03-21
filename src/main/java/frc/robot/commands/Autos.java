@@ -83,6 +83,32 @@ public class Autos extends Command {
                 intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getAbsolutePosition() > 1 || arm.getArmEncoder().getAbsolutePosition() < 3),
                 shooter.runShooterAtPercent(-.4)));
 
+        NamedCommands.registerCommand("actualIntake", 
+        new SequentialCommandGroup(                arm.isAiming(true),
+                arm.setArmSetpoint(50),
+                new WaitCommand(0.1),
+                intake.deployIntake(),
+                new WaitCommand(0.2),
+                indexer.setIndexerSpeed(-.4),
+                arm.rotateIntake(),
+                intake.setIntakeSpeed(0.9),
+                shooter.runShooterAtPercent(-.3)));
+
+        NamedCommands.registerCommand("actualRetract", 
+        new SequentialCommandGroup(arm.isAiming(true),
+            intake.setIntakeSpeed(-.9),
+            arm.setArmSetpoint(50),
+            new WaitCommand(0.2),
+            shooter.runShooterAtPercent(0),
+            intake.stowIntake(),
+            indexer.setIndexerSpeed(-0.1),
+            new WaitCommand(0.3),
+            arm.rotateStable(),
+            new WaitCommand(0.5),
+            arm.isAiming(false),
+            indexer.setIndexerSpeed(0),
+            intake.setIntakeSpeed(0)));
+
         NamedCommands.registerCommand("retractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
                 arm.rotateAutonStable(),
                 new WaitCommand(0.4),
@@ -117,6 +143,16 @@ public class Autos extends Command {
                 intake.setIntakeSpeed(0),
                 robotContainer.runAutoShooting(),
                 arm.isAiming(false)));
+        
+        NamedCommands.registerCommand("bottomMidShot", new SequentialCommandGroup(
+            arm.setArmSetpoint(53),
+            new WaitCommand(1),
+            shooter.runShooterAtPercent(.6),
+            new WaitCommand(1),
+            indexer.setIndexerSpeed(0.2),
+            new WaitCommand(0.2),
+            shooter.runShooterAtPercent(0)
+        ));
 
         NamedCommands.registerCommand("shuttleShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(23), new WaitCommand(.3), robotContainer.runAutoShooting(), new WaitCommand(.1), arm.rotateStable()));
         NamedCommands.registerCommand("halfBackShot", new SequentialCommandGroup(arm.isAiming(true), arm.setArmSetpoint(147 /*141*/), new WaitCommand(0.25), robotContainer.runAutoShooting()));
@@ -151,6 +187,7 @@ public class Autos extends Command {
         autonChooserRed.addOption("twoPieceTopRed", twoPieceTopRed());
         autonChooserRed.addOption("twoPieceMiddleRed", twoPieceMiddleRed());
         autonChooserRed.addOption("twoPieceBottomRed", twoPieceBottomRed());
+        autonChooserRed.addOption("twoPieceBottomFarRed", twoPieceBottomFarRed());
 
         autonChooserRed.addOption("threePieceMtBRed", threePieceMtBRed());
         autonChooserRed.addOption("threePieceMtTRed", threePieceMtTRed());
@@ -279,6 +316,9 @@ public class Autos extends Command {
 
     public Command twoPieceBottomRed() {
         return AutoBuilder.buildAuto("2 Piece Bottom Red");
+    }
+    public Command twoPieceBottomFarRed(){
+        return AutoBuilder.buildAuto("2 Piece Bottom Far Red");
     }
 
     public Command twoPieceTopBlue() {
