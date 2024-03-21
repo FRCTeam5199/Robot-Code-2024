@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8305816611633238,
-      "y": 6.6207186260526365
+      "x": 15.812035275996372,
+      "y": 4.344720358484939
     },
-    "rotation": 60.0
+    "rotation": -120.57922687248909
   },
   "command": {
     "type": "sequential",
@@ -18,27 +18,15 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "actualIntake"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "2 Piece Top Blue"
+            "pathName": "2 Piece Bottom Far Red"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "bottomMidShot"
           }
         }
       ]
