@@ -108,7 +108,7 @@ public class RobotContainer {
                 new WaitCommand(0.2),
                 indexer.setIndexerSpeed(-.4),
                 arm.rotateIntake(),
-                intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
+                intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getAbsolutePosition() > 1 || arm.getArmEncoder().getAbsolutePosition() < 3),
                 shooterSubsystem.runShooterAtPercent(-.3));
 
 
@@ -179,6 +179,8 @@ public class RobotContainer {
 
         mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)
         ).onFalse(intake.setIntakeSpeed(0));
+
+        mainCommandXboxController.povUp().onTrue(arm.moveAtSpeed(0.1)).onFalse(arm.moveAtSpeed(0));
         //climb practice
         mainCommandXboxController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.idleShooting = false).andThen(indexer.setIndexerSpeed(-.1).andThen(
                 new ConditionalCommand(
@@ -198,8 +200,10 @@ public class RobotContainer {
 
                 shooterSubsystem.runShooterAtPercent(0).andThen(((arm.rotateStable())).onlyIf(() -> climberSubsystem.climbModeEnabled == false)));
 
-
         mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
+
+        mainCommandXboxController.a().onTrue(arm.setClimbMode(false).andThen(arm.rotateAmp()).andThen(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false))));
+        mainCommandXboxController.b().onTrue(arm.setClimbMode(false).andThen(arm.rotateSub()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 

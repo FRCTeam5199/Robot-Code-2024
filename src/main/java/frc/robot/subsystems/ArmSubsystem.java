@@ -1,38 +1,20 @@
 package frc.robot.subsystems;
 
-import org.json.simple.parser.Yytoken;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.wpilibj.*;
 
-import com.ctre.phoenix6.signals.GravityTypeValue;
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.math.trajectory.constraint.RectangularRegionConstraint;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
@@ -45,8 +27,8 @@ public class ArmSubsystem extends SubsystemBase {
     private static boolean subsystemStatus = false;
     private static boolean isBrakeMode = false;
     public final double horizontalOffset = 29;
-    public CANSparkBase armMotorL;
-    public CANSparkBase armMotorR;
+    public TalonFX armMotorL;
+    public TalonFX armMotorR;
     public RelativeEncoder encoder;
     public SparkPIDController sparkPIDController;
 
@@ -59,7 +41,7 @@ public class ArmSubsystem extends SubsystemBase {
     public boolean isAiming = true;
     public boolean autoAiming = false;
     public SwerveDrive drive = TunerConstants.DriveTrain;
-    private SparkAbsoluteEncoder armEncoder;
+    private DutyCycleEncoder armEncoder;
     // private RelativeEncoder armEncoder;
     private PIDController rotatePIDController;
 private PIDController voltagePIDController;
@@ -79,9 +61,9 @@ private PIDController voltagePIDController;
     public  TrapezoidProfile.State prevState = new TrapezoidProfile.State(0, 0);
     //undershoot usually maximum mehanical reached
     //overshoot (what kA is todo) 
-    public final TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(700, 800);
-    public final TrapezoidProfile.Constraints crossTrapContrainrs = new TrapezoidProfile.Constraints(450, 400);
-    public final TrapezoidProfile.Constraints climbTrapConstraints = new TrapezoidProfile.Constraints(300, 250);
+    public final TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints( 200, 200);
+    public final TrapezoidProfile.Constraints crossTrapContrainrs = new TrapezoidProfile.Constraints(200, 200);
+    public final TrapezoidProfile.Constraints climbTrapConstraints = new TrapezoidProfile.Constraints(200, 200);
     public final Timer timer = new Timer();
 
     public ArmSubsystem() {
@@ -110,8 +92,8 @@ private PIDController voltagePIDController;
     }
 
     public void setBrakeTrue() {
-        armMotorL.setIdleMode(IdleMode.kBrake);
-        armMotorR.setIdleMode(IdleMode.kBrake);
+        armMotorL.setNeutralMode(NeutralModeValue.Brake);
+        armMotorR.setNeutralMode(NeutralModeValue.Brake);
 
     }
 
@@ -130,7 +112,7 @@ private PIDController voltagePIDController;
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace());
         }
-    trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(120,0), new TrapezoidProfile.State(encoderValue, ((armEncoder.getVelocity()/80)*360)));
+   // trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(120,0), new TrapezoidProfile.State(encoderValue, ((armEncoder./80)*360)));
     setTrapezoidalProfileSetpoint(120);
     }
 
@@ -139,32 +121,31 @@ private PIDController voltagePIDController;
     }
 
     public void motorInit() {
-        armMotorL = new CANSparkFlex(MainConstants.IDs.Motors.ARM_MOTOR_ID, CANSparkLowLevel.MotorType.kBrushless);
-        armMotorR = new CANSparkFlex(MainConstants.IDs.Motors.ARM_MOTOR2_ID, CANSparkLowLevel.MotorType.kBrushless);
+        armMotorL = new TalonFX(MainConstants.IDs.Motors.ARM_MOTOR_LEFT_ID);
+        armMotorR = new TalonFX(MainConstants.IDs.Motors.ARM_MOTOR_RIGHT_ID);
 
         armMotorL.setInverted(false);
-        armMotorL.setIdleMode(IdleMode.kBrake);
-
+        armMotorL.setNeutralMode(NeutralModeValue.Brake);
 
         armMotorR.setInverted(true);
-        armMotorR.setIdleMode(IdleMode.kBrake);
+        armMotorR.setNeutralMode(NeutralModeValue.Brake);
+//        armMotorR.setControl(new Follower(armMotorL.getDeviceID(), true));
 
-        armMotorL.setSmartCurrentLimit(40);
-        armMotorR.setSmartCurrentLimit(40);
-
-
-        armEncoder = armMotorL.getAbsoluteEncoder(Type.kDutyCycle);
+        armMotorL.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(40).withStatorCurrentLimitEnable(true));
+        armMotorR.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(40).withStatorCurrentLimitEnable(true));
 
 
-        armMotorL.burnFlash();
-        armMotorR.burnFlash();
+        armEncoder = new DutyCycleEncoder(new DigitalInput(1));
+
+
 
 
     }
 
     public void PIDInit() {
 
-        rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
+//        rotatePIDController = new PIDController(0.06, 0.00569673212, 0.00);
+        rotatePIDController = new PIDController(0.03, 0.00569673212, 0.00);
         voltagePIDController = new PIDController(0.09, 0, 0);
 
         // KS units = volts to overcome static friction
@@ -195,11 +176,12 @@ private PIDController voltagePIDController;
 
     @Override
     public void periodic() {
-        if (armEncoder.getPosition() < 200 && armEncoder.getPosition() > 0) {
-            encoderValue = (armEncoder.getPosition());
-        } else if (armEncoder.getPosition() > 200 && armEncoder.getPosition() < 250) {
+//        System.out.println(armEncoder.getAbsolutePosition());
+        if (armEncoder.getAbsolutePosition() < 200 && armEncoder.getAbsolutePosition()> 0) {
+            encoderValue = (armEncoder.getAbsolutePosition());
+        } else if (armEncoder.getAbsolutePosition() > 200 && armEncoder.getAbsolutePosition() < 250) {
             encoderValue = 140;
-        } else if (armEncoder.getPosition() > 250 && armEncoder.getPosition() < 361) {
+        } else if (armEncoder.getAbsolutePosition() > 250 && armEncoder.getAbsolutePosition() < 361) {
             encoderValue = 0;
         }
 
@@ -251,11 +233,15 @@ private PIDController voltagePIDController;
 
         if (subsystemStatus) {
             if (DriverStation.isEnabled()){
-            subsystemPeriodic();
+//            subsystemPeriodic();
             }
 
         
         }
+    }
+
+    public Command moveAtSpeed(double percent) {
+        return this.runOnce(() -> armMotorL.set(percent)).andThen(() -> armMotorR.set(percent));
     }
 
     private void subsystemPeriodic() {
@@ -295,7 +281,6 @@ private PIDController voltagePIDController;
         //     System.out.println("encoder " + encoderValue + "desired "  + rotateSetpoint);
 
             goToSetpoint(rotateOffset);
-            System.out.println(encoderValue);
             // System.out.println("setPoint que" + setPointInQue);
             // System.out.println("desired setpoint" + rotateSetpoint);
             // System.out.println("encoder " + encoderValue);
@@ -309,21 +294,25 @@ private PIDController voltagePIDController;
             }
         }
     
-
+public Command testArm() {
+        return this.runOnce(() -> rotateSetpoint = 80);
+}
     
     public void goToSetpoint(double rotateOffset) {
         
         if (encoderValue < 0 || rotateSetpoint < 0) return;
 
-        TrapezoidProfile.State goalState = trapProfile.calculate(timer.get());
+        armMotorL.set(rotatePIDController.calculate(armMotorL.getPosition().getValue(), rotateSetpoint));
+        System.out.println(rotatePIDController.calculate(armMotorL.getPosition().getValue(), rotateSetpoint));
+//        TrapezoidProfile.State goalState = trapProfile.calculate(timer.get());
 
-        if (climbMode) {
-            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
-        } else {
-            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
-            
-        }
-        prevState = goalState;
+//        if (climbMode) {
+//            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
+//        } else {
+//            armMotorL.setVoltage(voltagePIDController.calculate(encoderValue, prevState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), Math.toRadians(goalState.velocity)));
+//
+//        }
+//        prevState = goalState;
         // System.out.println(voltagePIDController.calculate(encoderValue, goalState.position) + feedforward.calculate(Math.toRadians((encoderValue-horizontalOffset)), goalState.velocity));
 
         //rotateSetpoint - encoderValue = direction
@@ -385,7 +374,7 @@ private PIDController voltagePIDController;
         return this.runOnce(() -> rotateOffset -= amount);
     }
 
-    public SparkAbsoluteEncoder getArmEncoder() {
+    public DutyCycleEncoder getArmEncoder() {
         if (!subsystemStatus) return null;
         return armEncoder;
     }
@@ -510,19 +499,19 @@ private PIDController voltagePIDController;
         // rotateSetpoint  degrees?
         //
         if(climbMode) {
-        trapProfile = new TrapezoidProfile(climbTrapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, armEncoder.getVelocity()*360.0));
+       // trapProfile = new TrapezoidProfile(climbTrapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, armEncoder.getVelocity().getValue()*360.0));
 
         } else  {
         if((rotateSetpoint > 120 & encoderValue > 120) || (setpoint < 120 &&  encoderValue < 120)){
-            trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity()/80)*360));
+        //    trapProfile = new TrapezoidProfile(trapConstraints, new TrapezoidProfile.State(rotateSetpoint,0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity().getValue()/80)*360));
         }
         else{
-            trapProfile = new TrapezoidProfile(crossTrapContrainrs, new TrapezoidProfile.State(rotateSetpoint, 0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity()/80)*360));
+       //     trapProfile = new TrapezoidProfile(crossTrapContrainrs, new TrapezoidProfile.State(rotateSetpoint, 0), new TrapezoidProfile.State(encoderValue, (armEncoder.getVelocity().getValue()/80)*360));
         }
     }
         
         timer.restart();   
-        prevState = trapProfile.calculate(timer.get());
+        //prevState = trapProfile.calculate(timer.get());
 
     }
 
