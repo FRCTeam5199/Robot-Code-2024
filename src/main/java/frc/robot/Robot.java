@@ -39,7 +39,7 @@ import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends LoggedRobot{
+public class Robot extends LoggedRobot {
     public static final boolean SECOND_TRY = false;
 
     Pose3d poseA = new Pose3d();
@@ -50,8 +50,6 @@ public class Robot extends LoggedRobot{
     AprilTagSubsystem aprilTagSubsystem = new AprilTagSubsystem();
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
-
-
 
 
     /**
@@ -85,21 +83,21 @@ public class Robot extends LoggedRobot{
         // commands, running already-scheduled commands, removing finished or interrupted commands,
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
-        
+
         Logger.recordOutput("Drive/Pose", drive.getPose());
 
 
         Logger.recordOutput("MyPose3d", poseA);
         Logger.recordOutput("MyPose3dArray", poseA, poseB);
-        Logger.recordOutput("MyPose3dArray", new Pose3d[] { poseA, poseB });
+        Logger.recordOutput("MyPose3dArray", new Pose3d[]{poseA, poseB});
 
         Logger.recordOutput("sticky fault boot during enbale ", drive.getPigeon2().getFault_BootDuringEnable().getValueAsDouble());
         Logger.recordOutput("boot during enbale ", drive.getPigeon2().getStickyFault_BootDuringEnable().getValueAsDouble());
-        
+
 
         Logger.recordOutput("sticky fault boot during enbale boolean ", drive.getPigeon2().getFault_BootDuringEnable().getValue());
         Logger.recordOutput("sticky fault boot during enbale boolean", drive.getPigeon2().getFault_BootDuringEnable().getValue());
-        
+
         Logger.recordOutput("heading of pigeon", drive.getPigeon2().getAngle());
         Logger.recordOutput("supply voltage voltage of pigeon", drive.getPigeon2().getSupplyVoltage().getValueAsDouble());
 
@@ -123,7 +121,7 @@ public class Robot extends LoggedRobot{
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
         Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
 
-        if(!DriverStation.isAutonomous()) {
+        if (!DriverStation.isAutonomous()) {
 
             if (estimatePose1.isPresent()) {
                 EstimatedRobotPose robotPose = estimatePose1.get();
@@ -146,8 +144,8 @@ public class Robot extends LoggedRobot{
                 drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
             }
         }
-        if(DriverStation.isEnabled()){
-            System.out.println("drive"  + drive.getPose().getRotation().getDegrees());
+        if (DriverStation.isEnabled()) {
+//            System.out.println("drive"  + drive.getPose().getRotation().getDegrees());
         }
 
         // userInterface.updateGameTab();

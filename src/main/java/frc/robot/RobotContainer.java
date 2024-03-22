@@ -208,6 +208,9 @@ public class RobotContainer {
         mainCommandXboxController.a().onTrue(arm.setClimbMode(false).andThen(arm.rotateAmp()).andThen(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false))));
         mainCommandXboxController.b().onTrue(arm.setClimbMode(false).andThen(arm.rotateSub()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
 
+        mainCommandXboxController.x().onTrue(indexer.extendServo());
+        mainCommandXboxController.y().onTrue(indexer.retractServo());
+
         drivetrain.registerTelemetry(logger::telemeterize);
 
         buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateSub()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));

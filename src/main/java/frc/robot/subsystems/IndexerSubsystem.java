@@ -34,8 +34,12 @@ public class IndexerSubsystem extends SubsystemBase {
         servo = new Servo(MainConstants.IDs.SERVO_ID);
     }
 
-    public void moveServo(double angle) {
-        servo.setAngle(angle);
+    public Command extendServo() {
+        return this.runOnce(() -> servo.setAngle(180));
+    }
+
+    public Command retractServo() {
+        return this.runOnce(() -> servo.setAngle(120));
     }
 
     @Override

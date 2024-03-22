@@ -100,7 +100,7 @@ public class MainConstants {
     }
 
     public static class IDs {
-        public static final int SERVO_ID = 1; //change this later
+        public static final int SERVO_ID = 1;
         // Pigeon
         public static int PIGEON2_ID = 22;
 
