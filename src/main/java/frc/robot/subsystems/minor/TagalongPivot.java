@@ -153,10 +153,15 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
     if (_isMinorSystemDisabled) {
       return;
     } else if (motorResetConfig()) {
+      System.out.println("moving");
       var goal = _pivotProfile.getGoal();
       setPivotProfile(goal.position, goal.velocity, _pivotProfile.getConstraint().maxVelocity);
     }
+    
+    var goal = _pivotProfile.getGoal();
+    setPivotProfile(goal.position, goal.velocity, _pivotProfile.getConstraint().maxVelocity);
 
+    followLastProfile();
     // if (_pivotConf.name.equalsIgnoreCase("Intake Pivot")) {
     // System.out.println(
     //     "current: " + _pivotConf.name + getPivotMotor().getPosition().getValueAsDouble() * 360.0
@@ -429,6 +434,7 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
     if (_pivotCancoder.hasResetOccurred()) {
       configCancoder();
       return true;
+
     }
 
     return false;

@@ -147,7 +147,7 @@ public class Robot extends LoggedRobot{
             }
         }
         if(DriverStation.isEnabled()){
-            System.out.println("drive"  + drive.getPose().getRotation().getDegrees());
+            // System.out.println("drive"  + drive.getPose().getRotation().getDegrees());
         }
 
         // userInterface.updateGameTab();
@@ -184,7 +184,8 @@ public class Robot extends LoggedRobot{
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
-        m_robotContainer.arm.setBrakeTrue();
+        // m_robotContainer.arm.setBrakeTrue();
+    
     }
 
     /**
@@ -203,7 +204,7 @@ public class Robot extends LoggedRobot{
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        m_robotContainer.arm.setBrakeTrue();
+        // m_robotContainer.arm.setBrakeTrue();
     }
 
     /**
