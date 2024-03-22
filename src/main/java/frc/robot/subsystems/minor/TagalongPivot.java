@@ -116,6 +116,7 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
 
     _pivotMotorConfiguration = _pivotConf.getPivotMotorConfiguration();
     _followerMotorConfiguration = _pivotConf.getFollowerMotorConfiguration();
+    
     _pivotMotorSlot0 = _pivotConf.pivotMotorControl.getSlot0();
 
     _pivotCancoderConfiguration = _pivotConf.getPivotCancoderConfiguration();

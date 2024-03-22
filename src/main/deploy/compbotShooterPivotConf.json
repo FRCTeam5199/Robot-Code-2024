@@ -34,8 +34,8 @@
     },
     "positionalLimits": {
       "unit": "deg",
-      "min": -53.0,
-      "max": 56.0
+      "min": 0.0,
+      "max": 160.0
     },
     "defaultTolerances": {
       "unit": "deg",
@@ -52,7 +52,7 @@
     },
     "pivotMotorControl": {
       "clockwisePositive": false,
-      "brakeMode": false,
+      "brakeMode": true,
       "motorCurrentLimits": {
         "statorEnableLimit": true,
         "statorPeakLimit": 80,
@@ -89,7 +89,7 @@
     },
     "followerMotorControl": {
       "clockwisePositive": false,
-      "brakeMode": false,
+      "brakeMode": true,
       "motorCurrentLimits": {
         "statorEnableLimit": true,
         "statorPeakLimit": 80,

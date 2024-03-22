@@ -234,10 +234,7 @@ private PIDController voltagePIDController;
         // } else if (armCANCoder.getAbsolutePosition().getValueAsDouble() > 250 && armCANCoder.getAbsolutePosition().getValueAsDouble() < 361) {
         //     encoderValue = 0;
         // }
-        
-        System.out.println(armCANCoder.getAbsolutePosition().getValueAsDouble());
-            StrictFollower f = new StrictFollower(30);
-
+      
         if(DriverStation.isEnabled()){
 
         // armMotorL.setControl(m_MotionMagicVoltageRequest);
