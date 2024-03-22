@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
+import java.sql.Driver;
+
 import javax.swing.text.AbstractDocument.LeafElement;
 
 import org.w3c.dom.CDATASection;
@@ -24,6 +26,7 @@ import frc.robot.controls.CommandButtonPanel;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ArmSubsystemVer2;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -42,7 +45,8 @@ import frc.robot.LED.LEDManager;
  */
 public class RobotContainer {
     public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
-    public final static ArmSubsystem arm = new ArmSubsystem();
+//     public final static ArmSubsystem arm = new ArmSubsystem();
+    public final static ArmSubsystemVer2 arm = new ArmSubsystemVer2();
     public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
     public final static IntakeSubsystem intake = new IntakeSubsystem();
@@ -57,6 +61,7 @@ public class RobotContainer {
             MainConstants.OperatorConstants.MAIN_CONTROLLER_PORT); // My joystick
     private final CommandXboxController operatorCommandXboxController = new CommandXboxController(
             MainConstants.OperatorConstants.OPERATOR_CONTROLLER_PORT);
+        private final CommandXboxController testingController = new CommandXboxController(3);
     private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -64,24 +69,24 @@ public class RobotContainer {
     // driving in open loop
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    private final Telemetry logger = new Telemetry(MaxSpeed);  
+    private final Telemetry logger = new Telemetry(MaxSpeed);
     //private final static LEDManager Led = new LEDManager();
 
-        public Command intakeAction;
+    public Command intakeAction;
     public Command stopIntakeAction;
     //     public final static Akit log = new Akit();
     Autos auton;
 
     ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
-                aprilTags.speakerAlignmentRed(),
-                aprilTags.speakerAlignementBlue(),
-                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-        );
+            aprilTags.speakerAlignmentRed(),
+            aprilTags.speakerAlignementBlue(),
+            () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+    );
    
 
     public RobotContainer() {
         shooterSubsystem.init();
-        arm.init();
+        // arm.init();
         intake.init();
         climberSubsystem.init();
         indexer.init();
@@ -90,6 +95,18 @@ public class RobotContainer {
         auton = new Autos(drivetrain, intake, arm, shooterSubsystem, indexer, this);
         // SmartDashboard.putData("Field", drivetrain.m_field);
         configureBindings();
+    }
+
+    public void onEnable() {
+        arm.onEnable();
+    }
+
+    public void onDisable() {
+        arm.onDisable();
+    }
+  
+    public void disabledPeriodic() {
+      arm.disabledPeriodic();
     }
 
     /**
@@ -106,23 +123,23 @@ public class RobotContainer {
                 new WaitCommand(0.2),
                 indexer.setIndexerSpeed(-.4),
                 arm.rotateIntake(),
-                intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getPosition() > 1 || arm.getArmEncoder().getPosition() < 3),
+                // intake.setIntakeSpeed(0.9).onlyIf(() -> arm.getArmEncoder().getAbsolutePosition() > 1 || arm.getArmEncoder().getAbsolutePosition() < 3),
                 shooterSubsystem.runShooterAtPercent(-.3));
 
 
-                stopIntakeAction = new SequentialCommandGroup(
-                        intake.setIntakeSpeed(-.9),
-                        arm.setArmSetpoint(50),
-                        new WaitCommand(0.2),
-                        shooterSubsystem.runShooterAtPercent(0),
-                        intake.stowIntake(),
-                        indexer.setIndexerSpeed(-0.1),
-                        new WaitCommand(0.3),
-                        arm.rotateStable(),
-                        new WaitCommand(0.5),
-                        arm.isAiming(false),
-                        indexer.setIndexerSpeed(0),
-                        intake.setIntakeSpeed(0));
+        stopIntakeAction = new SequentialCommandGroup(
+                intake.setIntakeSpeed(-.9),
+                arm.setArmSetpoint(50),
+                new WaitCommand(0.2),
+                shooterSubsystem.runShooterAtPercent(0),
+                intake.stowIntake(),
+                indexer.setIndexerSpeed(-0.1),
+                new WaitCommand(0.3),
+                arm.rotateStable(),
+                new WaitCommand(0.5),
+                arm.isAiming(false),
+                indexer.setIndexerSpeed(0),
+                intake.setIntakeSpeed(0));
 
 
         new Trigger(() -> indexer.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
@@ -135,7 +152,7 @@ public class RobotContainer {
         // }));
         new Trigger(Superstructure::getBrakeButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
             if (DriverStation.isDisabled()) {
-                ArmSubsystem.toggleBrakeMode();
+                ArmSubsystemVer2.toggleBrakeMode();
             }
         }));
 
@@ -158,9 +175,9 @@ public class RobotContainer {
                         // negative
                         // X
                         // (left)
-                        
-        ));
-        
+
+                ));
+
 
         // Brake drive
         mainCommandXboxController.button(7).whileTrue(drivetrain.applyRequest(() -> brake));
@@ -168,15 +185,19 @@ public class RobotContainer {
         mainCommandXboxController.button(8).onTrue(drivetrain.runOnce(drivetrain::seedFieldRelative));
 
         mainCommandXboxController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
-        
-        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true),shooterSubsystem.autoAim(), speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.isAutoAiming(false), shooterSubsystem.runShooterAtPercent(0)));
-        
+
+        mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true),arm.goToQueuedSetpoint(),shooterSubsystem.autoAim(), speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.rotateStable(), shooterSubsystem.runShooterAtPercent(0),arm.isAiming(false)));
+
         mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(6000))).onFalse(shooterSubsystem.runShooterAtPercent(0));
-       
+
         mainCommandXboxController.povDown().onTrue(indexer.setIndexerSpeed(-.1));
 
-        mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)
-        ).onFalse(intake.setIntakeSpeed(0));
+        
+        testingController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
+        testingController.povLeft().onTrue(shooterSubsystem.runShooterAtRpm(3000)).onFalse(shooterSubsystem.runShooterAtPercent(0));
+
+        mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)).onFalse(intake.setIntakeSpeed(0));
+
         //climb practice
         mainCommandXboxController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.idleShooting = false).andThen(indexer.setIndexerSpeed(-.1).andThen(
                 new ConditionalCommand(
@@ -184,20 +205,22 @@ public class RobotContainer {
                         // climb / amp
                         new ConditionalCommand(
                                 shooterSubsystem.runShooterClimbAmp(3300),
-                                arm.isAiming(true).andThen(shooterSubsystem.runShooterClimbAmp(4000)),
+                                arm.goToQueuedSetpoint().andThen(shooterSubsystem.runShooterClimbAmp(4000)),
                                 () -> climberSubsystem.climbModeEnabled),
 
-                        // normal aiming / auto aiming
-                        new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), shooterSubsystem.runShooterPredeterminedRPM(), new InstantCommand(() -> shooterSubsystem.idleShooting = false), new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> !shooterSubsystem.intakeShooter),
-                                
+                        // normal aiming
+                        new SequentialCommandGroup(new InstantCommand(() -> arm.isAiming = true), shooterSubsystem.runShooterPredeterminedRPM(), arm.goToQueuedSetpoint() , new InstantCommand(() -> System.out.println("normal aiming"))).onlyIf(() -> !shooterSubsystem.intakeShooter),
+
 
                         // based on climbing on or of
                         () -> shooterSubsystem.ampMode)))).onFalse(
 
-                                shooterSubsystem.runShooterAtPercent(0).andThen((new InstantCommand(() -> arm.isAiming = false).onlyIf(() -> climberSubsystem.climbModeEnabled == false))));
-
+                shooterSubsystem.runShooterAtPercent(0).andThen(((arm.rotateStable())).onlyIf(() -> climberSubsystem.climbModeEnabled == false)));
 
         mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
+
+        mainCommandXboxController.a().onTrue(arm.setClimbMode(false).andThen(arm.rotateAmp()).andThen(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false))));
+        mainCommandXboxController.b().onTrue(arm.setClimbMode(false).andThen(arm.rotateSub()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -205,7 +228,7 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateBack()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateSafe()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(arm.setClimbMode(false).andThen(arm.rotateAmp()).andThen(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false))));
-        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.rotateFarShot().andThen(shooterSubsystem.setRPMShooter(6000)));
+        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.rotateFarShot().andThen(shooterSubsystem.setRPMShooter(6000)).andThen(shooterSubsystem.setAmpMode(false)));
         buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(new SequentialCommandGroup(arm.isAiming(true), arm.rotateHPStation(), shooterSubsystem.runShooterAtPercent(-.4), indexer.setIndexerSpeed(-.2))).onFalse(new SequentialCommandGroup(arm.rotateStable(), shooterSubsystem.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_PREP_SETPOINT).onTrue(arm.setClimbMode(true).andThen(arm.rotatePrepClimbP2()).andThen(shooterSubsystem.setAmpMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_SETPOINT).onTrue(arm.setClimbMode(true).andThen(arm.rotateTrap()).andThen(shooterSubsystem.setRPMShooter(2500)));
@@ -245,13 +268,14 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.AUX_RIGHT_BOTTOM).onTrue(intake.stowIntake());
         buttonPanel.button(ButtonPanelButtons.AUX_LEFT_TOP).onTrue(shooterSubsystem.setRunShooter(true).andThen(shooterSubsystem.setintakeShooter(true))).onFalse(shooterSubsystem.setRunShooter(false).andThen(shooterSubsystem.setintakeShooter(false)));
     }
-    
-    public Command runAutoShooting(){
-        return new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(.75), new WaitCommand(1), indexer.setIndexerSpeed(.2),
-                new WaitCommand(0.3), shooterSubsystem.runShooterAtPercent(0), indexer.setIndexerSpeed(0));
+
+    public Command runAutoShooting() {
+        return new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(.60), new WaitCommand(0.35), indexer.setIndexerSpeed(.2),
+                new WaitCommand(0.2), shooterSubsystem.runShooterAtPercent(0), indexer.setIndexerSpeed(0));
     }
-    public Command autoFarShot(){
-        return  new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(1),
+
+    public Command autoFarShot() {
+        return new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(1),
                 new WaitCommand(1),
                 indexer.setIndexerSpeed(.2),
                 new WaitCommand(0.3), shooterSubsystem.runShooterAtPercent(0),

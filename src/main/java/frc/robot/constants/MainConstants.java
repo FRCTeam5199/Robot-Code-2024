@@ -13,9 +13,9 @@ public class MainConstants {
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
     public static final double ARM_PIVOT_X_OFFSET = 0.18415; //0.2032; //meters //7.25 inch
     public static final double ARM_PIVOT_Z = 0.5800;//0.5788; //0.5715; //meters //22 inch
-    public static final double ARM_ORIGINAL_DEGREES = 25;
+    public static final double ARM_ORIGINAL_DEGREES = 29.5;
     // public static final double SPEAKER_Z = 2.340102;
-    public static final double SPEAKER_Z =  1.4511020000000001 + 0.63; //+ 0.755; //1.4511020000000001 + 0.635; 
+    public static final double SPEAKER_Z = 1.4511020000000001 + 0.678; //+ 0.755; //1.4511020000000001 + 0.635;
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
     //Mechanical Constants
     public static String CAN_BUS = "";
@@ -79,6 +79,8 @@ public class MainConstants {
     public static int OVERHEAT_THRESHOLD = 80;
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
     public static int BrakeButtonid = 0;
+    public static int LED_LENGTH = 0;
+    public static int LED_PORT = 0;
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
             new Transform3d(0.3, 0, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(0))), //front
@@ -86,10 +88,8 @@ public class MainConstants {
             new Transform3d(.1, -.4, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
             new Transform3d(-.175, -.4, 0.409, new Rotation3d(Math.toRadians(125), 0, Math.toRadians(180))), //back
             new Transform3d(0, 0
-            , 0, new Rotation3d(0, 0, 0))
+                    , 0, new Rotation3d(0, 0, 0))
     };
-    public static int LED_LENGTH = 0;
-    public static int LED_PORT = 0;
 
     public static class OperatorConstants {
         //Operator Constants
@@ -100,6 +100,7 @@ public class MainConstants {
     }
 
     public static class IDs {
+        public static final int SERVO_ID = 1; //change this later
         // Pigeon
         public static int PIGEON2_ID = 22;
 
@@ -125,6 +126,8 @@ public class MainConstants {
             public static final int BACK_RIGHT_STEER_MOTOR_ID = 1;
             public static final int BACK_RIGHT_ENCODER = 13;
 
+            public static final int ARM_ENCODER = 3;
+
             //Intake
             public static final int INTAKE_ACTUATOR_MOTOR_ID = 9;
             public static final int INTAKE_MOTOR_ID = 10;
@@ -134,8 +137,8 @@ public class MainConstants {
             public static final int CLIMBER_MOTOR_2_ID = 8;
 
             //Arm
-            public static final int ARM_MOTOR_ID = 5;
-            public static final int ARM_MOTOR2_ID = 6;
+            public static final int ARM_MOTOR_LEFT_ID = 30;
+            public static final int ARM_MOTOR_RIGHT_ID = 40;
 
             //Shooter
             public static final int SHOOTER_MOTOR_1_ID = 2;
@@ -163,22 +166,23 @@ public class MainConstants {
         public static final double CLIMBER_RETRACTED_SETPOINT = 0;
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 23; //Maybe make it 22.5 for chain
+        public static final double ARM_STABLE_SETPOINT = 29; //Maybe make it 22.5 for chain
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
-        public static final double ARM_INTAKE_SETPOINT = .5;
+        public static final double ARM_INTAKE_SETPOINT = 4;
         public static final double ARM_TRAP_SETPOINT = 118;
         public static final double ARM_TRAP_PREP_SETPOINT = 82;
         public static final double ARM_TRAP_PREP2_SETPOINT = 72;
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
+        public static final double ARM_AUTON_STABLE = 147;
         //Control Panel
-        public static final double ARM_SUBWOOFER_SETPOINT = 68;
-        public static final double ARM_SPEAKER_BACK_SETPOINT = 140.25;
-        public static final double ARM_SAFE_SETPOINT = 53;
-        public static final double ARM_AMP_SETPOINT = 48.5;
-        public static final double ARM_FAR_SHOT_SETPOINT = 45.5;
-        public static final double ARM_HP_STATION_SETPOINT = 150;
+        public static final double ARM_SUBWOOFER_SETPOINT = 79;
+        public static final double ARM_SPEAKER_BACK_SETPOINT = 141.25;
+        public static final double ARM_SAFE_SETPOINT = 56;
+        public static final double ARM_AMP_SETPOINT = 50.25;
+        public static final double ARM_FAR_SHOT_SETPOINT = 48.5;
+        public static final double ARM_HP_STATION_SETPOINT = 140;
 
     }
 }
