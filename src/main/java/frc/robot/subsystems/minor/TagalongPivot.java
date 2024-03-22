@@ -95,7 +95,7 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
     }
     _pivotConf = _pivotParser.pivotConf;
     _pivotMotor = _pivotConf.getTalonFX();
-    _followerMotor = _pivotConf.getTalonFX();
+    _followerMotor = _pivotConf.getFollowerTalonFX();
     _pivotCancoder = _pivotConf.getCancoder();
 
     _pivotFF = _pivotConf.feedforward.getArmFeedforward();
@@ -159,10 +159,12 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
       setPivotProfile(goal.position, goal.velocity, _pivotProfile.getConstraint().maxVelocity);
     }
     
-    var goal = _pivotProfile.getGoal();
-    setPivotProfile(goal.position, goal.velocity, _pivotProfile.getConstraint().maxVelocity);
+    // var goal = _pivotProfile.getGoal();
+    // setPivotProfile(goal.position, goal.velocity, _pivotProfile.getConstraint().maxVelocity);
 
-    followLastProfile();
+    // followLastProfile();
+
+    _pivotMotor.set(0.1);
     // if (_pivotConf.name.equalsIgnoreCase("Intake Pivot")) {
     // System.out.println(
     //     "current: " + _pivotConf.name + getPivotMotor().getPosition().getValueAsDouble() * 360.0
