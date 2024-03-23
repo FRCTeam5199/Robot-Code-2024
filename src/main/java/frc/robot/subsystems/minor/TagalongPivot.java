@@ -160,13 +160,6 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
       setPivotProfile(goal.position, goal.velocity, _pivotProfile.getConstraint().maxVelocity);
     }
     
-    var goal = _pivotProfile.getGoal();
-    setPivotProfile(goal.position, goal.velocity, _pivotProfile.getConstraint().maxVelocity);
-    System.out.println(_pivotCancoder.getAbsolutePosition().getValueAsDouble());
-    System.out.println("goal position " + goal.position);
-
-    followLastProfile();
-
 
     if (_holdPivotPosition) {
       followLastProfile();
@@ -186,22 +179,23 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
       _pivotMotor.getConfigurator().apply(_pivotMotorSlot0);
     }
 
-    if (isPivotTuningMode && _pivotConf.name.equalsIgnoreCase("Shooter Pivot")) {
-      // _pivotFF = new ArmFeedforward(
-      //     _pivotKSEntry.getDouble(_pivotFF.ks),
-      //     _pivotKGEntry.getDouble(_pivotFF.kg),
-      //     _pivotKVEntry.getDouble(_pivotFF.kv),
-      //     _pivotKAEntry.getDouble(_pivotFF.ka)
-      // );
-      // setHoldPivotPosition(false);
-      // _pivotMotor.setNeutralMode(NeutralModeValue.Coast);
-      // _pivotMotor.setControl(new VelocityVoltage(0.0).withFeedForward(_pivotFF.calculate(
-      //     getFFPositionRad(_pivotCancoder.getPosition().getValueAsDouble()),
-      //     Units.rotationsToRadians(0.0),
-      //     Units.rotationsToRadians((0.0))
-      // )));
+    // if (isPivotTuningMode) {
+    //   _pivotFF = new ArmFeedforward(
+    //       _pivotKSEntry.getDouble(_pivotFF.ks),
+    //       _pivotKGEntry.getDouble(_pivotFF.kg),
+    //       _pivotKVEntry.getDouble(_pivotFF.kv),
+    //       _pivotKAEntry.getDouble(_pivotFF.ka)
+    //   );
+    //   setHoldPivotPosition(false);
+    //   _pivotMotor.setNeutralMode(NeutralModeValue.Coast);
+    //   _pivotMotor.setControl(new VelocityVoltage(0.0).withFeedForward(1.0+_pivotFF.calculate(
+    //       getFFPositionRad(_pivotCancoder.getPosition().getValueAsDouble()),
+    //       Units.rotationsToRadians(0.0),
+    //       Units.rotationsToRadians((0.0))
+    //   )));
     }
-  }
+  
+  
 
   @Override
   public void onDisable() {

@@ -32,7 +32,9 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.subsystems.minor.PivotToCommand;
 import frc.robot.utility.superstructure.*;
+import frc.robot.subsystems.minor.ArmPivotSetpoints;
 import frc.robot.LED.LEDManager;
 // import frc.robot.utility.Akit;
 
@@ -76,6 +78,11 @@ public class RobotContainer {
     public Command stopIntakeAction;
     //     public final static Akit log = new Akit();
     Autos auton;
+    
+    private PivotToCommand _armTen =
+    new PivotToCommand(arm, ArmPivotSetpoints.TEN, true);
+private PivotToCommand _armVertical =
+    new PivotToCommand(arm, ArmPivotPositions.VERT, true);
 
     ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
             aprilTags.speakerAlignmentRed(),

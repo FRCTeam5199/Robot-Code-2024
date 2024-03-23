@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.parsers.PivotParser;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.utils.PivotAugment;
+import frc.robot.utils.TagalongMinorSystemBase;
 
-public class ArmSubsystemVer2 extends SubsystemBase  implements PivotAugment {
+public class ArmSubsystemVer2 extends TagalongMinorSystemBase  implements PivotAugment {
     public final PivotParser pivotParser;
     private final TagalongPivot pivot;
     public static ArmSubsystemVer2 armSubsystem;
@@ -19,6 +20,7 @@ public class ArmSubsystemVer2 extends SubsystemBase  implements PivotAugment {
     }
 
     public ArmSubsystemVer2(PivotParser parser) {
+      super(parser);
         pivotParser = parser;
 
         pivot = new TagalongPivot(pivotParser);
