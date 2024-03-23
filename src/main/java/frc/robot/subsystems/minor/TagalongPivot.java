@@ -59,9 +59,9 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
   /* -------- Control: controllers and utilities -------- */
   protected ArmFeedforward _pivotFF;
   protected TagalongTrapezoidProfile.State _pivotCurState =
-      new TagalongTrapezoidProfile.State(0.0, 0.0);
+      new TagalongTrapezoidProfile.State(0, 0.0);
   protected TagalongTrapezoidProfile.State _pivotGoalState =
-      new TagalongTrapezoidProfile.State(0.0, 0.0);
+      new TagalongTrapezoidProfile.State(0.33, 0.0);
 
   protected TagalongTrapezoidProfile _pivotProfile;
   protected Timer _pivotTimer = new Timer();
@@ -148,32 +148,25 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
 
     configCancoder();
     configPivotMotor();
+     _pivotMotor.setInverted(false);
+    _followerMotor.setInverted(true);
   }
 
   public void periodic() {
     if (_isMinorSystemDisabled) {
       return;
     } else if (motorResetConfig()) {
-      System.out.println("moving");
       var goal = _pivotProfile.getGoal();
       setPivotProfile(goal.position, goal.velocity, _pivotProfile.getConstraint().maxVelocity);
     }
     
-    // var goal = _pivotProfile.getGoal();
-    // setPivotProfile(goal.position, goal.velocity, _pivotProfile.getConstraint().maxVelocity);
+    var goal = _pivotProfile.getGoal();
+    setPivotProfile(goal.position, goal.velocity, _pivotProfile.getConstraint().maxVelocity);
+    System.out.println(_pivotCancoder.getAbsolutePosition().getValueAsDouble());
+    System.out.println("goal position " + goal.position);
 
-    // followLastProfile();
+    followLastProfile();
 
-    _pivotMotor.set(0.1);
-    // if (_pivotConf.name.equalsIgnoreCase("Intake Pivot")) {
-    // System.out.println(
-    //     "current: " + _pivotConf.name + getPivotMotor().getPosition().getValueAsDouble() * 360.0
-    //     + " goal: " + _pivotGoalState.position * 360.0
-    // );
-    //   //  + "\n\n" + _pivotConf.name
-    //   // + " real: " + (getPivotMotor().getPosition().getValueAsDouble() * 360.0)
-    //   // );
-    // }
 
     if (_holdPivotPosition) {
       followLastProfile();
