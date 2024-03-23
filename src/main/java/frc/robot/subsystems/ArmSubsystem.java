@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
@@ -10,6 +11,7 @@ import com.ctre.phoenix6.controls.MotionMagicExpoTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -17,6 +19,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.ControlModeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
@@ -24,6 +27,7 @@ import edu.wpi.first.wpilibj.*;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -44,8 +48,15 @@ public class ArmSubsystem extends SubsystemBase {
     private static boolean subsystemStatus = false;
     private static boolean isBrakeMode = false;
     public final double horizontalOffset = 29;
+
+
     public TalonFX armMotorL;
     public TalonFX armMotorR;
+
+    public TalonFXConfiguration configLeft = new TalonFXConfiguration();
+    public TalonFXConfiguration configRight = new TalonFXConfiguration();
+    
+
     public CANcoder armCANCoder;
     public MotionMagicVoltage m_MotionMagicVoltageRequest;
 
@@ -140,55 +151,72 @@ private PIDController voltagePIDController;
     }
 
     public void motorInit() {
+        
         armMotorL = new TalonFX(MainConstants.IDs.Motors.ARM_MOTOR_LEFT_ID);
         armMotorR = new TalonFX(MainConstants.IDs.Motors.ARM_MOTOR_RIGHT_ID);
 
-        armMotorL.setInverted(false);
-        armMotorL.setNeutralMode(NeutralModeValue.Brake);
 
-        armMotorR.setInverted(true);
-        armMotorR.setNeutralMode(NeutralModeValue.Brake);
-//        armMotorR.setControl(new Follower(armMotorL.getDeviceID(), true));
-
-        
         armCANCoder = new CANcoder(50);
-
-
-        SlotConfigs SlotConfigLeft = new SlotConfigs();
-        SlotConfigs SlotConfigRigth = new SlotConfigs();
-
-        configureSlot(SlotConfigLeft,0,1 ,0, 0, 0, 0, 0);
-        configureSlot(SlotConfigRigth,0,1, 0, 0, 0, 0, 0);
-        
-
-
-        armMotorL.getConfigurator().apply(SlotConfigLeft);
-        armMotorR.getConfigurator().apply(SlotConfigRigth);
         
         CANcoderConfiguration CANCoder_Config = new CANcoderConfiguration();
+        
+        CANCoder_Config.MagnetSensor.MagnetOffset = -0.495361328125;
+        CANCoder_Config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        CANCoder_Config.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
 
         armCANCoder.getConfigurator().apply(CANCoder_Config);
 
-        TalonFXConfiguration fx_cfg = new TalonFXConfiguration();
-        fx_cfg.Feedback.FeedbackRemoteSensorID = armCANCoder.getDeviceID();
-        fx_cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+        //-------------------------------------------------
+        
+        configLeft.Feedback.FeedbackRemoteSensorID = armCANCoder.getDeviceID();
+        configLeft.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
 
-        fx_cfg.Feedback.SensorToMechanismRatio = 1;
-        fx_cfg.Feedback.RotorToSensorRatio = 80;
+        configLeft.Feedback.SensorToMechanismRatio = 1;
+        configLeft.Feedback.RotorToSensorRatio = 80;
 
-        armMotorL.getConfigurator().apply(fx_cfg.Feedback);
+        configLeft.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
+        configLeft.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        configRight.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        
+
+        configLeft.CurrentLimits.StatorCurrentLimit = 40;
+        configRight.CurrentLimits.StatorCurrentLimit = 40;
+
+        configLeft.CurrentLimits.StatorCurrentLimitEnable = true;
+        configRight.CurrentLimits.StatorCurrentLimitEnable = true;
+
+        configLeft.MotionMagic.MotionMagicExpo_kA = 0.1;
+        configLeft.MotionMagic.MotionMagicExpo_kV = 0.1;
+
+        configRight.MotionMagic.MotionMagicExpo_kA = 0.1;
+        configRight.MotionMagic.MotionMagicExpo_kV = 0.1;
+
+
+        configureSlot(configLeft,0,0 ,0, 0,24, 3, 0);
+        configureSlot(configRight,0,0, 0, 0, 24, 3, 0);
+        
+
+        configLeft.MotionMagic.MotionMagicCruiseVelocity = 180;
+        configLeft.MotionMagic.MotionMagicAcceleration = 360;
 
         
+        configRight.MotionMagic.MotionMagicCruiseVelocity = 180;
+        configRight.MotionMagic.MotionMagicAcceleration = 360;
         
+        configLeft.MotionMagic.MotionMagicJerk= 1600;
+        configRight.MotionMagic.MotionMagicJerk= 1600;
 
-        armMotorL.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(40).withStatorCurrentLimitEnable(true));
-        armMotorR.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(40).withStatorCurrentLimitEnable(true));
+    
+        armMotorL.getConfigurator().apply(configLeft);
+        armMotorR.getConfigurator().apply(configRight);
 
 
+    
 
-        m_MotionMagicVoltageRequest = new MotionMagicVoltage(120.0/360.0);
+        m_MotionMagicVoltageRequest = new MotionMagicVoltage(0.33);
         
+        armMotorR.setControl(new Follower(armMotorL.getDeviceID(),true));
         
         
     }
@@ -227,29 +255,16 @@ private PIDController voltagePIDController;
 
     @Override
     public void periodic() {
-        //        System.out.println(armEncoder.getAbsolutePosition());
-        // if (armCANCoder.getAbsolutePosition().getValueAsDouble() < 200 && armCANCoder.getAbsolutePosition().getValueAsDouble() > 0) {
-        //     encoderValue = (armCANCoder.getAbsolutePosition().getValueAsDouble());
-        // } else if (armCANCoder.getAbsolutePosition().getValueAsDouble() > 200 && armCANCoder.getAbsolutePosition().getValueAsDouble()< 250) {
-        //     encoderValue = armCANCoder.getAbsolutePosition().getValueAsDouble();
-        // } else if (armCANCoder.getAbsolutePosition().getValueAsDouble() > 250 && armCANCoder.getAbsolutePosition().getValueAsDouble() < 361) {
-        //     encoderValue = 0;
-        // }
-        
-        System.out.println(armCANCoder.getAbsolutePosition().getValueAsDouble());
-            StrictFollower f = new StrictFollower(30);
+            
 
         if(DriverStation.isEnabled()){
-
-        // armMotorL.setControl(m_MotionMagicVoltageRequest);
+            
+        armMotorL.setControl(new MotionMagicVoltage(0.33).withEnableFOC(true).withFeedForward(0.2));
         
-        // armMotorR.setControl(f);
+        
+        System.out.println(armCANCoder.getAbsolutePosition().getValueAsDouble()*360);
         }
 
-
-        // System.out.println("encoder value" + encoderValue);
-        
-        // armMotorL.setVoltage(0.9+(0.077+ 0.253));
 
         // armProfile.calculate(1, new TrapezoidProfile.State(encoderValue, 0), new TrapezoidProfile.State(120, 0));
         // armMotorL.set
@@ -285,6 +300,7 @@ private PIDController voltagePIDController;
 
         // System.out.println(f);
         // armMotorL.set(f);
+        
 
 
         if (checkMotors() && checkPID()) {
@@ -352,14 +368,15 @@ private PIDController voltagePIDController;
                 }
             }
         }
-    public void configureSlot(SlotConfigs SlotConfig, double kS,double kG,double kA, double kV, double kP, double kI, double kD){
-        SlotConfig.kS = kS;
-        SlotConfig.kG = kG;
-        SlotConfig.kA = kA;
-        SlotConfig.kV = kV;
-        SlotConfig.kP = kP;
-        SlotConfig.kI = kI;
-        SlotConfig.kD = kD;
+    public void configureSlot(TalonFXConfiguration config, double kS,double kG,double kA, double kV, double kP, double kI, double kD){
+        config.Slot0.kS = kS;
+        config.Slot0.kG = kG;
+        config.Slot0.kA = kA;
+        config.Slot0.kV = kV;
+        config.Slot0.kP = kP;
+        config.Slot0.kI = kI;
+        config.Slot0.kD = kD;
+        
     }
 
     
