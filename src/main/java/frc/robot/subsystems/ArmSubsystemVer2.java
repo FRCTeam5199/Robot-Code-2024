@@ -8,8 +8,9 @@ import frc.robot.parsers.PivotParser;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.utils.PivotAugment;
 import frc.robot.utils.TagalongMinorSystemBase;
+import frc.robot.utils.TagalongSubsystemBase;
 
-public class ArmSubsystemVer2 extends TagalongMinorSystemBase  implements PivotAugment {
+public class ArmSubsystemVer2 extends TagalongSubsystemBase  implements PivotAugment {
     public final PivotParser pivotParser;
     private final TagalongPivot pivot;
     public static ArmSubsystemVer2 armSubsystem;

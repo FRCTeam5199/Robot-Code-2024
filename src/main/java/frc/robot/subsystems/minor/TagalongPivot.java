@@ -14,6 +14,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericPublisher;
 import edu.wpi.first.networktables.GenericSubscriber;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -30,7 +31,7 @@ import frc.robot.utils.TagalongMinorSystemInterface;
 import frc.robot.utils.TagalongTrapezoidProfile;
 
 public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMinorSystemInterface {
-  public boolean isPivotTuningMode = false;
+  public boolean isPivotTuningMode = true;
   public boolean isPIDTuningMode = false;
   public PivotParser _pivotParser;
   public PivotConfJson _pivotConf;
@@ -164,6 +165,9 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
     if (_holdPivotPosition) {
       followLastProfile();
     }
+
+    if(DriverStation.isEnabled())
+    System.out.println(_pivotCancoder.getAbsolutePosition().getValueAsDouble()*360);
   }
 
   @Override

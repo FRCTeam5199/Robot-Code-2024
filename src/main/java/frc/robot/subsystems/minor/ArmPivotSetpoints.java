@@ -4,9 +4,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.utils.TagalongAngle;
 
 public enum ArmPivotSetpoints implements TagalongAngle {
+  //need offset dont delete
   ZERO(0.0),
-  VERTICAL(120.0),
-  TEN(10.0);
+  VERTICAL(120.0+1),
+  TEN(40.0+1),
+  SIXTY(60.0+1),
+  ONE_FOUR_ONE(141+1);
 
   private final Rotation2d _value;
 

@@ -82,7 +82,11 @@ public class RobotContainer {
     private PivotToCommand _armTen =
     new PivotToCommand(arm, ArmPivotSetpoints.TEN, true);
 private PivotToCommand _armVertical =
-    new PivotToCommand(arm, ArmPivotPositions.VERT, true);
+    new PivotToCommand(arm, ArmPivotSetpoints.VERTICAL, true);
+    private PivotToCommand _armSixty =
+    new PivotToCommand(arm, ArmPivotSetpoints.SIXTY, true);
+    private PivotToCommand _arm141 =
+    new PivotToCommand(arm, ArmPivotSetpoints.ONE_FOUR_ONE, true);
 
     ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
             aprilTags.speakerAlignmentRed(),
@@ -260,6 +264,13 @@ private PivotToCommand _armVertical =
         // buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor2Speed(.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
         // buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor2Speed(-.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
 
+
+        testingController.a().onTrue(_armTen);
+        testingController.b().onTrue(_armVertical);
+        testingController.y().onTrue(_arm141);
+        testingController.x().onTrue(_armSixty);
+
+        
 
         buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
         buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
