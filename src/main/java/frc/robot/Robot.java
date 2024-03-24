@@ -53,8 +53,6 @@ public class Robot extends LoggedRobot {
     private RobotContainer m_robotContainer;
 
 
-
-
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
@@ -127,7 +125,7 @@ public class Robot extends LoggedRobot {
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
         Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
 
-        if(!DriverStation.isAutonomous()) {
+        if (!DriverStation.isAutonomous()) {
 
 
             if (estimatePose1.isPresent()) {
@@ -168,7 +166,7 @@ public class Robot extends LoggedRobot {
     public void disabledPeriodic() {
         m_robotContainer.disabledPeriodic();
     }
-        
+
     @Override
     public void disabledExit() {
         m_robotContainer.onEnable();
@@ -188,7 +186,7 @@ public class Robot extends LoggedRobot {
             m_autonomousCommand.schedule();
         }
         // m_robotContainer.arm.setBrakeTrue();
-    
+
     }
 
     /**

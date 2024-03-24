@@ -138,7 +138,7 @@ public class RobotContainer {
         indexer.init();
 
 
-        // auton = new Autos(drivetrain, intake, arm, shooterSubsystem, indexer, this);
+        auton = new Autos(drivetrain, intake, arm, shooterSubsystem, indexer, this);
         // SmartDashboard.putData("Field", drivetrain.m_field);
         configureBindings();
     }
@@ -164,7 +164,7 @@ public class RobotContainer {
         // System.out.println(autoAimValue.shooterRPM);
         _autoAimArm.changeSetpoint(autoAimValue.armAngle);
         speedShooterAuto = autoAimValue.shooterRPM;
-        System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
+//        System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
     }
 
     /**
@@ -356,7 +356,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
         // return auton.getAuton();
-        return auton.twoPieceMiddleRed();
+        return auton.testCommand();
 
     }
 }
