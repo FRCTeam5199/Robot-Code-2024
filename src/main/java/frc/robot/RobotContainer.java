@@ -65,6 +65,9 @@ public class RobotContainer {
     public final static IndexerSubsystem indexer = new IndexerSubsystem();
     public static final CommandButtonPanel buttonPanel = new CommandButtonPanel(MainConstants.OperatorConstants.TOP_BUTTON_PANEL_PORT, MainConstants.OperatorConstants.BOTTOM_BUTTON_PANEL_PORT);
     public static TagalongPivot tagAlong;
+    //private final static LEDManager Led = new LEDManager();
+    public static Command intakeAction;
+    public static Command stopIntakeAction;
     //     public final static ArmSubsystem arm = new ArmSubsystem();
     public final ArmSubsystemVer2 arm = new ArmSubsystemVer2();
     private final double MaxSpeed = 6; // 8 meters per second desired top speed
@@ -85,9 +88,6 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
     public AutoAimValue autoAimValue = new AutoAimValue(0, 0, 0);
     public double speedShooterAuto;
-    //private final static LEDManager Led = new LEDManager();
-    public Command intakeAction;
-    public Command stopIntakeAction;
     //     public final static Akit log = new Akit();
     Autos auton;
     ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
@@ -356,7 +356,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
         // return auton.getAuton();
-        return new WaitCommand(0.2);
+        return auton.twoPieceMiddleRed();
 
     }
 }
