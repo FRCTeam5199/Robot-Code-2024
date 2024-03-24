@@ -132,7 +132,7 @@ public class RobotContainer {
 
     ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
             aprilTags.speakerAlignmentRed(),
-            aprilTags.speakerAlignementBlue(),
+            aprilTags.speakerAlignmentBlue(),
             () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
     );
    

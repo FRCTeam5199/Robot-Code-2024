@@ -80,7 +80,8 @@ public class AprilTagSubsystem extends SubsystemBase {
     public PhotonTrackedTarget[] bestTargetFromCameras;
     public MultiTargetPNPResult[] multiTargetPNPResults;
     public AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-    public PIDController aim = new PIDController(.08, 0, .0);
+    public PIDController aim = new PIDController(.07, 0.005, .0);
+
     public SwerveRequest.FieldCentric driveHeading = new SwerveRequest.FieldCentric();
     //    double z = tz.getDouble(0);
     EstimatedRobotPose[] robotPose = new EstimatedRobotPose[4];
@@ -268,8 +269,15 @@ public class AprilTagSubsystem extends SubsystemBase {
         return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.148 - drive.getPose().getY()) / (16.58 - drive.getPose().getX())))))).alongWith(new InstantCommand(()->System.out.println(Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
     }
 
-    public Command speakerAlignementBlue() {
-        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate((drive.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees()), Units.radiansToDegrees(Math.atan((5.848 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
+
+    public Command speakerAlignmentBlue() {
+//        target = new TrapezoidProfile.State(Math.atan((5.548 - drive.getPose().getY()) / (-.0381 - drive.getPose().getX())), 0);
+//        betterAim = new TrapezoidProfile(aimConstraints);
+//        var goToTarget = betterAim.calculate(1, target, new TrapezoidProfile.State(drive.getPose().getRotation().getRadians(), 1));
+//
+//        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getRadians(), goToTarget.position)));
+
+        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate((drive.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees()), Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (-0.0381 - drive.getPose().getX()))))));
     }
 
 
