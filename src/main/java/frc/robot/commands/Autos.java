@@ -55,6 +55,7 @@ public class Autos extends Command {
     boolean enableAutoAim;
     private PivotToCommand _customArm;
     private PivotToCommand _armStable;
+    private PivotToCommand _twoPieceArmStable;
     private PivotToCommand _intakeArm;
     private PivotToCommand _upStableArm;
     private PivotToCommand _intakeStepUPArm;
@@ -64,6 +65,7 @@ public class Autos extends Command {
     private PivotToCommand _backShot;
     private PivotToCommand _halfBackShot;
     private PivotToCommand _halfIntakeBackShot;
+    private PivotToCommand _twoPieceExtendedShot;
 
     public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystemVer2 arm, ShooterSubsystem shooter, IndexerSubsystem indexer, RobotContainer robotContainer) {
 
@@ -74,6 +76,7 @@ public class Autos extends Command {
 
         _customArm = new PivotToCommand(arm, ArmPivotSetpoints.ZERO, true);
         _armStable = new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
+        _twoPieceArmStable = new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
         _intakeArm = new PivotToCommand(arm, ArmPivotSetpoints.INTAKE, true);
         _upStableArm = new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
         _intakeStepUPArm = new PivotToCommand(arm, ArmPivotSetpoints.INTAKE_STEP_UP, true);
@@ -83,6 +86,7 @@ public class Autos extends Command {
         _backShot = new PivotToCommand(arm, ArmPivotSetpoints.BACK, true);
         _halfBackShot = new PivotToCommand(arm, ArmPivotSetpoints.BACK, true);
         _halfIntakeBackShot = new PivotToCommand(arm, ArmPivotSetpoints.BACK, true);
+        _twoPieceExtendedShot = new PivotToCommand(arm, ArmPivotSetpoints.TWO_PIECE_EXTENDED, true);
 
         this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(() -> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, () -> false, swerveDrive);
@@ -106,7 +110,7 @@ public class Autos extends Command {
                 intake.stowIntake(),
                 indexer.setIndexerSpeed(-0.1),
                 new WaitCommand(0.1),
-                indexer.setIndexerSpeed(0),
+                indexer.setIndexerSpeed(-0.05),
                 intake.setIntakeSpeed(0),
                 _upStableArm.withTimeout(0.2)
         ));
@@ -118,7 +122,6 @@ public class Autos extends Command {
                 _halfIntakeArm.withTimeout(0.6)
         ));
 
-
         NamedCommands.registerCommand("halfRetractIntake", new SequentialCommandGroup(intake.setIntakeSpeed(-.9),
                 intake.setIntakeSpeed(-.9),
                 new WaitCommand(0.2),
@@ -126,10 +129,9 @@ public class Autos extends Command {
                 shooter.runShooterAtPercent(0),
                 indexer.setIndexerSpeed(-0.1),
                 new WaitCommand(0.1),
-                indexer.setIndexerSpeed(0),
+                indexer.setIndexerSpeed(-0.05),
                 intake.setIntakeSpeed(0)
         ));
-
 
 //        NamedCommands.registerCommand("bottomMidShot", new SequentialCommandGroup(
 //                arm.setArmSetpoint(53),
@@ -144,11 +146,20 @@ public class Autos extends Command {
 //        NamedCommands.registerCommand("shuttleShot", new SequentialCommandGroup(arm.setArmSetpoint(23), new WaitCommand(.3), robotContainer.runAutoShooting(), new WaitCommand(.1), arm.rotateStable()));
 //        NamedCommands.registerCommand("halfBackShot", new SequentialCommandGroup(arm.setArmSetpoint(147 /*141*/), new WaitCommand(0.25), robotContainer.runAutoShooting()));
         NamedCommands.registerCommand("halfBackShot", new SequentialCommandGroup(
-                shooter.runShooterAtRpm(4000), new WaitCommand(0.7), indexer.setIndexerSpeed(0.4),
+                shooter.runShooterAtRpm(4000).alongWith(indexer.setIndexerSpeed(-0.1))
+                , new WaitCommand(0.7), indexer.setIndexerSpeed(0.4),
                 shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0)));
         NamedCommands.registerCommand("backShot", new SequentialCommandGroup(
-                _backShot.withTimeout(0.8).alongWith(shooter.runShooterAtRpm(4000)), indexer.setIndexerSpeed(0.4),
+                _backShot.withTimeout(0.8).alongWith(shooter.runShooterAtRpm(4000))
+                        .alongWith(indexer.setIndexerSpeed(-0.1)),
+                new WaitCommand(0.5), indexer.setIndexerSpeed(0.4),
                 shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), _armStable.withTimeout(0.2)));
+
+        NamedCommands.registerCommand("twoPieceExtendedShot", new SequentialCommandGroup(
+                _twoPieceExtendedShot.withTimeout(0.8).alongWith(shooter.runShooterAtRpm(4000))
+                        .alongWith(indexer.setIndexerSpeed(-0.1)),
+                new WaitCommand(0.5), indexer.setIndexerSpeed(0.4),
+                shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), _twoPieceArmStable.withTimeout(0.2)));
 //        NamedCommands.registerCommand("topShot", new SequentialCommandGroup(arm.setArmSetpoint(61), new WaitCommand(0.2), robotContainer.runAutoShooting(), new WaitCommand(.2), arm.rotateStable()));
 //        NamedCommands.registerCommand("midShot", new SequentialCommandGroup(arm.setArmSetpoint(61.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.rotateStable()));
 //        NamedCommands.registerCommand("bottomShot", new SequentialCommandGroup(arm.setArmSetpoint(57.5), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.2), arm.rotateStable()));
@@ -334,6 +345,9 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("2 Piece Far Bottom Blue");
     }
 
+    public Command twoPieceExtendedBlue() {
+        return AutoBuilder.buildAuto("2 Piece Extended Blue");
+    }
 
     //Three Piece Regular Autons
     public Command threePieceTtMRed() {

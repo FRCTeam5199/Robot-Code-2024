@@ -147,10 +147,6 @@ public class RobotContainer {
         arm.onEnable();
     }
 
-    public void onInit() {
-        _vertcicalArm.execute();
-    }
-
     public void onDisable() {
         arm.onDisable();
     }
@@ -160,7 +156,11 @@ public class RobotContainer {
     }
 
     public void periodic() {
-        autoAimValue = LookUpTable.findValue(new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            autoAimValue = LookUpTable.findValue(new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
+        } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+            autoAimValue = LookUpTable.findValue(new Pose2d(-0.03809999999999999, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
+        }
         // System.out.println(autoAimValue.shooterRPM);
         _autoAimArm.changeSetpoint(autoAimValue.armAngle);
         speedShooterAuto = autoAimValue.shooterRPM;
@@ -356,7 +356,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
         // return auton.getAuton();
-        return auton.testCommand();
+        return auton.fourPieceMiddleTtBRed();
 
     }
 }

@@ -1,12 +1,6 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 1.4428388343160021,
-      "y": 5.5190052971079435
-    },
-    "rotation": 0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
@@ -18,12 +12,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "deployIntake"
@@ -32,19 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2 Piece Middle Blue"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "pathName": "2 Piece Extended Blue"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "twoPieceExtendedShot"
           }
         }
       ]

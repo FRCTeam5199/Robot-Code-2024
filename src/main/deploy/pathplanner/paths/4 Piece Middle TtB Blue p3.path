@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.22,
+        "x": 1.2,
         "y": 5.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.60723829737102,
+        "x": 1.58723829737102,
         "y": 4.349045012324901
       },
       "isLocked": false,
@@ -79,7 +79,7 @@
             {
               "type": "named",
               "data": {
-                "name": "retractIntake"
+                "name": "halfRetractIntake"
               }
             }
           ]
