@@ -141,19 +141,14 @@ public class ShooterSubsystem extends SubsystemBase {
         SlotConfig.kD = kD;
     }
 
-
-    public void autoSpeed() {
-       
-    }
-
     
     public Command  autoAim(){
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((autoAimRPM/90)+20)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoAimRPM/90)))).alongWith(new InstantCommand(()-> System.out.println("value" + autoAimRPM/90 + "  velocity " + autoAimRPM)));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((autoAimRPM/90)+20)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoAimRPM/90)-15))).alongWith(new InstantCommand(()-> System.out.println("value" + autoAimRPM/90 + "  velocity " + autoAimRPM)));
     }
     
 
     public Command runShooterAtRpm(double vel) {
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((vel/90)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((vel/90))));/*.alongWith(new InstantCommand(()-> System.out.println("value" + vel/90 + "  velocity " + vel)*/
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((vel/90))))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity(((vel/90)))));/*.alongWith(new InstantCommand(()-> System.out.println("value" + vel/90 + "  velocity " + vel)*/
     }
 
     public Command runShooterAtPercent(double per) {

@@ -4,8 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.*;
 import org.photonvision.EstimatedRobotPose;
 
@@ -81,6 +83,8 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotPeriodic() {
+
+        m_robotContainer.periodic();
         // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
         // commands, running already-scheduled commands, removing finished or interrupted commands,
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -124,6 +128,7 @@ public class Robot extends LoggedRobot {
         Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
 
         if(!DriverStation.isAutonomous()) {
+
 
             if (estimatePose1.isPresent()) {
                 EstimatedRobotPose robotPose = estimatePose1.get();
@@ -211,6 +216,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        // System.out.println(new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drive.getPose().getTranslation()));
     }
 
     @Override

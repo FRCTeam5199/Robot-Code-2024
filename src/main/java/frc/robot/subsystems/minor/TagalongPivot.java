@@ -167,8 +167,9 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
       followLastProfile();
     }
 
-    if(DriverStation.isEnabled())
-    System.out.println("position "+ _pivotCancoder.getAbsolutePosition().getValueAsDouble()*360);
+    if(DriverStation.isEnabled()){
+    // System.out.println("position "+ _pivotCancoder.getAbsolutePosition().getValueAsDouble()*360);
+    }
   }
 
   @Override

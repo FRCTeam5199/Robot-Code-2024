@@ -19,10 +19,14 @@ import org.w3c.dom.CDATASection;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.controls.ButtonPanelButtons;
+import frc.robot.utility.AutoAimValue;
 import frc.robot.utility.CommandXboxController;
+import frc.robot.utility.LookUpTable;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.LED.LEDManager;
 import frc.robot.commands.Autos;
@@ -52,6 +56,11 @@ import frc.robot.LED.LEDManager;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+
+    public AutoAimValue autoAimValue = new AutoAimValue(0, 0, 0);
+    public double speedShooterAuto;
+
     public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
 //     public final static ArmSubsystem arm = new ArmSubsystem();
     public final ArmSubsystemVer2 arm = new ArmSubsystemVer2();
@@ -104,6 +113,10 @@ public class RobotContainer {
      private PivotToCommand _upStableArm =
     new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
 
+    private PivotToCommand _autoAimStable =
+    new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
+
+
 
     private PivotToCommand _intakeArm =
     new PivotToCommand(arm, ArmPivotSetpoints.INTAKE, true);
@@ -122,7 +135,8 @@ public class RobotContainer {
     private PivotToCommand _customArm =
     new PivotToCommand(arm, ArmPivotSetpoints.ZERO, true);
 
-    
+    private PivotToCommand _autoAimArm = 
+    new PivotToCommand(arm, ArmPivotSetpoints.ZERO, true);
     
     
     private PivotToCommand _vertcicalArm =
@@ -168,6 +182,19 @@ public class RobotContainer {
       arm.disabledPeriodic();
     }
 
+    public void periodic(){
+        autoAimValue = LookUpTable.findValue(new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
+        // System.out.println(autoAimValue.shooterRPM);
+        _autoAimArm.changeSetpoint(autoAimValue.armAngle);
+        speedShooterAuto = autoAimValue.shooterRPM;
+        System.out.println(speedShooterAuto);
+
+        if(mainCommandXboxController.leftBumperPressed()){
+            
+        }
+
+    }
+
     /**
      * Configures the bindings for commands
      */
@@ -182,15 +209,6 @@ public class RobotContainer {
             _intakeArm.withTimeout(0.2)
         );
 
-    
-               // stopIntakeAction = new SequentialCommandGroup(
-        //     _intakeStepUPArm.withTimeout(0.2),
-        //     intake.deployIntake(),
-        //     indexer.setIndexerSpeed(-.4),
-        //     intake.setIntakeSpeed(0.9),
-        //     new WaitCommand(0.2),
-        //     _intakeArm.withTimeout(0.2)
-        // );
 
         stopIntakeAction = new SequentialCommandGroup(
                 intake.setIntakeSpeed(-.9),
@@ -223,7 +241,7 @@ public class RobotContainer {
     //             ArmSubsystem.toggleBrakeMode();
     //         }
     //     }));
-
+    
     //     //         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
@@ -254,7 +272,8 @@ public class RobotContainer {
 
         mainCommandXboxController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
         
-    //     mainCommandXboxController.leftBumper().onTrue(new SequentialCommandGroup(arm.isAutoAiming(true),shooterSubsystem.autoAim(), speakerAutoDriveAutoAim)).onFalse(new SequentialCommandGroup(arm.isAutoAiming(false), shooterSubsystem.runShooterAtPercent(0)));
+        
+        mainCommandXboxController.leftBumper().whileTrue(new SequentialCommandGroup(shooterSubsystem.autoAim().alongWith(speakerAutoDriveAutoAim.alongWith(_autoAimArm)))).onFalse(new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(0), _autoAimStable));
         
         mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(6000))).onFalse(shooterSubsystem.runShooterAtPercent(0));
        
@@ -288,7 +307,7 @@ public class RobotContainer {
         mainCommandXboxController.a().onTrue(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false)));
         mainCommandXboxController.b().onTrue(arm.setSetpoint(ArmPivotSetpoints.SUB.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
 
-    //     // drivetrain.registerTelemetry(logger::telemeterize);
+        drivetrain.registerTelemetry(logger::telemeterize);
 
         buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.SUB.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
         buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.BACK.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
@@ -318,9 +337,13 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor2Speed(-.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
 
 
-        testingController.a().onTrue(_subArm);
-        testingController.b().onTrue(_midArm);
-        testingController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(6000))).onFalse(shooterSubsystem.runShooterAtPercent(0));
+        // testingController.a().onTrue(_subArm);
+        // testingController.b().onTrue(_midArm);
+        // testingController.y().onTrue(new InstantCommand(()->_customArm.changeSetpoint(51.1)).andThen(_customArm));
+        // testingController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
+        
+
+        testingController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(5500))).onFalse(shooterSubsystem.runShooterAtPercent(0));
        
         // testingController.y().onTrue(new InstantCommand(()-> climberSubsystem.climbModeEnabled = true));
         //     testingController.x().onTrue(new InstantCommand(()-> climberSubsystem.climbModeEnabled = false));

@@ -45,6 +45,10 @@ public class CommandXboxController extends CommandGenericHID {
     return m_hid;
   }
 
+  public boolean leftBumperPressed(){
+    return m_hid.getLeftBumper();
+  }
+
   /**
    * Constructs an event instance around the left bumper's digital signal.
    *
