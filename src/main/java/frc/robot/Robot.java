@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.units.Power;
 
 import edu.wpi.first.wpilibj.*;
 import org.photonvision.EstimatedRobotPose;
@@ -52,6 +51,8 @@ public class Robot extends LoggedRobot {
     private RobotContainer m_robotContainer;
 
 
+
+
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
@@ -68,6 +69,7 @@ public class Robot extends LoggedRobot {
         m_robotContainer = new RobotContainer();
         Logger.addDataReceiver(new WPILOGWriter("/media/sda1/"));
         Logger.start();
+
     }
 
     /**
@@ -121,7 +123,7 @@ public class Robot extends LoggedRobot {
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
         Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
 
-        if (!DriverStation.isAutonomous()) {
+        if(!DriverStation.isAutonomous()) {
 
             if (estimatePose1.isPresent()) {
                 EstimatedRobotPose robotPose = estimatePose1.get();
@@ -144,9 +146,6 @@ public class Robot extends LoggedRobot {
                 drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
             }
         }
-        if (DriverStation.isEnabled()) {
-//            System.out.println("drive"  + drive.getPose().getRotation().getDegrees());
-        }
 
         // userInterface.updateGameTab();
     }
@@ -154,26 +153,37 @@ public class Robot extends LoggedRobot {
     /**
      * This function is called once each time the robot enters Disabled mode.
      */
+
     @Override
     public void disabledInit() {
+        m_robotContainer.onDisable();
     }
 
     @Override
     public void disabledPeriodic() {
+        m_robotContainer.disabledPeriodic();
     }
+        
+    @Override
+    public void disabledExit() {
+        m_robotContainer.onEnable();
+    }
+
 
     /**
      * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
      */
     @Override
     public void autonomousInit() {
+        m_robotContainer.onInit();
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
-        m_robotContainer.arm.setBrakeTrue();
+        // m_robotContainer.arm.setBrakeTrue();
+    
     }
 
     /**
@@ -189,10 +199,11 @@ public class Robot extends LoggedRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
+        m_robotContainer.onInit();
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        m_robotContainer.arm.setBrakeTrue();
+        // m_robotContainer.arm.setBrakeTrue();
     }
 
     /**

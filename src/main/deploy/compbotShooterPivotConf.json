@@ -1,0 +1,132 @@
+{
+    "name": "Shooter Pivot",
+    "fusedDevices": {
+      "motor": {
+        "type": "kraken",
+        "id": 30,
+        "canbus": "rio"
+      },
+      "encoder": {
+        "type": "cancoder",
+        "id": 50,
+        "canbus": "rio"
+      }
+    },
+    "followerMotor": {
+      "type": "kraken",
+      "id": 40,
+      "canbus": "rio"
+    },
+    "motorToPivot": [
+      [80,1]
+    ],
+    "encoderToPivot": [[1, 1]],
+    "feedforward": {
+      "s": 0.025,
+      "g": 0.325,
+      "v": 1.886,
+      "a": 0.0
+    },
+    "trapezoidalLimits": {
+      "unit": "deg",
+      "velocity": 880.0,
+      "acceleration": 980.0
+    },
+    "positionalLimits": {
+      "unit": "deg",
+      "min": 0.0,
+      "max": 170
+    },
+    "defaultTolerances": {
+      "unit": "deg",
+      "lowerTolerance": 0.8,
+      "upperTolerance": 0.8
+    },
+    "encoderConfig": {
+      "zeroToOne": true,
+      "clockwisePositive": false,
+      "magnetOffset": {
+        "unit": "rot",
+        "value": -0.495361328125
+      }
+    },
+    "pivotMotorControl": {
+      "clockwisePositive": true,
+      "brakeMode": true,
+      "motorCurrentLimits": {
+        "statorEnableLimit": true,
+        "statorPeakLimit": 80,
+        "supplyEnableLimit": true,
+        "supplyPeakLimit": 80,
+        "supplyContinuousLimit": 80,
+        "peakDuration": 0.8
+      },
+      "motor": {
+        "slot0PIDConstants": {
+          "p": 60,
+          "i": 0.0,
+          "d": 0.0,
+          "s": 0.0,
+          "g": 0.0,
+          "v": 0.0,
+          "a": 0.0
+        }
+      },
+      "simMotor": {
+        "slot0PIDConstants": {
+          "p": 0.0,
+          "i": 0.0,
+          "d": 0.0,
+          "s": 0.0,
+          "g": 0.0,
+          "v": 0.0,
+          "a": 0.0
+        }
+      },
+      "closedLoopConfigs": {
+        "continuousWrap": true
+      }
+    },
+    "followerMotorControl": {
+      "clockwisePositive": false,
+      "brakeMode": true,
+      "motorCurrentLimits": {
+        "statorEnableLimit": true,
+        "statorPeakLimit": 80,
+        "supplyEnableLimit": true,
+        "supplyPeakLimit": 80,
+        "supplyContinuousLimit": 80,
+        "peakDuration": 0.8
+      },
+      "motor": {
+        "slot0PIDConstants": {
+          "p": 60,
+          "i": 0.0,
+          "d": 0.0,
+          "s": 0.0,
+          "g": 0.0,
+          "v": 0.0,
+          "a": 0.0
+        }
+      },
+      "simMotor": {
+        "slot0PIDConstants": {
+          "p": 0.0,
+          "i": 0.0,
+          "d": 0.0,
+          "s": 0.0,
+          "g": 0.0,
+          "v": 0.0,
+          "a": 0.0
+        }
+      },
+      "closedLoopConfigs": {
+        "continuousWrap": true
+      }
+    },
+    "ffOffset": {
+      "unit": "deg",
+      "value": 24.12
+    }
+  }
+  
