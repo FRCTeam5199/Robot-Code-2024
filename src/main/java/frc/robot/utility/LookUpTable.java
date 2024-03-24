@@ -5,11 +5,16 @@ import java.util.ArrayList;
 public class LookUpTable {
     public static ArrayList<AutoAimValue> listOfValues = new ArrayList<>() {
         {
-            add(new AutoAimValue(1.36, 82.3, 4000));
-            add(new AutoAimValue(1.96, 68.1, 4500));
-            add(new AutoAimValue(2.77, 61.8, 5000));
             //+20 top    /    -15 bottom
+            add(new AutoAimValue(1.36, 82.3, 3800));
+            add(new AutoAimValue(1.96, 68.1, 4200));
+            add(new AutoAimValue(2.32, 64, 4300));
+            add(new AutoAimValue(2.66, 61, 4800));
+            add(new AutoAimValue(2.95, 57.5, 5300));
+            add(new AutoAimValue(3.23, 55, 5400));
             add(new AutoAimValue(3.62, 52.1, 5500));
+            add(new AutoAimValue(4.62, 50.75, 5750));
+            add(new AutoAimValue(5.17, 49.5, 6000));
         }
     };
 
