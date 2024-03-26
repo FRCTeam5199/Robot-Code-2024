@@ -70,7 +70,7 @@ public class RobotContainer {
     public static Command stopIntakeAction;
     //     public final static ArmSubsystem arm = new ArmSubsystem();
     public final ArmSubsystemVer2 arm = new ArmSubsystemVer2();
-    private final double MaxSpeed = 6; // 8 meters per second desired top speed
+    private final double MaxSpeed = 8; // 8 meters per second desired top speed
     private final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final CommandXboxController mainCommandXboxController = new CommandXboxController(
@@ -161,10 +161,11 @@ public class RobotContainer {
         } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
             autoAimValue = LookUpTable.findValue(new Pose2d(-0.03809999999999999, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
         }
-        // System.out.println(autoAimValue.shooterRPM);
+
+       // System.out.println(autoAimValue.shooterRPM);
         _autoAimArm.changeSetpoint(autoAimValue.armAngle);
         speedShooterAuto = autoAimValue.shooterRPM;
-//        System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
+       System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
     }
 
     /**
@@ -356,7 +357,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // return auton.twoPieceMiddleBlue();
         // return auton.getAuton();
-        return auton.fourPieceMiddleTtBRed();
+        return auton.fourPieceMiddleTtBBlue();
 
     }
 }

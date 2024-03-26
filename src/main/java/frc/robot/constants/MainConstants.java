@@ -83,7 +83,7 @@ public class MainConstants {
     public static int LED_PORT = 0;
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
-            new Transform3d(0.3, 0, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(0))), //front
+            new Transform3d(0.4, -.8, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(-10))), //front
             new Transform3d(.225, .28, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(90))), //left
             new Transform3d(.1, -.4, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
             new Transform3d(-.175, -.4, 0.409, new Rotation3d(Math.toRadians(125), 0, Math.toRadians(180))), //back
@@ -166,7 +166,7 @@ public class MainConstants {
         public static final double CLIMBER_RETRACTED_SETPOINT = 0;
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 31; //Maybe make it 22.5 for chain
+        public static final double ARM_STABLE_SETPOINT = 30; //Maybe make it 22.5 for chain
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 4;
         public static final double ARM_TRAP_SETPOINT = 118;
