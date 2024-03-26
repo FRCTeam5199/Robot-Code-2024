@@ -83,7 +83,7 @@ public class MainConstants {
     public static int LED_PORT = 0;
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
-            new Transform3d(0.4, -.8, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(-10))), //front
+            new Transform3d(0.4, -.6, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(-10))), //front
             new Transform3d(.225, .28, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(90))), //left
             new Transform3d(.1, -.4, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
             new Transform3d(-.175, -.4, 0.409, new Rotation3d(Math.toRadians(125), 0, Math.toRadians(180))), //back

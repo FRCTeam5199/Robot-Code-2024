@@ -266,7 +266,7 @@ public class AprilTagSubsystem extends SubsystemBase {
 //        }
 //    }
     public Command speakerAlignmentRed() {
-        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.35- drive.getPose().getY()) / (16.58 - drive.getPose().getX())))))).alongWith(new InstantCommand(()->System.out.println(Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
+        return drive.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drive.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.59- drive.getPose().getY()) / (16.58 - drive.getPose().getX())))))).alongWith(new InstantCommand(()->System.out.println(Units.radiansToDegrees(Math.atan((5.548 - drive.getPose().getY()) / (16.58 - drive.getPose().getX()))))));
     }
 
 
