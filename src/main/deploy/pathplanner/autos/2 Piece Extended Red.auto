@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.812035275996372,
-      "y": 4.344720358484939
+      "x": 15.77,
+      "y": 4.48
     },
-    "rotation": -120.57922687248909
+    "rotation": -120.95999999999998
   },
   "command": {
     "type": "sequential",
@@ -18,15 +18,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "2 Piece Bottom Far Red"
+            "pathName": "2 Piece Extended Red p1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "bottomMidShot"
+            "name": "twoPieceExtendedShotRed"
           }
         }
       ]

@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.77,
+      "y": 4.48
+    },
+    "rotation": -120.95999999999998
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 Piece Extended Red p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "twoPieceExtendedShotRed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 Piece Extended Red p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "retractIntake"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "2 Piece Autons",
+  "choreoAuto": false
+}
