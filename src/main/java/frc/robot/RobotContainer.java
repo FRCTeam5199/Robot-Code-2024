@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
+import static edu.wpi.first.wpilibj2.command.Commands.repeatingSequence;
 import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
 import java.nio.channels.InterruptedByTimeoutException;
@@ -15,6 +16,8 @@ import java.sql.Driver;
 
 import javax.swing.text.AbstractDocument.LeafElement;
 
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.LED.LEDSubsystem;
 import org.w3c.dom.CDATASection;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -27,8 +30,6 @@ import frc.robot.controls.ButtonPanelButtons;
 import frc.robot.utility.AutoAimValue;
 import frc.robot.utility.CommandXboxController;
 import frc.robot.utility.LookUpTable;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.LED.LEDManager;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.controls.CommandButtonPanel;
@@ -45,7 +46,6 @@ import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.utility.superstructure.*;
 import frc.robot.utils.TagalongAngle;
 import frc.robot.subsystems.minor.ArmPivotSetpoints;
-import frc.robot.LED.LEDManager;
 // import frc.robot.utility.Akit;
 
 
@@ -60,9 +60,10 @@ public class RobotContainer {
 
     public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
     public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+    public final static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
     public final static IntakeSubsystem intake = new IntakeSubsystem();
     public final static IndexerSubsystem indexer = new IndexerSubsystem();
+    public final static LEDSubsystem LEDs = new LEDSubsystem();
     public static final CommandButtonPanel buttonPanel = new CommandButtonPanel(MainConstants.OperatorConstants.TOP_BUTTON_PANEL_PORT, MainConstants.OperatorConstants.BOTTOM_BUTTON_PANEL_PORT);
     public static TagalongPivot tagAlong;
     //private final static LEDManager Led = new LEDManager();
@@ -137,6 +138,10 @@ public class RobotContainer {
         climberSubsystem.init();
         indexer.init();
 
+        LEDs.init();
+        LEDs.setMode(LEDSubsystem.LEDMode.IDLE);
+        LEDs.start();
+
 
         auton = new Autos(drivetrain, intake, arm, shooterSubsystem, indexer, this);
         // SmartDashboard.putData("Field", drivetrain.m_field);
@@ -166,6 +171,7 @@ public class RobotContainer {
         _autoAimArm.changeSetpoint(autoAimValue.armAngle);
         speedShooterAuto = autoAimValue.shooterRPM;
 //        System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
+//        System.out.println("REACHED SPEED: " + shooterSubsystem.reachedSpeed());
 
     }
 
@@ -173,7 +179,6 @@ public class RobotContainer {
      * Configures the bindings for commands
      */
     private void configureBindings() {
-
         intakeAction = new SequentialCommandGroup(
                 _intakeStepUPArm.withTimeout(0.1),
                 intake.deployIntake(),
@@ -182,7 +187,6 @@ public class RobotContainer {
                 intake.setIntakeSpeed(0.9),
                 _intakeArm.withTimeout(0.2)
         );
-
 
         stopIntakeAction = new SequentialCommandGroup(
                 intake.setIntakeSpeed(-.9),
@@ -196,9 +200,16 @@ public class RobotContainer {
                 intake.setIntakeSpeed(0),
                 _upStableArm.withTimeout(0.2));
 
-
-        //     // new Trigger(() -> indexer.checkForGamePiece()).and(() -> shooterSubsystem.intakeShooter).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
-        //     // new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))).onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0)));
+        new Trigger(indexer::checkForGamePiece).and(() -> intake.intakeMotor.getCurrent() > 0)
+                .onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))
+                        .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.INTAKING))))
+                .onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0))
+                        .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
+        new Trigger(() -> shooterSubsystem.reachedSpeed())
+                .onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))
+                        .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.SHOOTING))))
+                .onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0))
+                        .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
         //     // //new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> Led.green())).onFalse(new InstantCommand(() -> Led.red()));
         //     // // new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
         //     // //         if (DriverStation.isDisabled()) {
@@ -270,14 +281,14 @@ public class RobotContainer {
                         // normal aiming / auto aiming
                         new SequentialCommandGroup(new InstantCommand(() -> _customArm.changeSetpoint(arm.getSetPoint())), _customArm.alongWith(shooterSubsystem.runShooterPredeterminedRPM())).onlyIf(() -> !shooterSubsystem.intakeShooter),
 
-                        //                 // based on climbing on or of
+                        //                 // based on climbing on or off
                         () -> shooterSubsystem.ampMode)))).onFalse(
                 shooterSubsystem.runShooterAtPercent(0).andThen(indexer.retractServo()).andThen(_armStable.onlyIf(() -> climberSubsystem.climbModeEnabled == false)));
 
 
 //        mainCommandXboxController.x().onTrue(new InstantCommand(() -> _customArm.changeSetpoint(51)).andThen(_customArm));
         mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
-
+        
         mainCommandXboxController.a().onTrue(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false)));
         mainCommandXboxController.b().onTrue(arm.setSetpoint(ArmPivotSetpoints.SUB.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
 

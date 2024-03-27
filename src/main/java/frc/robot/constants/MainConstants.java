@@ -17,6 +17,7 @@ public class MainConstants {
     // public static final double SPEAKER_Z = 2.340102;
     public static final double SPEAKER_Z = 1.4511020000000001 + 0.678; //+ 0.755; //1.4511020000000001 + 0.635;
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
+    public static final int LED_LENGTH = 88;
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 2;
@@ -73,14 +74,11 @@ public class MainConstants {
     // add how invisible setpoint to the target height
     public static double TARGET_HEIGHT_METERS = Units.inchesToMeters(10.5);
     public static double GOAL_RANGE_METERS = Units.feetToMeters(2);
-
     // final double TARGET_HEIGHT_METERS = Units.feetToMeters(5);
     public static boolean ENABLE_OVERHEAT_DETECTION = false;
     public static int OVERHEAT_THRESHOLD = 80;
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
     public static int BrakeButtonid = 0;
-    public static int LED_LENGTH = 0;
-    public static int LED_PORT = 0;
     public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
     public Transform3d[] cameraPositions = {
             new Transform3d(0.4, -.6, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(-10))), //front
@@ -102,7 +100,8 @@ public class MainConstants {
     public static class IDs {
         public static final int SERVO_ID = 1;
         // Pigeon
-        public static int PIGEON2_ID = 22;
+        public static final int PIGEON2_ID = 22;
+        public static final int LED_PORT = 0;
 
         // Pneumatics
         // public static final int PCM_ID = 0;
@@ -148,7 +147,7 @@ public class MainConstants {
     }
 
     public static class PIDConstants {
-        public static final PID INTAKE_PID = new PID(0.15, 0, 0);
+        public static final PID INTAKE_PID = new PID(0.125, 0, 0);
         // Climber
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 
@@ -159,7 +158,7 @@ public class MainConstants {
     public static class Setpoints {
         //Intake Setpoints
         public static final double STOW_INTAKE = 0;
-        public static final double DEPLOY_INTAKE = 8.25;
+        public static final double DEPLOY_INTAKE = 8;
         //24
 
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;

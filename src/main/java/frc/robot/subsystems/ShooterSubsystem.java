@@ -74,7 +74,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void init() {
         velocity_request = new VelocityVoltage(0).withSlot(0).withFeedForward(2).withEnableFOC(true);
-        
+
         try {
             motorInit();
         } catch (Exception exception) {
@@ -102,42 +102,39 @@ public class ShooterSubsystem extends SubsystemBase {
         configureSlot(SlotConfigBottomShooter, 2.2, 0.1, 0.7, 0.1, 0, 0.1);
 
 
-
-        
         topShooter.getConfigurator().apply(SlotConfigTopShooter);
         bottomShooter.getConfigurator().apply(SlotConfigBottomShooter);
-        
+
     }
 
     @Override
     public void periodic() {
-      
+
         // if(topShooter.getVelocity().getValueAsDouble() > 1){
         //     // System.out.println("top shooter " + topShooter.getVelocity().getValueAsDouble());
         //     // System.out.println("botttom shooter " + bottomShooter.getVelocity().getValueAsDouble());
         //     System.out.println("thingy " + autoAimRPM);
         //     System.out.println("weird thingy + 1" +autoAimRPM/90);
         // }
-        if(DriverStation.getAlliance().isPresent()){
-            if (DriverStation.getAlliance().get() == Alliance.Red){
+        if (DriverStation.getAlliance().isPresent()) {
+            if (DriverStation.getAlliance().get() == Alliance.Red) {
                 autoAimRPM = ((drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (6000 - 3400) / (5.7912 - 1.27) + 3400);
 
 
-            }
-            else if (DriverStation.getAlliance().get() == Alliance.Blue){
+            } else if (DriverStation.getAlliance().get() == Alliance.Blue) {
                 autoAimRPM = ((drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (6000 - 3400) / (5.7912 - 1.27) + 3400);
-                
+
             }
 
-        System.out.println("speed " + setRPM/90 + " top Shoter " + topShooter.getVelocity());
+//            System.out.println("speed " + setRPM / 90 + " top Shoter " + topShooter.getVelocity());
 
-        // System.out.println(autoAimRPM);
-        // System.out.println("super" + autoAimRPM/90);
+            // System.out.println(autoAimRPM);
+            // System.out.println("super" + autoAimRPM/90);
         }
     }
-    
 
-    public void configureSlot(SlotConfigs SlotConfig, double kA, double kV, double kP, double kI, double kD, double kS){
+
+    public void configureSlot(SlotConfigs SlotConfig, double kA, double kV, double kP, double kI, double kD, double kS) {
         SlotConfig.kS = kS;
         SlotConfig.kA = kA;
         SlotConfig.kV = kV;
@@ -146,14 +143,14 @@ public class ShooterSubsystem extends SubsystemBase {
         SlotConfig.kD = kD;
     }
 
-    
-    public Command  autoAim(){
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((autoAimRPM/90)+20)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoAimRPM/90)-15))).alongWith(new InstantCommand(()-> System.out.println("value" + autoAimRPM/90 + "  velocity " + autoAimRPM)));
+
+    public Command autoAim() {
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((autoAimRPM / 90) + 20)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoAimRPM / 90) - 15))).alongWith(new InstantCommand(() -> System.out.println("value" + autoAimRPM / 90 + "  velocity " + autoAimRPM)));
     }
-    
+
 
     public Command runShooterAtRpm(double vel) {
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((vel/90))))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity(((vel/90))))).alongWith(new InstantCommand(()-> System.out.println("value" + vel/90 + "  velocity " + topShooter.getVelocity())));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((vel / 90))))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity(((vel / 90))))).alongWith(new InstantCommand(() -> System.out.println("value" + vel / 90 + "  velocity " + topShooter.getVelocity())));
     }
 
     public Command runShooterAtPercent(double per) {
@@ -161,11 +158,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command runShooterPredeterminedRPM() {
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((setRPM/90)+ shooterSpeedOffset))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((setRPM/90)+ shooterSpeedOffset)));
-        }
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((setRPM / 90) + shooterSpeedOffset))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((setRPM / 90) + shooterSpeedOffset)));
+    }
 
     public Command runShooterClimbAmp(double vel) {
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((vel/90)))).andThen(() -> bottomShooter.set(0));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((vel / 90)))).andThen(() -> bottomShooter.set(0));
     }
 
     public Command increaseShooterSpeed() {
@@ -207,7 +204,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return setRPM;
     }
 
-   
+
     /**
      * Sets the Shooter motor speed to a percent between -1 and 1
      *
@@ -218,11 +215,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
 
-
-
     public boolean reachedSpeed() {
         if (setRPM > 0) {
-            if (topShooter.getVelocity().getValueAsDouble() >= setRPM - 1 && bottomShooter.getVelocity().getValueAsDouble() >= setRPM - 1) {
+            if (topShooter.getVelocity().getValueAsDouble() >= (setRPM / 90) - 2 && bottomShooter.getVelocity().getValueAsDouble() >= (setRPM / 90) - 2) {
                 return true;
             }
         }

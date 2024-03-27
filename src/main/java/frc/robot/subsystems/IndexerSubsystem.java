@@ -65,29 +65,15 @@ public class IndexerSubsystem extends SubsystemBase {
      */
     private boolean currentCheck() {
         new WaitCommand(0.4);
-        if (shooterIndexerMotor.getCurrent() < 39.8) {
-            return false;
-        }
-        if (shooterIndexerMotor.getCurrent() > 39.8) {
-            return true;
-        }
-        return false;
+        return shooterIndexerMotor.getCurrent() > 35;
     }
 
     public boolean checkForGamePiece() {
-        int piece = 0;
-        int noPiece = 0;
-        if (shooterIndexerMotor.getCurrent() > 39.8) {
-            for (int i = 0; i <= 10; i++) {
-                if (currentCheck() == true) {
-                    piece++;
-                }
-            }
+        int checker = 0;
+        for (int i = 0; i < 10; i++) {
+            if (currentCheck()) checker++;
         }
-        new WaitCommand(0.5);
-        if (piece > noPiece) {
-            return true;
-        }
-        return false;
+        System.out.println(checker > 5);
+        return checker > 9;
     }
 }
