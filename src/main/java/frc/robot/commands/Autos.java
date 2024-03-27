@@ -193,6 +193,8 @@ public class Autos extends Command {
        autonChooserRed.addOption("twoPieceMiddleRed", twoPieceMiddleRed());
        autonChooserRed.addOption("twoPieceBottomRed", twoPieceBottomRed());
        autonChooserRed.addOption("twoPieceBottomFarRed", twoAndHalfPieceExtendedRed());
+        autonChooserBlue.addOption("twoPieceExtendedRed", twoPieceExtendedRed());
+
 
        autonChooserRed.addOption("threePieceMtBRed", threePieceMtBRed());
        autonChooserRed.addOption("threePieceMtTRed", threePieceMtTRed());
@@ -219,7 +221,10 @@ public class Autos extends Command {
        autonChooserBlue.addOption("twoPieceTopBlue", twoPieceTopBlue());
        autonChooserBlue.addOption("twoPieceMiddleBlue", twoPieceMiddleBlue());
        autonChooserBlue.addOption("twoPieceBottomBlue", twoPieceBottomBlue());
-       autonChooserBlue.addOption("twoAndHalfBottomBlue", twoAndHalfBottomBlue());
+       autonChooserBlue.addOption("twoAndHalfExtendedBlue", twoAndHalfExtendedBlue());
+       autonChooserBlue.addOption("twoPieceExtendedBlue", twoPieceExtendedBlue());
+
+
 
        autonChooserBlue.addOption("threePieceBtMBlue", threePieceBtMBlue());
        autonChooserBlue.addOption("threePieceTtMBlue", threePieceTtMBlue());
@@ -335,8 +340,8 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("2 Piece Bottom Blue");
     }
 
-    public Command twoAndHalfBottomBlue() {
-        return AutoBuilder.buildAuto("2.5 Piece Bottom Blue");
+    public Command twoAndHalfExtendedBlue() {
+        return AutoBuilder.buildAuto("2.5 Piece Extended Blue");
     }
 
     public Command twoPieceBottomFarBlue() {

@@ -5,7 +5,7 @@
       "x": 0.7220452902444284,
       "y": 4.489458978917958
     },
-    "rotation": -59.596945429844915
+    "rotation": -62.0
   },
   "command": {
     "type": "sequential",
@@ -33,6 +33,18 @@
           "type": "named",
           "data": {
             "name": "twoPieceExtendedShotBlue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": " 2.5 Piece Extended Blue p2 "
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "retractIntake"
           }
         }
       ]

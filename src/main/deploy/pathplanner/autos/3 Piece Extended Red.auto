@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8455861704876034,
-      "y": 4.450117887396973
+      "x": 15.77,
+      "y": 4.48
     },
-    "rotation": -62.0
+    "rotation": -119.6019873843347
   },
   "command": {
     "type": "sequential",
@@ -18,44 +18,44 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "3 Piece Bottom Far Blue p1 AutoAim"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "shoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "name": "deployIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "2 Piece Bottom Far Blue p2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.25
+            "pathName": "3 Piece Extended Red p1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "retractIntake"
+            "name": "twoPieceExtendedShotRed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Extended Red p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "twoPieceExtendedShotRed"
           }
         }
       ]
     }
   },
-  "folder": "2 Piece Autons",
+  "folder": "3 Piece Reg Autons",
   "choreoAuto": false
 }
