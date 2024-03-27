@@ -99,8 +99,15 @@ public class MainConstants {
         public static int BOTTOM_BUTTON_PANEL_PORT = 2;
     }
 
+    public static class Configs {
+        public static final int LED_LENGTH = 88;//61
+    }
+
     public static class IDs {
         public static final int SERVO_ID = 1;
+
+        // LEDs
+        public static int LED_PORT = 0;
         // Pigeon
         public static int PIGEON2_ID = 22;
 

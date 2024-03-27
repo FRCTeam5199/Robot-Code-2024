@@ -28,7 +28,8 @@ import frc.robot.utility.AutoAimValue;
 import frc.robot.utility.CommandXboxController;
 import frc.robot.utility.LookUpTable;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.LED.LEDManager;
+import frc.robot.LEDs.LEDSubsystem;
+import frc.robot.LEDs.LEDSubsystem.LEDMode;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.controls.CommandButtonPanel;
@@ -45,8 +46,6 @@ import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.utility.superstructure.*;
 import frc.robot.utils.TagalongAngle;
 import frc.robot.subsystems.minor.ArmPivotSetpoints;
-import frc.robot.LED.LEDManager;
-// import frc.robot.utility.Akit;
 
 
 /**
@@ -95,6 +94,9 @@ public class RobotContainer {
             aprilTags.speakerAlignmentBlue(),
             () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
     );
+    
+    public final static LEDSubsystem LEDs = new LEDSubsystem();
+
     private PivotToCommand _subArm =
             new PivotToCommand(arm, ArmPivotSetpoints.SUB, true);
     private PivotToCommand _midArm =
@@ -140,6 +142,11 @@ public class RobotContainer {
 
         auton = new Autos(drivetrain, intake, arm, shooterSubsystem, indexer, this);
         // SmartDashboard.putData("Field", drivetrain.m_field);
+
+        LEDs.init();
+        LEDs.setMode(LEDMode.IDLE);
+        LEDs.start();
+        
         configureBindings();
     }
 
@@ -277,6 +284,7 @@ public class RobotContainer {
 //        mainCommandXboxController.x().onTrue(new InstantCommand(() -> _customArm.changeSetpoint(51)).andThen(_customArm));
         mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
 
+        mainCommandXboxController.povRight().onTrue(new InstantCommand(() -> LEDs.setMode(LEDMode.SHOOTING))).onFalse(new InstantCommand(() -> LEDs.setMode(LEDMode.IDLE)));
         mainCommandXboxController.a().onTrue(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false)));
         mainCommandXboxController.b().onTrue(arm.setSetpoint(ArmPivotSetpoints.SUB.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
 
