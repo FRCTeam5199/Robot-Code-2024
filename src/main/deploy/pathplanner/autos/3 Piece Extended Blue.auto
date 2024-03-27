@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7220452902444284,
-      "y": 4.489458978917958
+      "x": 0.72,
+      "y": 4.49
     },
-    "rotation": -59.596945429844915
+    "rotation": -61.5
   },
   "command": {
     "type": "sequential",
@@ -26,7 +26,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2 Piece Extended Blue"
+            "pathName": "3 Piece Extended Blue p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "twoPieceExtendedShotBlue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Extended Blue p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "retractIntake"
           }
         },
         {
@@ -38,6 +56,6 @@
       ]
     }
   },
-  "folder": "2 Piece Autons",
+  "folder": "3 Piece Reg Autons",
   "choreoAuto": false
 }
