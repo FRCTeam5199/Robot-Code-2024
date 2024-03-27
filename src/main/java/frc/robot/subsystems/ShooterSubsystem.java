@@ -4,9 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SlotConfigs;
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.SparkPIDController;
@@ -17,12 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.abstractMotorInterfaces.TalonMotorController;
-import frc.robot.abstractMotorInterfaces.VortexMotorController;
-import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
@@ -215,12 +208,16 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
 
-    public boolean reachedSpeed() {
+    public boolean reachedNormalSpeed() {
         if (setRPM > 0) {
             if (topShooter.getVelocity().getValueAsDouble() >= (setRPM / 90) - 2 && bottomShooter.getVelocity().getValueAsDouble() >= (setRPM / 90) - 2) {
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean reachedAutoSpeed() {
+        return topShooter.getVelocity().getValueAsDouble() >= (autoAimRPM / 90) + 20 - 3 && bottomShooter.getVelocity().getValueAsDouble() >= (autoAimRPM / 90) - 15 - 3;
     }
 }

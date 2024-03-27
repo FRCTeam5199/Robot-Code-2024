@@ -6,19 +6,8 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
-import static edu.wpi.first.wpilibj2.command.Commands.repeatingSequence;
-import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
-
-import java.nio.channels.InterruptedByTimeoutException;
-import java.sql.Driver;
-
-import java.sql.Driver;
-
-import javax.swing.text.AbstractDocument.LeafElement;
-
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.LED.LEDSubsystem;
-import org.w3c.dom.CDATASection;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
@@ -43,8 +32,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.subsystems.minor.PivotToCommand;
 import frc.robot.subsystems.minor.TagalongPivot;
-import frc.robot.utility.superstructure.*;
-import frc.robot.utils.TagalongAngle;
 import frc.robot.subsystems.minor.ArmPivotSetpoints;
 // import frc.robot.utility.Akit;
 
@@ -206,7 +193,13 @@ public class RobotContainer {
                 .onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0))
                         .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
 
-        new Trigger(() -> shooterSubsystem.reachedSpeed())
+        new Trigger(shooterSubsystem::reachedNormalSpeed)
+                .onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))
+                        .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.SHOOTING))))
+                .onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0))
+                        .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
+
+        new Trigger(shooterSubsystem::reachedAutoSpeed)
                 .onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))
                         .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.SHOOTING))))
                 .onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0))
