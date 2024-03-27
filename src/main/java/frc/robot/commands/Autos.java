@@ -16,6 +16,8 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -173,66 +175,66 @@ public class Autos extends Command {
 //                new WaitCommand(0.7), indexer.setIndexerSpeed(0.2),
 //                new WaitCommand(0.2), indexer.setIndexerSpeed(0), arm.isAutoAiming(false)));
 
-//        Shuffleboard.getTab("Autons").add("Side", side);
-//        side.addOption("Red Side", true);
-//        side.addOption("Blue Side", false);
-//
-//        Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
-//        autonChooserRed.addOption("doNothing", doNothing());
-////        autonChooserRed.addOption("move do nothing", new SequentialCommandGroup(arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
-//        autonChooserRed.addOption("testBackShot", testBackShot());
-//
-//        autonChooserRed.addOption("onePieceTaxiTopRed", onePieceTaxiTopRed());
-//        autonChooserRed.addOption("onePieceTaxiMiddleRed", onePieceTaxiMiddleRed());
-//        autonChooserRed.addOption("onePieceTaxiBottomRed", onePieceTaxiBottomRed());
-//        autonChooserRed.addOption("oneAndHalfPieceTaxiBottomRed", oneAndHalfPieceTaxiBottomRed());
-//
-//        autonChooserRed.addOption("twoPieceTopRed", twoPieceTopRed());
-//        autonChooserRed.addOption("twoPieceMiddleRed", twoPieceMiddleRed());
-//        autonChooserRed.addOption("twoPieceBottomRed", twoPieceBottomRed());
-//        autonChooserRed.addOption("twoPieceBottomFarRed", twoPieceBottomFarRed());
-//
-//        autonChooserRed.addOption("threePieceMtBRed", threePieceMtBRed());
-//        autonChooserRed.addOption("threePieceMtTRed", threePieceMtTRed());
-//
-//        //        autonChooserRed.addOption("threePieceTtMRed", threePieceTtMRed());
-//        //        autonChooserRed.addOption("threePieceTtMAutoAimRed", threePieceTtMAutoAimRed());
-//        //        autonChooserRed.addOption("threePieceBtMAutoAimRed", threePieceBtMAutoAimRed());
-//        //        autonChooserRed.addOption("threePieceBottomFarAutoAimRed", threePieceBottomFarAutoAimRed());
-//
-//        autonChooserRed.addOption("fourPieceMiddleTtBRed", fourPieceMiddleTtBRed());
-//        autonChooserRed.addOption("fourPieceTtBAutoAimRed", fourPieceTtBAutoAimRed());
-//        autonChooserRed.addOption("fourPieceTopFarAutoAimRed", fourPieceTopFarAutoAimRed());
-//
-//        Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
-//        autonChooserBlue.addOption("doNothing", doNothing());
-////        autonChooserBlue.addOption("move do nothing", new SequentialCommandGroup(arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
-//
-//        autonChooserBlue.addOption("onePieceTaxiTopBlue", onePieceTaxiTopBlue());
-//        autonChooserBlue.addOption("onePieceTaxiMiddleBlue", onePieceTaxiMiddleBlue());
-//        autonChooserBlue.addOption("onePieceTaxiBottomBlue", onePieceTaxiBottomBlue());
-//        autonChooserBlue.addOption("oneAndHalfPieceTaxiBottomBlue", oneAndHalfPieceTaxiBottomBlue());
-//        autonChooserBlue.addOption("twoPieceBottomFarBlue", twoPieceBottomFarBlue());
-//
-//        autonChooserBlue.addOption("twoPieceTopBlue", twoPieceTopBlue());
-//        autonChooserBlue.addOption("twoPieceMiddleBlue", twoPieceMiddleBlue());
-//        autonChooserBlue.addOption("twoPieceBottomBlue", twoPieceBottomBlue());
-//        autonChooserBlue.addOption("twoAndHalfBottomBlue", twoAndHalfBottomBlue());
-//
-//        autonChooserBlue.addOption("threePieceBtMBlue", threePieceBtMBlue());
-//        autonChooserBlue.addOption("threePieceTtMBlue", threePieceTtMBlue());
-//        autonChooserBlue.addOption("threePieceMtTBlue", threePieceMtTBlue());
-//        autonChooserBlue.addOption("threePieceMtBBlue", threePieceMtBBlue());
-//
-//        autonChooserBlue.addOption("fourPieceTtBBlue", fourPieceMiddleTtBBlue());
-//        //  autonChooserBlue.addOption("threePieceTtMAutoAimBlue", threePieceTtMAutoAimBlue());
-//        //  autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceBtMAutoAimBlue());
-//        //  autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceTopFarAutoAimBlue());
-//        //  autonChooserBlue.addOption("threePieceBottomFarAutoAimBlue", threePieceBottomFarAutoAimBlue());
-//        //  autonChooserBlue.addOption("threePieceBottomFar", threePieceBottomFarBlue());
-//
-//        autonChooserRed.setDefaultOption("doNothing", doNothing());
-//        autonChooserBlue.setDefaultOption("doNothing", doNothing());
+       Shuffleboard.getTab("Autons").add("Side", side);
+       side.addOption("Red Side", true);
+       side.addOption("Blue Side", false);
+
+       Shuffleboard.getTab("Autons").add("Auton Style Red", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
+       autonChooserRed.addOption("doNothing", doNothing());
+//        autonChooserRed.addOption("move do nothing", new SequentialCommandGroup(arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
+       autonChooserRed.addOption("testBackShot", testBackShot());
+
+       autonChooserRed.addOption("onePieceTaxiTopRed", onePieceTaxiTopRed());
+       autonChooserRed.addOption("onePieceTaxiMiddleRed", onePieceTaxiMiddleRed());
+       autonChooserRed.addOption("onePieceTaxiBottomRed", onePieceTaxiBottomRed());
+       autonChooserRed.addOption("oneAndHalfPieceTaxiBottomRed", oneAndHalfPieceTaxiBottomRed());
+
+       autonChooserRed.addOption("twoPieceTopRed", twoPieceTopRed());
+       autonChooserRed.addOption("twoPieceMiddleRed", twoPieceMiddleRed());
+       autonChooserRed.addOption("twoPieceBottomRed", twoPieceBottomRed());
+       autonChooserRed.addOption("twoPieceBottomFarRed", twoAndHalfPieceExtendedRed());
+
+       autonChooserRed.addOption("threePieceMtBRed", threePieceMtBRed());
+       autonChooserRed.addOption("threePieceMtTRed", threePieceMtTRed());
+
+       //        autonChooserRed.addOption("threePieceTtMRed", threePieceTtMRed());
+       //        autonChooserRed.addOption("threePieceTtMAutoAimRed", threePieceTtMAutoAimRed());
+       //        autonChooserRed.addOption("threePieceBtMAutoAimRed", threePieceBtMAutoAimRed());
+       //        autonChooserRed.addOption("threePieceBottomFarAutoAimRed", threePieceBottomFarAutoAimRed());
+
+       autonChooserRed.addOption("fourPieceMiddleTtBRed", fourPieceMiddleTtBRed());
+       autonChooserRed.addOption("fourPieceTtBAutoAimRed", fourPieceTtBAutoAimRed());
+       autonChooserRed.addOption("fourPieceTopFarAutoAimRed", fourPieceTopFarAutoAimRed());
+
+       Shuffleboard.getTab("Autons").add("Auton Style Blue", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
+       autonChooserBlue.addOption("doNothing", doNothing());
+//        autonChooserBlue.addOption("move do nothing", new SequentialCommandGroup(arm.setArmSetpoint(141), new WaitCommand(0.5), robotContainer.runAutoShooting(), new WaitCommand(0.5), arm.rotateSafe(), shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
+
+       autonChooserBlue.addOption("onePieceTaxiTopBlue", onePieceTaxiTopBlue());
+       autonChooserBlue.addOption("onePieceTaxiMiddleBlue", onePieceTaxiMiddleBlue());
+       autonChooserBlue.addOption("onePieceTaxiBottomBlue", onePieceTaxiBottomBlue());
+       autonChooserBlue.addOption("oneAndHalfPieceTaxiBottomBlue", oneAndHalfPieceTaxiBottomBlue());
+       autonChooserBlue.addOption("twoPieceBottomFarBlue", twoPieceBottomFarBlue());
+
+       autonChooserBlue.addOption("twoPieceTopBlue", twoPieceTopBlue());
+       autonChooserBlue.addOption("twoPieceMiddleBlue", twoPieceMiddleBlue());
+       autonChooserBlue.addOption("twoPieceBottomBlue", twoPieceBottomBlue());
+       autonChooserBlue.addOption("twoAndHalfBottomBlue", twoAndHalfBottomBlue());
+
+       autonChooserBlue.addOption("threePieceBtMBlue", threePieceBtMBlue());
+       autonChooserBlue.addOption("threePieceTtMBlue", threePieceTtMBlue());
+       autonChooserBlue.addOption("threePieceMtTBlue", threePieceMtTBlue());
+       autonChooserBlue.addOption("threePieceMtBBlue", threePieceMtBBlue());
+
+       autonChooserBlue.addOption("fourPieceTtBBlue", fourPieceMiddleTtBBlue());
+       //  autonChooserBlue.addOption("threePieceTtMAutoAimBlue", threePieceTtMAutoAimBlue());
+       //  autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceBtMAutoAimBlue());
+       //  autonChooserBlue.addOption("threePieceBtMAutoAimBlue", threePieceTopFarAutoAimBlue());
+       //  autonChooserBlue.addOption("threePieceBottomFarAutoAimBlue", threePieceBottomFarAutoAimBlue());
+       //  autonChooserBlue.addOption("threePieceBottomFar", threePieceBottomFarBlue());
+
+       autonChooserRed.setDefaultOption("doNothing", doNothing());
+       autonChooserBlue.setDefaultOption("doNothing", doNothing());
     }
 
 

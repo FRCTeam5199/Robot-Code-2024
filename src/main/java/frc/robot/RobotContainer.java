@@ -165,7 +165,8 @@ public class RobotContainer {
         // System.out.println(autoAimValue.shooterRPM);
         _autoAimArm.changeSetpoint(autoAimValue.armAngle);
         speedShooterAuto = autoAimValue.shooterRPM;
-        System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()) + " Arm Angle: " + autoAimValue.armAngle);
+//        System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
+
     }
 
     /**
