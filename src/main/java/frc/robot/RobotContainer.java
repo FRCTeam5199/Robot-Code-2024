@@ -205,6 +205,7 @@ public class RobotContainer {
                         .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.INTAKING))))
                 .onFalse(new InstantCommand(() -> mainCommandXboxController.setRumble(0))
                         .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
+
         new Trigger(() -> shooterSubsystem.reachedSpeed())
                 .onTrue(new InstantCommand(() -> mainCommandXboxController.setRumble(1))
                         .andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.SHOOTING))))
@@ -288,7 +289,7 @@ public class RobotContainer {
 
 //        mainCommandXboxController.x().onTrue(new InstantCommand(() -> _customArm.changeSetpoint(51)).andThen(_customArm));
         mainCommandXboxController.rightTrigger().whileTrue(intakeAction).onFalse(stopIntakeAction);
-        
+
         mainCommandXboxController.a().onTrue(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false)));
         mainCommandXboxController.b().onTrue(arm.setSetpoint(ArmPivotSetpoints.SUB.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
 

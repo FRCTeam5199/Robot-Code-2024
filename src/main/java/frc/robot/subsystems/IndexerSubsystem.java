@@ -64,16 +64,15 @@ public class IndexerSubsystem extends SubsystemBase {
      * @return True if a game piece is in the Indexer
      */
     private boolean currentCheck() {
-        new WaitCommand(0.4);
         return shooterIndexerMotor.getCurrent() > 35;
     }
 
     public boolean checkForGamePiece() {
         int checker = 0;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 300; i++) {
             if (currentCheck()) checker++;
         }
-        System.out.println(checker > 5);
-        return checker > 9;
+        if (checker == 300) System.out.println(true);
+        return checker >= 300;
     }
 }
