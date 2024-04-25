@@ -112,8 +112,9 @@ public class RobotContainer {
             new PivotToCommand(arm, ArmPivotSetpoints.ZERO, true);
     private PivotToCommand _autoAimArm =
             new PivotToCommand(arm, ArmPivotSetpoints.ZERO, true);
-    private PivotToCommand _vertcicalArm =
-            new PivotToCommand(arm, ArmPivotSetpoints.LONG, true);
+            //use with 4500 rpm on both rollers
+    private PivotToCommand _shuttle =
+            new PivotToCommand(arm, ArmPivotSetpoints.MID, true);
 
 
     public RobotContainer() {
@@ -316,7 +317,7 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor2Speed(.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor2Speed(-.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
 
-        testingController.a().onTrue(_vertcicalArm);
+        testingController.a().onTrue(_shuttle);
         testingController.b().onTrue(_midArm);
         // testingController.y().onTrue(new InstantCommand(()->_customArm.changeSetpoint(51.1)).andThen(_customArm));
         testingController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
