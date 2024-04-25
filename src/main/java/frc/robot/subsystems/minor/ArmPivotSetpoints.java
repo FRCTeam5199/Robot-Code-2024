@@ -18,6 +18,7 @@ public enum ArmPivotSetpoints implements TagalongAngle {
     INTAKE_STEP_UP(50 + 1),
     INTAKE(3),
     VERTICAL(120),
+    LONG(80),
     TRAP(MainConstants.Setpoints.ARM_TRAP_SETPOINT + 0.75),
     CLIMB_MIDDLE(MainConstants.Setpoints.ARM_TRAP_PREP_SETPOINT + 2);
 
