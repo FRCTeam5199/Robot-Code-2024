@@ -50,6 +50,8 @@ public class Autos extends Command {
     private PivotToCommand _armStable;
     private PivotToCommand _twoPieceArmStableRed;
     private PivotToCommand _twoPieceArmStableBlue;
+    private PivotToCommand _threePieceArmStableRed;
+    private PivotToCommand _threePieceArmStableBlue;
     private PivotToCommand _intakeArm;
     private PivotToCommand _upStableArm;
     private PivotToCommand _intakeStepUPArm;
@@ -61,6 +63,8 @@ public class Autos extends Command {
     private PivotToCommand _halfIntakeBackShot;
     private PivotToCommand _twoPieceExtendedShotRed;
     private PivotToCommand _twoPieceExtendedShotBlue;
+    private PivotToCommand _threePieceExtendedShotRed;
+    private PivotToCommand _threePieceExtendedShotBlue;
 
     public Autos(SwerveDrive swerve, IntakeSubsystem intake, ArmSubsystemVer2 arm, ShooterSubsystem shooter, IndexerSubsystem indexer, RobotContainer robotContainer) {
 
@@ -73,6 +77,8 @@ public class Autos extends Command {
         _armStable = new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
         _twoPieceArmStableRed = new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
         _twoPieceArmStableBlue = new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
+        _threePieceArmStableRed = new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
+        _threePieceArmStableBlue = new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
         _intakeArm = new PivotToCommand(arm, ArmPivotSetpoints.INTAKE, true);
         _upStableArm = new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
         _intakeStepUPArm = new PivotToCommand(arm, ArmPivotSetpoints.INTAKE_STEP_UP, true);
@@ -84,6 +90,8 @@ public class Autos extends Command {
         _halfIntakeBackShot = new PivotToCommand(arm, ArmPivotSetpoints.BACK, true);
         _twoPieceExtendedShotRed = new PivotToCommand(arm, ArmPivotSetpoints.TWO_PIECE_EXTENDED_RED, true);
         _twoPieceExtendedShotBlue = new PivotToCommand(arm, ArmPivotSetpoints.TWO_PIECE_EXTENDED_BLUE, true);
+        _threePieceExtendedShotRed = new PivotToCommand(arm, ArmPivotSetpoints.TWO_PIECE_EXTENDED_RED, true);
+        _threePieceExtendedShotBlue = new PivotToCommand(arm, ArmPivotSetpoints.TWO_PIECE_EXTENDED_BLUE, true);
 
         this.swerveDrive = swerve;
         AutoBuilder.configureHolonomic(() -> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, () -> false, swerveDrive);
@@ -147,9 +155,9 @@ public class Autos extends Command {
                 , new WaitCommand(0.7), indexer.setIndexerSpeed(0.4),
                 shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0)));
         NamedCommands.registerCommand("backShot", new SequentialCommandGroup(
-                _backShot.withTimeout(0.8).alongWith(shooter.runShooterAtRpm(4000))
+                _backShot.withTimeout(0.5).alongWith(shooter.runShooterAtRpm(4000))
                         .alongWith(indexer.setIndexerSpeed(-0.1)),
-                new WaitCommand(0.8), indexer.setIndexerSpeed(0.4),
+                new WaitCommand(0.6), indexer.setIndexerSpeed(0.4),
                 shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), _armStable.withTimeout(0.2)));
 
         NamedCommands.registerCommand("twoPieceExtendedShotRed", new SequentialCommandGroup(
@@ -223,13 +231,13 @@ public class Autos extends Command {
        autonChooserBlue.addOption("twoPieceBottomBlue", twoPieceBottomBlue());
        autonChooserBlue.addOption("twoAndHalfExtendedBlue", twoAndHalfExtendedBlue());
        autonChooserBlue.addOption("twoPieceExtendedBlue", twoPieceExtendedBlue());
-
-
+       autonChooserBlue.addOption("twoPieceMiddleExtendedBlue", twoAndHalfPieceMiddleExtendedBlue());
 
        autonChooserBlue.addOption("threePieceBtMBlue", threePieceBtMBlue());
        autonChooserBlue.addOption("threePieceTtMBlue", threePieceTtMBlue());
        autonChooserBlue.addOption("threePieceMtTBlue", threePieceMtTBlue());
        autonChooserBlue.addOption("threePieceMtBBlue", threePieceMtBBlue());
+    //    autonChooserBlue.addOption("threePieceExtendedBlue", threePieceExtendedBlue());
 
        autonChooserBlue.addOption("fourPieceTtBBlue", fourPieceMiddleTtBBlue());
        //  autonChooserBlue.addOption("threePieceTtMAutoAimBlue", threePieceTtMAutoAimBlue());
@@ -360,6 +368,10 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("2.5 Piece Extended Red");
     }
 
+    public Command twoAndHalfPieceMiddleExtendedBlue() {
+        return AutoBuilder.buildAuto("2.5 Piece Middle Extended Blue");
+    }
+
     //Three Piece Regular Autons
     public Command threePieceTtMRed() {
         return AutoBuilder.buildAuto("3 Piece Top to Middle Red");
@@ -420,6 +432,10 @@ public class Autos extends Command {
 
     public Command threePieceBottomFarBlue() {
         return AutoBuilder.buildAuto("3 Piece Bottom Far Blue");
+    }
+
+    public Command threePieceExtendedBlue(){
+        return AutoBuilder.buildAuto("3 Piece Extended Blue");
     }
 
     //Four Piece Autons

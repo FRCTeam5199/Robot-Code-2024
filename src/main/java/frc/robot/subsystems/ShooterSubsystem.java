@@ -92,7 +92,7 @@ public class ShooterSubsystem extends SubsystemBase {
         SlotConfigs SlotConfigBottomShooter = new SlotConfigs();
 
         configureSlot(SlotConfigTopShooter, 2.2, 0.1, 0.7, 0.1, 0, 0.1);
-        configureSlot(SlotConfigBottomShooter, 2.2, 0.1, 0.7, 0.1, 0, 0.1);
+        configureSlot(SlotConfigBottomShooter, 2.2, 0.1, 0.65, 0.1, 0, 0.1);
 
 
         topShooter.getConfigurator().apply(SlotConfigTopShooter);
@@ -218,6 +218,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean reachedAutoSpeed() {
-        return topShooter.getVelocity().getValueAsDouble() >= (autoAimRPM / 90) + 20 - 3 && bottomShooter.getVelocity().getValueAsDouble() >= (autoAimRPM / 90) - 15 - 3;
+        // System.out.println("Bottom Shooter: " + bottomShooter.getVelocity().getValueAsDouble());
+        return (topShooter.getVelocity().getValueAsDouble() >= (autoAimRPM / 90) + 20 - 1 && bottomShooter.getVelocity().getValueAsDouble() >= (autoAimRPM / 90) - 15 - 1)
+        && (topShooter.getVelocity().getValueAsDouble() <= (autoAimRPM / 90) + 20 + 5 && bottomShooter.getVelocity().getValueAsDouble() <= (autoAimRPM / 90) - 15 + 5);
     }
 }

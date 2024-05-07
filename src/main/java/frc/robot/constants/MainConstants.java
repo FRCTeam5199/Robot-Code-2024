@@ -17,7 +17,7 @@ public class MainConstants {
     // public static final double SPEAKER_Z = 2.340102;
     public static final double SPEAKER_Z = 1.4511020000000001 + 0.678; //+ 0.755; //1.4511020000000001 + 0.635;
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
-    public static final int LED_LENGTH = 88;
+    public static final int LED_LENGTH = 34 ;
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 2;

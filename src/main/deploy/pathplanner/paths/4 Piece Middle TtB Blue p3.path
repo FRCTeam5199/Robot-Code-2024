@@ -48,11 +48,11 @@
     },
     {
       "anchor": {
-        "x": 1.35,
+        "x": 1.3041949160821413,
         "y": 5.4
       },
       "prevControl": {
-        "x": 1.620379985362581,
+        "x": 1.5745749014447223,
         "y": 5.069671269710274
       },
       "nextControl": null,
@@ -79,7 +79,7 @@
             {
               "type": "named",
               "data": {
-                "name": "halfRetractIntake"
+                "name": "retractIntake"
               }
             }
           ]

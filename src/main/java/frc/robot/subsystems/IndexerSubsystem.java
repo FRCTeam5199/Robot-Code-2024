@@ -32,14 +32,15 @@ public class IndexerSubsystem extends SubsystemBase {
         shooterIndexerMotor.setCurrentLimit(40);
 
         servo = new Servo(MainConstants.IDs.SERVO_ID);
+        
     }
 
     public Command extendServo() {
-        return this.runOnce(() -> servo.setAngle(180));
+        return this.runOnce(() -> servo.setAngle(235));
     }
 
     public Command retractServo() {
-        return this.runOnce(() -> servo.setAngle(120));
+        return this.runOnce(() -> servo.setAngle(90));
     }
 
     @Override
@@ -64,15 +65,15 @@ public class IndexerSubsystem extends SubsystemBase {
      * @return True if a game piece is in the Indexer
      */
     private boolean currentCheck() {
-        return shooterIndexerMotor.getCurrent() > 35;
+        return shooterIndexerMotor.getCurrent() > 38;
     }
 
     public boolean checkForGamePiece() {
         int checker = 0;
-        for (int i = 0; i < 300; i++) {
+        for (int i = 0; i < 150; i++) {
             if (currentCheck()) checker++;
         }
-        if (checker == 300) System.out.println(true);
-        return checker >= 300;
+        if (checker >= 150) System.out.println(true);
+        return checker >= 150;
     }
 }

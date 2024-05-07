@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 4.234676930892325,
-        "y": 1.815517477188801
+        "x": 4.007512037848611,
+        "y": 1.1710836545781504
       },
       "prevControl": {
-        "x": 3.4354545632168203,
-        "y": 2.318731560540044
+        "x": 3.2082896701731056,
+        "y": 1.6742977379293922
       },
       "nextControl": {
-        "x": 5.000397800839991,
-        "y": 1.3333969294439754
+        "x": 4.7732329077962765,
+        "y": 0.6889631068333248
       },
       "isLocked": false,
       "linkedName": null
@@ -48,12 +48,12 @@
     },
     {
       "anchor": {
-        "x": 3.2228859892812496,
-        "y": 2.3070347995189566
+        "x": 3.02,
+        "y": 2.42
       },
       "prevControl": {
-        "x": 3.301821531767719,
-        "y": 2.1688976001676363
+        "x": 3.0989355424864695,
+        "y": 2.2818628006486796
       },
       "nextControl": null,
       "isLocked": false,
@@ -72,7 +72,19 @@
       "rotateFast": false
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 2.55,
+      "maxWaypointRelativePos": 3.0,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 700.0,
+        "maxAngularAcceleration": 500.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "retractIntake",
@@ -94,13 +106,13 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 700.0,
+    "maxAngularAcceleration": 500.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 129.28940686250033,
+    "rotation": 124.38,
     "rotateFast": false
   },
   "reversed": false,
