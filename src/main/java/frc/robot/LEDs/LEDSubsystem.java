@@ -1,15 +1,15 @@
 package frc.robot.LEDs;
 
+import frc.robot.Constants;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Main;
-import frc.robot.constants.MainConstants;
 
 public class LEDSubsystem extends SubsystemBase {
-    AddressableLED LEDLights = new AddressableLED(MainConstants.IDs.LED_PORT);
-    AddressableLEDBuffer LEDBuffer = new AddressableLEDBuffer(MainConstants.Configs.LED_LENGTH);
+    AddressableLED LEDLights = new AddressableLED(Constants.LED_PORT);
+    AddressableLEDBuffer LEDBuffer = new AddressableLEDBuffer(Constants.LED_LENGTH);
 
     boolean powerSaverMode;
 
