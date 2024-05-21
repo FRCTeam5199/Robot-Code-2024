@@ -111,6 +111,8 @@ public class RobotContainer {
             new PivotToCommand(arm, ArmPivotSetpoints.TRAP, true);
     private PivotToCommand _customArm =
             new PivotToCommand(arm, ArmPivotSetpoints.ZERO, true);
+private PivotToCommand _customShooterArm =
+            new PivotToCommand(arm, ArmPivotSetpoints.ZERO, true);
     private PivotToCommand _autoAimArm =
             new PivotToCommand(arm, ArmPivotSetpoints.ZERO, true);
             //use with 4500 rpm on both rollers
@@ -303,6 +305,9 @@ public class RobotContainer {
 
         buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
         buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
+
+        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(new SequentialCommandGroup(new InstantCommand(() -> arm.changeSetpoint(30))).andThen(new InstantCommand(() -> System.out.println("WORKS"))));
+        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(new SequentialCommandGroup(new InstantCommand(() -> arm.changeSetpoint(-30))));
 
         buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(new SequentialCommandGroup(climberSubsystem.setClimbMode(true), shooterSubsystem.setAmpMode(true), intake.deployIntake(), Commands.print("thoough heaven and heart i alone am the honered one"), _climbMiddleArm));
         //     // buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(climberSubsystem.setClimbMode(true).andThen(shooterSubsystem.setAmpMode(false)).andThen(arm.isAiming(true)).andThen(shooterSubsystem.setRPMShooter(2100)));

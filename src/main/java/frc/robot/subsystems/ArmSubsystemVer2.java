@@ -99,6 +99,10 @@ public class ArmSubsystemVer2 extends TagalongSubsystemBase  implements PivotAug
     return this.runOnce(()-> _setPoint = setpoint);
   }
 
+  public Command changeSetpoint(double offset){
+    return this.runOnce(() -> _setPoint += offset);
+  }
+
   public double getSetPoint(){
     return _setPoint;
   }

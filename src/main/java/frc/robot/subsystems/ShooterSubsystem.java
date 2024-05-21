@@ -124,6 +124,9 @@ public class ShooterSubsystem extends SubsystemBase {
             // System.out.println(autoAimRPM);
             // System.out.println("super" + autoAimRPM/90);
         }
+
+        // System.out.println(topShooter.getPosition());
+        // System.out.println(bottomShooter.getPosition());
     }
 
 
