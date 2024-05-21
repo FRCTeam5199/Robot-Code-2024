@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-import frc.robot.Constants;
+import frc.robot.constants.Constants;
 import frc.robot.AbstractMotorInterfaces.SparkMotorController;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -155,15 +155,22 @@ public class IntakeSubsystem extends SubsystemBase {
       }
     
     public Command deployPiston() {
+      // return this.run(()-> System.out.println("DEPLOYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY"));
       return this.runOnce(() -> bottomPiston.set(Value.kForward));
     }
 
+
+
+
     public Command retractPiston() {
+      // return this.run(()-> System.out.println("RETRACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"));
       return this.runOnce(() -> bottomPiston.set(Value.kReverse));
     }
 
+    ////////////
+
     public void spinBottomOutake(boolean stop) {
-      spinWithCube = false;
+      spinWithCube =   false;
       if(stop) {
         bottomIntake.moveAtPercent(0);
       }

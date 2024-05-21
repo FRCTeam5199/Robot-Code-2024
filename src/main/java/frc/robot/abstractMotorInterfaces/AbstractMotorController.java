@@ -1,12 +1,12 @@
 package frc.robot.AbstractMotorInterfaces;
 
-import java.util.ArrayList;
-
-import frc.robot.AbstractMotorInterfaces.followers.AbstractFollowerMotorController;
-import frc.robot.AbstractMotorInterfaces.followers.SparkFollowerMotorsController;
-import frc.robot.AbstractMotorInterfaces.followers.TalonFollowerMotorController;
 import frc.robot.utility.PID;
 import frc.robot.utility.UserInterface;
+import frc.robot.AbstractMotorInterfaces.followers.AbstractFollowerMotorController;
+import frc.robot.AbstractMotorInterfaces.followers.SparkFollowerMotorsController;
+import frc.robot.Robot;
+
+import java.util.ArrayList;
 
 /**
  * This is the base class for any motor. It is not an interface because it has to have a {@link
@@ -230,14 +230,14 @@ public abstract class AbstractMotorController {
      * @return invert {@link #isOverheated}
      */
     protected boolean isTemperatureAcceptable() {
-        if (frc.robot.Constants.ENABLE_OVERHEAT_DETECTION) {
-            if (getMotorTemperature() >= frc.robot.Constants.OVERHEAT_THRESHOLD) {
+        if (frc.robot.constants.Constants.ENABLE_OVERHEAT_DETECTION) {
+            if (getMotorTemperature() >= frc.robot.constants.Constants.OVERHEAT_THRESHOLD) {
                 if (!isOverheated) {
                     UserInterface.smartDashboardPutBoolean("OVERHEAT " + getID(), false);
                     isOverheated = true;
                 }
             } //wait 5 degrees to unoverheat
-            else if (isOverheated && getMotorTemperature() < frc.robot.Constants.OVERHEAT_THRESHOLD - 5) {
+            else if (isOverheated && getMotorTemperature() < frc.robot.constants.Constants.OVERHEAT_THRESHOLD - 5) {
                 isOverheated = false;
                 UserInterface.smartDashboardPutBoolean("OVERHEAT " + getID(), true);
             }
@@ -289,9 +289,6 @@ public abstract class AbstractMotorController {
             switch (this) {
                 case CAN_SPARK_MAX:
                     return new SparkFollowerMotorsController(followerIDs);
-                case TALON_FX:
-                    return new TalonFollowerMotorController(canbus, followerIDs);
-                case VICTOR:
                 case SERVO:
                 default:
                     throw new IllegalArgumentException("I cannot make a motor follower of type " + name());
@@ -306,10 +303,6 @@ public abstract class AbstractMotorController {
             switch (this) {
                 case CAN_SPARK_MAX:
                     return new SparkMotorController(ID);
-                case TALON_FX:
-                    return new TalonMotorController(ID, canbus);
-                case VICTOR:
-                    return new VictorMotorController(ID);
                 case SERVO:
                 default:
                     throw new IllegalArgumentException("I cannot make a motor of type " + name() + " Howd you manage to fail at this L + ratio");

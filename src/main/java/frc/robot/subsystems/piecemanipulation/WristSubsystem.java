@@ -1,6 +1,6 @@
 package frc.robot.subsystems.piecemanipulation;
 
-import frc.robot.Constants;
+import frc.robot.constants.Constants;
 import frc.robot.AbstractMotorInterfaces.SparkMotorController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -81,7 +81,7 @@ public class WristSubsystem extends SubsystemBase{
             new InstantCommand(() -> stopRotation())
         );
     }
-    public Command moveRightManual(){
+    public Command moveRigthManual(){
         return new SequentialCommandGroup(
             new InstantCommand(() -> moveRight()),
             new WaitCommand(1),

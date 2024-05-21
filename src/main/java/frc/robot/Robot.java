@@ -4,11 +4,13 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.LoggedRobot;
+import frc.robot.utility.AlwaysRunInstantCommand;
+import frc.robot.utility.LimelightManager;
 
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.utility.LimelightManager;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,14 +18,13 @@ import frc.robot.utility.LimelightManager;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends LoggedRobot {
+public class Robot extends TimedRobot {
   public static final boolean SECOND_TRY = false;
 
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
 
-  private LimelightManager lime = new LimelightManager();
 
   
   /**
@@ -35,6 +36,10 @@ public class Robot extends LoggedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    // Turn brake mode off shortly after the robot is disabled
+
+
   }
 
   /**
@@ -56,7 +61,6 @@ public class Robot extends LoggedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    lime.lightOff();
   }
 
   @Override
@@ -65,7 +69,6 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

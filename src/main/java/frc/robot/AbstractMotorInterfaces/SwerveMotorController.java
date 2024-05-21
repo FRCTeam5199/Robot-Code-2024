@@ -1,6 +1,6 @@
 package frc.robot.AbstractMotorInterfaces;
 
-import frc.robot.Constants;
+import frc.robot.constants.Constants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;

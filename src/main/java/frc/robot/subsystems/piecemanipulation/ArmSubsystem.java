@@ -1,7 +1,7 @@
 package frc.robot.subsystems.piecemanipulation;
 
-import frc.robot.Constants;
-import frc.robot.AbstractMotorInterfaces.SparkMotorController;
+import frc.robot.constants.Constants;
+import frc.robot.AbstractMotorInterfaces.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -21,7 +21,8 @@ public class ArmSubsystem extends SubsystemBase {
 	public double rotateOffset = 0.7;
 	public double extendSetpoint = 0;
 	public double extendOffset = 0;
-
+	
+	
 	private double dunkOffset = 0;
 
 	public ArmSubsystem() {
