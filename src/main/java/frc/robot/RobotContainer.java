@@ -247,13 +247,13 @@ public class RobotContainer {
 
         mainCommandXboxController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
 
-
-        mainCommandXboxController.leftBumper().whileTrue(new SequentialCommandGroup(shooterSubsystem.autoAim().alongWith(speakerAutoDriveAutoAim.alongWith(_autoAimArm))))
-                .onFalse(new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(0), 
-                new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE)), _autoAimStable));
+        mainCommandXboxController.leftBumper().whileTrue(new SequentialCommandGroup(shooterSubsystem.runShooterPredeterminedRPM(), _midArm));
+//        mainCommandXboxController.leftBumper().whileTrue(new SequentialCommandGroup(shooterSubsystem.autoAim().alongWith(speakerAutoDriveAutoAim.alongWith(_autoAimArm))))
+//                .onFalse(new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(0),
+//                new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE)), _autoAimStable));
 
         mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.autoAim())).onFalse(shooterSubsystem.runShooterAtPercent(0).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
-        mainCommandXboxController.y().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(4000))).onFalse(shooterSubsystem.runShooterAtPercent(0).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
+        mainCommandXboxController.y().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterPredeterminedRPM())).onFalse(shooterSubsystem.runShooterAtPercent(0).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
 
         //     mainCommandXboxController.povDown().onTrue(indexer.setIndexerSpeed(-.1));
 
@@ -295,8 +295,8 @@ public class RobotContainer {
         // buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(new SequentialCommandGroup(arm.isAiming(true), arm.rotateHPStation(), shooterSubsystem.runShooterAtPercent(-.4), indexer.setIndexerSpeed(-.2))).onFalse(new SequentialCommandGroup(arm.rotateStable(), shooterSubsystem.runShooterAtPercent(0), indexer.setIndexerSpeed(0), arm.isAiming(false)));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_PREP_SETPOINT).onTrue(shooterSubsystem.setAmpMode(true).andThen(shooterSubsystem.setRPMShooter(3300)).andThen(climberSubsystem.setClimbMode(true)).andThen(_climbMiddleArmV2));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_SETPOINT).onTrue(shooterSubsystem.setRPMShooter(2500).andThen(shooterSubsystem.setAmpMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)).andThen(climberSubsystem.setClimbMode(true).andThen(_trapArm)));
-        // buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(arm.increaseOffset(1));
-        // buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(arm.decreaseOffset(1));
+        //buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(arm.increaseOffset(1));
+        //buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(arm.decreaseOffset(1));
 
         buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_UP).onTrue(intake.increaseOffset());
         buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_DOWN).onTrue(intake.decreaseOffset());
@@ -326,8 +326,8 @@ public class RobotContainer {
         //     testingController.x().onTrue(new InstantCommand(()-> climberSubsystem.climbModeEnabled = false));
 
 
-        //     buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
-        //     buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
+            buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
+             buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
 
         //     buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor1Speed(0.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
         //     buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor1Speed(-0.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
