@@ -36,7 +36,7 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public Command extendServo() {
-        return this.runOnce(() -> servo.setAngle(235));
+        return this.runOnce(() -> servo.setAngle(215));//used to be 235
     }
 
     public Command retractServo() {
