@@ -75,11 +75,11 @@ public class ClimberSubsystem extends SubsystemBase {
         climberMotor2 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_MOTOR_2_ID);
 
         climberMotor1.getEncoder().setPosition(0);
-        climberMotor1.setInvert(false);
+        climberMotor1.setInvert(true);
         climberMotor1.setBrake(true);
 
         climberMotor2.getEncoder().setPosition(0);
-        climberMotor1.setInvert(true);
+        climberMotor2.setInvert(false);
         climberMotor2.setBrake(true);
     }
 
