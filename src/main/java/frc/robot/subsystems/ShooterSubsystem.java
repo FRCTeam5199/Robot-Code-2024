@@ -138,12 +138,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     public Command autoAim() {
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((autoAimRPM / 90) + 20)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoAimRPM / 90) - 15))).alongWith(new InstantCommand(() -> System.out.println("value" + autoAimRPM / 90 + "  velocity " + autoAimRPM)));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((autoAimRPM / 90d) + shooterSpeedOffset + 20)))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((autoAimRPM / 90d) + shooterSpeedOffset - 15)));
     }
 
 
     public Command runShooterAtRpm(double vel) {
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(((vel / 90))))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity(((vel / 90))))).alongWith(new InstantCommand(() -> System.out.println("value" + vel / 90 + "  velocity " + topShooter.getVelocity())));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity(vel / 90d + shooterSpeedOffset))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity(vel / 90d + shooterSpeedOffset)));
     }
 
     public Command runShooterAtPercent(double per) {
@@ -151,7 +151,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command runShooterPredeterminedRPM() {
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((setRPM / 90) + shooterSpeedOffset))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((setRPM / 90) + shooterSpeedOffset)));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((setRPM / 90d) + shooterSpeedOffset))).andThen(() -> bottomShooter.setControl(velocity_request.withVelocity((setRPM / 90d) + shooterSpeedOffset)));
     }
 
     public Command runShooterClimbAmp(double vel) {
@@ -159,11 +159,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command increaseShooterSpeed() {
-        return this.runOnce(() -> shooterSpeedOffset += 50).andThen(() -> System.out.println(shooterSpeedOffset));
+        return this.runOnce(() -> shooterSpeedOffset += 50 / 90d);
     }
 
     public Command decreaseShooterSpeed() {
-        return this.runOnce(() -> shooterSpeedOffset -= 50).andThen(() -> System.out.println(shooterSpeedOffset));
+        return this.runOnce(() -> shooterSpeedOffset -= 50 / 90d);
     }
 
     public Command setRunShooter(boolean runShooter) {
@@ -210,7 +210,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public boolean reachedNormalSpeed() {
         if (setRPM > 0) {
-            if (topShooter.getVelocity().getValueAsDouble() >= (setRPM / 90) - 2 && bottomShooter.getVelocity().getValueAsDouble() >= (setRPM / 90) - 2) {
+            if (topShooter.getVelocity().getValueAsDouble() >= (setRPM / 90d) + shooterSpeedOffset - 2 && bottomShooter.getVelocity().getValueAsDouble() >= (setRPM / 90d) + shooterSpeedOffset - 2) {
                 return true;
             }
         }
@@ -219,7 +219,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public boolean reachedAutoSpeed() {
         // System.out.println("Bottom Shooter: " + bottomShooter.getVelocity().getValueAsDouble());
-        return (topShooter.getVelocity().getValueAsDouble() >= (autoAimRPM / 90) + 20 - 1 && bottomShooter.getVelocity().getValueAsDouble() >= (autoAimRPM / 90) - 15 - 1)
-        && (topShooter.getVelocity().getValueAsDouble() <= (autoAimRPM / 90) + 20 + 5 && bottomShooter.getVelocity().getValueAsDouble() <= (autoAimRPM / 90) - 15 + 5);
+        return (topShooter.getVelocity().getValueAsDouble() >= (autoAimRPM / 90d) + shooterSpeedOffset + 20 - 1 && bottomShooter.getVelocity().getValueAsDouble() >= (autoAimRPM / 90d) + shooterSpeedOffset - 15 - 1)
+                && (topShooter.getVelocity().getValueAsDouble() <= (autoAimRPM / 90d) + shooterSpeedOffset + 20 + 5 && bottomShooter.getVelocity().getValueAsDouble() <= (autoAimRPM / 90d) + shooterSpeedOffset - 15 + 5);
     }
 }

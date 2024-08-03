@@ -120,33 +120,34 @@ public class Robot extends LoggedRobot {
 
         CommandScheduler.getInstance().run();
         // System.out.println(drive.getPose());
-        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
+        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPoseFront();
         // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
-        Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
+        Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getEstimatedGlobalPoseBack();
 
         if (!DriverStation.isAutonomous()) {
+            if (estimatePose4.isPresent()) {
 
+                EstimatedRobotPose robotPose = estimatePose4.get();
 
-            if (estimatePose1.isPresent()) {
-                EstimatedRobotPose robotPose = estimatePose1.get();
-                drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+                Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
+
+                Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
+                        Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
+
+                TunerConstants.DriveTrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
             }
 
+            if (estimatePose1.isPresent()) {
 
-            // if(estimatePose2.isPresent()){
-            //     EstimatedRobotPose robotPose = estimatePose2.get();
-            //     drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+                EstimatedRobotPose robotPose = estimatePose1.get();
 
-            // }
+                Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
 
-            //     if(estimatePose3.isPresent()){
-            //       EstimatedRobotPose robotPose = estimatePose3.get();
-            //       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-            //     }
-            if (estimatePose4.isPresent()) {
-                EstimatedRobotPose robotPose = estimatePose4.get();
-                drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+                Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
+                        Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 0 : 180));
+
+                TunerConstants.DriveTrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
             }
         }
 

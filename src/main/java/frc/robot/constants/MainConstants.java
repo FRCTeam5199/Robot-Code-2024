@@ -17,7 +17,7 @@ public class MainConstants {
     // public static final double SPEAKER_Z = 2.340102;
     public static final double SPEAKER_Z = 1.4511020000000001 + 0.678; //+ 0.755; //1.4511020000000001 + 0.635;
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
-    public static final int LED_LENGTH = 34 ;
+    public static final int LED_LENGTH = 34;
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 2;
@@ -79,8 +79,7 @@ public class MainConstants {
     public static int OVERHEAT_THRESHOLD = 80;
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
     public static int BrakeButtonid = 0;
-    public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
-    public Transform3d[] cameraPositions = {
+    public static Transform3d[] cameraPositions = {
             new Transform3d(0.4, -.6, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(-10))), //front
             new Transform3d(.225, .28, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(90))), //left
             new Transform3d(.1, -.4, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
@@ -88,6 +87,7 @@ public class MainConstants {
             new Transform3d(0, 0
                     , 0, new Rotation3d(0, 0, 0))
     };
+    public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
 
     public static class OperatorConstants {
         //Operator Constants
@@ -98,7 +98,7 @@ public class MainConstants {
     }
 
     public static class IDs {
-        public static final int SERVO_ID = 1;
+        public static final int SERVO_ID = 2;
         // Pigeon
         public static final int PIGEON2_ID = 22;
         public static final int LED_PORT = 0;
@@ -132,7 +132,7 @@ public class MainConstants {
             public static final int INTAKE_MOTOR_ID = 10;
 
             //Climber
-            public static final int CLIMBER_MOTOR_1_ID = 7;
+            public static final int CLIMBER_MOTOR_1_ID = 14;
             public static final int CLIMBER_MOTOR_2_ID = 8;
 
             //Arm
@@ -184,6 +184,7 @@ public class MainConstants {
         public static final double ARM_AMP_SETPOINT = 50.25;
         public static final double ARM_FAR_SHOT_SETPOINT = 48.5;
         public static final double ARM_HP_STATION_SETPOINT = 140;
+        public static final double ARM_SHUTTLE_SETPOINT = 70;
 
     }
 }

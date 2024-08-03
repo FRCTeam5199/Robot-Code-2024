@@ -11,36 +11,27 @@ import frc.robot.utils.PivotAugment;
 import frc.robot.utils.TagalongMinorSystemBase;
 import frc.robot.utils.TagalongSubsystemBase;
 
-public class ArmSubsystemVer2 extends TagalongSubsystemBase  implements PivotAugment {
+public class ArmSubsystemVer2 extends TagalongSubsystemBase implements PivotAugment {
+    public static ArmSubsystemVer2 armSubsystem;
     public final PivotParser pivotParser;
     private final TagalongPivot pivot;
-    public static ArmSubsystemVer2 armSubsystem;
     public TalonFX follower;
+    private double offset = 0;
 
     private double _setPoint = 120;
 
-    public  ArmSubsystemVer2() {
+    public ArmSubsystemVer2() {
         this(new PivotParser(Filesystem.getDeployDirectory(), "compbotShooterPivotConf.json"));
     }
 
     public ArmSubsystemVer2(PivotParser parser) {
-      super(parser);
+        super(parser);
         pivotParser = parser;
 
         pivot = new TagalongPivot(pivotParser);
         configShuffleboard();
     }
 
-    @Override
-    public TagalongPivot getPivot() {
-        return pivot;
-    }
-
-    @Override
-    public TagalongPivot getPivot(int i) {
-        return pivot;
-    }
-    
     /**
      * Gets the instnace of the Arm Subsystem.
      */
@@ -52,54 +43,72 @@ public class ArmSubsystemVer2 extends TagalongSubsystemBase  implements PivotAug
         return armSubsystem;
     }
 
-  public void onEnable() {
-    pivot.onEnable();
+    @Override
+    public TagalongPivot getPivot() {
+        return pivot;
+    }
 
-    // for testing
-    // _elevator.getElevatorMotor().setControl(
-    //     new VelocityVoltage(0.000001).withFeedForward(_elevator._elevatorFF.ks)
-    // );
-    // System.out.println("ks " + _elevator._elevatorFF.ks);
-  }
+    @Override
+    public TagalongPivot getPivot(int i) {
+        return pivot;
+    }
 
-  public void onDisable() {
-    pivot.onDisable();
-  }
+    public void onEnable() {
+        pivot.onEnable();
 
-  public void periodic() {
-    pivot.periodic();
-    updateShuffleboard();
-  }
+        // for testing
+        // _elevator.getElevatorMotor().setControl(
+        //     new VelocityVoltage(0.000001).withFeedForward(_elevator._elevatorFF.ks)
+        // );
+        // System.out.println("ks " + _elevator._elevatorFF.ks);
+    }
 
-  public void disabledPeriodic() {
-    pivot.disabledPeriodic();
-  }
+    public void onDisable() {
+        pivot.onDisable();
+    }
 
-  public void simulationInit() {
-    pivot.simulationInit();
-  }
+    public void periodic() {
+        pivot.periodic();
+        updateShuffleboard();
+    }
 
-  public void simulationPeriodic() {
-    pivot.simulationPeriodic();
-  }
+    public void disabledPeriodic() {
+        pivot.disabledPeriodic();
+    }
 
-  public void updateShuffleboard() {
-    pivot.updateShuffleboard();
-  }
+    public void simulationInit() {
+        pivot.simulationInit();
+    }
 
-  public void configShuffleboard() {
-    pivot.configShuffleboard();
-  }
+    public void simulationPeriodic() {
+        pivot.simulationPeriodic();
+    }
 
-  public boolean checkInitStatus() {
-    return pivot.checkInitStatus();
-  }
+    public void updateShuffleboard() {
+        pivot.updateShuffleboard();
+    }
 
-  public Command setSetpoint(double setpoint){
-    return this.runOnce(()-> _setPoint = setpoint);
-  }
+    public void configShuffleboard() {
+        pivot.configShuffleboard();
+    }
 
-  public double getSetPoint(){
-    return _setPoint;
-  }
+    public boolean checkInitStatus() {
+        return pivot.checkInitStatus();
+    }
+
+    public Command setSetpoint(double setpoint) {
+        return this.runOnce(() -> _setPoint = setpoint + offset);
+    }
+
+    public Command increaseOffset() {
+        return this.runOnce(() -> offset += 5).andThen(setSetpoint(_setPoint));
+    }
+
+    public Command decreaseOffset() {
+        return this.runOnce(() -> offset -= 5).andThen(setSetpoint(_setPoint));
+    }
+
+    public double getSetPoint() {
+        return _setPoint;
+    }
 }
