@@ -267,6 +267,7 @@ public class RobotContainer {
         //     ).onFalse(intake.setIntakeSpeed(0));
         //     //climb practice
 
+        mainCommandXboxController.povRight().onTrue(shooterSubsystem.runShooterAtRpm(6000)).onFalse(shooterSubsystem.runShooterAtRpm(0));
 
         mainCommandXboxController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.idleShooting = false).andThen(indexer.setIndexerSpeed(-.1).andThen(
                 new ConditionalCommand(
@@ -321,13 +322,6 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor1Speed(-.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor2Speed(.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor2Speed(-.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
-
-        testingController.a().onTrue(_shuttle);
-        testingController.b().onTrue(_midArm);
-        testingController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
-
-
-        testingController.y().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(6000))).onFalse(shooterSubsystem.runShooterAtPercent(0));
 
         buttonPanel.button(ButtonPanelButtons.AUX_LEFT_TOP).onTrue(intake.deployIntake());
         buttonPanel.button(ButtonPanelButtons.AUX_LEFT_BOTTOM).onTrue(intake.stowIntake());
