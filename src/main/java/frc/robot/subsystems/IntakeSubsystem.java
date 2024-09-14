@@ -4,6 +4,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
@@ -20,6 +21,9 @@ public class IntakeSubsystem extends SubsystemBase {
     public double setpoint;
     public double rotateOffset;
     public SparkPIDController sparkPIDController;
+    TrapezoidProfile profile;
+    TrapezoidProfile.State current;
+    TrapezoidProfile.State goal;
 
     public IntakeSubsystem() {
     }
@@ -53,6 +57,10 @@ public class IntakeSubsystem extends SubsystemBase {
             System.err.println("Exception Cause:" + exception.getCause());
             System.err.println("Exception Stack Trace:" + exception.getStackTrace());
         }
+
+        profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(125, 250));
+        current = new TrapezoidProfile.State();
+        goal = new TrapezoidProfile.State();
     }
 
     public boolean getSubsystemStatus() {
@@ -125,7 +133,8 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     private void subsystemPeriodic() {
-        intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), setpoint + rotateOffset));
+        current = profile.calculate(0.2, current, goal);
+        intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), current.position));
     }
 
     public Command increaseOffset() {
@@ -158,7 +167,7 @@ public class IntakeSubsystem extends SubsystemBase {
      * @return command to retract intake
      */
     public Command stowIntake() {
-        return this.runOnce(() -> setpoint = MainConstants.Setpoints.STOW_INTAKE);
+        return this.runOnce(() -> goal = new TrapezoidProfile.State(MainConstants.Setpoints.STOW_INTAKE, 0));
     }
 
     /**
@@ -167,6 +176,6 @@ public class IntakeSubsystem extends SubsystemBase {
      * @return command to deploy the intake
      */
     public Command deployIntake() {
-        return this.runOnce(() -> setpoint = MainConstants.Setpoints.DEPLOY_INTAKE);
+        return this.runOnce(() -> goal = new TrapezoidProfile.State(MainConstants.Setpoints.DEPLOY_INTAKE, 0));
     }
 }

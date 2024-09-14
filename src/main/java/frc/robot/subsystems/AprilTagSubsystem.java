@@ -110,7 +110,11 @@ public class AprilTagSubsystem extends SubsystemBase {
     }
 
     public Command speakerAlignmentRed() {
-        return drivetrain.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY()).withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(aim.calculate(drivetrain.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.59 - drivetrain.getPose().getY()) / (16.58 - drivetrain.getPose().getX())))))).alongWith(new InstantCommand(() -> System.out.println(Units.radiansToDegrees(Math.atan((5.548 - drivetrain.getPose().getY()) / (16.58 - drivetrain.getPose().getX()))))));
+        return drivetrain.applyRequest(() -> driveHeading.withVelocityX(-mainCommandXboxController.getLeftY())
+                .withVelocityY(-mainCommandXboxController.getLeftX()).withRotationalRate(
+                        aim.calculate(drivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(-3)).getDegrees(),
+                                Units.radiansToDegrees(
+                                        Math.atan((5.59 - drivetrain.getPose().getY()) / (16.58 - drivetrain.getPose().getX()))))));
     }
 
 

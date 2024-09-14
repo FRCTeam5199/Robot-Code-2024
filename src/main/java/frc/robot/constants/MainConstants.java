@@ -147,7 +147,7 @@ public class MainConstants {
     }
 
     public static class PIDConstants {
-        public static final PID INTAKE_PID = new PID(0.125, 0, 0);
+        public static final PID INTAKE_PID = new PID(0.2, 0, 0);
         // Climber
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 

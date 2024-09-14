@@ -132,8 +132,8 @@ public class Robot extends LoggedRobot {
 
                 Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
 
-                Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
-                        Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
+                Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), robotPose2d.getRotation());
+//                Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0)
 
                 TunerConstants.DriveTrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
             }
@@ -144,8 +144,8 @@ public class Robot extends LoggedRobot {
 
                 Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
 
-                Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
-                        Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 0 : 180));
+                Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), robotPose2d.getRotation());
+                //Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 0 : 180)
 
                 TunerConstants.DriveTrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
             }
