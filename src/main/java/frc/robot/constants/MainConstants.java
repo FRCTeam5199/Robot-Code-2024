@@ -158,7 +158,7 @@ public class MainConstants {
     public static class Setpoints {
         //Intake Setpoints
         public static final double STOW_INTAKE = 0;
-        public static final double DEPLOY_INTAKE = 8;
+        public static final double DEPLOY_INTAKE = 8.5;
         //24
 
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
