@@ -163,13 +163,10 @@ public class RobotContainer {
             autoAimValue = LookUpTable.findValue(new Pose2d(-0.03809999999999999, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
         }
 
-        // System.out.println(autoAimValue.shooterRPM);
         System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
+        // System.out.println("Distance: " + new Pose2d(-0.03809999999999999, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
         _autoAimArm.changeSetpoint(autoAimValue.armAngle);
-//        _autoAimArm.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
         speedShooterAuto = autoAimValue.shooterRPM;
-//        System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
-//        System.out.println("REACHED SPEED: " + shooterSubsystem.reachedSpeed());
 
     }
 
@@ -228,17 +225,17 @@ public class RobotContainer {
         //     //         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
-                                .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(0.2) // Drive
+                                .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(0.35) // Drive
                                 // forward
                                 // with
                                 // negative Y (forward)
                                 .withVelocityY(
-                                        -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(0.2) // Drive
+                                        -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(0.35) // Drive
                                 // left
                                 // with
                                 // negative
                                 // X (left)
-                                .withRotationalRate(-mainCommandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(0.2) // Drive
+                                .withRotationalRate(-mainCommandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(0.35) // Drive
                         // counterclockwise
                         // with
                         // negative
@@ -277,7 +274,7 @@ public class RobotContainer {
                         // climb / amp
                         new ConditionalCommand(
                                 shooterSubsystem.runShooterClimbAmp(3300),
-                                _ampARM.alongWith(shooterSubsystem.runShooterAtRpm(2200).andThen(indexer.extendServo())),
+                                _ampARM.alongWith(shooterSubsystem.runShooterClimbAmp(3300)).andThen(indexer.extendServo()),
                                 () -> climberSubsystem.climbModeEnabled),
 
                         // normal aiming / auto aiming

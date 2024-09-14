@@ -155,7 +155,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command runShooterClimbAmp(double vel) {
-        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((vel / 90)))).andThen(() -> bottomShooter.set(0));
+        return this.runOnce(() -> topShooter.setControl(velocity_request.withVelocity((vel / 90d)))).andThen(() -> bottomShooter.set(0));
     }
 
     public Command increaseShooterSpeed() {
