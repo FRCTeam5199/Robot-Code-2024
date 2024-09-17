@@ -128,8 +128,8 @@ public class MainConstants {
             public static final int ARM_ENCODER = 3;
 
             //Intake
-            public static final int INTAKE_ACTUATOR_MOTOR_ID = 9;
-            public static final int INTAKE_MOTOR_ID = 10;
+            public static final int INTAKE_ACTUATOR_MOTOR_ID = 30;
+            public static final int INTAKE_MOTOR_ID = 32;
 
             //Climber
             public static final int CLIMBER_MOTOR_1_ID = 14;
@@ -137,12 +137,12 @@ public class MainConstants {
 
             //Arm
             public static final int ARM_MOTOR_LEFT_ID = 30;
-            public static final int ARM_MOTOR_RIGHT_ID = 40;
+            public static final int ARM_MOTOR_RIGHT_ID = 39;
 
             //Shooter
             public static final int SHOOTER_MOTOR_1_ID = 2;
             public static final int SHOOTER_MOTOR_2_ID = 3;
-            public static final int SHOOTER_INDEXER_MOTOR_ID = 4;
+            public static final int SHOOTER_INDEXER_MOTOR_ID = 31;
         }
     }
 
