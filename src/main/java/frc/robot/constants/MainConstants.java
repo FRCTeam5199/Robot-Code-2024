@@ -140,8 +140,8 @@ public class MainConstants {
             public static final int ARM_MOTOR_RIGHT_ID = 39;
 
             //Shooter
-            public static final int LEFT_SHOOTER_ID = 36;
-            public static final int RIGHT_SHOOTER_MOTOR__ID = 37;
+            public static final int LEFT_SHOOTER_ID = 37;
+            public static final int RIGHT_SHOOTER_MOTOR__ID = 36;
             public static final int SHOOTER_INDEXER_MOTOR_ID = 31;
         }
     }
