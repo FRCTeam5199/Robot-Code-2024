@@ -5,24 +5,21 @@
 package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
-
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.LED.LEDSubsystem;
-
-
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.controls.ButtonPanelButtons;
-import frc.robot.utility.AutoAimValue;
-import frc.robot.utility.CommandXboxController;
-import frc.robot.utility.LookUpTable;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.LED.LEDSubsystem;
 import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
+import frc.robot.controls.ButtonPanelButtons;
 import frc.robot.controls.CommandButtonPanel;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
@@ -32,10 +29,13 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-import frc.robot.subsystems.minor.PivotToCommand;
-import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.subsystems.minor.ArmPivotSetpoints;
 // import frc.robot.utility.Akit;
+import frc.robot.subsystems.minor.PivotToCommand;
+import frc.robot.subsystems.minor.TagalongPivot;
+import frc.robot.utility.AutoAimValue;
+import frc.robot.utility.CommandXboxController;
+import frc.robot.utility.LookUpTable;
 
 
 /**
