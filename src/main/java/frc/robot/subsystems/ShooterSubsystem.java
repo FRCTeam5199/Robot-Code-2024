@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.MainConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 
@@ -84,8 +85,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public void motorInit() {
 
 
-        topShooter = new TalonFX(14);
-        bottomShooter = new TalonFX(15);
+        topShooter = new TalonFX(MainConstants.IDs.Motors.RIGHT_SHOOTER_MOTOR__ID);
+        bottomShooter = new TalonFX(MainConstants.IDs.Motors.LEFT_SHOOTER_ID);
 
 
         SlotConfigs SlotConfigTopShooter = new SlotConfigs();

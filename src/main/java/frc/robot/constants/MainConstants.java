@@ -125,7 +125,7 @@ public class MainConstants {
             public static final int BACK_RIGHT_STEER_MOTOR_ID = 1;
             public static final int BACK_RIGHT_ENCODER = 13;
 
-            public static final int ARM_ENCODER = 3;
+            public static final int ARM_ENCODER = 50;
 
             //Intake
             public static final int INTAKE_ACTUATOR_MOTOR_ID = 30;
@@ -140,8 +140,8 @@ public class MainConstants {
             public static final int ARM_MOTOR_RIGHT_ID = 39;
 
             //Shooter
-            public static final int SHOOTER_MOTOR_1_ID = 2;
-            public static final int SHOOTER_MOTOR_2_ID = 3;
+            public static final int LEFT_SHOOTER_ID = 36;
+            public static final int RIGHT_SHOOTER_MOTOR__ID = 37;
             public static final int SHOOTER_INDEXER_MOTOR_ID = 31;
         }
     }

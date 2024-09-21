@@ -3,7 +3,7 @@
     "fusedDevices": {
       "motor": {
         "type": "kraken",
-        "id": 30,
+        "id": 38,
         "canbus": "rio"
       },
       "encoder": {
@@ -14,7 +14,7 @@
     },
     "followerMotor": {
       "type": "kraken",
-      "id": 40,
+      "id": 39,
       "canbus": "rio"
     },
     "motorToPivot": [
