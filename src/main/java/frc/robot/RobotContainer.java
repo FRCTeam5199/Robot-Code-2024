@@ -175,7 +175,7 @@ public class RobotContainer {
      */
     private void configureBindings() {
         intakeAction = new SequentialCommandGroup(
-                _intakeStepUPArm.withTimeout(0.2),
+                _intakeStepUPArm.withTimeout(0.08),
                 intake.deployIntake(),
                 shooterSubsystem.runShooterAtPercent(-.3),
                 indexer.setIndexerSpeed(-.4),
