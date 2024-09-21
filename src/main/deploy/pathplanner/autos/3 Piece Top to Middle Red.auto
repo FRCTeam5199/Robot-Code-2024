@@ -14,13 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3 Piece Top to Middle Red p1"
+            "name": "halfBackShot"
           }
         },
         {
@@ -32,7 +26,25 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece Top to Middle Red p1 Reg"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "topShot"
           }
         },
         {
@@ -42,20 +54,26 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Top to Middle Red p2"
+            "pathName": "3 Piece Top to Middle Red p2 Reg"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "midShot"
           }
         }
       ]
     }
   },
-  "folder": "3 Piece Autons",
+  "folder": "3 Piece Reg Autons",
   "choreoAuto": false
 }

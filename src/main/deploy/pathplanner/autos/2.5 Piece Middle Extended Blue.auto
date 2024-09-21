@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.72,
+      "y": 4.49
+    },
+    "rotation": -69.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2.5 Piece Middle Extended Blue p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "twoPieceExtendedShotBlue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2.5 Piece Middle Extended Blue p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "retractIntake"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "2 Piece Autons",
+  "choreoAuto": false
+}

@@ -29,6 +29,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
     }
+
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         if (Utils.isSimulation()) {
@@ -66,7 +67,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
     public SwerveModulePosition[] getModulePositions() {
         return m_modulePositions;
-
     }
 
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {

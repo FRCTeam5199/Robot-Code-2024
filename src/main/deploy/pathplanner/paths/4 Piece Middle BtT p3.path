@@ -1,0 +1,97 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 15.21,
+        "y": 5.56
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 15.229245519413361,
+        "y": 5.532707625529244
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 13.821026360913931,
+        "y": 6.845949445161049
+      },
+      "prevControl": {
+        "x": 13.911588286798018,
+        "y": 6.743451474336073
+      },
+      "nextControl": {
+        "x": 13.729167719547236,
+        "y": 6.9499150383273935
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 15.3,
+        "y": 5.56
+      },
+      "prevControl": {
+        "x": 15.260532228756762,
+        "y": 5.5994677712432335
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.1,
+      "rotationDegrees": 130.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.35,
+      "rotationDegrees": 130.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "halfRetractIntake",
+      "waypointRelativePos": 1.4,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "halfRetractIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "4 Piece Paths",
+  "previewStartingState": {
+    "rotation": -179.06080905426435,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

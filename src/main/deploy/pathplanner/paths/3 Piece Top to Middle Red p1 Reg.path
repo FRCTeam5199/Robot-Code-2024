@@ -1,0 +1,106 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 15.5,
+        "y": 6.6
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 15.367023487256676,
+        "y": 6.780574360007493
+      },
+      "isLocked": false,
+      "linkedName": "top starting point red"
+    },
+    {
+      "anchor": {
+        "x": 14.383313217411029,
+        "y": 7.038212764014687
+      },
+      "prevControl": {
+        "x": 14.831184598005695,
+        "y": 6.945717587587528
+      },
+      "nextControl": {
+        "x": 13.30591625519913,
+        "y": 7.260718658384535
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 13.52,
+        "y": 6.92
+      },
+      "prevControl": {
+        "x": 13.52,
+        "y": 7.271325096373446
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "3 Piece Top to Middle Red p1 END"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.85,
+      "rotationDegrees": -179.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.3,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Intake",
+      "minWaypointRelativePos": 1.2,
+      "maxWaypointRelativePos": 1.65,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "Retract Intake",
+      "waypointRelativePos": 1.6,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -24.71744091108337,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "3 Piece Reg Paths",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

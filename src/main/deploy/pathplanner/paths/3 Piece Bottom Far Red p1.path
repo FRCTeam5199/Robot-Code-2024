@@ -3,50 +3,50 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.718348583636134,
-        "y": 4.520382906665266
+        "x": 15.730059420175902,
+        "y": 4.461828723942754
       },
       "prevControl": null,
       "nextControl": {
-        "x": 15.015698390889241,
-        "y": 1.873733847318646
+        "x": 15.390445160350428,
+        "y": 3.665491838831879
       },
       "isLocked": false,
-      "linkedName": "Bottom Red Starting Pose"
+      "linkedName": " bottom start point red"
     },
     {
       "anchor": {
-        "x": 8.703557492713008,
-        "y": 0.7729152120151834
+        "x": 8.65671414652606,
+        "y": 0.7494935389322822
       },
       "prevControl": {
-        "x": 9.955396101269043,
-        "y": 0.8623322554834715
+        "x": 9.148569281448882,
+        "y": 0.8314693947527537
       },
       "nextControl": {
-        "x": 8.211702357790184,
-        "y": 0.7377827023778389
+        "x": 8.164859011603237,
+        "y": 0.6675176831118107
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 11.338495715513847,
-        "y": 1.8268905011355192
+        "x": 11.397049898238935,
+        "y": 2.0259747224224673
       },
       "prevControl": {
-        "x": 10.682688868950084,
-        "y": 1.785902573225284
+        "x": 10.846640580587206,
+        "y": 1.4287220585876108
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "3 Piece red far "
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.85,
       "rotationDegrees": 180.0,
       "rotateFast": false
     },
@@ -60,7 +60,7 @@
   "eventMarkers": [
     {
       "name": "retract",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.85,
       "command": {
         "type": "parallel",
         "data": {
@@ -84,13 +84,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 32.92786265350188,
+    "rotation": 34.45723886256567,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "3 Piece Reg Paths",
   "previewStartingState": {
-    "rotation": -119.76483666278926,
+    "rotation": -122.47119229080108,
     "velocity": 0
   },
   "useDefaultConstraints": true

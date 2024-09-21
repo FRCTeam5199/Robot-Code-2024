@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.659794400900038,
+      "y": 6.710309340731609
+    },
+    "rotation": 119.0546040988862
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backshot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Top Far Red AUTOAIM"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "4 Piece Autons",
+  "choreoAuto": false
+}

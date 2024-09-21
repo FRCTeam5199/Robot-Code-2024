@@ -3,72 +3,50 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.25,
-        "y": 5.55
+        "x": 13.52,
+        "y": 6.92
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.35,
-        "y": 5.55
+        "x": 13.499736230241691,
+        "y": 6.788456653836385
       },
       "isLocked": false,
       "linkedName": "3 Piece Top to Middle Red p1 END"
     },
     {
       "anchor": {
-        "x": 13.75,
-        "y": 5.55
+        "x": 13.628006486782203,
+        "y": 5.377483831890741
       },
       "prevControl": {
-        "x": 13.65,
-        "y": 5.55
-      },
-      "nextControl": {
-        "x": 13.85,
-        "y": 5.55
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 14.25,
-        "y": 5.55
-      },
-      "prevControl": {
-        "x": 14.15,
-        "y": 5.55
+        "x": 13.6181395439714,
+        "y": 5.3972177175123575
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.3,
+      "rotationDegrees": -90.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.6,
+      "rotationDegrees": -90.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Deploy Intake",
-      "waypointRelativePos": 0,
+      "name": "retractIntake",
+      "waypointRelativePos": 0.95,
       "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "deployIntake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Retract Intake",
-      "waypointRelativePos": 1.5,
-      "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -83,18 +61,21 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 0.5,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 2.6025622024998065,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
-  "previewStartingState": null,
+  "folder": "3 Piece AutoAim Paths",
+  "previewStartingState": {
+    "rotation": -25.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": false
 }

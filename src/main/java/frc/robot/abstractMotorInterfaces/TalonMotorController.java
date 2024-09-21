@@ -17,7 +17,7 @@ public class TalonMotorController extends AbstractMotorController{
     public TalonMotorController(int ID, String bus) {
         super();
         talon = new TalonFX(ID, bus);
-        talon.getConfigurator().apply(configuration);
+        
     }
 
     public TalonMotorController(int ID) {

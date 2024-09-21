@@ -1,0 +1,102 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 15.21,
+        "y": 5.56
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 15.148314022781895,
+        "y": 5.533092944647427
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 14.746349150330255,
+        "y": 4.286166175756032
+      },
+      "prevControl": {
+        "x": 14.768260666585299,
+        "y": 4.34459688576948
+      },
+      "nextControl": {
+        "x": 14.716748321897828,
+        "y": 4.207230633269562
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 13.950012265217111,
+        "y": 4.11050362756931
+      },
+      "prevControl": {
+        "x": 13.821742008676598,
+        "y": 4.051301970704458
+      },
+      "nextControl": {
+        "x": 14.103361934241065,
+        "y": 4.181280397888057
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 15.32,
+        "y": 5.56
+      },
+      "prevControl": {
+        "x": 15.26698345088998,
+        "y": 5.525354916863678
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "retractIntake",
+      "waypointRelativePos": 2.25,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "4 Piece Paths",
+  "previewStartingState": {
+    "rotation": -179.06080905426435,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

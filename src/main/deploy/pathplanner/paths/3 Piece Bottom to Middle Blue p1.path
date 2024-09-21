@@ -8,36 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.8897833180281761,
-        "y": 4.3217209511342105
+        "x": 0.958851917703837,
+        "y": 4.331587893945019
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.5671635958656545,
-        "y": 4.045446552431566
+        "x": 2.75,
+        "y": 4.1
       },
       "prevControl": {
-        "x": 2.51330057050626,
-        "y": 3.883857476353383
-      },
-      "nextControl": {
-        "x": 2.6658330239737413,
-        "y": 4.341454836755828
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.24,
-        "y": 5.54
-      },
-      "prevControl": {
-        "x": 2.1906578692078233,
-        "y": 5.125589284958361
+        "x": 2.6019958578378697,
+        "y": 4.090133057189191
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,7 +30,12 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.45,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.8,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -55,28 +44,35 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.25,
+      "waypointRelativePos": 0.95,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            }
+          ]
         }
       }
     }
   ],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 155.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "3 Piece AutoAim Paths",
   "previewStartingState": {
     "rotation": 117.49255204445959,
     "velocity": 0

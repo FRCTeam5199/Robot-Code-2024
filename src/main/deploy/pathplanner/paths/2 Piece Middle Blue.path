@@ -20,24 +20,24 @@
         "y": 5.5190052971079435
       },
       "prevControl": {
-        "x": 1.7257287296314976,
-        "y": 5.530716133653725
+        "x": 2.2316875402981586,
+        "y": 5.545221859674489
       },
       "nextControl": {
-        "x": 3.305562014651107,
-        "y": 5.501991892107913
+        "x": 2.45387463599976,
+        "y": 5.503053769375181
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4428388343160021,
+        "x": 1.3337957445145674,
         "y": 5.5190052971079435
       },
       "prevControl": {
-        "x": 2.051802334696641,
-        "y": 5.527514849611655
+        "x": 1.3727567968752634,
+        "y": 5.515621031242063
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,9 +49,9 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.45,
+      "waypointRelativePos": 1.6,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {

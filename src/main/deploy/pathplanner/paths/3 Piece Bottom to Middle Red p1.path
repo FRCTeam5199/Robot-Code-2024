@@ -3,50 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.65,
-        "y": 4.4
+        "x": 15.730059420175902,
+        "y": 4.461828723942754
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.853663114886857,
-        "y": 4.16578326908437
+        "x": 15.650729762997988,
+        "y": 4.420390379242297
       },
       "isLocked": false,
       "linkedName": " bottom start point red"
     },
     {
       "anchor": {
-        "x": 14.266204851953214,
-        "y": 4.087081954477744
+        "x": 14.04,
+        "y": 4.09
       },
       "prevControl": {
-        "x": 15.655182044682231,
-        "y": 4.3530563105322395
+        "x": 14.223386013936878,
+        "y": 4.138902937049834
       },
       "nextControl": {
-        "x": 13.715795534301485,
-        "y": 3.9816844255657102
+        "x": 13.89199585783787,
+        "y": 4.050532228756765
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.25,
-        "y": 5.55
+        "x": 14.04,
+        "y": 4.09
       },
       "prevControl": {
-        "x": 14.203156653815297,
-        "y": 4.542868057060051
+        "x": 13.922285027646979,
+        "y": 3.965047380863993
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "middle shooting point"
+      "linkedName": "Top Piece shot red"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0.15,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.7,
       "rotationDegrees": 180.0,
       "rotateFast": false
     }
@@ -54,8 +59,8 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 2.5,
-      "maxWaypointRelativePos": 2.75,
+      "minWaypointRelativePos": 1.5,
+      "maxWaypointRelativePos": 1.75,
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 1.0,
@@ -66,10 +71,10 @@
   ],
   "eventMarkers": [
     {
-      "name": "RetractIntake",
-      "waypointRelativePos": 1.45,
+      "name": "retractIntake",
+      "waypointRelativePos": 1.75,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -84,18 +89,18 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 8.746162262555297,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "3 Piece AutoAim Paths",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7220452902444284,
+      "y": 4.489458978917958
+    },
+    "rotation": -59.596945429844915
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 Piece Extended Blue"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "twoPieceExtendedShotBlue"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "2 Piece Autons",
+  "choreoAuto": false
+}

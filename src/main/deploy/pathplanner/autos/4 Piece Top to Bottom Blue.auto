@@ -1,0 +1,79 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3,
+      "y": 5.550936522700434
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "deployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Middle TtB Blue p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "halfBackShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "halfDeployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Middle TtB Blue p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "halfBackShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "halfDeployIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Middle TtB Blue p3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "backShot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "4 Piece Autons",
+  "choreoAuto": false
+}

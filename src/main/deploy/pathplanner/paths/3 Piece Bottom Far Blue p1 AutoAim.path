@@ -1,0 +1,125 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.83,
+        "y": 4.46
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 0.9299999999999999,
+        "y": 4.46
+      },
+      "isLocked": false,
+      "linkedName": "Bottom Blue Starting Pos"
+    },
+    {
+      "anchor": {
+        "x": 2.695898344721082,
+        "y": 2.2719022898816124
+      },
+      "prevControl": {
+        "x": 1.7987170460203692,
+        "y": 2.7135647370759624
+      },
+      "nextControl": {
+        "x": 3.593079643421795,
+        "y": 1.830239842687262
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.0,
+        "y": 0.75
+      },
+      "prevControl": {
+        "x": 7.0,
+        "y": 0.75
+      },
+      "nextControl": {
+        "x": 8.48,
+        "y": 0.75
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.7850061434787623,
+        "y": 2.775468261350217
+      },
+      "prevControl": {
+        "x": 4.522788845862998,
+        "y": 1.862023010779259
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Deploy Intake",
+      "waypointRelativePos": 1.6,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "deployIntake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Retract Intake",
+      "waypointRelativePos": 2.15,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 143.65254179111474,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "3 Piece AutoAim Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

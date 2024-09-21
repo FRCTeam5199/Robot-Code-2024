@@ -16,28 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.616498309919698,
-        "y": 7.025263281295794
+        "x": 2.89,
+        "y": 6.99
       },
       "prevControl": {
-        "x": 2.550851786017892,
-        "y": 7.337084269829363
-      },
-      "nextControl": {
-        "x": 2.6559660811629335,
-        "y": 6.837791367890429
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.24,
-        "y": 5.54
-      },
-      "prevControl": {
-        "x": 2.3090685996756606,
-        "y": 5.944544655243157
+        "x": 2.7814636290811046,
+        "y": 7.0097338856216185
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,8 +30,13 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.4,
-      "rotationDegrees": 0,
+      "waypointRelativePos": 0.35,
+      "rotationDegrees": 11.15,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.75,
+      "rotationDegrees": 11.15,
       "rotateFast": false
     }
   ],
@@ -55,30 +44,37 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.45,
+      "waypointRelativePos": 0.75,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            }
+          ]
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -160.2328313232083,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3 Piece Paths",
+  "folder": "3 Piece AutoAim Paths",
   "previewStartingState": {
-    "rotation": -123.00999999999999,
+    "rotation": 56.989999999999995,
     "velocity": 0
   },
   "useDefaultConstraints": false

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9299999999999997,
-        "y": 6.6207186260526365
+        "x": 1.3725738150477713,
+        "y": 7.038212764014687
       },
       "isLocked": false,
       "linkedName": "Top Blue Starting Pos"
@@ -20,24 +20,24 @@
         "y": 6.991369417831561
       },
       "prevControl": {
-        "x": 2.298932693288476,
-        "y": 6.991890050342532
+        "x": 1.7590314210585614,
+        "y": 7.167031966018283
       },
       "nextControl": {
-        "x": 2.761067306711523,
-        "y": 6.9908487853205905
+        "x": 2.649220308127315,
+        "y": 6.964205479257041
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.8305816611633238,
+        "x": 0.83,
         "y": 6.6207186260526365
       },
       "prevControl": {
-        "x": 0.7306202190980838,
-        "y": 6.61794191932746
+        "x": 1.6536338921465275,
+        "y": 7.260718658384535
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,14 +48,14 @@
     {
       "waypointRelativePos": 1.0,
       "rotationDegrees": 0,
-      "rotateFast": true
+      "rotateFast": false
     }
   ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 1.25,
+      "waypointRelativePos": 1.45,
       "command": {
         "type": "parallel",
         "data": {
@@ -63,7 +63,7 @@
             {
               "type": "named",
               "data": {
-                "name": "retractIntake"
+                "name": "actualRetract"
               }
             }
           ]

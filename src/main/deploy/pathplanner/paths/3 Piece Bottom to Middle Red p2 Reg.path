@@ -1,0 +1,89 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 14.125674813403833,
+        "y": 4.754599637587292
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 13.873677206212825,
+        "y": 4.870980357231286
+      },
+      "isLocked": false,
+      "linkedName": "middle shooting point"
+    },
+    {
+      "anchor": {
+        "x": 13.55184382266054,
+        "y": 5.45
+      },
+      "prevControl": {
+        "x": 13.43427145831081,
+        "y": 5.005279032267182
+      },
+      "nextControl": {
+        "x": 13.577403032301786,
+        "y": 5.546678471246265
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 14.254494015407433,
+        "y": 5.52
+      },
+      "prevControl": {
+        "x": 13.739162411639393,
+        "y": 5.52
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 90.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "retractIntake",
+      "waypointRelativePos": 1.35,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "retractIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.5,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "3 Piece Reg Paths",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

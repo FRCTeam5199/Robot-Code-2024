@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.718348583636134,
-      "y": 4.520382906665266
+      "x": 15.730059420175902,
+      "y": 4.461828723942754
     },
-    "rotation": 58.81502534219311
+    "rotation": -124.09497795476555
   },
   "command": {
     "type": "sequential",
@@ -14,19 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "name": "halfBackShot"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "deployIntake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.4
           }
         },
         {
@@ -38,13 +38,13 @@
         {
           "type": "named",
           "data": {
-            "name": "backShot"
+            "name": "shoot"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 0.2
           }
         },
         {
@@ -52,10 +52,16 @@
           "data": {
             "pathName": "3 Piece Bottom Far Red p2"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
         }
       ]
     }
   },
-  "folder": "3 Piece Autons",
+  "folder": "3 Piece Reg Autons",
   "choreoAuto": false
 }

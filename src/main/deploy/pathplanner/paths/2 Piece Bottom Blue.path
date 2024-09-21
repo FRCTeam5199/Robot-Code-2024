@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9144611495762298,
-        "y": 4.46
+        "x": 1.407706324685116,
+        "y": 3.993395262111494
       },
       "isLocked": false,
       "linkedName": "Bottom Blue Starting Pos"
@@ -36,8 +36,8 @@
         "y": 4.461828723942754
       },
       "prevControl": {
-        "x": 1.4038309907432944,
-        "y": 4.2978770123018135
+        "x": 1.6887664017838722,
+        "y": 3.946551915928368
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "retractIntake",
-      "waypointRelativePos": 0.75,
+      "waypointRelativePos": 1.6,
       "command": {
         "type": "parallel",
         "data": {
@@ -63,7 +63,7 @@
             {
               "type": "named",
               "data": {
-                "name": "retractIntake"
+                "name": "actualRetract"
               }
             }
           ]
