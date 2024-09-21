@@ -99,6 +99,9 @@ public class ShooterSubsystem extends SubsystemBase {
         topShooter.getConfigurator().apply(SlotConfigTopShooter);
         bottomShooter.getConfigurator().apply(SlotConfigBottomShooter);
 
+        topShooter.setInverted(true);
+        bottomShooter.setInverted(true);
+
     }
 
     @Override
