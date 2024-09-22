@@ -30,7 +30,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.subsystems.minor.ArmPivotSetpoints;
-// import frc.robot.utility.Akit;
 import frc.robot.subsystems.minor.PivotToCommand;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.utility.AutoAimValue;
@@ -201,10 +200,12 @@ public class RobotContainer {
                         .onlyIf(() -> intake.intakeMotor.getVelocity() > 0.0000000001));
 
         new Trigger(shooterSubsystem::reachedNormalSpeed)
-                .onTrue(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.SHOOTING)));
+                .onTrue(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.SHOOTING)))
+                .onFalse(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE)));
 
         new Trigger(shooterSubsystem::reachedAutoSpeed)
-                .onTrue(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.SHOOTING)));
+                .onTrue(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.SHOOTING)))
+                .onFalse(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE)));
         //     // //new Trigger(() -> shooterSubsystem.reachedSpeed()).onTrue(new InstantCommand(() -> Led.green())).onFalse(new InstantCommand(() -> Led.red()));
         //     // // new Trigger(Superstructure::getClimbButtonPressed).onTrue(new frc.robot.utility.DisabledInstantCommand(() -> {
         //     // //         if (DriverStation.isDisabled()) {
