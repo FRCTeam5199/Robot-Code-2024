@@ -17,7 +17,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public VortexMotorController intakeMotor;
     public VortexMotorController intakeActuatorMotor;
-    public PIDController pidController;
+    public PIDController intakeActuatorMotorPIDController;
     public double setpoint;
     public double rotateOffset;
     public SparkPIDController sparkPIDController;
@@ -74,10 +74,12 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_MOTOR_ID);
         intakeMotor.getEncoder().setPosition(0);
         intakeMotor.setInvert(false);
+        intakeMotor.setBrake(false);
 
         intakeActuatorMotor = new VortexMotorController(MainConstants.IDs.Motors.INTAKE_ACTUATOR_MOTOR_ID);
         intakeActuatorMotor.getEncoder().setPosition(0);
         intakeActuatorMotor.setInvert(true);
+        intakeActuatorMotor.setBrake(true);
 
         intakeMotor.setCurrentLimit(40);
         intakeActuatorMotor.setCurrentLimit(60);
@@ -87,7 +89,7 @@ public class IntakeSubsystem extends SubsystemBase {
      * init of the pidController
      */
     public void PIDInit() {
-        pidController = new PIDController(MainConstants.PIDConstants.INTAKE_PID.P, MainConstants.PIDConstants.INTAKE_PID.I, MainConstants.PIDConstants.INTAKE_PID.D);
+        intakeActuatorMotorPIDController = new PIDController(MainConstants.PIDConstants.INTAKE_PID.P, MainConstants.PIDConstants.INTAKE_PID.I, MainConstants.PIDConstants.INTAKE_PID.D);
     }
 
     public boolean checkMotors() {
@@ -99,7 +101,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public boolean checkPID() {
-        if (pidController != null) {
+        if (intakeActuatorMotorPIDController != null) {
             return true;
         } else {
             return false;
@@ -134,7 +136,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     private void subsystemPeriodic() {
         current = profile.calculate(0.2, current, goal);
-        intakeActuatorMotor.set(pidController.calculate(intakeActuatorMotor.getRotations(), current.position));
+        intakeActuatorMotor.set(intakeActuatorMotorPIDController.calculate(intakeActuatorMotor.getRotations(), current.position));
     }
 
     public Command increaseOffset() {

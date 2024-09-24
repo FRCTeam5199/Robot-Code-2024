@@ -154,11 +154,16 @@ public class Autos extends Command {
                 shooter.runShooterAtRpm(4000).alongWith(indexer.setIndexerSpeed(-0.1))
                 , new WaitCommand(0.7), indexer.setIndexerSpeed(0.4),
                 shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0)));
-        NamedCommands.registerCommand("backShot", new SequentialCommandGroup(
-                _backShot.withTimeout(0.5).alongWith(shooter.runShooterAtRpm(4000))
-                        .alongWith(indexer.setIndexerSpeed(-0.1)),
-                new WaitCommand(0.6), indexer.setIndexerSpeed(0.4),
-                shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), _armStable.withTimeout(0.2)));
+        // NamedCommands.registerCommand("backShot", new SequentialCommandGroup(
+        //         _backShot.withTimeout(0.5).alongWith(shooter.runShooterAtRpm(4000))
+        //                 .alongWith(indexer.setIndexerSpeed(-0.1)),
+        //         new WaitCommand(0.6), indexer.setIndexerSpeed(0.4),
+        //         shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), _armStable.withTimeout(0.2)));
+        NamedCommands.registerCommand("backShotIntake", new SequentialCommandGroup(
+                    _backShot.withTimeout(0.5).alongWith(shooter.runShooterAtRpm(4000))
+                            .alongWith(indexer.setIndexerSpeed(-0.1)).alongWith(intake.deployIntake()),
+                    new WaitCommand(0.6), indexer.setIndexerSpeed(0.4),
+                    shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), _armStable.withTimeout(0.2)));
 
         NamedCommands.registerCommand("twoPieceExtendedShotRed", new SequentialCommandGroup(
                 _twoPieceExtendedShotRed.withTimeout(0.8).alongWith(shooter.runShooterAtRpm(5500))
