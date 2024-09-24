@@ -1,29 +1,27 @@
 package frc.robot.subsystems.minor;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.utils.TagalongAngle;
-import frc.robot.Main;
 import frc.robot.constants.MainConstants;
+import frc.robot.utils.TagalongAngle;
 
 public enum ArmPivotSetpoints implements TagalongAngle {
-    //need offset dont delete
     ZERO(0.0),
-    SUB(MainConstants.Setpoints.ARM_SUBWOOFER_SETPOINT + 2),
-    MID(MainConstants.Setpoints.ARM_SAFE_SETPOINT + 1.5),
+    SUB(MainConstants.Setpoints.ARM_SUBWOOFER_SETPOINT),
+    MID(MainConstants.Setpoints.ARM_SAFE_SETPOINT),
     TWO_PIECE_EXTENDED_RED(MainConstants.Setpoints.ARM_TWO_PIECE_EXTENDED_SHOT_RED),
-    TWO_PIECE_EXTENDED_BLUE(MainConstants.Setpoints.ARM_TWO_PIECE_EXTENDED_SHOT_BLUE + 0.4),
-    AMP(MainConstants.Setpoints.ARM_AMP_SETPOINT + 1.25),
-    BACK(MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT + .75),
-    STABLE(MainConstants.Setpoints.ARM_STABLE_SETPOINT + 1),
-    INTAKE_STEP_UP(50 + 1),
+    TWO_PIECE_EXTENDED_BLUE(MainConstants.Setpoints.ARM_TWO_PIECE_EXTENDED_SHOT_BLUE),
+    AMP(MainConstants.Setpoints.ARM_AMP_SETPOINT),
+    BACK(MainConstants.Setpoints.ARM_SPEAKER_BACK_SETPOINT),
+    STABLE(MainConstants.Setpoints.ARM_STABLE_SETPOINT),
+    INTAKE_STEP_UP(51),
     INTAKE(3),
     VERTICAL(120),
     LONG(80),
-    TRAP(MainConstants.Setpoints.ARM_TRAP_SETPOINT + 0.75),
-    CLIMB_MIDDLE(MainConstants.Setpoints.ARM_TRAP_PREP_SETPOINT + 2),
+    TRAP(MainConstants.Setpoints.ARM_TRAP_SETPOINT),
+    CLIMB_MIDDLE(MainConstants.Setpoints.ARM_TRAP_PREP_SETPOINT),
     FAR_SHOT(MainConstants.Setpoints.ARM_FAR_SHOT_SETPOINT),
     HP_STATION(MainConstants.Setpoints.ARM_HP_STATION_SETPOINT),
-    SHUTTLE(MainConstants.Setpoints.ARM_SHUTTLE_SETPOINT + 1.75);
+    SHUTTLE(MainConstants.Setpoints.ARM_SHUTTLE_SETPOINT);
 
     private final Rotation2d _value;
 

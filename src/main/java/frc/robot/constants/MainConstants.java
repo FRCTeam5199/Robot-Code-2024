@@ -168,26 +168,26 @@ public class MainConstants {
         public static final double CLIMBER_RETRACTED_SETPOINT = 0;
 
         //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 30; //Maybe make it 22.5 for chain
+        public static final double ARM_STABLE_SETPOINT = 31; //Maybe make it 22.5 for chain
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 4;
-        public static final double ARM_TRAP_SETPOINT = 118;
-        public static final double ARM_TRAP_PREP_SETPOINT = 82;
+        public static final double ARM_TRAP_SETPOINT = 118.75;
+        public static final double ARM_TRAP_PREP_SETPOINT = 84;
         public static final double ARM_TRAP_PREP2_SETPOINT = 72;
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
         public static final double ARM_AUTON_STABLE = 147;
         public static final double ARM_TWO_PIECE_EXTENDED_SHOT_RED = 52.3;
-        public static final double ARM_TWO_PIECE_EXTENDED_SHOT_BLUE = 53.5;
+        public static final double ARM_TWO_PIECE_EXTENDED_SHOT_BLUE = 53.9;
         //Control Panel
-        public static final double ARM_SUBWOOFER_SETPOINT = 79;
-        public static final double ARM_SPEAKER_BACK_SETPOINT = 146;
-        public static final double ARM_SAFE_SETPOINT = 56;
-        public static final double ARM_AMP_SETPOINT = 50.25;
+        public static final double ARM_SUBWOOFER_SETPOINT = 81;
+        public static final double ARM_SPEAKER_BACK_SETPOINT = 146.75;
+        public static final double ARM_SAFE_SETPOINT = 57.5;
+        public static final double ARM_AMP_SETPOINT = 51.5;
         public static final double ARM_FAR_SHOT_SETPOINT = 48.5;
         public static final double ARM_HP_STATION_SETPOINT = 140;
-        public static final double ARM_SHUTTLE_SETPOINT = 70;
+        public static final double ARM_SHUTTLE_SETPOINT = 71.75;
 
     }
 }

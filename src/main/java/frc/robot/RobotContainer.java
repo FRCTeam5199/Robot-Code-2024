@@ -266,8 +266,8 @@ public class RobotContainer {
         //     mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)
         //     ).onFalse(intake.setIntakeSpeed(0));
         //     //climb practice
-
-        mainCommandXboxController.povRight().onTrue(shooterSubsystem.runShooterAtRpm(6000)).onFalse(shooterSubsystem.setShooterSpeed(0));
+        mainCommandXboxController.povUp().onTrue(shooterSubsystem.runShooterAtRpm(6000)).onFalse(shooterSubsystem.runShooterAtRpm(0));
+        mainCommandXboxController.povDown().onTrue(arm.setSetpoint(ArmPivotSetpoints.SHUTTLE.getDegrees()).andThen(shooterSubsystem.setAmpMode(false)).andThen(shooterSubsystem.setRPMShooter(3500)));
 
         mainCommandXboxController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.idleShooting = false).andThen(indexer.setIndexerSpeed(-.1).andThen(
                 new ConditionalCommand(
@@ -301,8 +301,6 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.FAR_SHOT.getDegrees()).andThen(shooterSubsystem.setRPMShooter(6000)));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_PREP_SETPOINT).onTrue(shooterSubsystem.setAmpMode(true).andThen(shooterSubsystem.setRPMShooter(3300)).andThen(climberSubsystem.setClimbMode(true)).andThen(_climbMiddleArmV2));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_SETPOINT).onTrue(shooterSubsystem.setRPMShooter(2500).andThen(shooterSubsystem.setAmpMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)).andThen(climberSubsystem.setClimbMode(true).andThen(_trapArm)));
-        //Shuttling
-        buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.SHUTTLE.getDegrees()).andThen(shooterSubsystem.setAmpMode(false)).andThen(shooterSubsystem.setRPMShooter(3500)));
 
         buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_UP).onTrue(intake.increaseOffset());
         buttonPanel.button(ButtonPanelButtons.MOVE_INTAKE_SETPOINT_DOWN).onTrue(intake.decreaseOffset());
