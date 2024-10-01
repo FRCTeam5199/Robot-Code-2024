@@ -266,8 +266,7 @@ public class RobotContainer {
         //     mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)
         //     ).onFalse(intake.setIntakeSpeed(0));
         //     //climb practice
-        mainCommandXboxController.povUp().onTrue(shooterSubsystem.runShooterAtRpm(6000)).onFalse(shooterSubsystem.runShooterAtRpm(0));
-        mainCommandXboxController.povDown().onTrue(arm.setSetpoint(ArmPivotSetpoints.SHUTTLE.getDegrees()).andThen(shooterSubsystem.setAmpMode(false)).andThen(shooterSubsystem.setRPMShooter(3500)));
+        mainCommandXboxController.povRight().onTrue(shooterSubsystem.runShooterAtRpm(6000)).onFalse(shooterSubsystem.runShooterAtRpm(0));
 
         mainCommandXboxController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.idleShooting = false).andThen(indexer.setIndexerSpeed(-.1).andThen(
                 new ConditionalCommand(
@@ -298,7 +297,9 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.BACK.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.MID.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false)));
-        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.FAR_SHOT.getDegrees()).andThen(shooterSubsystem.setRPMShooter(6000)));
+        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT
+        _SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.FAR_SHOT.getDegrees()).andThen(shooterSubsystem.setRPMShooter(6000)));
+        buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(arm.setSet)
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_PREP_SETPOINT).onTrue(shooterSubsystem.setAmpMode(true).andThen(shooterSubsystem.setRPMShooter(3300)).andThen(climberSubsystem.setClimbMode(true)).andThen(_climbMiddleArmV2));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_SETPOINT).onTrue(shooterSubsystem.setRPMShooter(2500).andThen(shooterSubsystem.setAmpMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)).andThen(climberSubsystem.setClimbMode(true).andThen(_trapArm)));
 

@@ -101,9 +101,9 @@ public class MainConstants {
     }
 
     public static class IDs {
-        public static final int SERVO_ID = 2;
         // Pigeon
         public static final int PIGEON2_ID = 22;
+        public static final int SERVO_ID = 1;
         public static final int LED_PORT = 0;
 
         // Pneumatics
