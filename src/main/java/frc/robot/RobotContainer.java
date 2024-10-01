@@ -116,7 +116,7 @@ public class RobotContainer {
             new PivotToCommand(arm, ArmPivotSetpoints.ZERO, true);
     //use with 4500 rpm on both rollers
     private PivotToCommand _shuttle =
-            new PivotToCommand(arm, ArmPivotSetpoints.MID, true);
+            new PivotToCommand(arm, ArmPivotSetpoints.SHUTTLE, true);
     private PivotToCommand _farShot =
             new PivotToCommand(arm, ArmPivotSetpoints.FAR_SHOT, true);
     private PivotToCommand _hpStation =
@@ -297,9 +297,8 @@ public class RobotContainer {
         buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.BACK.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_SAFE_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.MID.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
         buttonPanel.button(ButtonPanelButtons.ARM_AMP_SETPOINT).onTrue(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false)));
-        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT
-        _SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.FAR_SHOT.getDegrees()).andThen(shooterSubsystem.setRPMShooter(6000)));
-        buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(arm.setSet)
+        buttonPanel.button(ButtonPanelButtons.ARM_FAR_SHOT_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.FAR_SHOT.getDegrees()).andThen(shooterSubsystem.setRPMShooter(6000)));
+        buttonPanel.button(ButtonPanelButtons.ARM_HP_STATION_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.SHUTTLE.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(3250))));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_PREP_SETPOINT).onTrue(shooterSubsystem.setAmpMode(true).andThen(shooterSubsystem.setRPMShooter(3300)).andThen(climberSubsystem.setClimbMode(true)).andThen(_climbMiddleArmV2));
         buttonPanel.button(ButtonPanelButtons.CLIMB_ARM_TRAP_SETPOINT).onTrue(shooterSubsystem.setRPMShooter(2500).andThen(shooterSubsystem.setAmpMode(true)).andThen(shooterSubsystem.setRPMShooter(3300)).andThen(climberSubsystem.setClimbMode(true).andThen(_trapArm)));
 
