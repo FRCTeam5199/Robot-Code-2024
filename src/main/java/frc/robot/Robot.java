@@ -4,34 +4,24 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.*;
+import java.util.Optional;
+
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.photonvision.EstimatedRobotPose;
 
-import com.ctre.phoenix6.CANBus;
-import com.revrobotics.SparkFlexExternalEncoder;
-
-import org.littletonrobotics.junction.inputs.LoggableInputs;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.LoggedRobot;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-
-import java.util.Optional;
-
-import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 
 /**
