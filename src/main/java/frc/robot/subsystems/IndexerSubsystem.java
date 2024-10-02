@@ -31,15 +31,15 @@ public class IndexerSubsystem extends SubsystemBase {
         shooterIndexerMotor.setCurrentLimit(40);
 
         servo = new Servo(MainConstants.IDs.SERVO_ID);
-        
+        servo.getAngle();
     }
 
     public Command extendServo() {
-        return this.runOnce(() -> servo.setAngle(215));//used to be 235
+        return this.runOnce(() -> servo.setPosition(0.5));
     }
 
     public Command retractServo() {
-        return this.runOnce(() -> servo.setAngle(90));
+        return this.runOnce(() -> servo.setPosition(0));
     }
 
     @Override
@@ -74,5 +74,9 @@ public class IndexerSubsystem extends SubsystemBase {
         }
         if (checker >= 150) System.out.println(true);
         return checker >= 150;
+    }
+
+    public boolean isServoExtended() {
+        return (servo.getAngle() == 90);
     }
 }

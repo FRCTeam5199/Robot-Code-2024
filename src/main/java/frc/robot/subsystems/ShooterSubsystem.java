@@ -84,8 +84,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public void motorInit() {
 
 
-        topShooter = new TalonFX(MainConstants.IDs.Motors.RIGHT_SHOOTER_MOTOR__ID);
-        bottomShooter = new TalonFX(MainConstants.IDs.Motors.LEFT_SHOOTER_ID);
+        topShooter = new TalonFX(MainConstants.IDs.Motors.SHOOTER_MOTOR_RIGHT_ID);
+        bottomShooter = new TalonFX(MainConstants.IDs.Motors.SHOOTER_MOTOR_LEFT_ID);
 
 
         SlotConfigs SlotConfigTopShooter = new SlotConfigs();

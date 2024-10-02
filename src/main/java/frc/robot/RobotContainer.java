@@ -44,8 +44,6 @@ import frc.robot.utility.LookUpTable;
  * subsystems, commands, and              trigger mappings) should be declared here.
  */
 public class RobotContainer {
-
-
     public final static AprilTagSubsystem aprilTags = new AprilTagSubsystem();
     public final static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     public final static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
@@ -124,8 +122,6 @@ public class RobotContainer {
 
 
     public RobotContainer() {
-
-
         tagAlong = arm.getPivot();
         shooterSubsystem.init();
         // arm.init();
@@ -134,9 +130,7 @@ public class RobotContainer {
         indexer.init();
 
         LEDs.init();
-        LEDs.setMode(LEDSubsystem.LEDMode.IDLE);
         LEDs.start();
-
 
         auton = new Autos(drivetrain, intake, arm, shooterSubsystem, indexer, this);
         // SmartDashboard.putData("Field", drivetrain.m_field);
@@ -148,6 +142,7 @@ public class RobotContainer {
     }
 
     public void onDisable() {
+        LEDs.setMode(LEDSubsystem.LEDMode.IDLE);
         arm.onDisable();
     }
 
@@ -162,7 +157,7 @@ public class RobotContainer {
             autoAimValue = LookUpTable.findValue(new Pose2d(-0.03809999999999999, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
         }
 
-        System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
+        // System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
         // System.out.println("Distance: " + new Pose2d(-0.03809999999999999, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
         _autoAimArm.changeSetpoint(autoAimValue.armAngle);
         speedShooterAuto = autoAimValue.shooterRPM;
@@ -274,7 +269,7 @@ public class RobotContainer {
                         // climb / amp
                         new ConditionalCommand(
                                 shooterSubsystem.runShooterClimbAmp(3300),
-                                _ampARM.alongWith(shooterSubsystem.runShooterClimbAmp(3300)).andThen(indexer.extendServo()),
+                                _ampARM.alongWith(shooterSubsystem.runShooterClimbAmp(3300)).alongWith(indexer.extendServo()),
                                 () -> climberSubsystem.climbModeEnabled),
 
                         // normal aiming / auto aiming
@@ -282,7 +277,10 @@ public class RobotContainer {
 
                         //                 // based on climbing on or off
                         () -> shooterSubsystem.ampMode)))).onFalse(
-                shooterSubsystem.runShooterAtPercent(0).andThen(indexer.retractServo()).andThen(_armStable.onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
+                shooterSubsystem.runShooterAtPercent(0).andThen(new ConditionalCommand(
+                        indexer.retractServo(),
+                        indexer.extendServo(),
+                        indexer::isServoExtended)).andThen(_armStable.onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
 
 
 //        mainCommandXboxController.x().onTrue(new InstantCommand(() -> _customArm.changeSetpoint(51)).andThen(_customArm));

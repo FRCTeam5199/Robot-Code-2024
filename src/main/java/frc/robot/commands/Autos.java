@@ -59,6 +59,7 @@ public class Autos extends Command {
     private PivotToCommand _halfIntakeArm;
     private PivotToCommand _halfUpStableArm;
     private PivotToCommand _backShot;
+    private PivotToCommand _backShotIntake;
     private PivotToCommand _halfBackShot;
     private PivotToCommand _halfIntakeBackShot;
     private PivotToCommand _twoPieceExtendedShotRed;
@@ -86,6 +87,7 @@ public class Autos extends Command {
         _halfIntakeArm = new PivotToCommand(arm, ArmPivotSetpoints.INTAKE, true);
         _halfUpStableArm = new PivotToCommand(arm, ArmPivotSetpoints.STABLE, true);
         _backShot = new PivotToCommand(arm, ArmPivotSetpoints.BACK, true);
+        _backShotIntake = new PivotToCommand(arm, ArmPivotSetpoints.BACK, true);
         _halfBackShot = new PivotToCommand(arm, ArmPivotSetpoints.BACK, true);
         _halfIntakeBackShot = new PivotToCommand(arm, ArmPivotSetpoints.BACK, true);
         _twoPieceExtendedShotRed = new PivotToCommand(arm, ArmPivotSetpoints.TWO_PIECE_EXTENDED_RED, true);
@@ -159,9 +161,10 @@ public class Autos extends Command {
                         .alongWith(indexer.setIndexerSpeed(-0.1)),
                 new WaitCommand(0.6), indexer.setIndexerSpeed(0.4),
                 shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), _armStable.withTimeout(0.2)));
+
         // NamedCommands.registerCommand("backShotIntake", new SequentialCommandGroup(
-        //         _backShot.withTimeout(0.5).alongWith(shooter.runShooterAtRpm(4000))
-        //                 .alongWith(indexer.setIndexerSpeed(-0.1)).andThen(intake.deployIntake()),
+        //         _backShotIntake.withTimeout(0.5).alongWith(shooter.runShooterAtRpm(4000))
+        //                 .alongWith(indexer.setIndexerSpeed(-0.1)).alongWith(intake.deployIntake()),
         //         new WaitCommand(0.6), indexer.setIndexerSpeed(0.4),
         //         shooter.runShooterAtPercent(0), indexer.setIndexerSpeed(0), _armStable.withTimeout(0.2)));
 
