@@ -116,13 +116,9 @@ public class ShooterSubsystem extends SubsystemBase {
             if (DriverStation.getAlliance().get() == Alliance.Red) {
                 autoAimRPM = ((drive.getPose().getTranslation().getDistance(new Translation2d(16.579342, 5.547)) - 1.27) * (6000 - 3400) / (5.7912 - 1.27) + 3400);
 
-
             } else if (DriverStation.getAlliance().get() == Alliance.Blue) {
                 autoAimRPM = ((drive.getPose().getTranslation().getDistance(new Translation2d(0.1, 5.547)) - 1.27) * (6000 - 3400) / (5.7912 - 1.27) + 3400);
-
             }
-
-//            System.out.println("speed " + setRPM / 90 + " top Shoter " + topShooter.getVelocity());
 
             // System.out.println(autoAimRPM);
             // System.out.println("super" + autoAimRPM/90);

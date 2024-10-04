@@ -20,27 +20,27 @@
         "y": 1.7464488775131404
       },
       "prevControl": {
-        "x": 13.40106680213361,
-        "y": 2.0523241046482106
+        "x": 15.242202530744972,
+        "y": 3.057607135789419
       },
       "nextControl": {
-        "x": 12.502412664163124,
-        "y": 1.459594779603853
+        "x": 11.514158263694558,
+        "y": 0.9368669236625209
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.305389050150424,
+        "x": 8.0,
         "y": 0.7612043754757987
       },
       "prevControl": {
-        "x": 8.196287183988753,
+        "x": 7.890898133838329,
         "y": 0.6611943314942673
       },
       "nextControl": {
-        "x": 8.423792363880128,
+        "x": 8.118403313729704,
         "y": 0.8697407463946942
       },
       "isLocked": false,
@@ -49,15 +49,15 @@
     {
       "anchor": {
         "x": 12.94,
-        "y": 2.9
+        "y": 2.33
       },
       "prevControl": {
-        "x": 12.796929329243273,
-        "y": 2.769263007756786
+        "x": 12.917936845144935,
+        "y": 2.352063154855065
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "2 Piece Extended Red p2 Start"
     }
   ],
   "rotationTargets": [
@@ -69,6 +69,11 @@
     {
       "waypointRelativePos": 2.0999999999999996,
       "rotationDegrees": 180.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 3.0,
+      "rotationDegrees": 48.0,
       "rotateFast": false
     }
   ],

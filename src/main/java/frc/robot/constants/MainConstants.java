@@ -187,7 +187,7 @@ public class MainConstants {
         public static final double ARM_AMP_SETPOINT = 51.5;
         public static final double ARM_FAR_SHOT_SETPOINT = 48.5;
         public static final double ARM_HP_STATION_SETPOINT = 140;
-        public static final double ARM_SHUTTLE_SETPOINT = 71.75;
+        public static final double ARM_SHUTTLE_SETPOINT = 81.75;
 
     }
 }

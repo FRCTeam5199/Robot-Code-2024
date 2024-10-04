@@ -36,7 +36,6 @@ import frc.robot.utility.AutoAimValue;
 import frc.robot.utility.CommandXboxController;
 import frc.robot.utility.LookUpTable;
 
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -138,11 +137,11 @@ public class RobotContainer {
     }
 
     public void onEnable() {
+        LEDs.setMode(LEDSubsystem.LEDMode.IDLE);
         arm.onEnable();
     }
 
     public void onDisable() {
-        LEDs.setMode(LEDSubsystem.LEDMode.IDLE);
         arm.onDisable();
     }
 
@@ -159,9 +158,9 @@ public class RobotContainer {
 
         // System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
         // System.out.println("Distance: " + new Pose2d(-0.03809999999999999, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
-        _autoAimArm.changeSetpoint(autoAimValue.armAngle);
+        _autoAimArm.changeSetpoint(-autoAimValue.armAngle);
         speedShooterAuto = autoAimValue.shooterRPM;
-
+        // System.out.println(autoAimValue.armAngle);
     }
 
     /**
@@ -261,7 +260,7 @@ public class RobotContainer {
         //     mainCommandXboxController.povRight().onTrue(intake.setIntakeSpeed(-1)
         //     ).onFalse(intake.setIntakeSpeed(0));
         //     //climb practice
-        mainCommandXboxController.povRight().onTrue(shooterSubsystem.runShooterAtRpm(6000)).onFalse(shooterSubsystem.runShooterAtRpm(0));
+        mainCommandXboxController.povRight().onTrue(shooterSubsystem.runShooterAtRpm(6000)).onFalse(shooterSubsystem.runShooterAtPercent(0).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
 
         mainCommandXboxController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.idleShooting = false).andThen(indexer.setIndexerSpeed(-.1).andThen(
                 new ConditionalCommand(

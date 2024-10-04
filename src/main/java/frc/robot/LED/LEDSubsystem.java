@@ -10,7 +10,6 @@ public class LEDSubsystem extends SubsystemBase {
     public LEDMode selectedLEDMode;
     AddressableLED LEDLights = new AddressableLED(MainConstants.IDs.LED_PORT);
     AddressableLEDBuffer LEDBuffer = new AddressableLEDBuffer(MainConstants.LED_LENGTH);
-    boolean powerSaverMode;
     public int pixelValue = 0;
 
     public LEDSubsystem() {}
@@ -28,10 +27,6 @@ public class LEDSubsystem extends SubsystemBase {
         LEDLights.stop();
     }
 
-    public void setPowerSaverMode(boolean mode) {
-        powerSaverMode = mode;
-    }
-
     public void setMode(LEDMode mode) {
         this.selectedLEDMode = mode;
     }
@@ -39,7 +34,7 @@ public class LEDSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (selectedLEDMode == LEDMode.IDLE) {
-            // setFade(Color.kBlue, Color.kLightBlue);
+            // setFade(Color.kBlue);
             setColor(Color.kBlue);
         } else if (selectedLEDMode == LEDMode.INTAKING) {
             // setFade(Color.kBlue, Color.kDarkSeaGreen);
@@ -160,6 +155,16 @@ public class LEDSubsystem extends SubsystemBase {
         }
     }
 
+    public void setFade(Color color) {
+        if (color.red + pixelValue > 255 || color.blue + pixelValue > 255 || color.green + pixelValue > 255) {
+            pixelValue = 0;
+        }
+
+        for (int i = 0; i < LEDBuffer.getLength(); i++) {
+            LEDBuffer.setLED(i, new Color(color.red + pixelValue, color.blue + pixelValue, color.green + pixelValue));
+        }
+    }
+    
     public void rainbow() { 
         // For every pixel
         for (var i = 0; i < LEDBuffer.getLength(); i++) {

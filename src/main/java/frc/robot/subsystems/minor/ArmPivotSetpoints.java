@@ -7,7 +7,7 @@ import frc.robot.utils.TagalongAngle;
 public enum ArmPivotSetpoints implements TagalongAngle {
     ZERO(0.0),
     SUB(MainConstants.Setpoints.ARM_SUBWOOFER_SETPOINT),
-    MID(MainConstants.Setpoints.ARM_SAFE_SETPOINT),
+    MID(MainConstants.Setpoints.ARM_SAFE_SETPOINT + 4),
     TWO_PIECE_EXTENDED_RED(MainConstants.Setpoints.ARM_TWO_PIECE_EXTENDED_SHOT_RED),
     TWO_PIECE_EXTENDED_BLUE(MainConstants.Setpoints.ARM_TWO_PIECE_EXTENDED_SHOT_BLUE),
     AMP(MainConstants.Setpoints.ARM_AMP_SETPOINT),
