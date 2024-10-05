@@ -9,7 +9,6 @@ import frc.robot.utility.PID;
 
 
 public class MainConstants {
-
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
     public static final double ARM_PIVOT_X_OFFSET = 0.18415; //0.2032; //meters //7.25 inch
     public static final double ARM_PIVOT_Z = 0.5800;//0.5788; //0.5715; //meters //22 inch
@@ -187,7 +186,7 @@ public class MainConstants {
         public static final double ARM_AMP_SETPOINT = 51.5;
         public static final double ARM_FAR_SHOT_SETPOINT = 48.5;
         public static final double ARM_HP_STATION_SETPOINT = 140;
-        public static final double ARM_SHUTTLE_SETPOINT = 81.75;
+        public static final double ARM_SHUTTLE_SETPOINT = 76.75;
 
     }
 }
