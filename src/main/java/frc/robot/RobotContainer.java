@@ -66,7 +66,7 @@ public class RobotContainer {
     private final CommandXboxController testingController = new CommandXboxController(3);
     private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDeadband(MaxSpeed * 0.15).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
     // driving in open loop
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -123,7 +123,6 @@ public class RobotContainer {
     public RobotContainer() {
         tagAlong = arm.getPivot();
         shooterSubsystem.init();
-        // arm.init();
         intake.init();
         climberSubsystem.init();
         indexer.init();
@@ -158,7 +157,11 @@ public class RobotContainer {
 
         // System.out.println("Distance: " + new Pose2d(16.58, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
         // System.out.println("Distance: " + new Pose2d(-0.03809999999999999, 5.54, new Rotation2d(0)).getTranslation().getDistance(drivetrain.getPose().getTranslation()));
-        _autoAimArm.changeSetpoint(-autoAimValue.armAngle);
+        if (autoAimValue.armAngle < 0) {
+                _autoAimArm.changeSetpoint(autoAimValue.armAngle);
+        } else {
+                _autoAimArm.changeSetpoint(0);
+        }
         speedShooterAuto = autoAimValue.shooterRPM;
         // System.out.println(autoAimValue.armAngle);
     }
@@ -220,17 +223,9 @@ public class RobotContainer {
         //     //         // Drive
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
-                                .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed).withDeadband(0.35) // Drive
-                                // forward
-                                // with
-                                // negative Y (forward)
-                                .withVelocityY(
-                                        -mainCommandXboxController.getLeftX() * MaxSpeed).withDeadband(0.35) // Drive
-                                // left
-                                // with
-                                // negative
-                                // X (left)
-                                .withRotationalRate(-mainCommandXboxController.getRightX() * MaxAngularRate).withRotationalDeadband(0.35) // Drive
+                                .withVelocityX(-mainCommandXboxController.getLeftY() * MaxSpeed) // Drive
+                                .withVelocityY(-mainCommandXboxController.getLeftX() * MaxSpeed) // Drive
+                                .withRotationalRate(-mainCommandXboxController.getRightX() * MaxAngularRate) // Drive
                         // counterclockwise
                         // with
                         // negative
@@ -272,14 +267,13 @@ public class RobotContainer {
                                 () -> climberSubsystem.climbModeEnabled),
 
                         // normal aiming / auto aiming
-                        new SequentialCommandGroup(new InstantCommand(() -> _customArm.changeSetpoint(arm.getSetPoint())), _customArm.alongWith(shooterSubsystem.runShooterPredeterminedRPM())).onlyIf(() -> !shooterSubsystem.intakeShooter),
+                        new SequentialCommandGroup(new InstantCommand(() -> _customArm.changeSetpoint(arm.getSetPoint())),
+                        _customArm.alongWith(shooterSubsystem.runShooterPredeterminedRPM()),
+                        indexer.extendServo()).onlyIf(() -> !shooterSubsystem.intakeShooter),
 
                         //                 // based on climbing on or off
                         () -> shooterSubsystem.ampMode)))).onFalse(
-                shooterSubsystem.runShooterAtPercent(0).andThen(new ConditionalCommand(
-                        indexer.retractServo(),
-                        indexer.extendServo(),
-                        indexer::isServoExtended)).andThen(_armStable.onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
+                shooterSubsystem.runShooterAtPercent(0).andThen(indexer.retractServo()).andThen(_armStable.onlyIf(() -> climberSubsystem.climbModeEnabled == false)).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
 
 
 //        mainCommandXboxController.x().onTrue(new InstantCommand(() -> _customArm.changeSetpoint(51)).andThen(_customArm));

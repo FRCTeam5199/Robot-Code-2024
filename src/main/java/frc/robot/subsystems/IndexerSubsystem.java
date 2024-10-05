@@ -35,11 +35,11 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public Command extendServo() {
-        return this.runOnce(() -> servo.setPosition(0.5));
+        return this.runOnce(() -> servo.setAngle(MainConstants.Setpoints.SERVO_EXTENDED_SETPOINT));
     }
 
     public Command retractServo() {
-        return this.runOnce(() -> servo.setPosition(0));
+        return this.runOnce(() -> servo.setAngle(MainConstants.Setpoints.SERVO_RETRACTED_SETPOINT));
     }
 
     @Override
@@ -72,11 +72,11 @@ public class IndexerSubsystem extends SubsystemBase {
         for (int i = 0; i < 150; i++) {
             if (currentCheck()) checker++;
         }
-        if (checker >= 150) System.out.println(true);
+        // if (checker >= 150) System.out.println(true);
         return checker >= 150;
     }
 
     public boolean isServoExtended() {
-        return (servo.getAngle() == 90);
+        return (servo.getAngle() == MainConstants.Setpoints.SERVO_EXTENDED_SETPOINT);
     }
 }

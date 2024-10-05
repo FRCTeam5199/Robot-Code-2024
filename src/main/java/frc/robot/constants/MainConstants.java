@@ -149,24 +149,30 @@ public class MainConstants {
     }
 
     public static class PIDConstants {
+        // Intake PID
         public static final PID INTAKE_PID = new PID(0.13, 0, 0);
-        // Climber
+        
+        // Climber PID
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 
-        // Arm
+        // Arm PID
         public static final PID ARM_PID = new PID(0.0075, 0.0, 0);
     }
 
     public static class Setpoints {
-        //Intake Setpoints
-        public static final double STOW_INTAKE = 0.7;
-        public static final double DEPLOY_INTAKE = 8.1;
-        //24
+        // Servo Setpoints
+        public static final double SERVO_EXTENDED_SETPOINT = 82;
+        public static final double SERVO_RETRACTED_SETPOINT = 20;
 
+        // Intake Setpoints
+        public static final double STOW_INTAKE_SETPOINT = 0.7;
+        public static final double DEPLOY_INTAKE_SETPOINT = 8.36; //8.1
+
+        // Climber Setpoints
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
         public static final double CLIMBER_RETRACTED_SETPOINT = 0;
 
-        //Arm Setpoints
+        // Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 31; //Maybe make it 22.5 for chain
         public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 4;
@@ -176,9 +182,9 @@ public class MainConstants {
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
-        public static final double ARM_AUTON_STABLE = 147;
-        public static final double ARM_TWO_PIECE_EXTENDED_SHOT_RED = 52.3;
-        public static final double ARM_TWO_PIECE_EXTENDED_SHOT_BLUE = 53.9;
+        public static final double ARM_AUTON_STABLE_SETPOINT = 147;
+        public static final double ARM_TWO_PIECE_EXTENDED_SHOT_RED_SETPOINT = 52.3;
+        public static final double ARM_TWO_PIECE_EXTENDED_SHOT_BLUE_SETPOINT = 53.9;
         //Control Panel
         public static final double ARM_SUBWOOFER_SETPOINT = 81;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 146.75;
@@ -187,6 +193,5 @@ public class MainConstants {
         public static final double ARM_FAR_SHOT_SETPOINT = 48.5;
         public static final double ARM_HP_STATION_SETPOINT = 140;
         public static final double ARM_SHUTTLE_SETPOINT = 76.75;
-
     }
 }

@@ -169,7 +169,7 @@ public class IntakeSubsystem extends SubsystemBase {
      * @return command to retract intake
      */
     public Command stowIntake() {
-        return this.runOnce(() -> goal = new TrapezoidProfile.State(MainConstants.Setpoints.STOW_INTAKE, 0));
+        return this.runOnce(() -> goal = new TrapezoidProfile.State(MainConstants.Setpoints.STOW_INTAKE_SETPOINT, 0));
     }
 
     /**
@@ -178,6 +178,6 @@ public class IntakeSubsystem extends SubsystemBase {
      * @return command to deploy the intake
      */
     public Command deployIntake() {
-        return this.runOnce(() -> goal = new TrapezoidProfile.State(MainConstants.Setpoints.DEPLOY_INTAKE, 0));
+        return this.runOnce(() -> goal = new TrapezoidProfile.State(MainConstants.Setpoints.DEPLOY_INTAKE_SETPOINT, 0));
     }
 }
