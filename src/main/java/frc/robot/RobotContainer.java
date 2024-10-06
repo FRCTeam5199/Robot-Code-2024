@@ -81,6 +81,7 @@ public class RobotContainer {
             aprilTags.speakerAlignmentBlue(),
             () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
     );
+
     private PivotToCommand _subArm =
             new PivotToCommand(arm, ArmPivotSetpoints.SUB, true);
     private PivotToCommand _midArm =
