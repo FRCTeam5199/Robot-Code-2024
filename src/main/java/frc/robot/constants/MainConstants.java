@@ -165,8 +165,8 @@ public class MainConstants {
         public static final double SERVO_RETRACTED_SETPOINT = 20;
 
         // Intake Setpoints
-        public static final double STOW_INTAKE_SETPOINT = 0.7;
-        public static final double DEPLOY_INTAKE_SETPOINT = 8.36; //8.1
+        public static final double STOW_INTAKE_SETPOINT = 1.1;
+        public static final double DEPLOY_INTAKE_SETPOINT = 8.2; //8.1, 8.36
 
         // Climber Setpoints
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
@@ -189,7 +189,7 @@ public class MainConstants {
         public static final double ARM_SUBWOOFER_SETPOINT = 81;
         public static final double ARM_SPEAKER_BACK_SETPOINT = 146.75;
         public static final double ARM_SAFE_SETPOINT = 57.5;
-        public static final double ARM_AMP_SETPOINT = 51.5;
+        public static final double ARM_AMP_SETPOINT = 52.5; // 51.5
         public static final double ARM_FAR_SHOT_SETPOINT = 48.5;
         public static final double ARM_HP_STATION_SETPOINT = 140;
         public static final double ARM_SHUTTLE_SETPOINT = 76.75;
