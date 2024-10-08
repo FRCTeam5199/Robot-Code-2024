@@ -41,8 +41,6 @@ public class RobotContainer {
 
   public final CompressorSubsystem compressor = new CompressorSubsystem();
 
-  // public final Auton auton;
-
   SendableChooser<Command> autonChooser = new SendableChooser<>();
 
   /**
@@ -217,7 +215,7 @@ public class RobotContainer {
 
     commandXboxController.povRight().onTrue(stableCommandGroup);
 
-    commandXboxController.rightTrigger().onTrue(intake.ManualRetract());
+//     commandXboxController.rightTrigger().onTrue(intake.ManualRetract());
     commandXboxController.leftTrigger().onTrue(new ConditionalCommand(
       new SequentialCommandGroup(new InstantCommand(() -> arm.setHighDunk())),
       new SequentialCommandGroup(new InstantCommand(() -> arm.setMidDunk())),
@@ -226,9 +224,9 @@ public class RobotContainer {
     commandXboxController.povUp().onTrue(highGoalCommandGroup);
     commandXboxController.povLeft().onTrue(midGoalCommandGroup);
     commandXboxController.povDown().onTrue(lowGoalCommandGroup);
-    
-    commandXboxController.button(6).onTrue(wrist.moveLeftManual());
+
     commandXboxController.button(7).onTrue(wrist.moveRightManual());
+    commandXboxController.button(8).onTrue(wrist.moveLeftManual());
 
     // Map claw commands toxbox controller triggers
     if (Constants.ENABLE_CLAW) {

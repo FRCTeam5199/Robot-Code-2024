@@ -1,7 +1,5 @@
 package frc.robot.subsystems.piecemanipulation;
 
-import frc.robot.Constants;
-import frc.robot.AbstractMotorInterfaces.SparkMotorController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -10,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
+import frc.robot.abstractMotorInterfaces.SparkMotorController;
 
 public class WristSubsystem extends SubsystemBase{
     public static SparkMotorController wristMotorController;

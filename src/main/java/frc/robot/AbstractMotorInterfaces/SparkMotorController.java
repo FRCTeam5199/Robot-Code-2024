@@ -1,4 +1,4 @@
-package frc.robot.AbstractMotorInterfaces;
+package frc.robot.abstractMotorInterfaces;
 
 import static com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless;
 

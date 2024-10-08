@@ -1,10 +1,10 @@
-package frc.robot.AbstractMotorInterfaces;
+package frc.robot.abstractMotorInterfaces;
 
 import java.util.ArrayList;
 
-import frc.robot.AbstractMotorInterfaces.followers.AbstractFollowerMotorController;
-import frc.robot.AbstractMotorInterfaces.followers.SparkFollowerMotorsController;
-import frc.robot.AbstractMotorInterfaces.followers.TalonFollowerMotorController;
+import frc.robot.abstractMotorInterfaces.followers.AbstractFollowerMotorController;
+import frc.robot.abstractMotorInterfaces.followers.SparkFollowerMotorsController;
+import frc.robot.abstractMotorInterfaces.followers.TalonFollowerMotorController;
 import frc.robot.utility.PID;
 import frc.robot.utility.UserInterface;
 

@@ -1,7 +1,7 @@
-package frc.robot.AbstractMotorInterfaces.followers;
+package frc.robot.abstractMotorInterfaces.followers;
 
-import frc.robot.AbstractMotorInterfaces.AbstractMotorController;
-import frc.robot.AbstractMotorInterfaces.SparkMotorController;
+import frc.robot.abstractMotorInterfaces.AbstractMotorController;
+import frc.robot.abstractMotorInterfaces.SparkMotorController;
 
 /**
  * This works to wrap Neo's and maybe some other motors

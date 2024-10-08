@@ -1,7 +1,7 @@
-package frc.robot.AbstractMotorInterfaces.followers;
+package frc.robot.abstractMotorInterfaces.followers;
 
-import frc.robot.AbstractMotorInterfaces.AbstractMotorController;
-import frc.robot.AbstractMotorInterfaces.TalonMotorController;
+import frc.robot.abstractMotorInterfaces.AbstractMotorController;
+import frc.robot.abstractMotorInterfaces.TalonMotorController;
 
 /**
  * This works to wrap Falcon500's and maybe some other motors

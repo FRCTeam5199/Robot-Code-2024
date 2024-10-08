@@ -1,4 +1,4 @@
-package frc.robot.AbstractMotorInterfaces;
+package frc.robot.abstractMotorInterfaces;
 
 import frc.robot.Robot;
 import frc.robot.utility.PID;
