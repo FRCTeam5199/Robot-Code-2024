@@ -65,8 +65,7 @@ public class RobotContainer {
             MainConstants.OperatorConstants.OPERATOR_CONTROLLER_PORT);
     private final CommandXboxController testingController = new CommandXboxController(3);
     private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
     // driving in open loop
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();

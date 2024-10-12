@@ -160,7 +160,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public Command setIntakeActuatorTarget(double target) {
-        return this.runOnce(() -> setpoint = target);
+        return this.runOnce(() -> setpoint = target + rotateOffset);
     }
 
     /**
