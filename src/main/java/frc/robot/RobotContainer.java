@@ -5,29 +5,8 @@ package frc.robot;
 
 import static frc.robot.utility.UserInterface.ROBOT_TAB;
 
-import java.time.Instant;
-import java.util.Map;
-
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
-import frc.robot.commands.CompressorCommand;
-import frc.robot.constants.Constants;
-import frc.robot.constants.TunerConstants;
-import frc.robot.controls.ManualControls;
-import frc.robot.controls.customcontrollers.CommandButtonPanel;
-import frc.robot.subsystems.CompressorSubsystem;
-import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.piecemanipulation.ArmSubsystem;
-import frc.robot.subsystems.piecemanipulation.ClawSubsystem;
-import frc.robot.subsystems.piecemanipulation.ElevatorSubsystem;
-import frc.robot.subsystems.piecemanipulation.IntakeSubsystem;
-import frc.robot.subsystems.piecemanipulation.WristSubsystem;
-import frc.robot.utility.AlwaysRunCommand;
-import frc.robot.utility.LimelightManager;
-import frc.robot.utility.UserInterface;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -36,22 +15,31 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.CompressorCommand;
+import frc.robot.constants.Constants;
+import frc.robot.controls.customcontrollers.CommandButtonPanel;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.CompressorSubsystem;
+import frc.robot.subsystems.piecemanipulation.ArmSubsystem;
+import frc.robot.subsystems.piecemanipulation.ClawSubsystem;
+import frc.robot.subsystems.piecemanipulation.ElevatorSubsystem;
+import frc.robot.subsystems.piecemanipulation.IntakeSubsystem;
+import frc.robot.subsystems.piecemanipulation.WristSubsystem;
+import frc.robot.utility.UserInterface;
 
 public class RobotContainer {
-
-
   // public CommandXboxController commandXboxController;
   public CommandButtonPanel buttonPanel;
 
 double MaxSpeed = 6;
-double MaxAngularRate = 2;
+double MaxAngularRate = 6;
   CommandXboxController mainCommandXboxController = new CommandXboxController(0);
   public UserInterface uI;
 
-    private final ManualControls manualControls = new ManualControls(new XboxController(0));
+    private final CommandXboxController commandXboxController = new CommandXboxController(0);
 
 
-  private final SwerveDrive drivetrain = frc.robot.constants.TunerConstants.DriveTrain;
+  private final CommandSwerveDrivetrain drivetrain = frc.robot.constants.TunerConstants.DriveTrain;
 
   // not public or private so Robot.java has access to it.
   public final static ArmSubsystem arm = new ArmSubsystem();
@@ -78,9 +66,6 @@ double MaxAngularRate = 2;
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-
-    
-
     compressor.init();
 
     claw.init();
@@ -93,9 +78,6 @@ double MaxAngularRate = 2;
 
     intake.init();
 
-
-
-
     createControllers();
 
     configureBindings();
@@ -103,14 +85,12 @@ double MaxAngularRate = 2;
     CompressorCommand compressorRun = new CompressorCommand(compressor);
     
     compressor.setDefaultCommand(compressorRun);
-
     
       ROBOT_TAB.add(autonChooser);
   }
 
   private void createControllers() {
     buttonPanel = new CommandButtonPanel();
-
   }
 
   public void configureBindings() {
@@ -273,41 +253,39 @@ double MaxAngularRate = 2;
               new InstantCommand(() -> wrist.stopRotation())
           )
         ),
-             arm::isFront);
+        arm::isFront);
     // Map position commands to button panel triggers
-    buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_2, 12).onTrue(humanPlayerCommandGroup);
-    buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 7).onTrue(stableCommandGroup);
-    buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 8).onTrue(stableCommandGroup);
-    buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 9).onTrue(highGoalCommandGroup);
-    buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 10).onTrue(midGoalCommandGroup);
-    buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 11).onTrue(lowGoalCommandGroup);
+    commandXboxController.povDown().onTrue(stableCommandGroup);
+    commandXboxController.rightBumper().onTrue(humanPlayerCommandGroup);
+    commandXboxController.povUp().onTrue(highGoalCommandGroup);
+    commandXboxController.povRight().onTrue(midGoalCommandGroup);
+    commandXboxController.povLeft().onTrue(lowGoalCommandGroup);
+
     buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_2, 11).onTrue(hp1CommandGroup);
 
     buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 3).onTrue(intake.ManualRetract());
 
-    buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 5).onTrue(wrist.moveLeftManual());
-    buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 6).onTrue(wrist.moveRigthManual());
+    commandXboxController.button(7).onTrue(wrist.moveLeftManual());
+    commandXboxController.button(8).onTrue(wrist.moveRightManual());
 
 
-    manualControls.leftTrigger().onTrue(new ConditionalCommand(
-      new SequentialCommandGroup(new InstantCommand(() -> arm.setHighDunk())),
-      new SequentialCommandGroup(new InstantCommand(() -> arm.setMidDunk())),
-      arm::isHigh));
-
-    manualControls.leftTrigger().onFalse(new InstantCommand(() -> arm.resetDunk()));
+    commandXboxController.leftTrigger().onTrue(new ConditionalCommand(
+        new SequentialCommandGroup(new InstantCommand(() -> arm.setHighDunk())),
+        new SequentialCommandGroup(new InstantCommand(() -> arm.setMidDunk())),
+    arm::isHigh)).onFalse(new InstantCommand(() -> arm.resetDunk()));
 
 
     // Map claw commands toxbox controler triggers
     if (Constants.ENABLE_CLAW) {
-      manualControls.y().onTrue(claw.openPiston());
-      manualControls.a().onTrue(claw.closePiston());
+      commandXboxController.y().onTrue(claw.openPiston());
+      commandXboxController.a().onTrue(claw.closePiston());
     }
 
     // Map claw commands toxbox controler triggers
     if (Constants.ENABLE_INTAKE) {
         // manualControls.b().onTrue(intake.spinOutakeOnBottom(false)).onFalse(intake.spinOutakeOnBottom(true));
-        manualControls.x().toggleOnTrue(intake.spinBottomWithLimit());
-        manualControls.b().onTrue(intake.fastOutake().andThen(intake.stopSpinToKeep())).onFalse((intake.stopSpin()));
+        commandXboxController.x().toggleOnTrue(intake.spinBottomWithLimit());
+        commandXboxController.b().onTrue(intake.fastOutake().andThen(intake.stopSpinToKeep())).onFalse((intake.stopSpin()));
     }
   
     buttonPanel.button(Constants.ControllerIds.BUTTON_PANEL_1, 1).onTrue(arm.changeRotateOffset(1));

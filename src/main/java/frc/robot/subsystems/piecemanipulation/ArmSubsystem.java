@@ -1,7 +1,7 @@
 package frc.robot.subsystems.piecemanipulation;
 
 import frc.robot.constants.Constants;
-import frc.robot.AbstractMotorInterfaces.*;
+import frc.robot.abstractMotorInterfaces.SparkMotorController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;

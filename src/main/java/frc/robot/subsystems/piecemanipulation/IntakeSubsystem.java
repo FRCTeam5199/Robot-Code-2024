@@ -5,19 +5,17 @@
 package frc.robot.subsystems.piecemanipulation;
 
 import java.util.function.BooleanSupplier;
+
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-
+import frc.robot.abstractMotorInterfaces.SparkMotorController;
 import frc.robot.constants.Constants;
-import frc.robot.AbstractMotorInterfaces.SparkMotorController;
-
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class IntakeSubsystem extends SubsystemBase {
     /** Creates a new BottomIntakeSubsystem. */
