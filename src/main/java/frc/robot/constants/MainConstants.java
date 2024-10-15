@@ -151,7 +151,7 @@ public class MainConstants {
     public static class PIDConstants {
         // Intake PID
         public static final PID INTAKE_PID = new PID(0.13, 0, 0);
-        
+
         // Climber PID
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 
@@ -165,7 +165,7 @@ public class MainConstants {
         public static final double SERVO_RETRACTED_SETPOINT = 20;
 
         // Intake Setpoints
-        public static final double STOW_INTAKE_SETPOINT = 1.1;
+        public static final double STOW_INTAKE_SETPOINT = 0.5;
         public static final double DEPLOY_INTAKE_SETPOINT = 8.2; //8.1, 8.36
 
         // Climber Setpoints
