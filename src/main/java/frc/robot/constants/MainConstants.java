@@ -86,10 +86,7 @@ public class MainConstants {
             new Transform3d(0, 0
                     , 0, new Rotation3d(0, 0, 0))
     };
-    public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
-
-
-    // final double TARGET_HEIGHT_METERS = Units.feetToMeters(5);
+    public String[] cameraNames = {"Front", "Back"};
 
     public static class OperatorConstants {
         //Operator Constants
@@ -104,10 +101,6 @@ public class MainConstants {
         public static final int PIGEON2_ID = 22;
         public static final int SERVO_ID = 2;
         public static final int LED_PORT = 0;
-
-        // Pneumatics
-        // public static final int PCM_ID = 0;
-        // public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = null;
 
         public static class Motors {
             // Drive
@@ -150,7 +143,7 @@ public class MainConstants {
 
     public static class PIDConstants {
         // Intake PID
-        public static final PID INTAKE_PID = new PID(0.13, 0, 0);
+        public static final PID INTAKE_PID = new PID(0.07, 0, 0); // 0.1
 
         // Climber PID
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
@@ -166,7 +159,7 @@ public class MainConstants {
 
         // Intake Setpoints
         public static final double STOW_INTAKE_SETPOINT = 0.5;
-        public static final double DEPLOY_INTAKE_SETPOINT = 8.2; //8.1, 8.36
+        public static final double DEPLOY_INTAKE_SETPOINT = 8.36; //8.1, 8.2, 8.36
 
         // Climber Setpoints
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
