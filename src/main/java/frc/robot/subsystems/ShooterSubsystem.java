@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -66,8 +70,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void init() {
-        velocity_request = new VelocityVoltage(0).withSlot(0).withFeedForward(2).withEnableFOC(true);
-
+        velocity_request = new VelocityVoltage(0, 0, true, 2.0, 0, false, false, true);
+        //new VelocityVoltage(0).withSlot(0).withFeedForward(2).withEnableFOC(true);
         try {
             motorInit();
         } catch (Exception exception) {
@@ -87,6 +91,11 @@ public class ShooterSubsystem extends SubsystemBase {
         topShooter = new TalonFX(MainConstants.IDs.Motors.SHOOTER_MOTOR_RIGHT_ID);
         bottomShooter = new TalonFX(MainConstants.IDs.Motors.SHOOTER_MOTOR_LEFT_ID);
 
+        topShooter.getConfigurator().apply(new HardwareLimitSwitchConfigs().withReverseLimitEnable(false).withForwardLimitEnable(false));
+        bottomShooter.getConfigurator().apply(new HardwareLimitSwitchConfigs().withReverseLimitEnable(false).withForwardLimitEnable(false));
+
+        // topShooter.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(40).withSupplyCurrentLimit(40).withSupplyCurrentLimitEnable(false).withStatorCurrentLimitEnable(false));
+        // bottomShooter.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(40).withSupplyCurrentLimit(40).withSupplyCurrentLimitEnable(false).withStatorCurrentLimitEnable(false));
 
         SlotConfigs SlotConfigTopShooter = new SlotConfigs();
         SlotConfigs SlotConfigBottomShooter = new SlotConfigs();
@@ -94,9 +103,12 @@ public class ShooterSubsystem extends SubsystemBase {
         configureSlot(SlotConfigTopShooter, 2.2, 0.1, 0.7, 0.1, 0, 0.1);
         configureSlot(SlotConfigBottomShooter, 2.2, 0.1, 0.65, 0.1, 0, 0.1);
 
+        
 
         topShooter.getConfigurator().apply(SlotConfigTopShooter);
         bottomShooter.getConfigurator().apply(SlotConfigBottomShooter);
+
+        
 
         topShooter.setInverted(true);
         bottomShooter.setInverted(true);
@@ -111,6 +123,20 @@ public class ShooterSubsystem extends SubsystemBase {
         //     // System.out.println("botttom shooter " + bottomShooter.getVelocity().getValueAsDouble());
         //     System.out.println("thingy " + autoAimRPM);
         //     System.out.println("weird thingy + 1" +autoAimRPM/90);
+
+        Logger.recordOutput("Shooter/TopMotor/SupplyCurrent:", topShooter.getSupplyCurrent().getValue());
+        Logger.recordOutput("Shooter/TopMotor/StatorCurrent:", topShooter.getStatorCurrent().getValue());
+
+        Logger.recordOutput("Shooter/BottomMotor/MotorVoltage:", topShooter.getMotorVoltage().getValue());
+        // Logger.recordOutput("Shooter/BottomMotor/StatorCurrent:", topShooter.getStatorCurrent().getValue());
+
+
+        Logger.recordOutput("Shooter/BottomMotor/SupplyCurrent:", bottomShooter.getSupplyCurrent().getValue());
+        Logger.recordOutput("Shooter/BottomMotor/StatorCurrent:", bottomShooter.getStatorCurrent().getValue());
+
+        Logger.recordOutput("Shooter/BottomMotor/SupplyCurrent:", bottomShooter.getMotorVoltage().getValue());
+        // Logger.recordOutput("Shooter/BottomMotor/StatorCurrent:", bottomShooter.getStatorCurrent().getValue());
+
         // }
         if (DriverStation.getAlliance().isPresent()) {
             if (DriverStation.getAlliance().get() == Alliance.Red) {
