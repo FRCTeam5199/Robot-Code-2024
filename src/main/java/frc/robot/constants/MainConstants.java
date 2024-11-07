@@ -7,7 +7,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.utility.PID;
 
-
 public class MainConstants {
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
     public static final double ARM_PIVOT_X_OFFSET = 0.18415; //0.2032; //meters //7.25 inch
@@ -158,8 +157,8 @@ public class MainConstants {
         public static final double SERVO_RETRACTED_SETPOINT = 20;
 
         // Intake Setpoints
-        public static final double STOW_INTAKE_SETPOINT = 0;
-        public static final double DEPLOY_INTAKE_SETPOINT = 8.8; //8.1, 8.2, 8.36, 8.8
+        public static final double STOW_INTAKE_SETPOINT = 0.5; //0,0.2,0.5
+        public static final double DEPLOY_INTAKE_SETPOINT = 8.1; //8.1, 8.2, 8.36, 8.8
 
         // Climber Setpoints
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
@@ -167,7 +166,6 @@ public class MainConstants {
 
         // Arm Setpoints
         public static final double ARM_STABLE_SETPOINT = 31; //Maybe make it 22.5 for chain
-        public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
         public static final double ARM_INTAKE_SETPOINT = 4;
         public static final double ARM_TRAP_SETPOINT = 118.75;
         public static final double ARM_TRAP_PREP_SETPOINT = 84;
@@ -179,12 +177,12 @@ public class MainConstants {
         public static final double ARM_TWO_PIECE_EXTENDED_SHOT_RED_SETPOINT = 52.3;
         public static final double ARM_TWO_PIECE_EXTENDED_SHOT_BLUE_SETPOINT = 53.9;
         //Control Panel
-        public static final double ARM_SUBWOOFER_SETPOINT = 81;
+        public static final double ARM_SUBWOOFER_SETPOINT = 90; //81
         public static final double ARM_SPEAKER_BACK_SETPOINT = 146.75;
         public static final double ARM_SAFE_SETPOINT = 57.5;
         public static final double ARM_AMP_SETPOINT = 52.5; // 51.5
         public static final double ARM_FAR_SHOT_SETPOINT = 48.5;
         public static final double ARM_HP_STATION_SETPOINT = 140;
-        public static final double ARM_SHUTTLE_SETPOINT = 76.75;
+        public static final double ARM_SHUTTLE_SETPOINT = 82; //76.75
     }
 }

@@ -6,8 +6,6 @@ import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import frc.robot.utility.PID;
 
 public class TalonMotorController extends AbstractMotorController{
     

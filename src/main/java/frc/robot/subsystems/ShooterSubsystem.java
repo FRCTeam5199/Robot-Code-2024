@@ -86,16 +86,14 @@ public class ShooterSubsystem extends SubsystemBase {
      * Initalizes the motor(s) for this subsystem
      */
     public void motorInit() {
-
-
         topShooter = new TalonFX(MainConstants.IDs.Motors.SHOOTER_MOTOR_RIGHT_ID);
         bottomShooter = new TalonFX(MainConstants.IDs.Motors.SHOOTER_MOTOR_LEFT_ID);
 
         topShooter.getConfigurator().apply(new HardwareLimitSwitchConfigs().withReverseLimitEnable(false).withForwardLimitEnable(false));
         bottomShooter.getConfigurator().apply(new HardwareLimitSwitchConfigs().withReverseLimitEnable(false).withForwardLimitEnable(false));
 
-        // topShooter.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(40).withSupplyCurrentLimit(40).withSupplyCurrentLimitEnable(false).withStatorCurrentLimitEnable(false));
-        // bottomShooter.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(40).withSupplyCurrentLimit(40).withSupplyCurrentLimitEnable(false).withStatorCurrentLimitEnable(false));
+        topShooter.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(80).withSupplyCurrentLimit(40).withSupplyCurrentLimitEnable(true).withStatorCurrentLimitEnable(true));
+        bottomShooter.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(80).withSupplyCurrentLimit(40).withSupplyCurrentLimitEnable(true).withStatorCurrentLimitEnable(true));
 
         SlotConfigs SlotConfigTopShooter = new SlotConfigs();
         SlotConfigs SlotConfigBottomShooter = new SlotConfigs();
@@ -103,16 +101,11 @@ public class ShooterSubsystem extends SubsystemBase {
         configureSlot(SlotConfigTopShooter, 2.2, 0.1, 0.7, 0.1, 0, 0.1);
         configureSlot(SlotConfigBottomShooter, 2.2, 0.1, 0.65, 0.1, 0, 0.1);
 
-        
-
         topShooter.getConfigurator().apply(SlotConfigTopShooter);
         bottomShooter.getConfigurator().apply(SlotConfigBottomShooter);
 
-        
-
         topShooter.setInverted(true);
         bottomShooter.setInverted(true);
-
     }
 
     @Override

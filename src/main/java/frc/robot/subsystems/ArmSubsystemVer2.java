@@ -1,24 +1,20 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.MainConstants.Setpoints;
 import frc.robot.parsers.PivotParser;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.utils.PivotAugment;
-import frc.robot.utils.TagalongMinorSystemBase;
 import frc.robot.utils.TagalongSubsystemBase;
 
 public class ArmSubsystemVer2 extends TagalongSubsystemBase implements PivotAugment {
     public static ArmSubsystemVer2 armSubsystem;
     public final PivotParser pivotParser;
     private final TagalongPivot pivot;
-    public TalonFX follower;
     private double offset = 0;
 
-    private double _setPoint = 120;
+    private double _setPoint = Setpoints.ARM_STABLE_SETPOINT;
 
     public ArmSubsystemVer2() {
         this(new PivotParser(Filesystem.getDeployDirectory(), "compbotShooterPivotConf.json"));

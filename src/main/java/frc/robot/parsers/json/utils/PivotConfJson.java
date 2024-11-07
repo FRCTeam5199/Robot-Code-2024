@@ -1,7 +1,6 @@
 package frc.robot.parsers.json.utils;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -34,7 +33,6 @@ public class PivotConfJson extends TagalongBaseJson {
   private TalonFXConfiguration pivotMotorConfig = null;
   private TalonFXConfiguration followerMotorConfig = null;
   private FeedbackConfigs pivotFeedbackConfigs = null;
-  private ClosedLoopGeneralConfigs closedLoopConfigs = null;
 
   public TalonFX getTalonFX() {
     return fusedDevices != null ? fusedDevices.motor.getTalonFX() : unfusedMotor.getTalonFX();
