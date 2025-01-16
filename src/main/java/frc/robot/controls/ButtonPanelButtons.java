@@ -1,7 +1,7 @@
 package frc.robot.controls;
 
 public enum ButtonPanelButtons {
-    CENTER_CLIMB_SETUP(1, 13),
+    CLIMB_MODE(1, 13),
     LEFT_CLIMB_SETUP(1, 4),
     RIGHT_CLIMB_SETUP(1, 5),
     CLIMB_UP(1, 14),

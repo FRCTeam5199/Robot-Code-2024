@@ -9,6 +9,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -16,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.LED.LEDSubsystem;
-import frc.robot.commands.Autos;
 import frc.robot.constants.MainConstants;
 import frc.robot.controls.ButtonPanelButtons;
 import frc.robot.controls.CommandButtonPanel;
@@ -63,8 +63,6 @@ public class RobotContainer {
     private final SwerveDrive drivetrain = TunerConstants.DriveTrain; // My drivetrain
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withRotationalDeadband(MaxAngularRate * 0.15).withDriveRequestType(DriveRequestType.OpenLoopVoltage); // driving in open loop
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-
-    Autos auton;
     public double speedShooterAuto;
     
     ConditionalCommand speakerAutoDriveAutoAim = new ConditionalCommand(
@@ -208,9 +206,7 @@ private PivotToCommand _customShooterArm =
 //        mainCommandXboxController.leftBumper().whileTrue(new SequentialCommandGroup(shooterSubsystem.autoAim().alongWith(speakerAutoDriveAutoAim.alongWith(_autoAimArm))))
 //                .onFalse(new SequentialCommandGroup(shooterSubsystem.runShooterAtPercent(0),
 //                new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE)), _autoAimStable));
-
-        mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(shooterSubsystem.autoAim())).onFalse(shooterSubsystem.runShooterAtPercent(0).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
-        mainCommandXboxController.y().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterPredeterminedRPM())).onFalse(shooterSubsystem.runShooterAtPercent(0).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
+        // mainCommandXboxController.y().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterPredeterminedRPM())).onFalse(shooterSubsystem.runShooterAtPercent(0).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
 
         //     mainCommandXboxController.povDown().onTrue(indexer.setIndexerSpeed(-.1));
 
@@ -243,12 +239,15 @@ private PivotToCommand _customShooterArm =
 
         // Arm Setpoints
         mainCommandXboxController.a().onTrue(shooterSubsystem.setAmpMode(true).andThen(climberSubsystem.setClimbMode(false)));
-        mainCommandXboxController.b().onTrue(arm.setSetpoint(ArmPivotSetpoints.SUB.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(2500))));
-        mainCommandXboxController.x().onTrue(arm.setSetpoint(ArmPivotSetpoints.MID.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(1800))));
-        mainCommandXboxController.y().onTrue(arm.setSetpoint(ArmPivotSetpoints.SHUTTLE.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(3250))));
+        mainCommandXboxController.b().onTrue(arm.setSetpoint(ArmPivotSetpoints.SUB.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(1600))));
+        mainCommandXboxController.x().onTrue(arm.setSetpoint(ArmPivotSetpoints.MID.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(1200))));
+        mainCommandXboxController.y().onTrue(arm.setSetpoint(ArmPivotSetpoints.SHUTTLE.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(1800))));
 
         // Low Shuttle
-        mainCommandXboxController.povRight().onTrue(shooterSubsystem.runShooterAtRpm(6000)).onFalse(shooterSubsystem.runShooterAtPercent(0).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
+        mainCommandXboxController.povRight().onTrue(shooterSubsystem.runShooterAtRpm(800)).onFalse(shooterSubsystem.runShooterAtPercent(0).andThen(new InstantCommand(() -> LEDs.setMode(LEDSubsystem.LEDMode.IDLE))));
+        // mainCommandXboxController.povLeft().onTrue(new SequentialCommandGroup(climberSubsystem.setClimbMode(true), shooterSubsystem.setAmpMode(true), intake.deployIntake(), _climbMiddleArm));
+        mainCommandXboxController.povUp().whileTrue(climberSubsystem.setClimberSpeed(0.8)).onFalse(climberSubsystem.setClimberSpeed(0));
+        mainCommandXboxController.povDown().whileTrue(climberSubsystem.setClimberSpeed(-0.8)).onFalse(climberSubsystem.setClimberSpeed(0));
 
         buttonPanel.button(ButtonPanelButtons.ARM_SUB_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.SUB.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(4000))));
         buttonPanel.button(ButtonPanelButtons.ARM_BACK_SETPOINT).onTrue(arm.setSetpoint(ArmPivotSetpoints.BACK.getDegrees()).andThen(shooterSubsystem.setAmpMode(false).andThen(shooterSubsystem.setRPMShooter(5000))));
@@ -267,10 +266,10 @@ private PivotToCommand _customShooterArm =
         buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
         buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
 
-        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(new SequentialCommandGroup(new InstantCommand(() -> arm.changeSetpoint(0.5))).andThen(new InstantCommand(() -> System.out.println("WORKS"))));
-        buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(new SequentialCommandGroup(new InstantCommand(() -> arm.changeSetpoint(-0.5))));
+        // buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_UP).onTrue(new SequentialCommandGroup(new InstantCommand(() -> arm.changeSetpoint(0.5))).andThen(new InstantCommand(() -> System.out.println("WORKS"))));
+        // buttonPanel.button(ButtonPanelButtons.MOVE_ARM_SETPOINT_DOWN).onTrue(new SequentialCommandGroup(new InstantCommand(() -> arm.changeSetpoint(-0.5))));
 
-        buttonPanel.button(ButtonPanelButtons.CENTER_CLIMB_SETUP).onTrue(new SequentialCommandGroup(climberSubsystem.setClimbMode(true), shooterSubsystem.setAmpMode(true), intake.deployIntake(), Commands.print("thoough heaven and heart i alone am the honered one"), _climbMiddleArm));
+        buttonPanel.button(ButtonPanelButtons.CLIMB_MODE).onTrue(new SequentialCommandGroup(climberSubsystem.setClimbMode(true), shooterSubsystem.setAmpMode(true), intake.deployIntake(), _climbMiddleArm));
         //     // buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_UP).onTrue(climberSubsystem.setClimbMode(true).andThen(shooterSubsystem.setAmpMode(false)).andThen(arm.isAiming(true)).andThen(shooterSubsystem.setRPMShooter(2100)));
         //     // buttonPanel.button(ButtonPanelButtons.FLIPPY_DO_DOWN).onTrue(climberSubsystem.setClimbMode(false).andThen(shooterSubsystem.setAmpMode(false)).andThen(arm.isAiming(false).andThen(arm.setClimbMode(false))));
         buttonPanel.button(ButtonPanelButtons.CLIMB_UP).whileTrue(climberSubsystem.setClimberSpeed(.8)).onFalse(climberSubsystem.setClimberSpeed(0));
@@ -280,20 +279,8 @@ private PivotToCommand _customShooterArm =
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_UP).whileTrue(climberSubsystem.setClimberMotor2Speed(.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
         buttonPanel.button(ButtonPanelButtons.RIGHT_CLIMB_DOWN).whileTrue(climberSubsystem.setClimberMotor2Speed(-.8)).onFalse(climberSubsystem.setClimberMotor2Speed(0));
 
-        testingController.a().onTrue(_shuttle);
-        testingController.b().onTrue(_midArm);
-        // testingController.y().onTrue(new InstantCommand(()->_customArm.changeSetpoint(51.1)).andThen(_customArm));
-        testingController.rightBumper().onTrue(indexer.setIndexerSpeed(.4)).onFalse(indexer.setIndexerSpeed(0));
-
-
-        testingController.y().onTrue(new SequentialCommandGroup(shooterSubsystem.runShooterAtRpm(6000))).onFalse(shooterSubsystem.runShooterAtPercent(0));
-
-        // testingController.y().onTrue(new InstantCommand(()-> climberSubsystem.climbModeEnabled = true));
-        //     testingController.x().onTrue(new InstantCommand(()-> climberSubsystem.climbModeEnabled = false));
-
-
-            buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
-             buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
+        buttonPanel.button(ButtonPanelButtons.INCREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.increaseShooterSpeed());
+        buttonPanel.button(ButtonPanelButtons.DECREASE_SHOOTER_SPEED).onTrue(shooterSubsystem.decreaseShooterSpeed());
 
         //     buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_UP).onTrue(climberSubsystem.setClimberMotor1Speed(0.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
         //     buttonPanel.button(ButtonPanelButtons.LEFT_CLIMB_DOWN).onTrue(climberSubsystem.setClimberMotor1Speed(-0.8)).onFalse(climberSubsystem.setClimberMotor1Speed(0));
