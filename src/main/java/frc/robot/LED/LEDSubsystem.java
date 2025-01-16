@@ -10,10 +10,9 @@ public class LEDSubsystem extends SubsystemBase {
     public LEDMode selectedLEDMode;
     AddressableLED LEDLights = new AddressableLED(MainConstants.IDs.LED_PORT);
     AddressableLEDBuffer LEDBuffer = new AddressableLEDBuffer(MainConstants.LED_LENGTH);
-    boolean powerSaverMode;
+    public int pixelValue = 0;
 
-    public LEDSubsystem() {
-    }
+    public LEDSubsystem() {}
 
     public void init() {
         LEDLights.setLength(LEDBuffer.getLength());
@@ -28,36 +27,14 @@ public class LEDSubsystem extends SubsystemBase {
         LEDLights.stop();
     }
 
-    public void setPowerSaverMode(boolean mode) {
-        powerSaverMode = mode;
-    }
-
     public void setMode(LEDMode mode) {
         this.selectedLEDMode = mode;
     }
 
     @Override
     public void periodic() {
-        if (powerSaverMode) {
-            for (int i = 0; i < LEDBuffer.getLength(); i++) {
-                if (getRed(i) >= 15) {
-                    if (getGreen(i) >= 15) {
-                        if (getBlue(i) >= 15) {
-                            LEDBuffer.setRGB(i, LEDBuffer.getRed(i) - 15, LEDBuffer.getGreen(i) - 15, LEDBuffer.getBlue(i) - 15);
-                        } else {
-                            setBlue(i, 0);
-                        }
-                    } else {
-                        setGreen(i, 0);
-                    }
-                } else {
-                    setRed(i, 0);
-                }
-            }
-        }
-
         if (selectedLEDMode == LEDMode.IDLE) {
-            // setFade(Color.kBlue, Color.kLightBlue);
+            // setFade(Color.kBlue);
             setColor(Color.kBlue);
         } else if (selectedLEDMode == LEDMode.INTAKING) {
             // setFade(Color.kBlue, Color.kDarkSeaGreen);
@@ -160,36 +137,44 @@ public class LEDSubsystem extends SubsystemBase {
         }
     }
 
-    public void setFade(int red, int green, int blue) {
+    public void setBlend(int red, int green, int blue) {
         for (int i = 0; i < LEDBuffer.getLength(); i++) {
             LEDBuffer.setRGB(i, red + i, green + i, blue + i);
         }
     }
 
-    public void setFade(int red, int green, int blue, double strength) {
+    public void setBlend(int red, int green, int blue, double strength) {
         for (int i = 0; i < LEDBuffer.getLength(); i++) {
             LEDBuffer.setRGB(i, red + (int) Math.round(i * strength), green + (int) Math.round(i * strength), blue + (int) Math.round(i * strength));
         }
     }
 
-    public void setFade(Color... color) {
+    public void setBlend(Color... color) {
         for (int i = 0; i < LEDBuffer.getLength(); i++) {
             LEDBuffer.setLED(i, color[Math.round(LEDBuffer.getLength() / color.length)]);
         }
     }
 
-    public void rainbow() {
-        int rainbowFirstPixelHue = 0;
+    public void setFade(Color color) {
+        if (color.red + pixelValue > 255 || color.blue + pixelValue > 255 || color.green + pixelValue > 255) {
+            pixelValue = 0;
+        }
 
+        for (int i = 0; i < LEDBuffer.getLength(); i++) {
+            LEDBuffer.setLED(i, new Color(color.red + pixelValue, color.blue + pixelValue, color.green + pixelValue));
+        }
+    }
+    
+    public void rainbow() { 
         // For every pixel
         for (var i = 0; i < LEDBuffer.getLength(); i++) {
-            LEDBuffer.setHSV(i, (rainbowFirstPixelHue + (i * 180 / LEDBuffer.getLength())) % 180, 255, 128);
+            LEDBuffer.setHSV(i, (pixelValue + (i * 180 / LEDBuffer.getLength())) % 180, 255, 128);
         }
 
         // Increase by to make the rainbow "move"
-        rainbowFirstPixelHue += 3;
+        pixelValue += 1;
         // Check bounds
-        rainbowFirstPixelHue %= 180;
+        pixelValue %= 180;
     }
 
     public enum LEDMode {

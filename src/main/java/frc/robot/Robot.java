@@ -4,34 +4,24 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.*;
+import java.util.Optional;
+
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.photonvision.EstimatedRobotPose;
 
-import com.ctre.phoenix6.CANBus;
-import com.revrobotics.SparkFlexExternalEncoder;
-
-import org.littletonrobotics.junction.inputs.LoggableInputs;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.LoggedRobot;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AprilTagSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.UserInterface;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
-
-import java.util.Optional;
-
-import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 
 /**
@@ -62,11 +52,11 @@ public class Robot extends LoggedRobot {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
 
+        m_robotContainer = new RobotContainer();
+
         userInterface.initalizeConfigTab();
         userInterface.initalizeTestTab();
         // userInterface.initalizeGameTab();
-
-        m_robotContainer = new RobotContainer();
         Logger.addDataReceiver(new WPILOGWriter("/media/sda1/"));
         Logger.start();
 
@@ -115,38 +105,35 @@ public class Robot extends LoggedRobot {
         Logger.recordOutput("top shooter supply voltage", m_robotContainer.shooterSubsystem.topShooter.getSupplyVoltage().getValueAsDouble());
         Logger.recordOutput("bottom shooter supply voltage", m_robotContainer.shooterSubsystem.bottomShooter.getSupplyVoltage().getValueAsDouble());
 
-        // Logger.recordOutput("front camera alive", null);
-        // Logger.recordOutput("front camera alive", null);
-
         CommandScheduler.getInstance().run();
-        // System.out.println(drive.getPose());
-        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getVisionPoseFront();
+        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPoseFront();
         // Optional<EstimatedRobotPose> estimatePose2 = aprilTagSubsystem.getVisionPoseRight();
         // Optional<EstimatedRobotPose> estimatePose3 = aprilTagSubsystem.getVisionPoseLeft();
-        Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getVisionPoseBack();
+        Optional<EstimatedRobotPose> estimatePose4 = aprilTagSubsystem.getEstimatedGlobalPoseBack();
 
         if (!DriverStation.isAutonomous()) {
+            if (estimatePose4.isPresent()) {
 
+                EstimatedRobotPose robotPose = estimatePose4.get();
 
-            if (estimatePose1.isPresent()) {
-                EstimatedRobotPose robotPose = estimatePose1.get();
-                drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+                Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
+
+                Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), robotPose2d.getRotation());
+//                Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0)
+
+                TunerConstants.DriveTrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
             }
 
+            if (estimatePose1.isPresent()) {
 
-            // if(estimatePose2.isPresent()){
-            //     EstimatedRobotPose robotPose = estimatePose2.get();
-            //     drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+                EstimatedRobotPose robotPose = estimatePose1.get();
 
-            // }
+                Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
 
-            //     if(estimatePose3.isPresent()){
-            //       EstimatedRobotPose robotPose = estimatePose3.get();
-            //       drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-            //     }
-            if (estimatePose4.isPresent()) {
-                EstimatedRobotPose robotPose = estimatePose4.get();
-                drive.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+                Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), robotPose2d.getRotation());
+                //Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 0 : 180)
+
+                TunerConstants.DriveTrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
             }
         }
 

@@ -12,10 +12,10 @@ public class LookUpTable {
             add(new AutoAimValue(2.32, 64, 4300));
             add(new AutoAimValue(2.66, 61, 4800));
             add(new AutoAimValue(3.08, 58.2, 5300));
-            add(new AutoAimValue(3.23, 56.8, 5400));
-            add(new AutoAimValue(3.6, 55.3, 5500));
-            add(new AutoAimValue(4, 54.8, 5600));
-            add(new AutoAimValue(4.48, 51.8, 5750));
+            add(new AutoAimValue(3.23, 55.8, 5400));
+            add(new AutoAimValue(3.6, 54.8, 5500));
+            add(new AutoAimValue(4.0, 53.3, 5600));
+            add(new AutoAimValue(4.48, 52d, 5750));
             add(new AutoAimValue(4.73, 51.2, 5800));
             add(new AutoAimValue(5.11, 50.8, 5900));
             add(new AutoAimValue(5.17, 49.5, 6000));

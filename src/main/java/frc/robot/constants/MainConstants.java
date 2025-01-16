@@ -7,9 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.utility.PID;
 
-
 public class MainConstants {
-
     public static final double ROTATIONS_PER_1_DEGREE_ARM = 0.3825;
     public static final double ARM_PIVOT_X_OFFSET = 0.18415; //0.2032; //meters //7.25 inch
     public static final double ARM_PIVOT_Z = 0.5800;//0.5788; //0.5715; //meters //22 inch
@@ -17,7 +15,7 @@ public class MainConstants {
     // public static final double SPEAKER_Z = 2.340102;
     public static final double SPEAKER_Z = 1.4511020000000001 + 0.678; //+ 0.755; //1.4511020000000001 + 0.635;
     public static final double ARM_GEAR_RATIO = 60; //60 : 1
-    public static final int LED_LENGTH = 34 ;
+    public static final int LED_LENGTH = 34;
     //Mechanical Constants
     public static String CAN_BUS = "";
     public static double WHEEL_DIAMETER = 2;
@@ -79,8 +77,7 @@ public class MainConstants {
     public static int OVERHEAT_THRESHOLD = 80;
     public static double CTRE_SENSOR_UNITS_PER_ROTATION = 2048;
     public static int BrakeButtonid = 0;
-    public String[] cameraNames = {"Front", "Left", "Right", "Back", "Shooter"};
-    public Transform3d[] cameraPositions = {
+    public static Transform3d[] cameraPositions = {
             new Transform3d(0.4, -.6, 0.123835, new Rotation3d(Math.toRadians(65), 0, Math.toRadians(-10))), //front
             new Transform3d(.225, .28, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(90))), //left
             new Transform3d(.1, -.4, .0625, new Rotation3d(0, Math.toRadians(11), Math.toRadians(-90))), //right
@@ -88,6 +85,7 @@ public class MainConstants {
             new Transform3d(0, 0
                     , 0, new Rotation3d(0, 0, 0))
     };
+    public String[] cameraNames = {"Front", "Back"};
 
     public static class OperatorConstants {
         //Operator Constants
@@ -98,14 +96,10 @@ public class MainConstants {
     }
 
     public static class IDs {
-        public static final int SERVO_ID = 1;
         // Pigeon
         public static final int PIGEON2_ID = 22;
+        public static final int SERVO_ID = 2;
         public static final int LED_PORT = 0;
-
-        // Pneumatics
-        // public static final int PCM_ID = 0;
-        // public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = null;
 
         public static class Motors {
             // Drive
@@ -125,65 +119,70 @@ public class MainConstants {
             public static final int BACK_RIGHT_STEER_MOTOR_ID = 1;
             public static final int BACK_RIGHT_ENCODER = 13;
 
-            public static final int ARM_ENCODER = 3;
+            public static final int ARM_ENCODER = 50;
 
             //Intake
-            public static final int INTAKE_ACTUATOR_MOTOR_ID = 9;
-            public static final int INTAKE_MOTOR_ID = 10;
+            public static final int INTAKE_ACTUATOR_MOTOR_ID = 30;
+            public static final int INTAKE_MOTOR_ID = 32;
 
             //Climber
-            public static final int CLIMBER_MOTOR_1_ID = 7;
-            public static final int CLIMBER_MOTOR_2_ID = 8;
+            public static final int CLIMBER_MOTOR_1_ID = 34;
+            public static final int CLIMBER_MOTOR_2_ID = 33;
 
             //Arm
-            public static final int ARM_MOTOR_LEFT_ID = 30;
-            public static final int ARM_MOTOR_RIGHT_ID = 40;
+            public static final int ARM_MOTOR_LEFT_ID = 38;
+            public static final int ARM_MOTOR_RIGHT_ID = 39;
 
             //Shooter
-            public static final int SHOOTER_MOTOR_1_ID = 2;
-            public static final int SHOOTER_MOTOR_2_ID = 3;
-            public static final int SHOOTER_INDEXER_MOTOR_ID = 4;
+            public static final int SHOOTER_MOTOR_LEFT_ID = 36;
+            public static final int SHOOTER_MOTOR_RIGHT_ID = 37;
+            public static final int SHOOTER_INDEXER_MOTOR_ID = 31;
         }
     }
 
     public static class PIDConstants {
-        public static final PID INTAKE_PID = new PID(0.125, 0, 0);
-        // Climber
+        // Intake PID
+        public static final PID INTAKE_PID = new PID(0.085, 0, 0); // 0.07, 0.08, 0.1
+
+        // Climber PID
         public static final PID CLIMBER_PID = new PID(0.01, 0, 0);
 
-        // Arm
+        // Arm PID
         public static final PID ARM_PID = new PID(0.0075, 0.0, 0);
     }
 
     public static class Setpoints {
-        //Intake Setpoints
-        public static final double STOW_INTAKE = 0;
-        public static final double DEPLOY_INTAKE = 8;
-        //24
+        // Servo Setpoints
+        public static final double SERVO_EXTENDED_SETPOINT = 82;
+        public static final double SERVO_RETRACTED_SETPOINT = 20;
 
+        // Intake Setpoints
+        public static final double STOW_INTAKE_SETPOINT = 0.5; //0,0.2,0.5
+        public static final double DEPLOY_INTAKE_SETPOINT = 8.1; //8.1, 8.2, 8.36, 8.8
+
+        // Climber Setpoints
         public static final double CLIMBER_EXTENDED_SETPOINT = 115;
         public static final double CLIMBER_RETRACTED_SETPOINT = 0;
 
-        //Arm Setpoints
-        public static final double ARM_STABLE_SETPOINT = 30; //Maybe make it 22.5 for chain
-        public static final double ARM_SPEAKER_FRONT_SETPOINT = 27;
+        // Arm Setpoints
+        public static final double ARM_STABLE_SETPOINT = 31; //Maybe make it 22.5 for chain
         public static final double ARM_INTAKE_SETPOINT = 4;
-        public static final double ARM_TRAP_SETPOINT = 118;
-        public static final double ARM_TRAP_PREP_SETPOINT = 82;
+        public static final double ARM_TRAP_SETPOINT = 118.75;
+        public static final double ARM_TRAP_PREP_SETPOINT = 84;
         public static final double ARM_TRAP_PREP2_SETPOINT = 72;
         public static final double ARM_TOP_PIECE_SETPOINT = 70;
         public static final double ARM_BOTTOM_PIECE_SETPOINT = 73;
         public static final double ARM_MIDDLE_PIECE_SETPOINT = 73;
-        public static final double ARM_AUTON_STABLE = 147;
-        public static final double ARM_TWO_PIECE_EXTENDED_SHOT_RED = 52.3;
-        public static final double ARM_TWO_PIECE_EXTENDED_SHOT_BLUE = 53.5;
+        public static final double ARM_AUTON_STABLE_SETPOINT = 147;
+        public static final double ARM_TWO_PIECE_EXTENDED_SHOT_RED_SETPOINT = 52.3;
+        public static final double ARM_TWO_PIECE_EXTENDED_SHOT_BLUE_SETPOINT = 53.9;
         //Control Panel
-        public static final double ARM_SUBWOOFER_SETPOINT = 79;
-        public static final double ARM_SPEAKER_BACK_SETPOINT = 146;
-        public static final double ARM_SAFE_SETPOINT = 56;
-        public static final double ARM_AMP_SETPOINT = 50.25;
+        public static final double ARM_SUBWOOFER_SETPOINT = 90; //81
+        public static final double ARM_SPEAKER_BACK_SETPOINT = 146.75;
+        public static final double ARM_SAFE_SETPOINT = 57.5;
+        public static final double ARM_AMP_SETPOINT = 52.5; // 51.5
         public static final double ARM_FAR_SHOT_SETPOINT = 48.5;
         public static final double ARM_HP_STATION_SETPOINT = 140;
-
+        public static final double ARM_SHUTTLE_SETPOINT = 82; //76.75
     }
 }

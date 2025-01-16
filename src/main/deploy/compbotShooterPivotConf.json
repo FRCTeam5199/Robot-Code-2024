@@ -3,7 +3,7 @@
     "fusedDevices": {
       "motor": {
         "type": "kraken",
-        "id": 30,
+        "id": 38,
         "canbus": "rio"
       },
       "encoder": {
@@ -14,7 +14,7 @@
     },
     "followerMotor": {
       "type": "kraken",
-      "id": 40,
+      "id": 39,
       "canbus": "rio"
     },
     "motorToPivot": [
@@ -55,10 +55,10 @@
       "brakeMode": true,
       "motorCurrentLimits": {
         "statorEnableLimit": true,
-        "statorPeakLimit": 80,
+        "statorPeakLimit": 20,
         "supplyEnableLimit": true,
-        "supplyPeakLimit": 80,
-        "supplyContinuousLimit": 80,
+        "supplyPeakLimit": 20,
+        "supplyContinuousLimit": 20,
         "peakDuration": 0.8
       },
       "motor": {
@@ -92,10 +92,10 @@
       "brakeMode": true,
       "motorCurrentLimits": {
         "statorEnableLimit": true,
-        "statorPeakLimit": 80,
+        "statorPeakLimit": 20,
         "supplyEnableLimit": true,
-        "supplyPeakLimit": 80,
-        "supplyContinuousLimit": 80,
+        "supplyPeakLimit": 20,
+        "supplyContinuousLimit": 20,
         "peakDuration": 0.8
       },
       "motor": {

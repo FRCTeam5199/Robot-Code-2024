@@ -6,15 +6,12 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 
 public class VortexMotorController extends AbstractMotorController {
     public CANSparkBase vortex;
     public RelativeEncoder encoder;
     public SparkPIDController sparkPIDController;
-    private boolean enablePID;
-    private double speed = 0;
     public VortexMotorController(int ID){
         super();
         vortex = new CANSparkFlex(ID, CANSparkLowLevel.MotorType.kBrushless);

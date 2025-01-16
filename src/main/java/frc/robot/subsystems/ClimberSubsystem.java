@@ -4,10 +4,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -75,11 +72,11 @@ public class ClimberSubsystem extends SubsystemBase {
         climberMotor2 = new VortexMotorController(MainConstants.IDs.Motors.CLIMBER_MOTOR_2_ID);
 
         climberMotor1.getEncoder().setPosition(0);
-        climberMotor1.setInvert(false);
+        climberMotor1.setInvert(true);
         climberMotor1.setBrake(true);
 
         climberMotor2.getEncoder().setPosition(0);
-        climberMotor1.setInvert(true);
+        climberMotor2.setInvert(false);
         climberMotor2.setBrake(true);
     }
 

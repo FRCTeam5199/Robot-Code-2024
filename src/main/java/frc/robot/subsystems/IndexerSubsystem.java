@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Main;
 import frc.robot.abstractMotorInterfaces.VortexMotorController;
 import frc.robot.constants.MainConstants;
 
@@ -32,15 +31,15 @@ public class IndexerSubsystem extends SubsystemBase {
         shooterIndexerMotor.setCurrentLimit(40);
 
         servo = new Servo(MainConstants.IDs.SERVO_ID);
-        
+        servo.getAngle();
     }
 
     public Command extendServo() {
-        return this.runOnce(() -> servo.setAngle(235));
+        return this.runOnce(() -> servo.setAngle(MainConstants.Setpoints.SERVO_EXTENDED_SETPOINT));
     }
 
     public Command retractServo() {
-        return this.runOnce(() -> servo.setAngle(90));
+        return this.runOnce(() -> servo.setAngle(MainConstants.Setpoints.SERVO_RETRACTED_SETPOINT));
     }
 
     @Override
@@ -73,7 +72,11 @@ public class IndexerSubsystem extends SubsystemBase {
         for (int i = 0; i < 150; i++) {
             if (currentCheck()) checker++;
         }
-        if (checker >= 150) System.out.println(true);
+        // if (checker >= 150) System.out.println(true);
         return checker >= 150;
+    }
+
+    public boolean isServoExtended() {
+        return (servo.getAngle() == MainConstants.Setpoints.SERVO_EXTENDED_SETPOINT);
     }
 }
